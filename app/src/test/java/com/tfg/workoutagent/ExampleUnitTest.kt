@@ -1,4 +1,4 @@
-package com.example.workoutagent
+package com.tfg.workoutagent
 
 import org.junit.Test
 
