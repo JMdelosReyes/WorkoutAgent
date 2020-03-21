@@ -9,7 +9,7 @@
         android:id="@+id/navigation_activity_trainer"
         android:name="com.tfg.workoutagent.presentation.ui.activity.ActivityTrainerFragment"
         android:label="@string/my_activity_trainer"
-        tools:layout="@layout/fragment_activity_trainer" />
+        tools:layout="@layout/fragment_trainer_activity" />
 
     <fragment
         android:id="@+id/navigation_routine_trainer"
@@ -27,12 +27,12 @@
         android:id="@+id/navigation_users_trainer"
         android:name="com.tfg.workoutagent.presentation.ui.users.UserTrainerFragment"
         android:label="@string/my_users"
-        tools:layout="@layout/user_trainer_fragment" />
+        tools:layout="@layout/fragment_trainer_user" />
 
     <fragment
         android:id="@+id/navigation_profile_trainer"
         android:name="com.tfg.workoutagent.presentation.ui.profile.ProfileTrainerFragment"
         android:label="@string/my_profile"
-        tools:layout="@layout/fragment_profile_trainer" />
+        tools:layout="@layout/fragment_trainer_profile" />
 
 </navigation>
