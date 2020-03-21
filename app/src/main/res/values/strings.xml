@@ -97,4 +97,14 @@
     <string name="custom_auth_signin_status_failed">Error: sign in failed</string>
     <string name="workout_agent">Workout Agent</string>
     <string name="logo_image">logo_image</string>
+    <string name="title_activity_bottom_navigation_trainer">BottomNavigationTrainerActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="my_activity_trainer">My activity</string>
+    <string name="routines_trainer">Routines</string>
+    <string name="exercises_trainer">Exercises</string>
+    <string name="my_profile">My profile</string>
+    <string name="my_users">My users</string>
+    <string name="my_routines_trainer">My routines</string>
 </resources>

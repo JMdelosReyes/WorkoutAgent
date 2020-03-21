@@ -11,11 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".presentation.ui.exercises.activities.HomeActivity" />
-        <activity android:name=".login.GoogleSignInActivity">
+        <activity
+            android:name=".BottomNavigationTrainerActivity"
+            android:label="@string/title_activity_bottom_navigation_trainer"></activity>
+        <activity android:name=".presentation.ui.login.activities.GoogleSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

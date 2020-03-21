@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_activity_trainer"
+        android:icon="@drawable/ic_timeline_24dp"
+        android:title="@string/my_activity_trainer" />
+
+    <item
+        android:id="@+id/navigation_routine_trainer"
+        android:icon="@drawable/ic_workout_24dp"
+        android:title="@string/routines_trainer" />
+
+    <item
+        android:id="@+id/navigation_exercises_trainer"
+        android:icon="@drawable/ic_gym_24dp"
+        android:title="@string/exercises_trainer" />
+
+    <item
+        android:id="@+id/navigation_users_trainer"
+        android:icon="@drawable/ic_people_24dp"
+        android:title="My users" />
+    <item
+        android:id="@+id/navigation_profile_trainer"
+        android:icon="@drawable/ic_person_outline_black_24dp"
+        android:title="@string/my_profile" />
+</menu>

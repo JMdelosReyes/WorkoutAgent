@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_exercises_trainer">
+
+    <fragment
+        android:id="@+id/navigation_activity_trainer"
+        android:name="com.tfg.workoutagent.presentation.ui.activity.ActivityTrainerFragment"
+        android:label="@string/my_activity_trainer"
+        tools:layout="@layout/fragment_activity_trainer" />
+
+    <fragment
+        android:id="@+id/navigation_routine_trainer"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.RoutineTrainerFragment"
+        android:label="@string/my_routines_trainer"
+        tools:layout="@layout/fragment_trainer_routine" />
+
+    <fragment
+        android:id="@+id/navigation_exercises_trainer"
+        android:name="com.tfg.workoutagent.presentation.ui.exercises.fragments.ExerciseTrainerFragment"
+        android:label="@string/exercises_trainer"
+        tools:layout="@layout/fragment_trainer_exercise" />
+
+    <fragment
+        android:id="@+id/navigation_users_trainer"
+        android:name="com.tfg.workoutagent.presentation.ui.users.UserTrainerFragment"
+        android:label="@string/my_users"
+        tools:layout="@layout/user_trainer_fragment" />
+
+    <fragment
+        android:id="@+id/navigation_profile_trainer"
+        android:name="com.tfg.workoutagent.presentation.ui.profile.ProfileTrainerFragment"
+        android:label="@string/my_profile"
+        tools:layout="@layout/fragment_profile_trainer" />
+
+</navigation>
