@@ -95,4 +95,6 @@
 
     <string name="custom_auth_signin_status_user">User ID: %s</string>
     <string name="custom_auth_signin_status_failed">Error: sign in failed</string>
+    <string name="workout_agent">Workout Agent</string>
+    <string name="logo_image">logo_image</string>
 </resources>

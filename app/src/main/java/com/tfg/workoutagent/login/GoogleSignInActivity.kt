@@ -14,9 +14,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.tfg.workoutagent.trainer.HomeActivity
+import com.tfg.workoutagent.presentation.ui.exercises.activities.HomeActivity
 import kotlinx.android.synthetic.main.login_activity.*
 
 class GoogleSignInActivity : AppCompatActivity() {
