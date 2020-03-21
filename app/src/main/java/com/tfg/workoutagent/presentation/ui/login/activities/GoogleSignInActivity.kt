@@ -1,11 +1,11 @@
-package com.tfg.workoutagent.login
+package com.tfg.workoutagent.presentation.ui.login.activities
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.tfg.workoutagent.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -15,17 +15,23 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.tfg.workoutagent.presentation.ui.exercises.activities.HomeActivity
+import com.tfg.workoutagent.BottomNavigationTrainerActivity
+import com.tfg.workoutagent.base.BaseActivity
+import com.tfg.workoutagent.data.repoimpl.LoginRepositoryImpl
+import com.tfg.workoutagent.domain.login.LoginUseCaseImpl
+import com.tfg.workoutagent.presentation.ui.login.viewmodels.LoginViewModel
+import com.tfg.workoutagent.presentation.ui.login.viewmodels.LoginViewModelFactory
+import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.login_activity.*
 
-class GoogleSignInActivity : AppCompatActivity() {
+class GoogleSignInActivity : BaseActivity() {
 
     val RC_SIGN_IN: Int = 1
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
 
     private lateinit var firebaseAuth: FirebaseAuth
-
+    private val viewModel by lazy { ViewModelProvider(this, LoginViewModelFactory(LoginUseCaseImpl(LoginRepositoryImpl()))).get(LoginViewModel::class.java) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
@@ -58,7 +64,6 @@ class GoogleSignInActivity : AppCompatActivity() {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                Log.i("Este es el account", account.toString())
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
                 Toast.makeText(this, "Google sign in failed:(", Toast.LENGTH_LONG).show()
@@ -70,18 +75,27 @@ class GoogleSignInActivity : AppCompatActivity() {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-
                 val email = FirebaseAuth.getInstance().currentUser?.email.toString()
-                /*val role = "TODO hacer la consulta y obtener el role"
-                when(role){
-                    "TRAINER" -> startActivity(HomeActivity.getLaunchIntent(this))
-                    "CUSTOMER" -> startActivity(HomeActivity.getLaunchIntent(this))
-                    else -> { // Note the block
-                        startActivity(HomeActivity.getLaunchIntent(this))
+                viewModel.fechtRole.observe(this, Observer { result ->
+                    when(result){
+                        is Resource.Loading -> {
+                           //showProgress()
+                        }
+                        is Resource.Success -> {
+                            val role = result.data
+                            //hideProgress()
+                            when(role){
+                                "TRAINER" -> {startActivity(BottomNavigationTrainerActivity.getLaunchIntent(this))}
+                                "CUSTOMER" -> { Toast.makeText(this, "YOU ARE A CUSTOMER", Toast.LENGTH_LONG).show()}
+                                "ADMIN" -> { Toast.makeText(this, "YOU ARE AN ADMIN", Toast.LENGTH_LONG).show()}
+                            }
+                        }
+                        is Resource.Failure -> {
+                            //hideProgress()
+                            Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
+                        }
                     }
-                }*/
-                startActivity(HomeActivity.getLaunchIntent(this))
-                Log.i("MAIL", FirebaseAuth.getInstance().currentUser?.email.toString())
+                })
             } else {
                 Toast.makeText(this, "Google sign in failed:(", Toast.LENGTH_LONG).show()
             }
@@ -92,7 +106,7 @@ class GoogleSignInActivity : AppCompatActivity() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
 
-            startActivity(HomeActivity.getLaunchIntent(this))
+            startActivity(BottomNavigationTrainerActivity.getLaunchIntent(this))
             finish()
         }
     }
