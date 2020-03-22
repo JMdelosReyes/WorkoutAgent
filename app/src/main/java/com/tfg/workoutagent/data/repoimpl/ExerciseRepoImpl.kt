@@ -19,7 +19,7 @@ class ExerciseRepoImpl : ExerciseRepo {
             exercise.id = document.id
             exercises.add(exercise)
         }
-        return Resource.Success(exercises!!)
+        return Resource.Success(exercises)
     }
 
     override suspend fun getExercise(id: String): Resource<Exercise> {
@@ -28,5 +28,17 @@ class ExerciseRepoImpl : ExerciseRepo {
         val exercise = exerciseData.toObject(Exercise::class.java)
         exercise!!.id = exerciseData.id
         return Resource.Success(exercise)
+    }
+
+    override suspend fun createExercise(exercise: Exercise): Resource<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun editExercise(exercise: Exercise): Resource<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteExercise(id: String): Resource<Boolean> {
+        TODO("Not yet implemented")
     }
 }
