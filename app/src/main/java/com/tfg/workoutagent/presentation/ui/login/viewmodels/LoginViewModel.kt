@@ -2,7 +2,7 @@ package com.tfg.workoutagent.presentation.ui.login.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.tfg.workoutagent.domain.login.LoginUseCase
+import com.tfg.workoutagent.domain.loginUseCases.LoginUseCase
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.Dispatchers
 

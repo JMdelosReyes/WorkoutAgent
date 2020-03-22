@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_activity_trainer"
-        android:name="com.tfg.workoutagent.presentation.ui.activity.ActivityTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.activity.trainer.fragments.ActivityTrainerFragment"
         android:label="@string/my_activity_trainer"
         tools:layout="@layout/fragment_trainer_activity" />
 
     <fragment
         android:id="@+id/navigation_routine_trainer"
-        android:name="com.tfg.workoutagent.presentation.ui.routines.RoutineTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.RoutineTrainerFragment"
         android:label="@string/my_routines_trainer"
         tools:layout="@layout/fragment_trainer_routine" />
 
     <fragment
         android:id="@+id/navigation_exercises_trainer"
-        android:name="com.tfg.workoutagent.presentation.ui.exercises.fragments.ExerciseTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments.ExerciseTrainerFragment"
         android:label="@string/exercises_trainer"
         tools:layout="@layout/fragment_trainer_exercise" >
         <action
@@ -33,18 +33,18 @@
 
     <fragment
         android:id="@+id/navigation_users_trainer"
-        android:name="com.tfg.workoutagent.presentation.ui.users.UserTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.UserTrainerFragment"
         android:label="@string/my_users"
         tools:layout="@layout/fragment_trainer_user" />
 
     <fragment
         android:id="@+id/navigation_profile_trainer"
-        android:name="com.tfg.workoutagent.presentation.ui.profile.ProfileTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.profile.trainer.fragments.ProfileTrainerFragment"
         android:label="@string/my_profile"
         tools:layout="@layout/fragment_trainer_profile" />
     <fragment
         android:id="@+id/displayExercise"
-        android:name="com.tfg.workoutagent.presentation.ui.exercises.fragments.DisplayExercise"
+        android:name="com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments.DisplayExerciseFragment"
         android:label="Exercise"
         tools:layout="@layout/fragment_display_exercise">
         <argument
