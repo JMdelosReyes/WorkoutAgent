@@ -13,7 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivity
-import kotlinx.android.synthetic.main.fragment_profile_trainer.*
+import kotlinx.android.synthetic.main.fragment_trainer_profile.*
 
 class ProfileTrainerFragment : Fragment() {
 
@@ -28,7 +28,7 @@ class ProfileTrainerFragment : Fragment() {
     ): View? {
         profileTrainer =
             ViewModelProvider(this@ProfileTrainerFragment).get(ProfileTrainerViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_profile_trainer, container, false)
+        val root = inflater.inflate(R.layout.fragment_trainer_profile, container, false)
         profileTrainer.text.observe(viewLifecycleOwner, Observer {
             text_profile_fragment.text = it
         })

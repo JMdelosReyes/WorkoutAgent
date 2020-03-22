@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 
 import com.tfg.workoutagent.R
-import kotlinx.android.synthetic.main.user_trainer_fragment.*
+import kotlinx.android.synthetic.main.fragment_trainer_user.*
 
 class UserTrainerFragment : Fragment() {
 
@@ -20,7 +20,7 @@ class UserTrainerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this@UserTrainerFragment).get(UserTrainerViewModel::class.java)
-        val root = inflater.inflate(R.layout.user_trainer_fragment, container, false)
+        val root = inflater.inflate(R.layout.fragment_trainer_user, container, false)
         viewModel.text.observe(viewLifecycleOwner, Observer {
             text_user_fragment.text = it
         })
