@@ -1,4 +1,4 @@
-package com.tfg.workoutagent.login
+package com.tfg.workoutagent.presentation.ui.login.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
