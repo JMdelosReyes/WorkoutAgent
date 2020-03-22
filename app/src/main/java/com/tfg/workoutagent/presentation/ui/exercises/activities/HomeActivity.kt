@@ -19,11 +19,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repoimpl.ExerciseRepoImpl
 import com.tfg.workoutagent.domain.exercises.ListExercisesImpl
-import com.tfg.workoutagent.login.GoogleSignInActivity
 import com.tfg.workoutagent.models.Exercise
 import com.tfg.workoutagent.presentation.ui.exercises.adapters.ExerciseListAdapter
 import com.tfg.workoutagent.presentation.ui.exercises.viewmodels.ListExerciseViewModel
 import com.tfg.workoutagent.presentation.ui.exercises.viewmodels.ListExerciselViewModelFactory
+import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivity
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.activity_home.*
 
@@ -31,7 +31,6 @@ class HomeActivity : AppCompatActivity() {
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var adapter: ExerciseListAdapter
-
     private val viewModel by lazy { ViewModelProvider(this, ListExerciselViewModelFactory(ListExercisesImpl(ExerciseRepoImpl()))).get(ListExerciseViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.tfg.workoutagent.R
-import kotlinx.android.synthetic.main.fragment_activity_trainer.*
+import kotlinx.android.synthetic.main.fragment_trainer_activity.*
 
 class ActivityTrainerFragment : Fragment() {
 
@@ -21,7 +21,7 @@ class ActivityTrainerFragment : Fragment() {
     ): View? {
         activityTrainerViewModel =
             ViewModelProvider(this@ActivityTrainerFragment).get(ActivityTrainerViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_activity_trainer, container, false)
+        val root = inflater.inflate(R.layout.fragment_trainer_activity, container, false)
         activityTrainerViewModel.text.observe(viewLifecycleOwner, Observer {
             text_activity_fragment.text = it
         })

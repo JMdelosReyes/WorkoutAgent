@@ -27,6 +27,7 @@ class BottomNavigationTrainerActivity : BaseActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+    
 
     companion object {
         fun getLaunchIntent(from: Context) = Intent(from, BottomNavigationTrainerActivity::class.java).apply {

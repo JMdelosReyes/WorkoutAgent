@@ -9,10 +9,10 @@ abstract class BaseActivity: AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getViewID())
+        //setContentView(getViewID())
     }
 
-    protected abstract fun getViewID():Int
+    /*protected abstract fun getViewID():Int
 
     fun showProgress(){
         progressBar.visibility = View.VISIBLE
@@ -20,7 +20,7 @@ abstract class BaseActivity: AppCompatActivity(){
 
     fun hideProgress(){
         progressBar.visibility = View.GONE
-    }
+    }*/
 
 
 }
