@@ -15,10 +15,10 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.tfg.workoutagent.BottomNavigationTrainerActivity
+import com.tfg.workoutagent.TrainerActivity
 import com.tfg.workoutagent.base.BaseActivity
-import com.tfg.workoutagent.data.repoimpl.LoginRepositoryImpl
-import com.tfg.workoutagent.domain.login.LoginUseCaseImpl
+import com.tfg.workoutagent.data.repositoriesImpl.LoginRepositoryImpl
+import com.tfg.workoutagent.domain.loginUseCases.LoginUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.login.viewmodels.LoginViewModel
 import com.tfg.workoutagent.presentation.ui.login.viewmodels.LoginViewModelFactory
 import com.tfg.workoutagent.vo.Resource
@@ -85,7 +85,7 @@ class GoogleSignInActivity : BaseActivity() {
                             val role = result.data
                             //hideProgress()
                             when(role){
-                                "TRAINER" -> {startActivity(BottomNavigationTrainerActivity.getLaunchIntent(this))}
+                                "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
                                 "CUSTOMER" -> { Toast.makeText(this, "YOU ARE A CUSTOMER", Toast.LENGTH_LONG).show()}
                                 "ADMIN" -> { Toast.makeText(this, "YOU ARE AN ADMIN", Toast.LENGTH_LONG).show()}
                             }
@@ -106,7 +106,7 @@ class GoogleSignInActivity : BaseActivity() {
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
 
-            startActivity(BottomNavigationTrainerActivity.getLaunchIntent(this))
+            startActivity(TrainerActivity.getLaunchIntent(this))
             finish()
         }
     }
