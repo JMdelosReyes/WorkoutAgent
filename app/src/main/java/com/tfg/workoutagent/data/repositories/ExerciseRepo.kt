@@ -7,4 +7,6 @@ import com.tfg.workoutagent.vo.Resource
 interface ExerciseRepo {
 
     suspend fun getExercises(): Resource<MutableList<Exercise>>
+
+    suspend fun getExercise(id: String): Resource<Exercise>
 }

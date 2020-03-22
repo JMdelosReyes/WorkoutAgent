@@ -1,4 +1,4 @@
-package com.tfg.workoutagent.presentation.ui.exercises.fragments
+package com.tfg.workoutagent.presentation.ui.exercises.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

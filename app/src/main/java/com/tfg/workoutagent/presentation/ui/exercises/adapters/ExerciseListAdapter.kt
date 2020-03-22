@@ -4,28 +4,32 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Exercise
+import com.tfg.workoutagent.presentation.ui.exercises.fragments.ExerciseTrainerFragmentDirections
 import kotlinx.android.synthetic.main.item_row.view.*
 
-class ExerciseListAdapter(private val context:Context):RecyclerView.Adapter<ExerciseListAdapter.ExerciseListViewHolder>() {
+class ExerciseListAdapter(private val context: Context) :
+    RecyclerView.Adapter<ExerciseListAdapter.ExerciseListViewHolder>() {
 
     private var dataList = mutableListOf<Exercise>()
-    fun setListData(data:MutableList<Exercise>){
+    fun setListData(data: MutableList<Exercise>) {
         dataList = data
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExerciseListViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_row,parent,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_row, parent, false)
         return ExerciseListViewHolder(view)
     }
 
     override fun getItemCount(): Int {
-        return if(dataList.size>0){
+        return if (dataList.size > 0) {
             dataList.size
-        }else{
+        } else {
             0
         }
     }
@@ -35,22 +39,29 @@ class ExerciseListAdapter(private val context:Context):RecyclerView.Adapter<Exer
         holder.bindView(exercise)
     }
 
-    inner class ExerciseListViewHolder(itemView: View):RecyclerView.ViewHolder(itemView){
-        fun bindView(exercise:Exercise){
-            var tagText =""
+    inner class ExerciseListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bindView(exercise: Exercise) {
+            var tagText = ""
             var i = 0;
-            for(tag in exercise.tags){
-                if(i < exercise.tags.size-1){
-                    tagText = tagText + tag +", "
-                }else{
+            for (tag in exercise.tags) {
+                if (i < exercise.tags.size - 1) {
+                    tagText = tagText + tag + ", "
+                } else {
                     tagText = tagText + tag
                 }
                 i++
             }
-            Glide.with(context).load(exercise.photos!!.get(0)).into(itemView.circleImageViewExercise)
+            Glide.with(context).load(exercise.photos!!.get(0))
+                .into(itemView.circleImageViewExercise)
             itemView.row_exercise_title.text = exercise.title
             itemView.row_exercise_description.text = tagText
-
+            itemView.setOnClickListener {
+                itemView.findNavController().navigate(
+                    ExerciseTrainerFragmentDirections.actionNavigationExercisesTrainerToDisplayExercise(
+                        exercise.id, exercise.title
+                    )
+                )
+            }
         }
     }
 
