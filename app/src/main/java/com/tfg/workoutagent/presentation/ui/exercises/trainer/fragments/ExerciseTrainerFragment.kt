@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.tfg.workoutagent.R
@@ -40,11 +41,12 @@ class ExerciseTrainerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ExerciseListAdapter(this.context!!)
 
+        setupButtons()
+
+        adapter = ExerciseListAdapter(this.context!!)
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView.adapter = adapter
-
         observeData()
     }
 
@@ -55,8 +57,6 @@ class ExerciseTrainerFragment : Fragment() {
             when (result) {
                 is Resource.Loading -> {
                     shimmer_view_container.startShimmer()
-
-
                 }
                 is Resource.Success -> {
                     shimmer_view_container.visibility = View.GONE
@@ -74,8 +74,14 @@ class ExerciseTrainerFragment : Fragment() {
                     ).show()
                 }
             }
-
         })
     }
 
+    private fun setupButtons() {
+        fab_button.setOnClickListener {
+            findNavController().navigate(
+                ExerciseTrainerFragmentDirections.actionNavigationExercisesTrainerToCreateExerciseFragment()
+            )
+        }
+    }
 }

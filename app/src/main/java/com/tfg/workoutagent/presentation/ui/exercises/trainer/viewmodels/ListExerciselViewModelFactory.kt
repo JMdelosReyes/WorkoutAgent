@@ -8,5 +8,4 @@ class ListExerciselViewModelFactory(private val listExerciseUseCase: ListExercis
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return modelClass.getConstructor(ListExercisesUseCase::class.java).newInstance(listExerciseUseCase)
     }
-
 }

@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.data.repositoriesImpl
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.tfg.workoutagent.data.repositories.ExerciseRepository
@@ -31,7 +32,14 @@ class ExerciseRepositoryImpl : ExerciseRepository {
     }
 
     override suspend fun createExercise(exercise: Exercise): Resource<Boolean> {
-        TODO("Not yet implemented")
+        val data = hashMapOf(
+            "title" to exercise.title,
+            "description" to exercise.description,
+            "photos" to exercise.photos,
+            "tags" to exercise.tags
+        )
+        FirebaseFirestore.getInstance().collection("exercises").add(data).await()
+        return Resource.Success(true)
     }
 
     override suspend fun editExercise(exercise: Exercise): Resource<Boolean> {
