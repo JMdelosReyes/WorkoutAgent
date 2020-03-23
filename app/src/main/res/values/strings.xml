@@ -107,4 +107,9 @@
     <string name="my_profile">My profile</string>
     <string name="my_users">My users</string>
     <string name="my_routines_trainer">My routines</string>
+    <string name="form_exercise_title_hint">Exercise title</string>
+    <string name="form_exercise_description_hint">Exercise description</string>
+    <string name="form_exercise_tags_hint">Exercise tags (comma separated)</string>
+    <string name="form_exercise_photos_hint">Exercise photos (comma separated)</string>
+    <string name="form_exercise_create_button">Create exercise</string>
 </resources>
