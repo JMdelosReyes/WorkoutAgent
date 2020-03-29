@@ -33,13 +33,7 @@ class UserRepositoryImpl: UserRepository {
                     }
                 }
             }
-            //trainer.id = document.id
-            //Log.i("UserRepository", "${trainer.id} ${trainer.academicTitle} ${trainer.birthday} ${trainer.customers} ${trainer.dni}" +
-            //        "${trainer.email} ${trainer.name} ${trainer.email} ${trainer.phone}  ${trainer.photo} ${trainer.role} ${trainer.surname} ")
         }
-
-        //val trainer : Trainer = resultData.documents[0].toObject(Trainer::class.java)!!
-        //Log.i("REPO USUARIOS", "${trainer.name}")
         return Resource.Success(customers)
     }
 }

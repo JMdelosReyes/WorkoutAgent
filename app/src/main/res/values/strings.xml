@@ -112,4 +112,7 @@
     <string name="form_exercise_tags_hint">Exercise tags (comma separated)</string>
     <string name="form_exercise_photos_hint">Exercise photos (comma separated)</string>
     <string name="form_exercise_create_button">Create exercise</string>
+    <string name="t_tulo_de_la_rutina">Título de la rutina</string>
+    <string name="nombre_del_cliente">Nombre del cliente</string>
+    <string name="apellidos_del_cliente">Apellidos del cliente</string>
 </resources>
