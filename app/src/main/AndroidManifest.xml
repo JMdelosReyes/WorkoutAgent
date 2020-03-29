@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".TrainerActivity"
-            android:label="@string/title_activity_bottom_navigation_trainer"></activity>
+            android:label="@string/title_activity_bottom_navigation_trainer" />
         <activity android:name=".presentation.ui.login.activities.GoogleSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

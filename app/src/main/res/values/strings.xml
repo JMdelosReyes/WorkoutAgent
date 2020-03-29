@@ -112,4 +112,6 @@
     <string name="form_exercise_tags_hint">Exercise tags (comma separated)</string>
     <string name="form_exercise_photos_hint">Exercise photos (comma separated)</string>
     <string name="form_exercise_create_button">Create exercise</string>
+    <string name="form_exercise_save_button">Save exercise</string>
+    <string name="form_exercise_delete_button">Delete exercise</string>
 </resources>

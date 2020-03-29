@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,22 +31,24 @@ class CreateExerciseFragment : Fragment() {
         ).get(CreateExerciseViewModel::class.java)
     }
 
+    private lateinit var binding: FragmentCreateExerciseBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding: FragmentCreateExerciseBinding = DataBindingUtil.inflate(
+        this.binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_create_exercise,
             container,
             false
         )
 
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        this.binding.viewModel = viewModel
+        this.binding.lifecycleOwner = this
 
-        return binding.root
+        return this.binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,6 +57,21 @@ class CreateExerciseFragment : Fragment() {
     }
 
     private fun observeData() {
+        viewModel.titleError.observe(viewLifecycleOwner, Observer {
+            binding.exerciseTitleInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.descriptionError.observe(viewLifecycleOwner, Observer {
+            binding.exerciseDescriptionInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.tagsError.observe(viewLifecycleOwner, Observer {
+            binding.exerciseTagsInputEdit.error =
+                if (it != "") it else null
+        })
+
         viewModel.exerciseCreated.observe(viewLifecycleOwner, Observer {
             it?.let {
                 when (it) {
