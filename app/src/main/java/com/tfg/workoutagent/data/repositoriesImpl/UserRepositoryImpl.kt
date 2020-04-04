@@ -6,10 +6,12 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tfg.workoutagent.data.repositories.UserRepository
 import com.tfg.workoutagent.models.Customer
+import com.tfg.workoutagent.models.Goal
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
 
 class UserRepositoryImpl: UserRepository {
+
     override suspend fun getOwnCustomers(): Resource<MutableList<Customer>> {
         val resultData = FirebaseFirestore.getInstance()
             .collection("users")
@@ -33,13 +35,35 @@ class UserRepositoryImpl: UserRepository {
                     }
                 }
             }
-            //trainer.id = document.id
-            //Log.i("UserRepository", "${trainer.id} ${trainer.academicTitle} ${trainer.birthday} ${trainer.customers} ${trainer.dni}" +
-            //        "${trainer.email} ${trainer.name} ${trainer.email} ${trainer.phone}  ${trainer.photo} ${trainer.role} ${trainer.surname} ")
-        }
 
-        //val trainer : Trainer = resultData.documents[0].toObject(Trainer::class.java)!!
-        //Log.i("REPO USUARIOS", "${trainer.name}")
+        }
         return Resource.Success(customers)
+    }
+
+    override suspend fun getCustomer(id: String): Resource<Customer> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(id)
+            .get().await()
+        var customer = resultData.toObject(Customer::class.java)
+        customer!!.id = id
+        return Resource.Success(customer)
+    }
+
+    override suspend fun createCustomer(customer: Customer): Resource<Boolean> {
+        var goals_array = mutableListOf<HashMap<String, Any>>()
+        for (goal in customer.goals){
+            var hash_goal = hashMapOf<String, Any>("aim" to goal.aim, "isAchieved" to goal.isAchieved, "startDate" to goal.startDate, "endDate" to goal.endDate)
+            goals_array.add(hash_goal)
+        }
+        var weights_array = mutableListOf<HashMap<String, Any>>()
+        for (weight in customer.weights){
+            var hash_weight = hashMapOf<String, Any>("date" to weight.date, "weight" to weight.weight)
+            weights_array.add(hash_weight)
+        }
+        val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goals_array, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to customer.role, "weightPerWeek" to customer.weightPerWeek, "weights" to weights_array)
+
+        val postResult = FirebaseFirestore.getInstance().collection("users").add(data).await()
+        return Resource.Success(true)
     }
 }

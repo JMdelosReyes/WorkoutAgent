@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Customer
+import com.tfg.workoutagent.presentation.ui.users.trainer.fragments.UserTrainerFragmentDirections
 import kotlinx.android.synthetic.main.item_row_customer.view.*
 
 class CustomerListAdapter(private val context: Context) :  RecyclerView.Adapter<CustomerListAdapter.CustomerListViewHolder>(){
@@ -44,14 +45,12 @@ class CustomerListAdapter(private val context: Context) :  RecyclerView.Adapter<
             itemView.row_customer_surname.text = customer.surname
             itemView.row_customer_email.text = customer.email
             itemView.row_customer_phone.text = customer.phone
-            /*
+
             itemView.setOnClickListener {
                 itemView.findNavController().navigate(
-                    ExerciseTrainerFragmentDirections.actionNavigationExercisesTrainerToDisplayExercise(
-                        exercise.id, exercise.title
-                    )
+                    UserTrainerFragmentDirections.actionNavigationUsersTrainerToDisplayCustomer(customerId = customer.id, customerName = customer.name)
                 )
-            }*/
+            }
         }
     }
 }

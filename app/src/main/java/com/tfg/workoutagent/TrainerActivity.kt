@@ -43,6 +43,16 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                     supportActionBar?.title = "My users"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
+                R.id.displayCustomer -> {
+                    supportActionBar?.title = arguments!!.get("customerName").toString()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true);
+                    supportActionBar?.setDisplayShowHomeEnabled(true);
+                }
+                R.id.createCustomerTrainerFragment -> {
+                    supportActionBar?.title = "Create a customer"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
                 R.id.navigation_profile_trainer -> {
                     supportActionBar?.title = "My profile"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
