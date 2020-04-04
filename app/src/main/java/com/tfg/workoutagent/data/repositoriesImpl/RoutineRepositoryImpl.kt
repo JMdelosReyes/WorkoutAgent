@@ -8,8 +8,6 @@ import com.tfg.workoutagent.data.repositories.RoutineRepository
 import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
-import java.sql.Timestamp
-import java.util.*
 import kotlin.collections.HashMap
 
 class RoutineRepositoryImpl: RoutineRepository {
@@ -105,7 +103,7 @@ class RoutineRepositoryImpl: RoutineRepository {
 
                         }
                     }
-                   // Log.i("Dia a añadir", "$day")
+                    //Log.i("Dia a añadir", "$day")
                     routine.days.add(day)
                 }
             }
@@ -119,7 +117,9 @@ class RoutineRepositoryImpl: RoutineRepository {
                 customer.surname = customerDoc.getString("surname")!!
                 customer.photo = customerDoc.getString("photo")!!
                 customer.phone = customerDoc.getString("phone")!!
+                customer.birthday = customerDoc.getTimestamp("birthday")!!.toDate()
                 customer.email = customerDoc.getString("email")!!
+                customer.dni = customerDoc.getString("dni")!!
                 routine.customer = customer
                 Log.i("Customer", "$customer")
             }
@@ -132,6 +132,14 @@ class RoutineRepositoryImpl: RoutineRepository {
                 trainer.photo = trainerDoc.getString("photo")!!
                 trainer.phone = trainerDoc.getString("phone")!!
                 trainer.email = trainerDoc.getString("email")!!
+                //val academicTitle:String = trainerDoc.get("academicTitle") as String
+                /*if(academicTitle is HashMap<*,*>){
+                    //No me siento orgulloso de esto
+                    trainer.academicTitle = academicTitle["academicTitle"] as String
+                }*/
+                trainer.birthday = trainerDoc.getTimestamp("birthday")!!.toDate()
+                trainer.dni = trainerDoc.getString("dni")!!
+                //trainer.customers = (trainerDoc.get("customers") as MutableList<Customer>?)!!
                 routine.trainer = trainer
             }
             routines.add(routine)
@@ -147,7 +155,57 @@ class RoutineRepositoryImpl: RoutineRepository {
         return Resource.Success(routines)
     }
 
-    override suspend fun getActivity(): Resource<MutableList<Day>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override suspend fun getActivityTimeline(): Resource<MutableList<TimelineActivity>> {
+        val trainerDB = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await()
+
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("routines")
+            .whereEqualTo("trainer", trainerDB.documents[0].reference)
+            .get().await()
+
+        val finishedActivities = mutableListOf<TimelineActivity>()
+
+        for (document in resultData){
+            val timelineActivity = TimelineActivity()
+            val customerRef  = document.get("customer")
+            val days = document.get("days")
+            var dayList = mutableListOf<Day>()
+            if(days is HashMap<*,*>){
+                for(dayKey in days.keys) {
+                    var day = Day()
+                    var dayKey = days[dayKey]
+                    if (dayKey is HashMap<*, *>) {
+                        val dayAttributes = dayKey.keys
+                        for (attribute in dayAttributes) {
+                            when (attribute.toString()) {
+                                "completed" -> day.completed = dayKey[attribute] as Boolean
+                                "workingDay" -> {
+                                    val time = dayKey[attribute]
+                                    if (time is com.google.firebase.Timestamp) {
+                                        day.workingDay = time.toDate()
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(day.completed){
+                        dayList.add(day)
+                    }
+                }
+            }
+            dayList.sortBy { day -> day.workingDay }
+            timelineActivity.finishDate = dayList[dayList.size -1].workingDay
+            if(customerRef is DocumentReference){
+                val customerDoc = customerRef.get().await()
+                timelineActivity.customerId =customerDoc.id
+                timelineActivity.customerPhoto = customerDoc.getString("photo")!!
+                timelineActivity.customerName = customerDoc.getString("name")!! + " " + customerDoc.getString("surname")!!
+            }
+            finishedActivities.add(timelineActivity)
+        }
+        return Resource.Success(finishedActivities)
     }
 }

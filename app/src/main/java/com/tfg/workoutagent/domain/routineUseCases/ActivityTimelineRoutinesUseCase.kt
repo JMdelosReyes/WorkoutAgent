@@ -1,13 +1,10 @@
-package com.tfg.workoutagent.data.repositories
-
+package com.tfg.workoutagent.domain.routineUseCases
 
 import com.tfg.workoutagent.models.Routine
 import com.tfg.workoutagent.models.TimelineActivity
 import com.tfg.workoutagent.vo.Resource
 
-interface RoutineRepository {
-
-    suspend fun getOwnRoutines(): Resource<MutableList<Routine>>
+interface ActivityTimelineRoutinesUseCase {
 
     suspend fun getActivityTimeline(): Resource<MutableList<TimelineActivity>>
 }
