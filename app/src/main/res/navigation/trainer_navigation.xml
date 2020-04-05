@@ -53,6 +53,13 @@
         <action
             android:id="@+id/action_navigation_users_trainer_to_createCustomerTrainerFragment2"
             app:destination="@id/createCustomerTrainerFragment" />
+        <action
+            android:id="@+id/action_navigation_users_trainer_to_editDeleteCustomerTrainerFragment"
+            app:destination="@id/editDeleteCustomerTrainerFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 
     <fragment
@@ -92,6 +99,13 @@
         <argument
             android:name="customerName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_displayCustomer_to_editDeleteCustomerTrainerFragment"
+            app:destination="@id/editDeleteCustomerTrainerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createCustomerTrainerFragment"
@@ -101,6 +115,32 @@
         <action
             android:id="@+id/action_createCustomerTrainerFragment_to_navigation_users_trainer2"
             app:destination="@id/navigation_users_trainer" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDeleteCustomerTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.EditDeleteCustomerTrainerFragment"
+        android:label="fragment_edit_delete_customer_trainer"
+        tools:layout="@layout/fragment_edit_delete_customer_trainer" >
+        <action
+            android:id="@+id/action_editDeleteCustomerTrainerFragment_to_navigation_users_trainer"
+            app:destination="@id/navigation_users_trainer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="customerId"
+            app:argType="string" />
+        <argument
+            android:name="customerName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editDeleteCustomerTrainerFragment_to_displayCustomer"
+            app:destination="@id/displayCustomer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 
 </navigation>

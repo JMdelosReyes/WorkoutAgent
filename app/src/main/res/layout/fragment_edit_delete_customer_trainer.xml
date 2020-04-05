@@ -5,16 +5,16 @@
     <data>
         <variable
             name="viewModel"
-            type="com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.CreateCustomerTrainerViewModel" />
+            type="com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.EditDeleteCustomerTrainerViewModel" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".presentation.ui.users.fragments.DisplayCustomerTrainerFragment">
+        tools:context=".presentation.ui.users.fragments.EditDeleteCustomerTrainerFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
 
@@ -169,7 +169,7 @@
                 android:layout_width="63dp"
                 android:layout_height="63dp"
                 android:layout_marginTop="12dp"
-                android:contentDescription="Image height"
+                android:contentDescription="@string/image_height"
                 app:layout_constraintEnd_toStartOf="@+id/form_height_input_user"
                 app:layout_constraintHorizontal_bias="0.609"
                 app:layout_constraintStart_toStartOf="parent"
@@ -183,7 +183,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:digits="1234567890"
-                android:hint="Height"
+                android:hint="@string/customer_height_input"
                 android:inputType="number"
                 android:maxLength="3"
                 android:nextFocusRight="@+id/form_height_input_user"
@@ -192,7 +192,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/form_image_kg_user"
                 app:layout_constraintEnd_toStartOf="@+id/form_image_kg_user"
                 app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintVertical_bias="1.0"
+                android:autofillHints="" />
 
             <ImageView
                 android:id="@+id/form_image_kg_user"
@@ -200,6 +201,7 @@
                 android:layout_height="63dp"
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
+                android:contentDescription="@string/weight_image"
                 app:layout_constraintEnd_toStartOf="@+id/form_weight_input_user"
                 app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
                 app:srcCompat="@drawable/ic_person_weight_24dp" />
@@ -211,25 +213,43 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
                 android:digits=",.0123456789"
-                android:hint="Weight"
+                android:hint="@string/form_user_height_hint"
                 android:inputType="numberDecimal"
                 android:text="@={`` + viewModel.initialWeight}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input" />
+                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
+                android:autofillHints="" />
 
             <Button
-                android:id="@+id/create_customer_button"
+                android:id="@+id/update_customer_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="#2979FF"
+                android:drawableLeft="@drawable/ic_refresh_48dp"
+                android:onClick="@{() -> viewModel.onSave()}"
+                android:text="@string/update"
+                android:textSize="32sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/form_height_input_user" />
+
+            <Button
+                android:id="@+id/delete_customer_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
-                android:layout_marginTop="12dp"
-                android:onClick="@{() -> viewModel.onSubmit()}"
-                android:text="Create customer"
+                android:backgroundTint="#F50057"
+                android:drawableLeft="@drawable/ic_delete_white_48dp"
+                android:onClick="@{() -> viewModel.onDelete()}"
+                android:text="@string/delete"
+                android:textColorLink="#FFFFFF"
+                android:textSize="32sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.761"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/form_height_input_user"
+                app:layout_constraintTop_toBottomOf="@+id/update_customer_button"
                 app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

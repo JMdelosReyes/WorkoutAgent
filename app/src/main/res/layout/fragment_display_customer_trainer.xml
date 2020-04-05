@@ -20,29 +20,13 @@
         android:id="@+id/display_customer_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
         android:layout_marginBottom="24dp"
-        android:text="Nombre del cliente"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/card_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageViewCustomer"
-        app:layout_constraintVertical_bias="0.75" />
-
-    <TextView
-        android:id="@+id/display_customer_surname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginStart="4dp"
-        android:text="Apellidos del cliente"
+        android:text="@string/name_text_display_customer"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/card_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/display_customer_name"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/circleImageViewCustomer"
         app:layout_constraintVertical_bias="0.75" />
 
@@ -60,6 +44,7 @@
         app:layout_constraintTop_toBottomOf="@+id/circleImageViewCustomer">
 
         <LinearLayout
+            android:id="@+id/ll_details_user"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -121,49 +106,68 @@
                 android:drawableStart="@drawable/ic_cake_black_24dp"
                 android:drawablePadding="4dp"
                 android:paddingBottom="4dp"
-                android:text="Birth date of customer"
+                android:text="@string/birthday_text_display_user"
                 android:textSize="16sp"
                 android:textStyle="normal" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-
-    <Button
-        android:id="@+id/display_customer_button_evolution"
-        android:layout_width="316dp"
-        android:layout_height="69dp"
-        android:layout_marginTop="16dp"
-        android:drawableLeft="@drawable/ic_statistics_48dp"
-        android:text="Evolution"
-        android:textSize="32sp"
+    <LinearLayout
+        android:layout_width="313dp"
+        android:layout_height="282dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/card_view" />
+        app:layout_constraintTop_toBottomOf="@+id/card_view">
 
-    <Button
-        android:id="@+id/display_customer_button_routines"
-        android:layout_width="316dp"
-        android:layout_height="69dp"
-        android:drawableLeft="@drawable/ic_workout_48dp"
-        android:text="@string/routines"
-        android:textSize="32sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/display_customer_button_evolution" />
+        <Button
+            android:id="@+id/display_customer_button_evolution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:drawableLeft="@drawable/ic_statistics_48dp"
+            android:text="@string/evolution_text_display_user"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/card_view" />
 
-    <Button
-        android:id="@+id/display_customer_button_nutrition"
-        android:layout_width="316dp"
-        android:layout_height="69dp"
-        android:drawableLeft="@drawable/ic_diet_black_48dp"
-        android:text="@string/nutrition"
-        android:textSize="32sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/display_customer_button_routines"
-        app:layout_constraintVertical_bias="0.0" />
+        <Button
+            android:id="@+id/display_customer_button_routines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_workout_48dp"
+            android:text="@string/routines"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/display_customer_button_evolution" />
+
+        <Button
+            android:id="@+id/display_customer_button_nutrition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_diet_black_48dp"
+            android:text="@string/nutrition"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/display_customer_button_routines" />
+
+        <Button
+            android:id="@+id/display_customer_button_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_edit_white_48dp"
+            android:text="@string/edit"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/display_customer_button_nutrition" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

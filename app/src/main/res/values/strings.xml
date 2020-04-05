@@ -130,4 +130,15 @@
     <string name="form_user_birthday_input">Birthday</string>
     <string name="form_user_height_input">Height</string>
     <string name="form_user_weight_input">Weight</string>
+    <string name="birthday_text_display_user">Birth date of customer</string>
+    <string name="surname_text_display_user">Surnames of customer</string>
+    <string name="name_text_display_customer">Name of customer</string>
+    <string name="evolution_text_display_user">Evolution</string>
+    <string name="edit">Edit</string>
+    <string name="image_height">Image height</string>
+    <string name="customer_height_input">Height</string>
+    <string name="form_user_height_hint">Weight</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
+    <string name="weight_image">weight_image</string>
 </resources>

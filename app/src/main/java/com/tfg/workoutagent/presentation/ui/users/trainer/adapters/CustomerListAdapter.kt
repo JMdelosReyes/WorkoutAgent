@@ -41,8 +41,7 @@ class CustomerListAdapter(private val context: Context) :  RecyclerView.Adapter<
         fun bindView(customer: Customer) {
             Glide.with(context).load(customer.photo)
                 .into(itemView.circleImageViewCustomer)
-            itemView.row_customer_name.text = customer.name
-            itemView.row_customer_surname.text = customer.surname
+            itemView.row_customer_name.text = customer.name + " " + customer.surname
             itemView.row_customer_email.text = customer.email
             itemView.row_customer_phone.text = customer.phone
 

@@ -1,97 +1,146 @@
 package com.tfg.workoutagent.presentation.ui.users.trainer.viewModels
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.widget.Toast
+import androidx.lifecycle.*
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
-import com.tfg.workoutagent.models.Weight
+import com.tfg.workoutagent.vo.Resource
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: ManageCustomerTrainerUseCase) : ViewModel() {
+class EditDeleteCustomerTrainerViewModel(private val id: String, private val manageCustomerTrainerUseCase: ManageCustomerTrainerUseCase) : ViewModel() {
 
-    //TODO: Hacer tratamiento para pasar de String a Date por ser mu coñazo el binding de Calendar
-    var birthday : String = "dd-MM-yyyy"
+    var birthday = MutableLiveData("")
     private val _birthdayError = MutableLiveData("")
     val birthdayError: LiveData<String>
         get() = _birthdayError
 
-    var dni : String = ""
+    var dni = MutableLiveData("")
     private val _dniError = MutableLiveData("")
     val dniError: LiveData<String>
         get() = _dniError
 
-    var email : String = ""
+    var email = MutableLiveData("")
     private val _emailError = MutableLiveData("")
     val emailError: LiveData<String>
         get() = _emailError
 
-    var name : String = ""
+    var name = MutableLiveData("")
     private val _nameError = MutableLiveData("")
     val nameError: LiveData<String>
         get() = _nameError
 
-    var surname : String = ""
+    var surname = MutableLiveData("")
     private val _surnameError = MutableLiveData("")
     val surnameError: LiveData<String>
         get() = _surnameError
 
-    var photo : String = ""
+    var photo = MutableLiveData("")
     private val _photoError = MutableLiveData("")
     val photoError: LiveData<String>
         get() = _photoError
 
-    var height : Int = 0
+    var height = MutableLiveData(0)
     private val _heightError = MutableLiveData("")
     val heightError: LiveData<String>
         get() = _heightError
 
-    var phone : String = ""
+    var phone = MutableLiveData("")
     private val _phoneError = MutableLiveData("")
     val phoneError: LiveData<String>
         get() = _phoneError
 
-    var initialWeight : Double = 0.0
+    var initialWeight = MutableLiveData(0.0)
     private val _initialWeightError = MutableLiveData("")
     val initialWeightError: LiveData<String>
         get() = _initialWeightError
 
-    private val _customerCreated = MutableLiveData<Boolean?>(null)
-    val customerCreated : LiveData<Boolean?>
-        get() = _customerCreated
+    private val _customerDeleted = MutableLiveData<Boolean?>(null)
+    val customerDeleted : LiveData<Boolean?>
+        get() = _customerDeleted
 
-    fun onSubmit() {
-        if(checkData()){
-            createCustomer()
+    val getCustomer = liveData(Dispatchers.IO) {
+        emit(Resource.Loading())
+        try {
+            val customer = manageCustomerTrainerUseCase.getCustomer(id)
+            emit(customer)
+            if (customer is Resource.Success){
+                loadData(customer)
+            }
+        }catch (e: Exception){
+            emit(Resource.Failure(e))
         }
     }
 
-    private fun createCustomer(){
-        viewModelScope.launch {
-            try{
-                val customer: Customer = Customer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone, height = height)
-                val weight = Weight(weight = initialWeight)
-                customer.weights.add(weight)
-                manageCustomerTrainerUseCase.createCustomer(customer)
-                _customerCreated.value = true
-            }catch (e: Exception){
-                _customerCreated.value = false
-            }
-            _customerCreated.value = null
+    val getOwnCustomers = liveData(Dispatchers.IO) {
+        emit(Resource.Loading())
+        try {
+            val customers = manageCustomerTrainerUseCase.getOwnCustomers()
+            emit(customers)
+        }catch (e: Exception){
+            emit(Resource.Failure(e))
         }
+    }
+
+    fun onSave() {
+        if(checkData()){
+            editCustomer()
+        }
+    }
+
+    fun onDelete(){
+        viewModelScope.launch {
+            try {
+                manageCustomerTrainerUseCase.deleteCustomer(id)
+                _customerDeleted.value = true
+            }catch (e:Exception){
+                _customerDeleted.value = false
+            }
+        }
+    }
+
+    private fun loadData(customer : Resource.Success<Customer>){
+        birthday.postValue(customer.data.birthday.toString())
+        dni.postValue(customer.data.dni)
+        email.postValue(customer.data.email)
+        name.postValue(customer.data.name)
+        surname.postValue(customer.data.surname)
+        phone.postValue(customer.data.phone)
+        height.postValue(customer.data.height)
+    }
+
+    private fun checkData(): Boolean {
+        checkEditableCustomer()
+        checkBirthday()
+        checkDni()
+        checkEmail()
+        checkName()
+        checkSurname()
+        checkPhone()
+        checkHeight()
+        checkInitialWeight()
+        return _birthdayError.value == "" && _dniError.value == "" && _emailError.value == "" && _nameError.value == "" && _surnameError.value == "" && _photoError.value == "" && _heightError.value == "" && _initialWeightError.value == "" && _phoneError.value == ""
+    }
+
+    private fun checkEditableCustomer(){
+        //val getOwnedCustomers = getOwnCustomers
+
+
+    }
+
+    private fun editCustomer(){
+
     }
 
     private fun parseStringToDate(string: String?) : Date? {
         val pattern = "dd-MM-yyyy"
         val sdf = SimpleDateFormat(pattern)
-        val string = string?.trim()
-        if(string == null || string == "" || string == "dd-MM-yyyy"){
-            _birthdayError.value = "Birthday cannot be null"
+        if(string == null || string == "dd-MM-yyyy"){
+            _birthdayError.value = ""
             val nullDate : Date? = null
             return nullDate
         }else{
@@ -99,21 +148,8 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         }
     }
 
-    private fun checkData(): Boolean {
-        checkBirthday()
-        checkDni()
-        checkEmail()
-        checkName()
-        checkSurname()
-        checkPhoto()
-        checkPhone()
-        checkHeight()
-        checkInitialWeight()
-        return _birthdayError.value == "" && _dniError.value == "" && _emailError.value == "" && _nameError.value == "" && _surnameError.value == "" && _photoError.value == "" && _heightError.value == "" && _initialWeightError.value == "" && _phoneError.value == ""
-    }
-
     private fun checkBirthday() {
-        birthday.let {
+        birthday.value?.let {
             val date = parseStringToDate(it)
             if(date == null){
                 _birthdayError.value = "Birthday cannot be null"
@@ -121,7 +157,8 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
                 val calendar = GregorianCalendar()
                 calendar.set(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH)
                 var years = date.year - calendar.get(Calendar.YEAR)
-                if(date.month < calendar.get(Calendar.MONTH) || ((date.month == calendar.get(Calendar.MONTH)) && (date.day < calendar.get(Calendar.DAY_OF_MONTH)))){
+                if(date.month < calendar.get(Calendar.MONTH) || ((date.month == calendar.get(
+                        Calendar.MONTH)) && (date.day < calendar.get(Calendar.DAY_OF_MONTH)))){
                     years--
                 }
                 if(years < 18){
@@ -136,20 +173,20 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
 
     private fun checkDni() {
         //TODO: Regexpresion de dni de 8 digitos y 1 letra (al menos)
-        dni.let {
+        dni.value?.let {
             _dniError.value = ""
         }
     }
 
     private fun checkEmail() {
-        email.let {
+        email.value?.let {
             val isEmail = android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()
             if(isEmail) _emailError.value="" else _emailError.value="Must be a valid email"
         }
     }
 
     private fun checkName() {
-        name.let {
+        name.value?.let {
             if (it.length < 4 || it.length > 30) {
                 _nameError.value = "The name must be between 4 and 30 characters"
             }else{
@@ -159,7 +196,7 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
     }
 
     private fun checkSurname() {
-        surname.let {
+        surname.value?.let {
             if (it.length < 4 || it.length > 40) {
                 _surnameError.value = "The surname must be between 4 and 40 characters"
                 return
@@ -167,24 +204,19 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         }
     }
 
-    private fun checkPhoto(){
-        //TODO: validación para las imágenes que se intente subir (?)
-        _photoError.value = ""
-    }
-
     private fun checkPhone(){
         //TODO: validación para números de teléfono
-        phone.let {
+        phone.value?.let {
             val isPhone = android.util.Patterns.PHONE.matcher(it).matches()
             if(isPhone) _phoneError.value = ""  else _phoneError.value="Must be a valid phone"
         }
     }
 
     private fun checkHeight(){
-        height.let { if(it < 0) _heightError.value = "The height must be greater than 0 centimeters" else _heightError.value = "" }
+        height.value?.let { if(it < 0) _heightError.value = "The height must be greater than 0 centimeters" else _heightError.value = "" }
     }
 
     private fun checkInitialWeight(){
-        initialWeight.let { if(it < 0.0) _initialWeightError.value = "The weight must be greater than 0.0 kilograms" else _initialWeightError.value = "" }
+        initialWeight.value?.let { if(it < 0.0) _initialWeightError.value = "The weight must be greater than 0.0 kilograms" else _initialWeightError.value = "" }
     }
 }

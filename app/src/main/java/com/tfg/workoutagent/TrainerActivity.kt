@@ -53,6 +53,11 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
+                R.id.editDeleteCustomerTrainerFragment -> {
+                    supportActionBar?.title = "Edit " + arguments!!.get("customerName").toString()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
                 R.id.navigation_profile_trainer -> {
                     supportActionBar?.title = "My profile"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)

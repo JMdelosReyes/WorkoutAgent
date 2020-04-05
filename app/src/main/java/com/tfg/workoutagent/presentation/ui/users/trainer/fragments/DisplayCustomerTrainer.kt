@@ -17,11 +17,13 @@ import com.tfg.workoutagent.domain.userUseCases.DisplayCustomerTrainerUseCaseImp
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.DisplayCustomerTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.DisplayCustomerTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import kotlinx.android.synthetic.main.activity_bottom_navigation_trainer.*
 import kotlinx.android.synthetic.main.fragment_display_customer_trainer.*
 
 class DisplayCustomerTrainer : Fragment() {
 
     private val customerId by lazy { DisplayCustomerTrainerArgs.fromBundle(arguments!!).customerId}
+    private val customerName by lazy { DisplayCustomerTrainerArgs.fromBundle(arguments!!).customerName }
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -49,16 +51,15 @@ class DisplayCustomerTrainer : Fragment() {
         viewModel.getCustomer.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading -> {
-                    Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
+
                 }
                 is Resource.Success -> {
-                    display_customer_name.text = it.data.name
-                    display_customer_surname.text = it.data.surname
+                    display_customer_name.text = it.data.name + " " + it.data.surname
                     display_customer_birthday.text = it.data.birthday.toString()
                     display_customer_email.text = it.data.email
                     display_customer_phone.text = it.data.phone
                     display_customer_height.text = it.data.height.toString()
-                    //TODO: Pasarle tambien el ultimo peso disponible del usuario
+                    display_customer_weight.text = it.data.weights[it.data.weights.lastIndex].weight.toString()
                     Glide.with(this).load(it.data.photo).into(circleImageViewCustomer)
                 }
                 is Resource.Failure -> {
@@ -70,6 +71,10 @@ class DisplayCustomerTrainer : Fragment() {
     }
 
     private fun setupUI(){
-
+        display_customer_button_edit.setOnClickListener {
+            findNavController().navigate(DisplayCustomerTrainerDirections.actionDisplayCustomerToEditDeleteCustomerTrainerFragment(
+                customerId, customerName
+            ))
+        }
     }
 }

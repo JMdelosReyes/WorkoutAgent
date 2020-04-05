@@ -43,10 +43,19 @@ class ExerciseRepositoryImpl : ExerciseRepository {
     }
 
     override suspend fun editExercise(exercise: Exercise): Resource<Boolean> {
-        TODO("Not yet implemented")
+        val data = hashMapOf(
+            "title" to exercise.title,
+            "description" to exercise.description,
+            "photos" to exercise.photos,
+            "tags" to exercise.tags
+        )
+        FirebaseFirestore.getInstance().collection("exercises").document(exercise.id).update(data)
+            .await()
+        return Resource.Success(true)
     }
 
     override suspend fun deleteExercise(id: String): Resource<Boolean> {
-        TODO("Not yet implemented")
+        FirebaseFirestore.getInstance().collection("exercises").document(id).delete().await()
+        return Resource.Success(true)
     }
 }

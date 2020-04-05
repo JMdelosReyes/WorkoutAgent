@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.base.BaseFragment
@@ -93,6 +95,19 @@ class CreateCustomerTrainerFragment : BaseFragment() {
         viewModel.nameError.observe(viewLifecycleOwner, Observer {
             binding.customerNameInputEdit.error =
                 if (it != "") it else null
+        })
+
+        viewModel.customerCreated.observe(viewLifecycleOwner, Observer {
+            when(it){
+                true -> {
+                    findNavController().navigate(
+                        CreateCustomerTrainerFragmentDirections.actionCreateCustomerTrainerFragmentToNavigationUsersTrainer2()
+                    )
+                }
+                false -> {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
+                }
+            }
         })
     }
 }
