@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_display_exercise.*
 class DisplayExerciseFragment : Fragment() {
 
     private val exerciseId by lazy { DisplayExerciseFragmentArgs.fromBundle(arguments!!).exerciseId }
-    // private val exerciseTitle by lazy { DisplayExerciseArgs.fromBundle(arguments!!).exerciseTitle }
+    private val exerciseTitle by lazy { DisplayExerciseFragmentArgs.fromBundle(arguments!!).exerciseTitle }
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -74,7 +74,11 @@ class DisplayExerciseFragment : Fragment() {
 
     private fun setupButtons() {
         exercise_edit_button.setOnClickListener {
-            // TODO
+            findNavController().navigate(
+                DisplayExerciseFragmentDirections.actionDisplayExerciseToEditDeleteExerciseFragment(
+                    exerciseId, exerciseTitle
+                )
+            )
         }
     }
 }

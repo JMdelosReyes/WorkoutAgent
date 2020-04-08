@@ -13,9 +13,22 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
     ViewModel() {
 
     var title: String = ""
+    private val _titleError = MutableLiveData("")
+    val titleError: LiveData<String>
+        get() = _titleError
+
     var description: String = ""
+    private val _descriptionError = MutableLiveData("")
+    val descriptionError: LiveData<String>
+        get() = _descriptionError
+
     var tags: String = ""
+    private val _tagsError = MutableLiveData("")
+    val tagsError: LiveData<String>
+        get() = _tagsError
+
     var photos: String = ""
+    // TODO Define error
 
     private val _exerciseCreated = MutableLiveData<Boolean?>(null)
     val exerciseCreated: LiveData<Boolean?>
@@ -47,6 +60,39 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
     }
 
     private fun checkData(): Boolean {
-        return true
+        checkTitle()
+        checkDescription()
+        checkTags()
+        return _titleError.value == "" && _descriptionError.value == "" && _tagsError.value == ""
+    }
+
+    private fun checkTitle() {
+        title.let {
+            if (it.length < 4 || it.length > 30) {
+                _titleError.value = "The title must be between 4 and 30 characters"
+                return
+            }
+            _titleError.value = ""
+        }
+    }
+
+    private fun checkDescription() {
+        description.let {
+            if (it.length < 10 || it.length > 100) {
+                _descriptionError.value = "The description must be between 10 and 100 characters"
+                return
+            }
+            _descriptionError.value = ""
+        }
+    }
+
+    private fun checkTags() {
+        tags.let {
+            if (it.isEmpty()) {
+                _tagsError.value = "At least a tag is required"
+                return
+            }
+            _tagsError.value = ""
+        }
     }
 }

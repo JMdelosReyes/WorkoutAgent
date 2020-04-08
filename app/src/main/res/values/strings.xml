@@ -121,4 +121,6 @@
     <string name="my_activity">My activity</string>
     <string name="title_activity_admin">AdminActivity</string>
     <string name="users">Users</string>
+    <string name="form_exercise_save_button">Save exercise</string>
+    <string name="form_exercise_delete_button">Delete exercise</string>
 </resources>
