@@ -15,7 +15,14 @@
         android:id="@+id/navigation_routine_trainer"
         android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.RoutineTrainerFragment"
         android:label="@string/my_routines_trainer"
-        tools:layout="@layout/fragment_trainer_routine" />
+        tools:layout="@layout/fragment_trainer_routine" >
+        <action
+            android:id="@+id/action_navigation_routine_trainer_to_displayRoutineFragment"
+            app:destination="@id/displayRoutine" />
+        <action
+            android:id="@+id/action_navigation_routine_trainer_to_createRoutineFragment"
+            app:destination="@id/createRoutine" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_exercises_trainer"
@@ -106,5 +113,34 @@
             android:name="exercise_title"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/displayRoutine"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.DisplayRoutineFragment"
+        android:label="display_routine_fragment"
+        tools:layout="@layout/display_routine_fragment" >
+        <argument
+            android:name="routine_id"
+            app:argType="string" />
+        <argument
+            android:name="routine_title"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/createRoutine"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.CreateRoutineFragment"
+        android:label="create_routine_fragment"
+        tools:layout="@layout/create_routine_fragment" >
+        <action
+            android:id="@+id/action_createRoutine_to_navigation_routine_trainer2"
+            app:destination="@id/navigation_routine_trainer" />
+        <action
+            android:id="@+id/action_createRoutine_to_addDayFragment"
+            app:destination="@id/addDayFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDayFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFragment"
+        android:label="add_day_fragment"
+        tools:layout="@layout/add_day_fragment" />
 
 </navigation>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.tfg.workoutagent.R
@@ -41,7 +42,7 @@ class RoutineTrainerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //setupButtons()
+        setupButtons()
 
         adapter = RoutineListAdapter(this.context!!)
         recyclerViewRoutine.layoutManager = LinearLayoutManager(this.context!!)
@@ -76,12 +77,12 @@ class RoutineTrainerFragment : Fragment() {
         })
     }
 
-   /* private fun setupButtons() {
-        fab_button.setOnClickListener {
+   private fun setupButtons() {
+        fab_button_routine.setOnClickListener {
             findNavController().navigate(
-                ExerciseTrainerFragmentDirections.actionNavigationExercisesTrainerToCreateExerciseFragment()
+                RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToCreateRoutineFragment()
             )
         }
-    }*/
+    }
 }
 

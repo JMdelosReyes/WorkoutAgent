@@ -123,4 +123,8 @@
     <string name="users">Users</string>
     <string name="form_exercise_save_button">Save exercise</string>
     <string name="form_exercise_delete_button">Delete exercise</string>
+    <string name="form_routine_create_button">Create routine</string>
+    <string name="form_routine_title_hint">Routine title</string>
+    <string name="form_routine_startDate_hint">Start date</string>
+    <string name="form_add_day_button">Add day</string>
 </resources>

@@ -8,6 +8,7 @@ import com.tfg.workoutagent.data.repositories.RoutineRepository
 import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
+import java.util.*
 import kotlin.collections.HashMap
 
 class RoutineRepositoryImpl: RoutineRepository {
@@ -155,6 +156,127 @@ class RoutineRepositoryImpl: RoutineRepository {
         return Resource.Success(routines)
     }
 
+    override suspend fun getRoutine(id: String): Resource<Routine> {
+
+        val resultData = FirebaseFirestore.getInstance().collection("routines").document(id).get().await()
+
+        val customerRef  = resultData.get("customer")
+        val trainerRef  = resultData.get("trainer")
+        var routine = Routine()
+        routine!!.id = resultData.id
+        routine!!.startDate = resultData.getTimestamp("startDate")!!.toDate()
+        routine!!.title = resultData.getString("title")!!
+
+        val days = resultData.get("days")
+
+        if(days is HashMap<*,*>){
+            //iteramos por cada día
+            for(dayKey in days.keys){
+                var day = Day()
+                day.name = dayKey.toString()
+                var dayKey = days[dayKey]
+                if(dayKey is HashMap<*,*>){
+                    val dayAtributes = dayKey.keys
+                    for(atribute in dayAtributes){
+                        when(atribute.toString()) {
+                            "completed" ->   day.completed = dayKey[atribute] as Boolean
+                            "workingDay" -> {
+                                val time = dayKey[atribute]
+                                if(time is com.google.firebase.Timestamp){
+                                    day.workingDay = time.toDate()
+                                }
+                            }
+                            "activities" ->  {
+                                val activities =  dayKey[atribute]
+
+                                if(activities is HashMap<*,*>){
+                                    for(activity in activities.keys){
+                                        var routineActivity = RoutineActivity()
+                                        routineActivity.name = activity.toString()
+                                        val activitiesValues = activities[activity]
+
+                                        if(activitiesValues is HashMap<*,*>){
+                                            for(activityAtribute in activitiesValues.keys){
+                                                when(activityAtribute.toString()) {
+                                                    "exercise" -> {
+                                                        val docRefAct = activitiesValues[activityAtribute]
+                                                        if(docRefAct is DocumentReference){
+                                                            val exerciseDoc = docRefAct.get().await()
+                                                            var exerciseAct = Exercise()
+                                                            exerciseAct.id = exerciseDoc.id
+                                                            exerciseAct.title = exerciseDoc.getString("title")!!
+                                                            exerciseAct.description = exerciseDoc.getString("description")!!
+                                                            exerciseAct.photos = (exerciseDoc.get("photos") as MutableList<String>?)!!
+                                                            exerciseAct.tags = (exerciseDoc.get("tags") as MutableList<String>?)!!
+
+                                                            routineActivity.exercise = exerciseAct
+                                                        }
+                                                    }
+                                                    "note"-> routineActivity.note = activitiesValues[activityAtribute].toString()
+                                                    "repetitions" -> routineActivity.repetitions =
+                                                        activitiesValues[activityAtribute] as MutableList<Int>
+                                                    "set" -> routineActivity.sets =
+                                                        activitiesValues[activityAtribute] as Int
+                                                    "type" -> routineActivity.type = activitiesValues[activityAtribute].toString()
+                                                    "weightsPerRepetition" -> routineActivity.weightsPerRepetition =
+                                                        activitiesValues[activityAtribute] as MutableList<Double>
+
+                                                }
+                                            }
+                                        }
+                                        day.activities.add(routineActivity)
+                                    }
+
+                                }
+                            }
+                        }
+
+
+
+                    }
+                }
+                //Log.i("Dia a añadir", "$day")
+                routine.days.add(day)
+            }
+        }
+
+        if(customerRef is DocumentReference){
+            val customerDoc = customerRef.get().await()
+
+            val customer = Customer()
+            customer.id = customerDoc.id
+            customer.name = customerDoc.getString("name")!!
+            customer.surname = customerDoc.getString("surname")!!
+            customer.photo = customerDoc.getString("photo")!!
+            customer.phone = customerDoc.getString("phone")!!
+            customer.birthday = customerDoc.getTimestamp("birthday")!!.toDate()
+            customer.email = customerDoc.getString("email")!!
+            customer.dni = customerDoc.getString("dni")!!
+            routine.customer = customer
+            Log.i("Customer", "$customer")
+        }
+        if(trainerRef is DocumentReference){
+            val trainerDoc = trainerRef.get().await()
+            val trainer = Trainer()
+            trainer.id = trainerDoc.id
+            trainer.name = trainerDoc.getString("name")!!
+            trainer.surname = trainerDoc.getString("surname")!!
+            trainer.photo = trainerDoc.getString("photo")!!
+            trainer.phone = trainerDoc.getString("phone")!!
+            trainer.email = trainerDoc.getString("email")!!
+            //val academicTitle:String = trainerDoc.get("academicTitle") as String
+            /*if(academicTitle is HashMap<*,*>){
+                //No me siento orgulloso de esto
+                trainer.academicTitle = academicTitle["academicTitle"] as String
+            }*/
+            trainer.birthday = trainerDoc.getTimestamp("birthday")!!.toDate()
+            trainer.dni = trainerDoc.getString("dni")!!
+            //trainer.customers = (trainerDoc.get("customers") as MutableList<Customer>?)!!
+            routine.trainer = trainer
+        }
+        return Resource.Success(routine)
+    }
+
     override suspend fun getActivityTimeline(): Resource<MutableList<TimelineActivity>> {
         val trainerDB = FirebaseFirestore.getInstance()
             .collection("users")
@@ -207,5 +329,26 @@ class RoutineRepositoryImpl: RoutineRepository {
             finishedActivities.add(timelineActivity)
         }
         return Resource.Success(finishedActivities)
+    }
+
+    override suspend fun createRoutine(routine: Routine): Resource<Boolean> {
+
+        val data = hashMapOf(
+            "title" to routine.title,
+            "startDate" to routine.startDate,
+            "customer" to routine.customer,
+            "trainer" to routine.trainer,
+            "days" to routine.days
+        )
+        FirebaseFirestore.getInstance().collection("routines").add(data).await()
+        return Resource.Success(true)
+    }
+
+    override suspend fun editRoutine(routine: Routine): Resource<Boolean> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override suspend fun deleteRoutine(id: String): Resource<Boolean> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

@@ -35,6 +35,22 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                     supportActionBar?.title = "Routines"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
+                R.id.displayRoutine -> {
+                    supportActionBar?.title =
+                        arguments!!.get("routine_title").toString()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.createRoutine -> {
+                    supportActionBar?.title = "Create routine"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.addDayFragment -> {
+                    supportActionBar?.title = "Add day"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
                 R.id.navigation_exercises_trainer -> {
                     supportActionBar?.title = "Exercises"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
