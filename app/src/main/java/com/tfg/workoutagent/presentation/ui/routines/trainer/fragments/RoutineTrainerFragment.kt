@@ -77,10 +77,12 @@ class RoutineTrainerFragment : Fragment() {
         })
     }
 
-   private fun setupButtons() {
+    private fun setupButtons() {
         fab_button_routine.setOnClickListener {
             findNavController().navigate(
-                RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToCreateRoutineFragment()
+                RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToCreateRoutineFragment(
+                    clearData = true
+                )
             )
         }
     }

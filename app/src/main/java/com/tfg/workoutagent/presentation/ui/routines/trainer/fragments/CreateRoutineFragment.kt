@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,14 +24,15 @@ class CreateRoutineFragment : Fragment() {
         fun newInstance() = CreateRoutineFragment()
     }
 
+    private val clearData by lazy { CreateRoutineFragmentArgs.fromBundle(arguments!!).clearData }
+
     private val viewModel by lazy {
         ViewModelProvider(
-            this, CreateRoutineViewModelFactory(
+            activity!!, CreateRoutineViewModelFactory(
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl())
             )
         ).get(CreateRoutineViewModel::class.java)
     }
-
 
     private lateinit var binding: CreateRoutineFragmentBinding
 
@@ -46,6 +48,10 @@ class CreateRoutineFragment : Fragment() {
         )
         this.binding.viewModel = viewModel
         this.binding.lifecycleOwner = this
+
+        if (clearData) {
+            this.viewModel.clearData()
+        }
 
         return binding.root
     }

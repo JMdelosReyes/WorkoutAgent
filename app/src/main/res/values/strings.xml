@@ -127,4 +127,5 @@
     <string name="form_routine_title_hint">Routine title</string>
     <string name="form_routine_startDate_hint">Start date</string>
     <string name="form_add_day_button">Add day</string>
+    <string name="form_day_cancel_button">Cancel</string>
 </resources>

@@ -9,15 +9,19 @@ import com.tfg.workoutagent.models.Routine
 import kotlinx.coroutines.launch
 import java.util.*
 
-class CreateRoutineViewModel (private val manageRoutineUseCase: ManageRoutineUseCase) :
+class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseCase) :
     ViewModel() {
 
-    var title = MutableLiveData<String>("")
-    var startDate = ""
+    val title = MutableLiveData<String>()
+    var startDate = MutableLiveData<String>()
 
     private val _routineCreated = MutableLiveData<Boolean?>(null)
     val routineCreated: LiveData<Boolean?>
         get() = _routineCreated
+
+    private val _backToCreate = MutableLiveData<Boolean?>(null)
+    val backToCreate: LiveData<Boolean?>
+        get() = _backToCreate
 
     private val _addDay = MutableLiveData<Boolean?>(null)
     val addDay: LiveData<Boolean?>
@@ -31,7 +35,6 @@ class CreateRoutineViewModel (private val manageRoutineUseCase: ManageRoutineUse
 
     fun onAddDay() {
         _addDay.value = true
-
     }
 
     private fun createRoutine() {
@@ -57,5 +60,18 @@ class CreateRoutineViewModel (private val manageRoutineUseCase: ManageRoutineUse
 
     fun addDayNavigationCompleted() {
         _addDay.value = null
+    }
+
+    fun clearData() {
+        title.value = ""
+        startDate.value = ""
+    }
+
+    fun onBackToCreate() {
+        _backToCreate.value = true
+    }
+
+    fun backToCreateComplete() {
+        _backToCreate.value = null
     }
 }
