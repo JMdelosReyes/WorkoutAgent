@@ -184,6 +184,9 @@
             android:id="@+id/action_addDayFragment_to_createRoutine"
             app:destination="@id/createRoutine"
             app:popUpTo="@id/navigation_routine_trainer" />
+        <action
+            android:id="@+id/action_addDayFragment_to_addActivityFragment2"
+            app:destination="@id/addActivityFragment" />
     </fragment>
     <fragment
         android:id="@+id/displayCustomer"
@@ -239,5 +242,10 @@
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
     </fragment>
+    <dialog
+        android:id="@+id/addActivityFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddActivityFragment"
+        android:label="fragment_add_activity"
+        tools:layout="@layout/fragment_add_activity" />
 
 </navigation>

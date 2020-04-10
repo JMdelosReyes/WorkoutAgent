@@ -23,14 +23,9 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val routineCreated: LiveData<Boolean?>
         get() = _routineCreated
 
-    private val _backToCreate = MutableLiveData<Boolean?>(null)
-    val backToCreate: LiveData<Boolean?>
-        get() = _backToCreate
-
     private val _addDay = MutableLiveData<Boolean?>(null)
     val addDay: LiveData<Boolean?>
         get() = _addDay
-
 
 
     fun onSubmit() {
@@ -42,7 +37,6 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     fun onAddDay() {
         _addDay.value = true
     }
-
 
 
     private fun createRoutine() {
@@ -70,7 +64,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         _addDay.value = null
     }
 
-    fun onSaveDay(){
+    fun onSaveDay() {
         val day = Day(name = dayName.value.toString())
         days.value!!.add(day)
         clearDayData()
@@ -92,11 +86,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
 
     }
 
-    fun onBackToCreate() {
-        _backToCreate.value = true
-    }
-
-    fun backToCreateComplete() {
-        _backToCreate.value = null
+    fun addActivity() {
+        Log.i("PRUEBA", "HOLA")
     }
 }

@@ -54,7 +54,7 @@ class AddDayFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupButtons()
-        //observeData()
+        // observeData()
     }
 
     private fun setupButtons() {
@@ -66,21 +66,21 @@ class AddDayFragment : Fragment() {
                 )
             )
         }
+
+        add_day_activity_button.setOnClickListener {
+            findNavController().navigate(AddDayFragmentDirections.actionAddDayFragmentToAddActivityFragment2())
+        }
+
+        cancel_create_day_button.setOnClickListener {
+            findNavController().navigate(
+                AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
+                    clearData = 2
+                )
+            )
+        }
     }
 
-   /* private fun observeData() {
-        viewModel.backToCreate.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                if (it) {
-                    Toast.makeText(context, "Back to create", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(
-                        AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
-                            clearData = false
-                        )
-                    )
-                    viewModel.backToCreateComplete()
-                }
-            }
-        })
-    }*/
+    /* private fun observeData() {
+
+     }*/
 }

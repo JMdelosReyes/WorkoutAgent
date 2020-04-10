@@ -45,6 +45,15 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
+                android:id="@+id/add_day_activity_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
+                android:text="@string/add_day_activity_button" />
+
+            <Button
                 android:id="@+id/save_create_day_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +69,6 @@
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="4dp"
-                android:onClick="@{() -> viewModel.onBackToCreate()}"
                 android:text="@string/form_day_cancel_button" />
 
         </LinearLayout>
