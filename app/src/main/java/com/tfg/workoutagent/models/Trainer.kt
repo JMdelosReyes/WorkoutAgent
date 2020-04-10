@@ -4,7 +4,7 @@ import java.util.*
 
 class Trainer(
     var id : String = "DEFAULT_ID",
-    var academicTitle : MutableList<String> = mutableListOf(),
+    var academicTitle:String = "DEFAULT_ACADEMIC_TITLE",
     var birthday : Date = Date(System.currentTimeMillis()),
     var customers : MutableList<Customer> = mutableListOf(),
     var dni : String = "DEFAULT_DNI",

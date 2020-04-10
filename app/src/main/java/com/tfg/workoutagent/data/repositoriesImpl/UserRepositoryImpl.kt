@@ -30,6 +30,9 @@ class UserRepositoryImpl: UserRepository {
                         customer.photo = customerdoc.getString("photo")!!
                         customer.phone = customerdoc.getString("phone")!!
                         customer.email = customerdoc.getString("email")!!
+                        customer.dni = customerdoc.getString("dni")!!
+                        customer.birthday = customerdoc.getTimestamp("birthday")!!.toDate()
+
                         customers.add(customer)
                     }
                 }
