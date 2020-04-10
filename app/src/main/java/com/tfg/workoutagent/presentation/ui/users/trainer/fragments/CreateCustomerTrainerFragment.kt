@@ -99,6 +99,7 @@ class CreateCustomerTrainerFragment : BaseFragment() {
 
         viewModel.customerCreated.observe(viewLifecycleOwner, Observer {
             when(it){
+                //TODO: Esconder la progressBar
                 true -> {
                     findNavController().navigate(
                         CreateCustomerTrainerFragmentDirections.actionCreateCustomerTrainerFragmentToNavigationUsersTrainer2()

@@ -9,5 +9,6 @@ class ManageCustomerTrainerUseCaseImpl(private val repository: UserRepository) :
     override suspend fun getCustomer(id: String): Resource<Customer> = repository.getCustomer(id)
     override suspend fun getOwnCustomers(): Resource<MutableList<Customer>> = repository.getOwnCustomers()
     override suspend fun deleteCustomer(id: String): Resource<Boolean> = repository.deleteCustomer(id)
+    override suspend fun canDeleteCustomer(id: String): Resource<Boolean> = repository.canDeleteCustomer(id)
     override suspend fun updateCustomer(customer: Customer): Resource<Boolean> = repository.updateCustomer(customer)
 }

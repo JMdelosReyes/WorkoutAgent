@@ -59,6 +59,9 @@ class UserTrainerFragment : Fragment() {
                 is Resource.Success -> {
                     sfl_rv_customer_trainer.visibility = View.GONE
                     sfl_rv_customer_trainer.stopShimmer()
+                    if(result.data.size == 0){
+                        //TODO: Mensaje tipo "You don't have any customers yet"
+                    }
                     adapter.setListData(result.data)
                     adapter.notifyDataSetChanged()
                 }
