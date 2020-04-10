@@ -16,6 +16,7 @@ import com.tfg.workoutagent.databinding.AddDayFragmentBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
+import kotlinx.android.synthetic.main.add_day_fragment.*
 
 class AddDayFragment : Fragment() {
 
@@ -51,7 +52,20 @@ class AddDayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        setupButtons()
         //observeData()
+    }
+
+    private fun setupButtons() {
+        save_create_day_button.setOnClickListener {
+            viewModel.onSaveDay()
+            findNavController().navigate(
+                AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
+                    2
+                )
+            )
+        }
     }
 
    /* private fun observeData() {

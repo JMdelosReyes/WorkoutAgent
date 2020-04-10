@@ -158,4 +158,7 @@
     <string name="form_add_day_button">Add day</string>
     <string name="form_day_cancel_button">Cancel</string>
     <string name="t_tulo_de_la_actividad">Título de la actividad</string>
+    <string name="form_routine_day_title_hint">Day title</string>
+    <string name="form_day_save_button">Save</string>
+    <string name="Days">Days</string>
 </resources>

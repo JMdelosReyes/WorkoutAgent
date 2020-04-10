@@ -81,7 +81,7 @@ class RoutineTrainerFragment : Fragment() {
         fab_button_routine.setOnClickListener {
             findNavController().navigate(
                 RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToCreateRoutineFragment(
-                    clearData = true
+                    clearData = 1
                 )
             )
         }

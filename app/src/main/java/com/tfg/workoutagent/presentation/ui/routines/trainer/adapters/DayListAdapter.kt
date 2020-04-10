@@ -37,7 +37,7 @@ class DayListAdapter(private val context: Context) : RecyclerView.Adapter<DayLis
 
     inner class DayListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(day: Day) {
-
+            val recyclerView : RecyclerView = itemView.recyclerViewRoutineDayActivity
             itemView.row_routine_day_name.text = day.name
 
 

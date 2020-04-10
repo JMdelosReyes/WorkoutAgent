@@ -19,6 +19,7 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayR
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayRoutineViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.display_routine_fragment.*
+import kotlinx.android.synthetic.main.item_row_routine_day.*
 
 class DisplayRoutineFragment : Fragment() {
 

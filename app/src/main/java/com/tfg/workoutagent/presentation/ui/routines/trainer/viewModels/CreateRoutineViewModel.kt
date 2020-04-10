@@ -1,10 +1,12 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCase
+import com.tfg.workoutagent.models.Day
 import com.tfg.workoutagent.models.Routine
 import kotlinx.coroutines.launch
 import java.util.*
@@ -13,7 +15,9 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     ViewModel() {
 
     val title = MutableLiveData<String>()
-    var startDate = MutableLiveData<String>()
+    val dayName = MutableLiveData<String>()
+    val startDate = MutableLiveData<String>()
+    val days = MutableLiveData<MutableList<Day>>()
 
     private val _routineCreated = MutableLiveData<Boolean?>(null)
     val routineCreated: LiveData<Boolean?>
@@ -27,6 +31,8 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val addDay: LiveData<Boolean?>
         get() = _addDay
 
+
+
     fun onSubmit() {
         if (checkData()) {
             createRoutine()
@@ -36,6 +42,8 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     fun onAddDay() {
         _addDay.value = true
     }
+
+
 
     private fun createRoutine() {
         viewModelScope.launch {
@@ -62,9 +70,26 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         _addDay.value = null
     }
 
-    fun clearData() {
+    fun onSaveDay(){
+        val day = Day(name = dayName.value.toString())
+        days.value!!.add(day)
+        clearDayData()
+        Log.i("Days", "${days.value}")
+    }
+
+    fun clearAllData() {
         title.value = ""
         startDate.value = ""
+        dayName.value = ""
+        days.value = mutableListOf()
+    }
+
+    fun clearDayData() {
+        dayName.value = ""
+    }
+
+    fun clearActivityData() {
+
     }
 
     fun onBackToCreate() {

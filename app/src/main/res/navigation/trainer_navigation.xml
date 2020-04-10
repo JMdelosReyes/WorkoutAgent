@@ -173,8 +173,7 @@
             app:popUpTo="@id/navigation_routine_trainer" />
         <argument
             android:name="clear_data"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/addDayFragment"

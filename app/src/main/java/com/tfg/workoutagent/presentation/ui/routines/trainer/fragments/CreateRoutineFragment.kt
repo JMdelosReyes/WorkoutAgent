@@ -11,12 +11,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.CreateRoutineFragmentBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
+import kotlinx.android.synthetic.main.create_routine_fragment.*
 
 class CreateRoutineFragment : Fragment() {
 
@@ -25,7 +28,7 @@ class CreateRoutineFragment : Fragment() {
     }
 
     private val clearData by lazy { CreateRoutineFragmentArgs.fromBundle(arguments!!).clearData }
-
+    private lateinit var adapter: DayListAdapter
     private val viewModel by lazy {
         ViewModelProvider(
             activity!!, CreateRoutineViewModelFactory(
@@ -49,8 +52,12 @@ class CreateRoutineFragment : Fragment() {
         this.binding.viewModel = viewModel
         this.binding.lifecycleOwner = this
 
-        if (clearData) {
-            this.viewModel.clearData()
+
+        when(clearData) {
+            //0 -> this.viewModel.clearData()
+            1 -> this.viewModel.clearAllData()
+            2 -> this.viewModel.clearDayData()
+            3 -> this.viewModel.clearActivityData()
         }
 
         return binding.root
@@ -58,6 +65,10 @@ class CreateRoutineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = DayListAdapter(this.context!!)
+        recyclerViewRoutineNewDay.layoutManager = LinearLayoutManager(this.context!!)
+        recyclerViewRoutineNewDay.adapter = adapter
+        observeDayData()
         observeData()
     }
 
@@ -67,9 +78,24 @@ class CreateRoutineFragment : Fragment() {
             it?.let {
                 if (it) {
                     Toast.makeText(context, "Day added", Toast.LENGTH_SHORT).show()
+                    adapter.setListData(viewModel.days.value!!)
+                    Log.i("Prueba obvserve data", "${viewModel.days.value}")
+                    adapter.notifyDataSetChanged()
                     findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToAddDayFragment())
                     viewModel.addDayNavigationCompleted()
                 }
+            }
+        })
+    }
+
+    private fun observeDayData() {
+        viewModel.days.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                    Toast.makeText(context, "Day added", Toast.LENGTH_SHORT).show()
+                    adapter.setListData(viewModel.days.value!!)
+                    Log.i("Prueba obvserve data", "${viewModel.days.value}")
+                    adapter.notifyDataSetChanged()
+
             }
         })
     }

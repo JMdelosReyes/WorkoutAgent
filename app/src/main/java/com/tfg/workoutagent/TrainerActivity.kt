@@ -111,7 +111,7 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                     R.id.addDayFragment -> {
                         navController.navigate(
                             AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
-                                clearData = false
+                                clearData = 2
                             )
                         )
                     }
