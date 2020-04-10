@@ -180,7 +180,12 @@
         android:id="@+id/addDayFragment"
         android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFragment"
         android:label="add_day_fragment"
-        tools:layout="@layout/add_day_fragment" />
+        tools:layout="@layout/add_day_fragment" >
+        <action
+            android:id="@+id/action_addDayFragment_to_createRoutine"
+            app:destination="@id/createRoutine"
+            app:popUpTo="@id/navigation_routine_trainer" />
+    </fragment>
     <fragment
         android:id="@+id/displayCustomer"
         android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.DisplayCustomerTrainer"

@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.tfg.workoutagent.base.BaseActivity
+import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFragmentDirections
 import kotlinx.android.synthetic.main.activity_bottom_navigation_trainer.*
 
 class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
@@ -105,7 +106,17 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                val navController = findNavController(R.id.nav_host_fragment)
+                when (navController.currentDestination?.id) {
+                    R.id.addDayFragment -> {
+                        navController.navigate(
+                            AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
+                                clearData = false
+                            )
+                        )
+                    }
+                    else -> onBackPressed()
+                }
                 return true
             }
         }
