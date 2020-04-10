@@ -2,5 +2,5 @@ package com.tfg.workoutagent.models
 
 import java.util.*
 
-data class Weight(val date: Date, val weight: Double) {
+data class Weight(var date: Date = Date(System.currentTimeMillis()), var weight: Double = 0.0) {
 }

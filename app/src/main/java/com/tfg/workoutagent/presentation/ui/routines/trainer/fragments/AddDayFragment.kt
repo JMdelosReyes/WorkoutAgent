@@ -51,10 +51,10 @@ class AddDayFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeData()
+        //observeData()
     }
 
-    private fun observeData() {
+   /* private fun observeData() {
         viewModel.backToCreate.observe(viewLifecycleOwner, Observer {
             it?.let {
                 if (it) {
@@ -68,5 +68,5 @@ class AddDayFragment : Fragment() {
                 }
             }
         })
-    }
+    }*/
 }

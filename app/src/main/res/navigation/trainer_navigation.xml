@@ -9,7 +9,15 @@
         android:id="@+id/navigation_activity_trainer"
         android:name="com.tfg.workoutagent.presentation.ui.activity.trainer.fragments.ActivityTrainerFragment"
         android:label="@string/my_activity_trainer"
-        tools:layout="@layout/fragment_trainer_activity" />
+        tools:layout="@layout/fragment_trainer_activity" >
+        <action
+            android:id="@+id/action_navigation_activity_trainer_to_displayCustomer"
+            app:destination="@id/displayCustomer"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_routine_trainer"
@@ -18,10 +26,18 @@
         tools:layout="@layout/fragment_trainer_routine" >
         <action
             android:id="@+id/action_navigation_routine_trainer_to_displayRoutineFragment"
-            app:destination="@id/displayRoutine" />
+            app:destination="@id/displayRoutine"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
         <action
             android:id="@+id/action_navigation_routine_trainer_to_createRoutineFragment"
-            app:destination="@id/createRoutine" />
+            app:destination="@id/createRoutine"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
 
     <fragment
@@ -49,7 +65,25 @@
         android:id="@+id/navigation_users_trainer"
         android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.UserTrainerFragment"
         android:label="@string/my_users"
-        tools:layout="@layout/fragment_trainer_user" />
+        tools:layout="@layout/fragment_trainer_user">
+        <action
+            android:id="@+id/action_navigation_users_trainer_to_displayCustomer"
+            app:destination="@id/displayCustomer"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_users_trainer_to_createCustomerTrainerFragment2"
+            app:destination="@id/createCustomerTrainerFragment" />
+        <action
+            android:id="@+id/action_navigation_users_trainer_to_editDeleteCustomerTrainerFragment"
+            app:destination="@id/editDeleteCustomerTrainerFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_profile_trainer"
@@ -146,10 +180,60 @@
         android:id="@+id/addDayFragment"
         android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFragment"
         android:label="add_day_fragment"
-        tools:layout="@layout/add_day_fragment" >
+        tools:layout="@layout/add_day_fragment" />
+    <fragment
+        android:id="@+id/displayCustomer"
+        android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.DisplayCustomerTrainer"
+        android:label="Customer"
+        tools:layout="@layout/fragment_display_customer_trainer">
+        <argument
+            android:name="customerId"
+            app:argType="string" />
+        <argument
+            android:name="customerName"
+            app:argType="string" />
         <action
-            android:id="@+id/action_addDayFragment_to_createRoutine"
-            app:destination="@id/createRoutine" />
+            android:id="@+id/action_displayCustomer_to_editDeleteCustomerTrainerFragment"
+            app:destination="@id/editDeleteCustomerTrainerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/createCustomerTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.CreateCustomerTrainerFragment"
+        android:label="fragment_create_customer_trainer"
+        tools:layout="@layout/fragment_create_customer_trainer" >
+        <action
+            android:id="@+id/action_createCustomerTrainerFragment_to_navigation_users_trainer2"
+            app:destination="@id/navigation_users_trainer" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDeleteCustomerTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.EditDeleteCustomerTrainerFragment"
+        android:label="fragment_edit_delete_customer_trainer"
+        tools:layout="@layout/fragment_edit_delete_customer_trainer" >
+        <action
+            android:id="@+id/action_editDeleteCustomerTrainerFragment_to_navigation_users_trainer"
+            app:destination="@id/navigation_users_trainer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="customerId"
+            app:argType="string" />
+        <argument
+            android:name="customerName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editDeleteCustomerTrainerFragment_to_displayCustomer"
+            app:destination="@id/displayCustomer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 
 </navigation>

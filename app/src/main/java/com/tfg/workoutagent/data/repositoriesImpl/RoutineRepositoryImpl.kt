@@ -143,6 +143,7 @@ class RoutineRepositoryImpl: RoutineRepository {
                 //trainer.customers = (trainerDoc.get("customers") as MutableList<Customer>?)!!
                 routine.trainer = trainer
             }
+            Log.i("Dia a añadir", "$routine")
             routines.add(routine)
             //Log.i("RoutineList", routines.toString())
 
@@ -235,7 +236,7 @@ class RoutineRepositoryImpl: RoutineRepository {
 
                     }
                 }
-                //Log.i("Dia a añadir", "$day")
+                Log.i("Dia a añadir", "$day")
                 routine.days.add(day)
             }
         }

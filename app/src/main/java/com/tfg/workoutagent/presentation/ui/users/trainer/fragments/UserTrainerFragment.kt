@@ -42,7 +42,7 @@ class UserTrainerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //setupUI()
+        setupUI()
 
         adapter = CustomerListAdapter(this.context!!)
         recyclerView_customer_trainer.layoutManager = LinearLayoutManager(this.context!!)
@@ -71,14 +71,13 @@ class UserTrainerFragment : Fragment() {
             }
         })
     }
-    /*
-    private fun setupUI() {
-        fab_add_customer.setOnClickListener {
+
+    private fun setupUI(){
+        fab_add_customer.setOnClickListener{
             findNavController().navigate(
-                .actionNavigationExercisesTrainerToCreateExerciseFragment()
+                UserTrainerFragmentDirections.actionNavigationUsersTrainerToCreateCustomerTrainerFragment2()
             )
         }
     }
-    *
-     */
+
 }

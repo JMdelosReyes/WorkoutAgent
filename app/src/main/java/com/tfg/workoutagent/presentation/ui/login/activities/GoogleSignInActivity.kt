@@ -79,7 +79,6 @@ class GoogleSignInActivity : BaseActivity() {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                val email = FirebaseAuth.getInstance().currentUser?.email.toString()
                 viewModel.fechtRole.observe(this, Observer { result ->
                     when(result){
                         is Resource.Loading -> {
