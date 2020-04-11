@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +11,7 @@ import com.tfg.workoutagent.models.Exercise
 import com.tfg.workoutagent.models.Routine
 import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
+import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -31,6 +33,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val weights = MutableLiveData<String>()
     val activityExercise = MutableLiveData<String>()
     val note = MutableLiveData<String>()
+    val selectedExercise = MutableLiveData<Exercise>()
 
     private val _routineCreated = MutableLiveData<Boolean?>(null)
     val routineCreated: LiveData<Boolean?>
@@ -40,9 +43,13 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val addDay: LiveData<Boolean?>
         get() = _addDay
 
+    // Para el spinner
+    private val _exercises = MutableLiveData<List<Exercise>>()
+    val exercises: LiveData<List<Exercise>>
+        get() = _exercises
+
     // TODO
     var adapter: ActivityListAdapter? = null
-
 
     fun onSubmit() {
         if (checkData()) {
@@ -126,8 +133,24 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         weights.value = ""
         activityExercise.value = ""
         note.value = ""
-
     }
 
+    // Para ek spinner
+    fun getExercises() {
+        viewModelScope.launch {
+            try {
+                val res = manageRoutineUseCase.getExercises()
+                if (res is Resource.Success) {
+                    _exercises.value = res.data
+                }
+            } catch (e: Exception) {
+                _exercises.value = mutableListOf()
+            }
+        }
+    }
 
+    // Para el spinner
+    fun selectExercise(exercise: Exercise) {
+        selectedExercise.value = exercise
+    }
 }

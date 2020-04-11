@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.AddDayFragmentBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
@@ -30,7 +31,7 @@ class AddDayFragment : Fragment() {
     private val viewModel by lazy {
         ViewModelProvider(
             activity!!, CreateRoutineViewModelFactory(
-                ManageRoutineUseCaseImpl(RoutineRepositoryImpl())
+                ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
         ).get(CreateRoutineViewModel::class.java)
     }

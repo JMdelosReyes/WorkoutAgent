@@ -5,17 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentAddActivityBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
+import kotlinx.android.synthetic.main.fragment_add_activity.*
 
 
 /**
@@ -30,7 +37,7 @@ class AddActivityFragment : DialogFragment() {
     private val viewModel by lazy {
         ViewModelProvider(
             activity!!, CreateRoutineViewModelFactory(
-                ManageRoutineUseCaseImpl(RoutineRepositoryImpl())
+                ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
         ).get(CreateRoutineViewModel::class.java)
     }
@@ -60,6 +67,16 @@ class AddActivityFragment : DialogFragment() {
 
     override fun onStart() {
         super.onStart()
+        setupDialogWindow()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
+        setupSpinnerAdapter()
+    }
+
+    private fun setupDialogWindow() {
         val dialog: Dialog? = dialog
         if (dialog != null) {
             val width = ViewGroup.LayoutParams.MATCH_PARENT
@@ -69,8 +86,7 @@ class AddActivityFragment : DialogFragment() {
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun setupToolbar() {
         toolbar.setNavigationOnClickListener { dismiss() }
         toolbar.title = "Some Title"
         toolbar.inflateMenu(R.menu.add_day_activity_dialog_menu)
@@ -84,5 +100,36 @@ class AddActivityFragment : DialogFragment() {
             }
             true
         }
+    }
+
+    private fun setupSpinnerAdapter() {
+        viewModel.exercises.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                val spinner: Spinner = activity_exercise_spinner
+                ArrayAdapter(
+                    this.context!!,
+                    android.R.layout.simple_spinner_item,
+                    it.map { e -> e.title }
+                ).also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    spinner.adapter = adapter
+                    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>,
+                            view: View,
+                            position: Int,
+                            id: Long
+                        ) {
+                            viewModel.selectExercise(it[position])
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>) {
+                            // Code to perform some action when nothing is selected
+                        }
+                    }
+                }
+            }
+        })
+        viewModel.getExercises()
     }
 }

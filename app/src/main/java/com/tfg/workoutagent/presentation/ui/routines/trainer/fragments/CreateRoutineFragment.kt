@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.CreateRoutineFragmentBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
@@ -30,7 +31,7 @@ class CreateRoutineFragment : Fragment() {
     private val viewModel by lazy {
         ViewModelProvider(
             activity!!, CreateRoutineViewModelFactory(
-                ManageRoutineUseCaseImpl(RoutineRepositoryImpl())
+                ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
         ).get(CreateRoutineViewModel::class.java)
     }
@@ -51,7 +52,7 @@ class CreateRoutineFragment : Fragment() {
         this.binding.lifecycleOwner = this
 
 
-        when(clearData) {
+        when (clearData) {
             //0 -> this.viewModel.clearData()
             1 -> this.viewModel.clearAllData()
             2 -> this.viewModel.clearDayData()
@@ -87,8 +88,8 @@ class CreateRoutineFragment : Fragment() {
     private fun observeDayData() {
         viewModel.days.observe(viewLifecycleOwner, Observer {
             it?.let {
-                    adapter.setListData(viewModel.days.value!!)
-                    adapter.notifyDataSetChanged()
+                adapter.setListData(viewModel.days.value!!)
+                adapter.notifyDataSetChanged()
 
             }
         })

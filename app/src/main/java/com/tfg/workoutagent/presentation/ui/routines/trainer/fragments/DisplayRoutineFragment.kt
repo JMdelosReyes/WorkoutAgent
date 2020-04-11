@@ -1,17 +1,16 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
@@ -19,7 +18,6 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayR
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayRoutineViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.display_routine_fragment.*
-import kotlinx.android.synthetic.main.item_row_routine_day.*
 
 class DisplayRoutineFragment : Fragment() {
 
@@ -33,10 +31,11 @@ class DisplayRoutineFragment : Fragment() {
             this,
             DisplayRoutineViewModelFactory(
                 routineId,
-                ManageRoutineUseCaseImpl(RoutineRepositoryImpl())
+                ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
         ).get(DisplayRoutineViewModel::class.java)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
