@@ -1,6 +1,5 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +8,7 @@ import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCase
 import com.tfg.workoutagent.models.Day
 import com.tfg.workoutagent.models.Routine
 import com.tfg.workoutagent.models.RoutineActivity
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -18,8 +18,8 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val title = MutableLiveData<String>()
     val dayName = MutableLiveData<String>()
     val startDate = MutableLiveData<String>()
-    val days = MutableLiveData<MutableList<Day>>()
-    val activities = MutableLiveData<MutableList<RoutineActivity>>()
+    val days = MutableLiveData<MutableList<Day>>(mutableListOf())
+    val activities = MutableLiveData<MutableList<RoutineActivity>>(mutableListOf())
 
     private val _routineCreated = MutableLiveData<Boolean?>(null)
     val routineCreated: LiveData<Boolean?>
@@ -28,6 +28,9 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     private val _addDay = MutableLiveData<Boolean?>(null)
     val addDay: LiveData<Boolean?>
         get() = _addDay
+
+    // TODO
+    var adapter: ActivityListAdapter? = null
 
 
     fun onSubmit() {
@@ -38,10 +41,6 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
 
     fun onAddDay() {
         _addDay.value = true
-    }
-
-    fun onAddActivity() {
-        Log.i("PRUEBA", "HOLA")
     }
 
     private fun createRoutine() {
@@ -73,14 +72,16 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         val day = Day(name = dayName.value.toString())
         days.value!!.add(day)
         clearDayData()
-        Log.i("Days", "${days.value}")
     }
 
     fun onSaveActivity() {
-        val day = Day(name = dayName.value.toString())
-        days.value!!.add(day)
+        val activity = RoutineActivity(name = "asd")
+        activities.value!!.add(activity)
+
+        // TODO
+        adapter?.notifyDataSetChanged()
+
         clearActivityData()
-        Log.i("Days", "${days.value}")
     }
 
     fun clearAllData() {

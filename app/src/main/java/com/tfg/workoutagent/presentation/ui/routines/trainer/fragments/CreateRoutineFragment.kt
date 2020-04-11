@@ -1,11 +1,9 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -77,9 +75,7 @@ class CreateRoutineFragment : Fragment() {
         viewModel.addDay.observe(viewLifecycleOwner, Observer {
             it?.let {
                 if (it) {
-                    Toast.makeText(context, "Day added", Toast.LENGTH_SHORT).show()
                     adapter.setListData(viewModel.days.value!!)
-                    Log.i("Prueba obvserve data", "${viewModel.days.value}")
                     adapter.notifyDataSetChanged()
                     findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToAddDayFragment())
                     viewModel.addDayNavigationCompleted()
@@ -91,9 +87,7 @@ class CreateRoutineFragment : Fragment() {
     private fun observeDayData() {
         viewModel.days.observe(viewLifecycleOwner, Observer {
             it?.let {
-                    Toast.makeText(context, "Day added", Toast.LENGTH_SHORT).show()
                     adapter.setListData(viewModel.days.value!!)
-                    Log.i("Prueba obvserve data", "${viewModel.days.value}")
                     adapter.notifyDataSetChanged()
 
             }

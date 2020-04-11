@@ -53,7 +53,7 @@ class AddActivityFragment : DialogFragment() {
             val width = ViewGroup.LayoutParams.MATCH_PARENT
             val height = ViewGroup.LayoutParams.MATCH_PARENT
             dialog.window?.setLayout(width, height)
-            dialog.window?.setWindowAnimations(R.style.AppTheme_Slide);
+            dialog.window?.setWindowAnimations(R.style.AppTheme_Slide)
         }
     }
 
@@ -64,7 +64,10 @@ class AddActivityFragment : DialogFragment() {
         toolbar.inflateMenu(R.menu.add_day_activity_dialog_menu)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.action_save_day_activity -> viewModel.onAddActivity()
+                R.id.action_save_day_activity -> {
+                    viewModel.onSaveActivity()
+                    dismiss()
+                }
                 else -> dismiss()
             }
             true

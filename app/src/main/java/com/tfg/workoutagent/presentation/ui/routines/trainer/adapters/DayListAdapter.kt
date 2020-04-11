@@ -2,7 +2,6 @@ package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,7 +44,7 @@ class DayListAdapter(private val context: Context) : RecyclerView.Adapter<DayLis
 
         holder.recyclerView.apply {
             layoutManager = childLayoutManager
-            adapter = ActivityListAdapter(day.activities)
+            adapter = ActivityListChildAdapter(day.activities)
             setRecycledViewPool(viewPool)
         }
     }
