@@ -1,9 +1,13 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Day
@@ -13,6 +17,7 @@ import kotlinx.android.synthetic.main.item_row_routine_day.view.*
 class DayListAdapter(private val context: Context) : RecyclerView.Adapter<DayListAdapter.DayListViewHolder>() {
 
     private var dataList = mutableListOf<Day>()
+    private val viewPool = RecyclerView.RecycledViewPool()
     fun setListData(data: MutableList<Day>) {
         dataList = data
     }
@@ -30,17 +35,26 @@ class DayListAdapter(private val context: Context) : RecyclerView.Adapter<DayLis
         }
     }
 
+
+    @SuppressLint("WrongConstant")
     override fun onBindViewHolder(holder: DayListViewHolder, position: Int) {
         val day: Day = dataList[position]
         holder.bindView(day)
+
+        val childLayoutManager = LinearLayoutManager(holder.recyclerView.context, LinearLayout.VERTICAL, false)
+
+        holder.recyclerView.apply {
+            layoutManager = childLayoutManager
+            adapter = ActivityListAdapter(day.activities)
+            setRecycledViewPool(viewPool)
+        }
     }
 
+
     inner class DayListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val recyclerView : RecyclerView = itemView.recyclerViewRoutineDayActivity
         fun bindView(day: Day) {
-            val recyclerView : RecyclerView = itemView.recyclerViewRoutineDayActivity
             itemView.row_routine_day_name.text = day.name
-
-
         }
     }
 }

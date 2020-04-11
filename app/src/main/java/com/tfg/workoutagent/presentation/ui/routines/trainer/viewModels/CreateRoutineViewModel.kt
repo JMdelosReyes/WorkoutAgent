@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCase
 import com.tfg.workoutagent.models.Day
 import com.tfg.workoutagent.models.Routine
+import com.tfg.workoutagent.models.RoutineActivity
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -18,6 +19,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val dayName = MutableLiveData<String>()
     val startDate = MutableLiveData<String>()
     val days = MutableLiveData<MutableList<Day>>()
+    val activities = MutableLiveData<MutableList<RoutineActivity>>()
 
     private val _routineCreated = MutableLiveData<Boolean?>(null)
     val routineCreated: LiveData<Boolean?>
@@ -38,6 +40,9 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         _addDay.value = true
     }
 
+    fun onAddActivity() {
+        Log.i("PRUEBA", "HOLA")
+    }
 
     private fun createRoutine() {
         viewModelScope.launch {
@@ -71,6 +76,13 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         Log.i("Days", "${days.value}")
     }
 
+    fun onSaveActivity() {
+        val day = Day(name = dayName.value.toString())
+        days.value!!.add(day)
+        clearActivityData()
+        Log.i("Days", "${days.value}")
+    }
+
     fun clearAllData() {
         title.value = ""
         startDate.value = ""
@@ -86,7 +98,5 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
 
     }
 
-    fun addActivity() {
-        Log.i("PRUEBA", "HOLA")
-    }
+
 }

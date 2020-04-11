@@ -163,4 +163,9 @@
     <string name="Days">Days</string>
     <string name="add_day_activity_button">Add activity</string>
     <string name="action_save_day_activity">Save</string>
+    <string name="add_activity_sets_hint">Sets</string>
+    <string name="add_activity_repetitions_hint">Repetitions</string>
+    <string name="add_activity_weights_hint">Weights</string>
+    <string name="add_activity_exercise_hint">Exercise</string>
+    <string name="add_activity_note_hint">Note</string>
 </resources>

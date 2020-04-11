@@ -64,7 +64,7 @@ class AddActivityFragment : DialogFragment() {
         toolbar.inflateMenu(R.menu.add_day_activity_dialog_menu)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.action_save_day_activity -> viewModel.addActivity()
+                R.id.action_save_day_activity -> viewModel.onAddActivity()
                 else -> dismiss()
             }
             true
