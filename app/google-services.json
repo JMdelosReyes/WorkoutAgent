@@ -1,0 +1,64 @@
+{
+  "project_info": {
+    "project_number": "303536114928",
+    "firebase_url": "https://workoutagent-app.firebaseio.com",
+    "project_id": "workoutagent-app",
+    "storage_bucket": "workoutagent-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:303536114928:android:3877ff28376fca0135c635",
+        "android_client_info": {
+          "package_name": "com.tfg.workoutagent"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "303536114928-lhfgl56p7ma9hbkhkfcvdk4a1lj23jmm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tfg.workoutagent",
+            "certificate_hash": "0416a36e665595c6ef58e385d29cf3efbb217773"
+          }
+        },
+        {
+          "client_id": "303536114928-9t3evdglaubpa78jn6vsec06eb2k0ppq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tfg.workoutagent",
+            "certificate_hash": "176f924485d16c198990b13340c2fa20e227e298"
+          }
+        },
+        {
+          "client_id": "303536114928-67merq6b7onbakoous963bq6a19i56sf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tfg.workoutagent",
+            "certificate_hash": "59363228ff1eb0c904ca490ba14a9b02e5e78add"
+          }
+        },
+        {
+          "client_id": "303536114928-4lqgkcbvfo8miehcdpi8in5cfrdfe8hb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiFxhL8Ynr_xFJTSNIE5cMPV-1RZING4Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "303536114928-4lqgkcbvfo8miehcdpi8in5cfrdfe8hb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
