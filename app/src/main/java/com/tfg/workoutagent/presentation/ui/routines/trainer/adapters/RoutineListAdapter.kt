@@ -45,7 +45,7 @@ class RoutineListAdapter(private val context: Context) :
         fun bindView(routine: Routine) {
 
             itemView.row_routine_title.text = routine.title
-            itemView.row_routine_customer_name.text = routine.customer.name+" "+ routine.customer.surname
+            itemView.row_routine_customer_name.text = (routine.customer?.name ?: "") +" "+ (routine.customer?.surname ?: "")
             itemView.setOnClickListener {
                 itemView.findNavController().navigate(
                     RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToDisplayRoutineFragment(
