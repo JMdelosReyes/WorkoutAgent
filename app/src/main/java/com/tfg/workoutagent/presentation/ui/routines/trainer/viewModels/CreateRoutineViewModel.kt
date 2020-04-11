@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCase
 import com.tfg.workoutagent.models.Day
+import com.tfg.workoutagent.models.Exercise
 import com.tfg.workoutagent.models.Routine
 import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
@@ -15,11 +16,21 @@ import java.util.*
 class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseCase) :
     ViewModel() {
 
+    //Routine fields
     val title = MutableLiveData<String>()
-    val dayName = MutableLiveData<String>()
     val startDate = MutableLiveData<String>()
     val days = MutableLiveData<MutableList<Day>>(mutableListOf())
+
+    //Day fields
+    val dayName = MutableLiveData<String>()
     val activities = MutableLiveData<MutableList<RoutineActivity>>(mutableListOf())
+
+    //Activity fields
+    val sets = MutableLiveData<String>()
+    val repetitions = MutableLiveData<String>()
+    val weights = MutableLiveData<String>()
+    val activityExercise = MutableLiveData<String>()
+    val note = MutableLiveData<String>()
 
     private val _routineCreated = MutableLiveData<Boolean?>(null)
     val routineCreated: LiveData<Boolean?>
@@ -49,7 +60,9 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
                 manageRoutineUseCase.createRoutine(
                     Routine(
                         title = title.value.toString(),
-                        startDate = Date()
+                        startDate = Date(),
+                        days = days.value!!
+
                     )
                 )
                 _routineCreated.value = true
@@ -69,13 +82,24 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     }
 
     fun onSaveDay() {
-        val day = Day(name = dayName.value.toString())
+        val day = Day(name = dayName.value.toString(), activities = activities.value!!)
         days.value!!.add(day)
         clearDayData()
     }
 
     fun onSaveActivity() {
-        val activity = RoutineActivity(name = "asd")
+        val activity = RoutineActivity(
+            name = activityExercise.value!!,
+            sets = sets.value!!.toInt(),
+            repetitions = repetitions.value!!.split(",").map { x ->
+                x.toInt()
+            } as MutableList<Int>,
+            weightsPerRepetition = weights.value!!.split(",").map { x ->
+                x.toDouble()
+            } as MutableList<Double>,
+            exercise = Exercise(),
+            note = note.value!!
+        )
         activities.value!!.add(activity)
 
         // TODO
@@ -93,9 +117,15 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
 
     fun clearDayData() {
         dayName.value = ""
+        activities.value = mutableListOf()
     }
 
     fun clearActivityData() {
+        sets.value = ""
+        repetitions.value = ""
+        weights.value = ""
+        activityExercise.value = ""
+        note.value = ""
 
     }
 

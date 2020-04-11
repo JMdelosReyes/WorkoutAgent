@@ -6,11 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
+import com.tfg.workoutagent.databinding.FragmentAddActivityBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
@@ -22,6 +24,8 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRo
 class AddActivityFragment : DialogFragment() {
 
     private lateinit var toolbar: Toolbar
+
+    private lateinit var binding: FragmentAddActivityBinding
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -40,10 +44,18 @@ class AddActivityFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.fragment_add_activity, container, false)
-        toolbar = view.findViewById(R.id.add_activity_toolbar)
 
-        return view
+        this.binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_add_activity,
+            container,
+            false
+        )
+        this.binding.viewModel = viewModel
+        this.binding.lifecycleOwner = this
+        toolbar = binding.root.findViewById(R.id.add_activity_toolbar)
+
+        return binding.root
     }
 
     override fun onStart() {

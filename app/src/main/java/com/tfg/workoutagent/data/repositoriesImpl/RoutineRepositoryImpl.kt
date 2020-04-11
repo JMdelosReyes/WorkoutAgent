@@ -169,7 +169,8 @@ class RoutineRepositoryImpl: RoutineRepository {
         routine!!.title = resultData.getString("title")!!
 
         val days = resultData.get("days")
-
+        Log.i("Tipo de objeto name", days!!.javaClass.name)
+        Log.i("Tipo de objeto kotlin", "${days!!.javaClass.kotlin}")
         if(days is HashMap<*,*>){
             //iteramos por cada día
             for(dayKey in days.keys){
@@ -334,11 +335,16 @@ class RoutineRepositoryImpl: RoutineRepository {
 
     override suspend fun createRoutine(routine: Routine): Resource<Boolean> {
 
+        val trainerDB = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await()
+
         val data = hashMapOf(
             "title" to routine.title,
             "startDate" to routine.startDate,
             "customer" to routine.customer,
-            "trainer" to routine.trainer,
+            "trainer" to trainerDB.documents[0].reference,
             "days" to routine.days
         )
         FirebaseFirestore.getInstance().collection("routines").add(data).await()
