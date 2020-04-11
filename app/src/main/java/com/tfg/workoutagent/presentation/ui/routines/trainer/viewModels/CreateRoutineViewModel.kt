@@ -1,6 +1,5 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +12,9 @@ import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.*
+
 
 class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseCase) :
     ViewModel() {
@@ -22,6 +23,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val title = MutableLiveData<String>()
     val startDate = MutableLiveData<String>()
     val days = MutableLiveData<MutableList<Day>>(mutableListOf())
+    val pickerDate = MutableLiveData<Date>()
 
     //Day fields
     val dayName = MutableLiveData<String>()
@@ -104,7 +106,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
             weightsPerRepetition = weights.value!!.split(",").map { x ->
                 x.toDouble()
             } as MutableList<Double>,
-            exercise = Exercise(),
+            exercise = selectedExercise.value!!,
             note = note.value!!
         )
         activities.value!!.add(activity)
@@ -120,6 +122,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         startDate.value = ""
         dayName.value = ""
         days.value = mutableListOf()
+        pickerDate.value = Date()
     }
 
     fun clearDayData() {
@@ -152,5 +155,13 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     // Para el spinner
     fun selectExercise(exercise: Exercise) {
         selectedExercise.value = exercise
+    }
+
+    fun setDate(time : Long){
+        val pattern = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+        pickerDate.value = Date(time)
+        val date = simpleDateFormat.format(pickerDate.value)
+        startDate.value = date
     }
 }

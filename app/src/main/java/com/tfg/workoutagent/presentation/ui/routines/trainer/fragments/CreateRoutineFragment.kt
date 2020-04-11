@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
@@ -19,12 +20,16 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAda
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
 import kotlinx.android.synthetic.main.create_routine_fragment.*
+import java.util.*
 
 class CreateRoutineFragment : Fragment() {
+
 
     companion object {
         fun newInstance() = CreateRoutineFragment()
     }
+
+
 
     private val clearData by lazy { CreateRoutineFragmentArgs.fromBundle(arguments!!).clearData }
     private lateinit var adapter: DayListAdapter
@@ -69,6 +74,20 @@ class CreateRoutineFragment : Fragment() {
         recyclerViewRoutineNewDay.adapter = adapter
         observeDayData()
         observeData()
+        setupButtons()
+    }
+
+    private fun setupButtons(){
+        val builder : MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker().setSelection(viewModel.pickerDate.value!!.time.toLong())
+        val currentTimeInMillis = Calendar.getInstance().timeInMillis
+        //builder.setSelection()
+        val picker : MaterialDatePicker<*> = builder.build()
+        routine_startDate_input_edit.setOnClickListener{
+            picker.show(activity!!.supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                viewModel.setDate(it as Long)
+            }
+        }
     }
 
 

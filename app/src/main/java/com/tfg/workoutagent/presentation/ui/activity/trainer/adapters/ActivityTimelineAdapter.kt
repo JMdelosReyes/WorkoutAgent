@@ -59,9 +59,14 @@ class ActivityTimelineAdapter(private val context: Context) :
                 hours = truncate(hours.toDouble()).toLong()
                 itemView.row_finishDate_message.text = "$hours hours ago"
             }else if(minutesAgo < 60*24*7){
-                var days = minutesAgo/60*24
+                var days = minutesAgo/(60*24)
                 days = truncate(days.toDouble()).toLong()
-                itemView.row_finishDate_message.text = "$days days ago"
+                if(days.toInt() == 1){
+                    itemView.row_finishDate_message.text = "yesterday"
+                }else{
+                    itemView.row_finishDate_message.text = "$days days ago"
+                }
+
             }else{
                 itemView.row_finishDate_message.text = "A long time ago"
             }

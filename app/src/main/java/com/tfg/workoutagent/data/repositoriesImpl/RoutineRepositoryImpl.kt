@@ -9,6 +9,7 @@ import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 class RoutineRepositoryImpl: RoutineRepository {
@@ -164,64 +165,63 @@ class RoutineRepositoryImpl: RoutineRepository {
         val customerRef  = resultData.get("customer")
         val trainerRef  = resultData.get("trainer")
         var routine = Routine()
-        routine!!.id = resultData.id
-        routine!!.startDate = resultData.getTimestamp("startDate")!!.toDate()
-        routine!!.title = resultData.getString("title")!!
+        routine.id = resultData.id
+        routine.startDate = resultData.getTimestamp("startDate")!!.toDate()
+        routine.title = resultData.getString("title")!!
 
         val days = resultData.get("days")
-        Log.i("Tipo de objeto name", days!!.javaClass.name)
-        Log.i("Tipo de objeto kotlin", "${days!!.javaClass.kotlin}")
-        if(days is HashMap<*,*>){
+        if(days is ArrayList<*>){
             //iteramos por cada día
-            for(dayKey in days.keys){
+            for(dayKey in days){
                 var day = Day()
-                day.name = dayKey.toString()
-                var dayKey = days[dayKey]
                 if(dayKey is HashMap<*,*>){
-                    val dayAtributes = dayKey.keys
-                    for(atribute in dayAtributes){
-                        when(atribute.toString()) {
-                            "completed" ->   day.completed = dayKey[atribute] as Boolean
+                    val dayAttributes = dayKey.keys
+                    for(attribute in dayAttributes){
+                        when(attribute.toString()) {
+                            "completed" ->   day.completed = dayKey[attribute] as Boolean
+                            "name"-> day.name = dayKey[attribute].toString()
                             "workingDay" -> {
-                                val time = dayKey[atribute]
+                                val time = dayKey[attribute]
                                 if(time is com.google.firebase.Timestamp){
                                     day.workingDay = time.toDate()
                                 }
                             }
                             "activities" ->  {
-                                val activities =  dayKey[atribute]
+                                val activities =  dayKey[attribute]
 
-                                if(activities is HashMap<*,*>){
-                                    for(activity in activities.keys){
+                                if(activities is ArrayList<*>){
+                                    for(activity in activities){
                                         var routineActivity = RoutineActivity()
-                                        routineActivity.name = activity.toString()
-                                        val activitiesValues = activities[activity]
 
-                                        if(activitiesValues is HashMap<*,*>){
-                                            for(activityAtribute in activitiesValues.keys){
-                                                when(activityAtribute.toString()) {
+                                        if(activity is HashMap<*,*>){
+                                            for(activityAttribute in activity.keys){
+                                                when(activityAttribute.toString()) {
                                                     "exercise" -> {
-                                                        val docRefAct = activitiesValues[activityAtribute]
-                                                        if(docRefAct is DocumentReference){
-                                                            val exerciseDoc = docRefAct.get().await()
+                                                        val exerciseKey = activity[activityAttribute]
+                                                        if(exerciseKey is HashMap<*,*>){
                                                             var exerciseAct = Exercise()
-                                                            exerciseAct.id = exerciseDoc.id
-                                                            exerciseAct.title = exerciseDoc.getString("title")!!
-                                                            exerciseAct.description = exerciseDoc.getString("description")!!
-                                                            exerciseAct.photos = (exerciseDoc.get("photos") as MutableList<String>?)!!
-                                                            exerciseAct.tags = (exerciseDoc.get("tags") as MutableList<String>?)!!
-
+                                                            for(exerciseKeyAttribute in exerciseKey.keys){
+                                                                when(exerciseKeyAttribute.toString()){
+                                                                    "id" -> exerciseAct.id = exerciseKey[exerciseKeyAttribute].toString()
+                                                                    "title" -> exerciseAct.title= exerciseKey[exerciseKeyAttribute].toString()
+                                                                    "description" -> exerciseAct.description= exerciseKey[exerciseKeyAttribute].toString()
+                                                                    "photos" -> exerciseAct.photos= exerciseKey[exerciseKeyAttribute] as MutableList<String>
+                                                                    "tags" -> exerciseAct.tags= exerciseKey[exerciseKeyAttribute] as MutableList<String>
+                                                                }
+                                                            }
+                                                            Log.i("Añadimos ejercicio", "$exerciseAct")
                                                             routineActivity.exercise = exerciseAct
                                                         }
                                                     }
-                                                    "note"-> routineActivity.note = activitiesValues[activityAtribute].toString()
+                                                    "note"-> routineActivity.note = activity[activityAttribute].toString()
+                                                    "name"-> routineActivity.name = activity[activityAttribute].toString()
                                                     "repetitions" -> routineActivity.repetitions =
-                                                        activitiesValues[activityAtribute] as MutableList<Int>
+                                                        activity[activityAttribute] as MutableList<Int>
                                                     "set" -> routineActivity.sets =
-                                                        activitiesValues[activityAtribute] as Int
-                                                    "type" -> routineActivity.type = activitiesValues[activityAtribute].toString()
+                                                        activity[activityAttribute] as Int
+                                                    "type" -> routineActivity.type = activity[activityAttribute].toString()
                                                     "weightsPerRepetition" -> routineActivity.weightsPerRepetition =
-                                                        activitiesValues[activityAtribute] as MutableList<Double>
+                                                        activity[activityAttribute] as MutableList<Double>
 
                                                 }
                                             }
@@ -237,7 +237,6 @@ class RoutineRepositoryImpl: RoutineRepository {
 
                     }
                 }
-                Log.i("Dia a añadir", "$day")
                 routine.days.add(day)
             }
         }
@@ -266,18 +265,13 @@ class RoutineRepositoryImpl: RoutineRepository {
             trainer.photo = trainerDoc.getString("photo")!!
             trainer.phone = trainerDoc.getString("phone")!!
             trainer.email = trainerDoc.getString("email")!!
-            //val academicTitle:String = trainerDoc.get("academicTitle") as String
-            /*if(academicTitle is HashMap<*,*>){
-                //No me siento orgulloso de esto
-                trainer.academicTitle = academicTitle["academicTitle"] as String
-            }*/
             trainer.birthday = trainerDoc.getTimestamp("birthday")!!.toDate()
             trainer.dni = trainerDoc.getString("dni")!!
-            //trainer.customers = (trainerDoc.get("customers") as MutableList<Customer>?)!!
             routine.trainer = trainer
         }
         return Resource.Success(routine)
     }
+
 
     override suspend fun getActivityTimeline(): Resource<MutableList<TimelineActivity>> {
         val trainerDB = FirebaseFirestore.getInstance()
@@ -297,10 +291,9 @@ class RoutineRepositoryImpl: RoutineRepository {
             val customerRef  = document.get("customer")
             val days = document.get("days")
             var dayList = mutableListOf<Day>()
-            if(days is HashMap<*,*>){
-                for(dayKey in days.keys) {
+            if(days is ArrayList<*>){
+                for(dayKey in days) {
                     var day = Day()
-                    var dayKey = days[dayKey]
                     if (dayKey is HashMap<*, *>) {
                         val dayAttributes = dayKey.keys
                         for (attribute in dayAttributes) {
@@ -315,38 +308,65 @@ class RoutineRepositoryImpl: RoutineRepository {
                             }
                         }
                     }
+                    Log.i("Probemos esta wea", "$day")
                     if(day.completed){
                         dayList.add(day)
                     }
                 }
             }
             dayList.sortBy { day -> day.workingDay }
-            timelineActivity.finishDate = dayList[dayList.size -1].workingDay
-            if(customerRef is DocumentReference){
-                val customerDoc = customerRef.get().await()
-                timelineActivity.customerId =customerDoc.id
-                timelineActivity.customerPhoto = customerDoc.getString("photo")!!
-                timelineActivity.customerName = customerDoc.getString("name")!! + " " + customerDoc.getString("surname")!!
+            if(dayList.isNotEmpty() && customerRef != null){
+                timelineActivity.finishDate = dayList[dayList.size -1].workingDay
+
+                if(customerRef is DocumentReference){
+                    val customerDoc = customerRef.get().await()
+                    timelineActivity.customerId =customerDoc.id
+                    timelineActivity.customerPhoto = customerDoc.getString("photo")!!
+                    timelineActivity.customerName = customerDoc.getString("name")!! + " " + customerDoc.getString("surname")!!
+                }
+                finishedActivities.add(timelineActivity)
             }
-            finishedActivities.add(timelineActivity)
         }
         return Resource.Success(finishedActivities)
     }
 
     override suspend fun createRoutine(routine: Routine): Resource<Boolean> {
-
+        val data: HashMap<*, *>
         val trainerDB = FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
             .get().await()
 
-        val data = hashMapOf(
-            "title" to routine.title,
-            "startDate" to routine.startDate,
-            "customer" to routine.customer,
-            "trainer" to trainerDB.documents[0].reference,
-            "days" to routine.days
-        )
+        /*for(day in routine.days){
+           for(activity in day.activities){
+               activity.exercise
+           }
+        }*/
+
+        if(routine.customer != null){
+            val customerDB = FirebaseFirestore.getInstance()
+                .collection("users").document(routine.customer!!.id)
+                .get().await()
+
+            data = hashMapOf(
+                "title" to routine.title,
+                "startDate" to routine.startDate,
+                "customer" to customerDB.reference,
+                "trainer" to trainerDB.documents[0].reference,
+                "days" to routine.days
+            )
+        }else{
+            data = hashMapOf(
+                "title" to routine.title,
+                "startDate" to routine.startDate,
+                "customer" to null,
+                "trainer" to trainerDB.documents[0].reference,
+                "days" to routine.days
+            )
+        }
+
+
+
         FirebaseFirestore.getInstance().collection("routines").add(data).await()
         return Resource.Success(true)
     }
