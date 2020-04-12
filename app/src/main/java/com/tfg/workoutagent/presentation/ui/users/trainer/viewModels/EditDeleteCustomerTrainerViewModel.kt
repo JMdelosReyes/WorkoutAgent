@@ -9,9 +9,9 @@ import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Weight
 import com.tfg.workoutagent.vo.Resource
-import com.tfg.workoutagent.vo.getAgeWithError
-import com.tfg.workoutagent.vo.parseDateToFriendlyDate
-import com.tfg.workoutagent.vo.parseStringToDate
+import com.tfg.workoutagent.vo.utils.getAgeWithError
+import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
+import com.tfg.workoutagent.vo.utils.parseStringToDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception

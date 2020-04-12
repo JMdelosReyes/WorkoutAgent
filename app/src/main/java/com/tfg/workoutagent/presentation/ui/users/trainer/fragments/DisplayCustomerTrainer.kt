@@ -17,7 +17,7 @@ import com.tfg.workoutagent.domain.userUseCases.DisplayCustomerTrainerUseCaseImp
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.DisplayCustomerTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.DisplayCustomerTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
-import com.tfg.workoutagent.vo.parseDateToFriendlyDate
+import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.activity_bottom_navigation_trainer.*
 import kotlinx.android.synthetic.main.fragment_display_customer_trainer.*
 
