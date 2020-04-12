@@ -7,13 +7,26 @@
 
     <fragment
         android:id="@+id/navigation_admin_profile"
-        android:name="com.tfg.workoutagent.presentation.ui.profile.admin.fragments.ProfileFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.profile.admin.fragments.ProfileAdminFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_admin_profile" />
 
     <fragment
         android:id="@+id/navigation_admin_users"
         android:name="com.tfg.workoutagent.presentation.ui.users.admin.fragments.UserListFragment"
-        android:label="Users"
-        tools:layout="@layout/fragment_admin_users" />
+        android:label="@string/my_users"
+        tools:layout="@layout/fragment_admin_users">
+        <action
+            android:id="@+id/action_navigation_admin_users_to_createTrainerAdminFragment"
+            app:destination="@id/createTrainerAdminFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createTrainerAdminFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.users.admin.fragments.CreateTrainerAdminFragment"
+        android:label="fragment_create_trainer_admin"
+        tools:layout="@layout/fragment_create_trainer_admin" >
+        <action
+            android:id="@+id/action_createTrainerAdminFragment_to_navigation_admin_users"
+            app:destination="@id/navigation_admin_users" />
+    </fragment>
 </navigation>

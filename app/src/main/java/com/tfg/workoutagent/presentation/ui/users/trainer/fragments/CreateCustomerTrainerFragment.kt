@@ -1,8 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.users.trainer.fragments
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +17,6 @@ import com.tfg.workoutagent.databinding.FragmentCreateCustomerTrainerBinding
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.CreateCustomerTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.CreateCustomerTrainerViewModelFactory
-import java.util.*
 
 class CreateCustomerTrainerFragment : BaseFragment() {
 

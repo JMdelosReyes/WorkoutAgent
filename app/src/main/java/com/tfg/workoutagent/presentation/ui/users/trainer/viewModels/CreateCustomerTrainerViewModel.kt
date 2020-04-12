@@ -4,8 +4,8 @@ import androidx.lifecycle.*
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Weight
-import com.tfg.workoutagent.vo.getAgeWithError
-import com.tfg.workoutagent.vo.parseStringToDate
+import com.tfg.workoutagent.vo.utils.getAgeWithError
+import com.tfg.workoutagent.vo.utils.parseStringToDate
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -70,7 +70,9 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
     private fun createCustomer(){
         viewModelScope.launch {
             try{
-                val customer: Customer = Customer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone, height = height)
+                val customer: Customer = Customer(birthday = parseStringToDate(
+                    birthday
+                )!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone, height = height)
                 val weight = Weight(weight = initialWeight)
                 customer.weights.add(weight)
                 manageCustomerTrainerUseCase.createCustomer(customer)

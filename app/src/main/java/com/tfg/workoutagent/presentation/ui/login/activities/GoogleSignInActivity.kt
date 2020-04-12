@@ -107,9 +107,7 @@ class GoogleSignInActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         val user = FirebaseAuth.getInstance().currentUser
-        Log.i("Prueba inicio", "$user")
         if (user != null) {
-            val email = FirebaseAuth.getInstance().currentUser?.email.toString()
             viewModel.fechtRole.observe(this, Observer { result ->
                 when(result){
                     is Resource.Loading -> {

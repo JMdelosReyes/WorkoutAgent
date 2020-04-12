@@ -6,11 +6,13 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tfg.workoutagent.data.repositories.UserRepository
 import com.tfg.workoutagent.models.Customer
+import com.tfg.workoutagent.models.Trainer
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
 
 class UserRepositoryImpl: UserRepository {
 
+    //TRAINER
     override suspend fun getOwnCustomers(): Resource<MutableList<Customer>> {
         val resultData = FirebaseFirestore.getInstance()
             .collection("users")
@@ -52,6 +54,17 @@ class UserRepositoryImpl: UserRepository {
         return Resource.Success(customer)
     }
 
+    override suspend fun getTrainer(id: String): Resource<Trainer> {
+        //TODO: Revisar si hace el parseo correctamente por el MutableList de documentReference de customers
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(id)
+            .get().await()
+        val trainer = resultData.toObject(Trainer::class.java)
+        trainer!!.id = id
+        return Resource.Success(trainer)
+    }
+
     override suspend fun createCustomer(customer: Customer): Resource<Boolean> {
         val goalsArray = mutableListOf<HashMap<String, Any>>()
         for (goal in customer.goals){
@@ -73,6 +86,13 @@ class UserRepositoryImpl: UserRepository {
             .get().await().documents[0].id
         //Actualizo el trainer logeado
         FirebaseFirestore.getInstance().collection("users").document(trainerLoggedId).update("customers", FieldValue.arrayUnion(postResult!!)).await()
+        return Resource.Success(true)
+    }
+
+    override suspend fun createTrainer(trainer: Trainer): Resource<Boolean> {
+        val customers = mutableListOf<DocumentReference>()
+        val data : HashMap<String, Any> = hashMapOf("birthday" to trainer.birthday, "customers" to customers, "dni" to trainer.dni, "email" to trainer.email, "name" to trainer.name, "surname" to trainer.surname, "phone" to trainer.phone, "photo" to trainer.photo, "role" to trainer.role)
+        val postResult = FirebaseFirestore.getInstance().collection("users").add(data).await()
         return Resource.Success(true)
     }
 
@@ -98,7 +118,7 @@ class UserRepositoryImpl: UserRepository {
         }
         //TODO: Modificar para no perder la foto subida en Firestore
         if(customer.photo == ""){
-            customer.photo = resultData!!.photo
+            customer.photo = resultData.photo
         }
         val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goalsArray, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to customer.role, "weightPerWeek" to customer.weightPerWeek, "weights" to weightsArray)
         FirebaseFirestore.getInstance().collection("users").document(customer.id).update(data).await()
@@ -137,5 +157,29 @@ class UserRepositoryImpl: UserRepository {
         FirebaseFirestore.getInstance().collection("users").document(currentTrainerId).update("customers", FieldValue.arrayRemove(customerToBeDeleted)).await()
         FirebaseFirestore.getInstance().collection("users").document(id).delete().await()
         return Resource.Success(true)
+    }
+
+
+    //ADMIN
+
+    override suspend fun getCustomersAdmin(): Resource<MutableList<Customer>> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("role", "CUSTOMER")
+            .get().await().toObjects(Customer::class.java)
+        return Resource.Success(resultData)
+    }
+
+    override suspend fun getTrainersAdmin(): Resource<MutableList<Trainer>> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("role", "TRAINER")
+            .get().await()
+        val trainers = mutableListOf<Trainer>()
+        for (document in resultData.documents){
+            val trainer = Trainer(id = document.id, name = document.getString("name")!!, surname = document.getString("surname")!!, photo = document.getString("photo")!!, email = document.getString("email")!!, phone = document.getString("phone")!!)
+            trainers.add(trainer)
+        }
+        return Resource.Success(trainers)
     }
 }
