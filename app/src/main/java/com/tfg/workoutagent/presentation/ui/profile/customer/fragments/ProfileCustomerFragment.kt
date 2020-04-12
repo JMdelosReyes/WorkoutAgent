@@ -30,9 +30,6 @@ class ProfileCustomerFragment : Fragment() {
         profileCustomer =
             ViewModelProvider(this@ProfileCustomerFragment).get(ProfileCustomerViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_customer_profile, container, false)
-        profileCustomer.text.observe(viewLifecycleOwner, Observer {
-            text_profile_fragment.text = it
-        })
         return root
     }
 
