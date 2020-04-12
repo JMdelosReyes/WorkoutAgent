@@ -78,6 +78,13 @@
         <argument
             android:name="exercise_title"
             app:argType="string" />
+        <action
+            android:id="@+id/action_displayExercise_to_editDeleteExerciseFragment"
+            app:destination="@id/editDeleteExerciseFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createExerciseFragment"
@@ -86,7 +93,36 @@
         tools:layout="@layout/fragment_create_exercise" >
         <action
             android:id="@+id/action_createExerciseFragment_to_navigation_exercises_trainer"
-            app:destination="@id/navigation_exercises_trainer" />
+            app:destination="@id/navigation_exercises_trainer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_out_left"
+            app:popExitAnim="@anim/slide_in_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDeleteExerciseFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments.EditDeleteExerciseFragment"
+        android:label="EditDeleteExerciseFragment" >
+        <argument
+            android:name="exercise_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editDeleteExerciseFragment_to_navigation_exercises_trainer"
+            app:destination="@id/navigation_exercises_trainer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_editDeleteExerciseFragment_to_displayExercise"
+            app:destination="@id/displayExercise"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="exercise_title"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/displayCustomer"

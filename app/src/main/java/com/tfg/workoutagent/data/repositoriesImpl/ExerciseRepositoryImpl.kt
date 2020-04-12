@@ -1,6 +1,5 @@
 package com.tfg.workoutagent.data.repositoriesImpl
 
-import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import com.tfg.workoutagent.data.repositories.ExerciseRepository
