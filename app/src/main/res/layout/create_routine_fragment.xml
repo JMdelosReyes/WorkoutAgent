@@ -61,6 +61,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/Days" />
+
+
+            <TextView
+                android:id="@+id/routine_days_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@{viewModel.daysError}"
+                android:visibility="invisible" />
+
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewRoutineNewDay"
                 android:layout_width="match_parent"

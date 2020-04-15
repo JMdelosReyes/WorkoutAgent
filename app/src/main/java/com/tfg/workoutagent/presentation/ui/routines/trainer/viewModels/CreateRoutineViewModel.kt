@@ -22,13 +22,25 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     ViewModel() {
 
     // Routine fields
-    val title = MutableLiveData<String>()
-    val startDate = MutableLiveData<String>()
+    val title = MutableLiveData("")
+    private val _titleError = MutableLiveData("")
+    val titleError: LiveData<String>
+        get() = _titleError
+
+    val startDate = MutableLiveData("")
+    private val _startDateError = MutableLiveData("")
+    val startDateError: LiveData<String>
+        get() = _startDateError
+
     val days = MutableLiveData<MutableList<Day>>(mutableListOf())
+    private val _daysError = MutableLiveData("")
+    val daysError: LiveData<String>
+        get() = _daysError
+
     val pickerDate = MutableLiveData<Date>()
 
     // Day fields
-    val dayName = MutableLiveData<String>("")
+    val dayName = MutableLiveData("")
     private val _dayNameError = MutableLiveData("")
     val dayNameError: LiveData<String>
         get() = _dayNameError
@@ -48,12 +60,12 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val setsError: LiveData<String>
         get() = _setsError
 
-    val repetitions = MutableLiveData<String>("")
+    val repetitions = MutableLiveData("")
     private val _repetitionsError = MutableLiveData("")
     val repetitionsError: LiveData<String>
         get() = _repetitionsError
 
-    val weights = MutableLiveData<String>("")
+    val weights = MutableLiveData("")
     private val _weightsError = MutableLiveData("")
     val weightsError: LiveData<String>
         get() = _weightsError
@@ -92,6 +104,50 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         }
     }
 
+    private fun checkData(): Boolean {
+        checkTitle()
+        checkStartDate()
+        checkDays()
+        return _titleError.value == "" && _startDateError.value == "" && _daysError.value == ""
+    }
+
+    private fun checkDays() {
+        days.value?.let {
+            if (it.size == 0) {
+                _daysError.value = "At least one day is required"
+                return
+            }
+        } ?: run {
+            _daysError.value = "At least one day is required"
+            return
+        }
+        _daysError.value = ""
+    }
+
+    private fun checkStartDate() {
+        startDate.value?.let {
+            if (it.isEmpty()) {
+                _startDateError.value = "The start date cannot be empty"
+                return
+            }
+        }
+        _startDateError.value = ""
+    }
+
+    private fun checkTitle() {
+        title.value?.let {
+            if (it.isEmpty()) {
+                _titleError.value = "The title cannot be blank"
+                return
+            }
+            if (it.length < 4 || it.length > 30) {
+                _titleError.value = "The title must be between 4 and 30 characters"
+                return
+            }
+        }
+        _titleError.value = ""
+    }
+
     fun onAddDay() {
         _addDay.value = true
     }
@@ -112,15 +168,13 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
                     )
                 )
                 _routineCreated.value = true
+                clearAllData()
+                _routineCreated.value = null
             } catch (e: Exception) {
                 _routineCreated.value = false
             }
             _routineCreated.value = null
         }
-    }
-
-    private fun checkData(): Boolean {
-        return true
     }
 
     fun addDayNavigationCompleted() {
@@ -172,6 +226,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         _dayCreated.value = true
         clearDayData()
         _dayCreated.value = null
+        _daysError.value = ""
     }
 
     fun onSaveActivity() {
@@ -283,9 +338,12 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
 
     fun clearAllData() {
         title.value = ""
+        _titleError.value = ""
         startDate.value = ""
+        _startDateError.value = ""
         dayName.value = ""
         days.value = mutableListOf()
+        _daysError.value = ""
         pickerDate.value = Date()
     }
 

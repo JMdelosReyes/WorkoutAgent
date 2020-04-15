@@ -30,7 +30,6 @@ class CreateRoutineFragment : Fragment() {
     }
 
 
-
     private val clearData by lazy { CreateRoutineFragmentArgs.fromBundle(arguments!!).clearData }
     private lateinit var adapter: DayListAdapter
     private val viewModel by lazy {
@@ -74,15 +73,39 @@ class CreateRoutineFragment : Fragment() {
         recyclerViewRoutineNewDay.adapter = adapter
         observeDayData()
         observeData()
+        observeErrors()
         setupButtons()
     }
 
-    private fun setupButtons(){
-        val builder : MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker().setSelection(viewModel.pickerDate.value!!.time.toLong())
+    private fun observeErrors() {
+        viewModel.titleError.observe(viewLifecycleOwner, Observer {
+            binding.routineTitleInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.startDateError.observe(viewLifecycleOwner, Observer {
+            binding.routineStartDateInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.daysError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it == "") {
+                    binding.routineDaysError.visibility = View.INVISIBLE
+                } else {
+                    binding.routineDaysError.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
+    private fun setupButtons() {
+        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setSelection(viewModel.pickerDate.value!!.time.toLong())
         val currentTimeInMillis = Calendar.getInstance().timeInMillis
         //builder.setSelection()
-        val picker : MaterialDatePicker<*> = builder.build()
-        routine_startDate_input_edit.setOnClickListener{
+        val picker: MaterialDatePicker<*> = builder.build()
+        routine_startDate_input_edit.setOnClickListener {
             picker.show(activity!!.supportFragmentManager, picker.toString())
             picker.addOnPositiveButtonClickListener {
                 viewModel.setDate(it as Long)
@@ -102,6 +125,14 @@ class CreateRoutineFragment : Fragment() {
                 }
             }
         })
+
+        viewModel.routineCreated.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToNavigationRoutineTrainer2())
+                }
+            }
+        })
     }
 
     private fun observeDayData() {
@@ -109,7 +140,6 @@ class CreateRoutineFragment : Fragment() {
             it?.let {
                 adapter.setListData(viewModel.days.value!!)
                 adapter.notifyDataSetChanged()
-
             }
         })
     }
