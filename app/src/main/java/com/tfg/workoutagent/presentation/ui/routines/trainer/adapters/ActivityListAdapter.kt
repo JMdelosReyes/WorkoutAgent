@@ -40,6 +40,10 @@ class ActivityListAdapter(private val context: Context) :
     inner class ActivityListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(activity: RoutineActivity) {
             itemView.row_routine_day_activity_name.text = activity.name
+            itemView.row_routine_day_activity_repetitions.text =
+                "Repetitions: ${activity.repetitions.joinToString(",")}"
+            itemView.row_routine_day_activity_weights.text =
+                "Weights: ${activity.repetitions.joinToString(",")}"
         }
     }
 }

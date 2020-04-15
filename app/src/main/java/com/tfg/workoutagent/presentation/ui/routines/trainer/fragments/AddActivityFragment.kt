@@ -74,6 +74,41 @@ class AddActivityFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
         setupSpinnerAdapter()
+        observeErrors()
+        observeDialogState()
+    }
+
+    private fun observeDialogState() {
+        viewModel.closeActivityDialog.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    dismiss()
+                    viewModel.activityDialogClosed()
+                }
+            }
+        })
+    }
+
+    private fun observeErrors() {
+        viewModel.setsError.observe(viewLifecycleOwner, Observer {
+            binding.activitySetInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.repetitionsError.observe(viewLifecycleOwner, Observer {
+            binding.activityRepetitionsInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.weightsError.observe(viewLifecycleOwner, Observer {
+            binding.activityWeightsInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.noteError.observe(viewLifecycleOwner, Observer {
+            binding.activityNoteInputEdit.error =
+                if (it != "") it else null
+        })
     }
 
     private fun setupDialogWindow() {
@@ -87,16 +122,20 @@ class AddActivityFragment : DialogFragment() {
     }
 
     private fun setupToolbar() {
-        toolbar.setNavigationOnClickListener { dismiss() }
+        toolbar.setNavigationOnClickListener {
+            viewModel.clearActivityData()
+            dismiss()
+        }
         toolbar.title = "Some Title"
         toolbar.inflateMenu(R.menu.add_day_activity_dialog_menu)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_save_day_activity -> {
                     viewModel.onSaveActivity()
+                }
+                else -> {
                     dismiss()
                 }
-                else -> dismiss()
             }
             true
         }

@@ -44,6 +44,13 @@
                     android:text="@={viewModel.dayName}" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/day_activities_error"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@{viewModel.activitiesError}"
+                android:visibility="invisible" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_add_day_activities"
                 android:layout_width="match_parent"

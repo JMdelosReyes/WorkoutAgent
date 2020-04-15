@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -19,6 +20,7 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityLi
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
 import kotlinx.android.synthetic.main.add_day_fragment.*
+
 
 class AddDayFragment : Fragment() {
 
@@ -64,9 +66,42 @@ class AddDayFragment : Fragment() {
         // TODO
         viewModel.adapter = adapter
 
+        onBackPressed()
         observeData()
-
+        observeErrors()
         setupButtons()
+    }
+
+    private fun onBackPressed() {
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
+            true
+        ) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(
+                    AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
+                        clearData = 2
+                    )
+                )
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    private fun observeErrors() {
+        viewModel.dayNameError.observe(viewLifecycleOwner, Observer {
+            binding.routineDayNameInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.activitiesError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it == "") {
+                    binding.dayActivitiesError.visibility = View.INVISIBLE
+                } else {
+                    binding.dayActivitiesError.visibility = View.VISIBLE
+                }
+            }
+        })
     }
 
     private fun observeData() {
@@ -77,16 +112,23 @@ class AddDayFragment : Fragment() {
                 // findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToAddDayFragment())
             }
         })
+
+        viewModel.dayCreated.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    findNavController().navigate(
+                        AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
+                            2
+                        )
+                    )
+                }
+            }
+        })
     }
 
     private fun setupButtons() {
         save_create_day_button.setOnClickListener {
             viewModel.onSaveDay()
-            findNavController().navigate(
-                AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
-                    2
-                )
-            )
         }
 
         add_day_activity_button.setOnClickListener {
