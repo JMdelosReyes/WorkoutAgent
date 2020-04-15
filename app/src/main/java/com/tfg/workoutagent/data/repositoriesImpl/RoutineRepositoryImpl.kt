@@ -337,12 +337,6 @@ class RoutineRepositoryImpl: RoutineRepository {
             .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
             .get().await()
 
-        /*for(day in routine.days){
-           for(activity in day.activities){
-               activity.exercise
-           }
-        }*/
-
         if(routine.customer != null){
             val customerDB = FirebaseFirestore.getInstance()
                 .collection("users").document(routine.customer!!.id)
@@ -372,10 +366,41 @@ class RoutineRepositoryImpl: RoutineRepository {
     }
 
     override suspend fun editRoutine(routine: Routine): Resource<Boolean> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val data: HashMap<String, Any?>
+        val trainerDB = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await()
+
+        if(routine.customer != null){
+            val customerDB = FirebaseFirestore.getInstance()
+                .collection("users").document(routine.customer!!.id)
+                .get().await()
+
+            data = hashMapOf(
+                "title" to routine.title,
+                "startDate" to routine.startDate,
+                "customer" to customerDB.reference,
+                "trainer" to trainerDB.documents[0].reference,
+                "days" to routine.days
+            )
+        }else{
+            data = hashMapOf(
+                "title" to routine.title,
+                "startDate" to routine.startDate,
+                "customer" to null,
+                "trainer" to trainerDB.documents[0].reference,
+                "days" to routine.days
+            )
+        }
+
+
+        FirebaseFirestore.getInstance().collection("routines").document(routine.id).update(data).await()
+        return Resource.Success(true)
     }
 
     override suspend fun deleteRoutine(id: String): Resource<Boolean> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        FirebaseFirestore.getInstance().collection("routines").document(id).delete().await()
+        return Resource.Success(true)
     }
 }

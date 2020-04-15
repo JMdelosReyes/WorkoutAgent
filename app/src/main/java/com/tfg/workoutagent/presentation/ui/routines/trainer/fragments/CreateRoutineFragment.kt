@@ -102,7 +102,6 @@ class CreateRoutineFragment : Fragment() {
     private fun setupButtons() {
         val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
             .setSelection(viewModel.pickerDate.value!!.time.toLong())
-        val currentTimeInMillis = Calendar.getInstance().timeInMillis
         //builder.setSelection()
         val picker: MaterialDatePicker<*> = builder.build()
         routine_startDate_input_edit.setOnClickListener {

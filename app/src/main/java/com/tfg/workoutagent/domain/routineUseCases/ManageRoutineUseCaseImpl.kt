@@ -18,11 +18,11 @@ class ManageRoutineUseCaseImpl(
         routineRepository.createRoutine(routine)
 
     override suspend fun editRoutine(routine: Routine): Resource<Boolean> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return routineRepository.editRoutine(routine)
     }
 
     override suspend fun deleteRoutine(id: String): Resource<Boolean> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return routineRepository.deleteRoutine(id)
     }
 
     override suspend fun getExercises(): Resource<List<Exercise>> =

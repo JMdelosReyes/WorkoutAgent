@@ -168,4 +168,7 @@
     <string name="add_activity_weights_hint">Weights</string>
     <string name="add_activity_exercise_hint">Exercise</string>
     <string name="add_activity_note_hint">Note</string>
+    <string name="form_routine_delete_button">Delete routine</string>
+    <string name="form_routine_update_button">Save</string>
+    <string name="form_routine_edit_button">Edit</string>
 </resources>
