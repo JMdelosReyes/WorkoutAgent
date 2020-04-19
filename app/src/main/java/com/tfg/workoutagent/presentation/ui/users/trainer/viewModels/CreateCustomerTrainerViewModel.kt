@@ -1,17 +1,13 @@
 package com.tfg.workoutagent.presentation.ui.users.trainer.viewModels
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Weight
+import com.tfg.workoutagent.vo.getAgeWithError
+import com.tfg.workoutagent.vo.parseStringToDate
 import kotlinx.coroutines.launch
 import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
 
 class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: ManageCustomerTrainerUseCase) : ViewModel() {
 
@@ -86,18 +82,6 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         }
     }
 
-    private fun parseStringToDate(string: String?) : Date? {
-        val pattern = "dd-MM-yyyy"
-        val sdf = SimpleDateFormat(pattern)
-        val string = string?.trim()
-        if(string == null || string == "" || string == "dd-MM-yyyy"){
-            _birthdayError.value = "Birthday cannot be null"
-            val nullDate : Date? = null
-            return nullDate
-        }else{
-            return sdf.parse(string)
-        }
-    }
 
     private fun checkData(): Boolean {
         checkBirthday()
@@ -118,18 +102,7 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
             if(date == null){
                 _birthdayError.value = "Birthday cannot be null"
             }else{
-                val calendar = GregorianCalendar()
-                calendar.set(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH)
-                var years = date.year - calendar.get(Calendar.YEAR)
-                if(date.month < calendar.get(Calendar.MONTH) || ((date.month == calendar.get(Calendar.MONTH)) && (date.day < calendar.get(Calendar.DAY_OF_MONTH)))){
-                    years--
-                }
-                if(years < 18){
-                    _birthdayError.value = "The age of new user must be over 18 years old"
-                    return
-                }else{
-                    _birthdayError.value = ""
-                }
+                _birthdayError.value = getAgeWithError(it)
             }
         }
     }
@@ -181,10 +154,10 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
     }
 
     private fun checkHeight(){
-        height.let { if(it < 0) _heightError.value = "The height must be greater than 0 centimeters" else _heightError.value = "" }
+        height.let { if(it <= 0) _heightError.value = "The height must be greater than 0 centimeters" else _heightError.value = "" }
     }
 
     private fun checkInitialWeight(){
-        initialWeight.let { if(it < 0.0) _initialWeightError.value = "The weight must be greater than 0.0 kilograms" else _initialWeightError.value = "" }
+        initialWeight.let { if(it <= 0.0) _initialWeightError.value = "The weight must be greater than 0.0 kilograms" else _initialWeightError.value = "" }
     }
 }

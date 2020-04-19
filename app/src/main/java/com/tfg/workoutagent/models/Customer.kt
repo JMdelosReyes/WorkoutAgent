@@ -15,6 +15,9 @@ data class Customer(
     var phone : String = "DEFAULT_PHONE",
     var role : String = "CUSTOMER",
     var weightPerWeek : Double = 1.0,
-    var weights : MutableList<Weight> = mutableListOf()
+    var weights : MutableList<Weight> = mutableListOf(),
+    var formula : String = "Harris-Benedict",
+    var formulaType : String = "Harris-Benedict",
+    var genre: String = "M"
                     ) {
 }

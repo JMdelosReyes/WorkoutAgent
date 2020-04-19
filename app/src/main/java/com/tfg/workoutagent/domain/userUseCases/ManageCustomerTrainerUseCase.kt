@@ -7,6 +7,7 @@ interface ManageCustomerTrainerUseCase {
     suspend fun createCustomer(customer : Customer): Resource<Boolean>
     suspend fun getCustomer(id:String): Resource<Customer>
     suspend fun getOwnCustomers() : Resource<MutableList<Customer>>
+    suspend fun canDeleteCustomer(id : String) : Resource<Boolean>
     suspend fun deleteCustomer(id:String) : Resource<Boolean>
     suspend fun updateCustomer(customer: Customer) : Resource<Boolean>
 }

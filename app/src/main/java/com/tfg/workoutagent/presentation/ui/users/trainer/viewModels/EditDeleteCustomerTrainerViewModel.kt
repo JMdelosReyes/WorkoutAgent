@@ -1,16 +1,15 @@
 package com.tfg.workoutagent.presentation.ui.users.trainer.viewModels
 
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.*
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
+import com.tfg.workoutagent.models.Weight
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.getAgeWithError
+import com.tfg.workoutagent.vo.parseDateToFriendlyDate
+import com.tfg.workoutagent.vo.parseStringToDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.*
 
 class EditDeleteCustomerTrainerViewModel(private val id: String, private val manageCustomerTrainerUseCase: ManageCustomerTrainerUseCase) : ViewModel() {
 
@@ -63,6 +62,10 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
     val customerDeleted : LiveData<Boolean?>
         get() = _customerDeleted
 
+    private val _customerEdited = MutableLiveData<Boolean?>(null)
+    val customerEdited : LiveData<Boolean?>
+        get() = _customerEdited
+
     val getCustomer = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
@@ -76,45 +79,13 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
         }
     }
 
-    val getOwnCustomers = liveData(Dispatchers.IO) {
-        emit(Resource.Loading())
-        try {
-            val customers = manageCustomerTrainerUseCase.getOwnCustomers()
-            emit(customers)
-        }catch (e: Exception){
-            emit(Resource.Failure(e))
-        }
-    }
-
     fun onSave() {
         if(checkData()){
             editCustomer()
         }
     }
 
-    fun onDelete(){
-        viewModelScope.launch {
-            try {
-                manageCustomerTrainerUseCase.deleteCustomer(id)
-                _customerDeleted.value = true
-            }catch (e:Exception){
-                _customerDeleted.value = false
-            }
-        }
-    }
-
-    private fun loadData(customer : Resource.Success<Customer>){
-        birthday.postValue(customer.data.birthday.toString())
-        dni.postValue(customer.data.dni)
-        email.postValue(customer.data.email)
-        name.postValue(customer.data.name)
-        surname.postValue(customer.data.surname)
-        phone.postValue(customer.data.phone)
-        height.postValue(customer.data.height)
-    }
-
     private fun checkData(): Boolean {
-        checkEditableCustomer()
         checkBirthday()
         checkDni()
         checkEmail()
@@ -126,26 +97,52 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
         return _birthdayError.value == "" && _dniError.value == "" && _emailError.value == "" && _nameError.value == "" && _surnameError.value == "" && _photoError.value == "" && _heightError.value == "" && _initialWeightError.value == "" && _phoneError.value == ""
     }
 
-    private fun checkEditableCustomer(){
-        //val getOwnedCustomers = getOwnCustomers
-
-
-    }
-
     private fun editCustomer(){
-
+        viewModelScope.launch {
+            try{
+                val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, height = height.value!!)
+                val weight = Weight(weight = initialWeight.value!!)
+                customer.weights.add(weight)
+                manageCustomerTrainerUseCase.updateCustomer(customer)
+                _customerEdited.value = true
+            }catch (e: Exception){
+                _customerEdited.value = false
+            }
+            _customerEdited.value = null
+        }
     }
 
-    private fun parseStringToDate(string: String?) : Date? {
-        val pattern = "dd-MM-yyyy"
-        val sdf = SimpleDateFormat(pattern)
-        if(string == null || string == "dd-MM-yyyy"){
-            _birthdayError.value = ""
-            val nullDate : Date? = null
-            return nullDate
-        }else{
-            return sdf.parse(string)
+    fun onDelete(){
+        viewModelScope.launch {
+            try {
+                when(val ownCustomers = manageCustomerTrainerUseCase.canDeleteCustomer(id)){
+                    is Resource.Success -> {
+                        if(ownCustomers.data) {
+                            manageCustomerTrainerUseCase.deleteCustomer(id)
+                            _customerDeleted.value = true
+                        }else{
+                            _customerDeleted.value = false
+                        }
+                    }
+                    is Resource.Failure -> {
+                        _customerDeleted.value = false
+                    }
+                }
+            }catch (e:Exception){
+                _customerDeleted.value = false
+            }
         }
+    }
+
+    private fun loadData(customer : Resource.Success<Customer>){
+        birthday.postValue(parseDateToFriendlyDate(customer.data.birthday))
+        dni.postValue(customer.data.dni)
+        email.postValue(customer.data.email)
+        name.postValue(customer.data.name)
+        surname.postValue(customer.data.surname)
+        phone.postValue(customer.data.phone)
+        height.postValue(customer.data.height)
+        initialWeight.postValue(customer.data.weights.last().weight)
     }
 
     private fun checkBirthday() {
@@ -154,19 +151,7 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
             if(date == null){
                 _birthdayError.value = "Birthday cannot be null"
             }else{
-                val calendar = GregorianCalendar()
-                calendar.set(Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH)
-                var years = date.year - calendar.get(Calendar.YEAR)
-                if(date.month < calendar.get(Calendar.MONTH) || ((date.month == calendar.get(
-                        Calendar.MONTH)) && (date.day < calendar.get(Calendar.DAY_OF_MONTH)))){
-                    years--
-                }
-                if(years < 18){
-                    _birthdayError.value = "The age of new user must be over 18 years old"
-                    return
-                }else{
-                    _birthdayError.value = ""
-                }
+                _birthdayError.value = getAgeWithError(it)
             }
         }
     }
@@ -213,10 +198,10 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
     }
 
     private fun checkHeight(){
-        height.value?.let { if(it < 0) _heightError.value = "The height must be greater than 0 centimeters" else _heightError.value = "" }
+        height.value?.let { if(it <= 0) _heightError.value = "The height must be greater than 0 centimeters" else _heightError.value = "" }
     }
 
     private fun checkInitialWeight(){
-        initialWeight.value?.let { if(it < 0.0) _initialWeightError.value = "The weight must be greater than 0.0 kilograms" else _initialWeightError.value = "" }
+        initialWeight.value?.let { if(it <= 0.0) _initialWeightError.value = "The weight must be greater than 0.0 kilograms" else _initialWeightError.value = "" }
     }
 }

@@ -14,4 +14,7 @@ interface UserRepository {
     suspend fun updateCustomer(customer: Customer) : Resource<Boolean>
 
     suspend fun deleteCustomer(id : String): Resource<Boolean>
+
+    suspend fun canDeleteCustomer(id : String) : Resource<Boolean>
+
 }
