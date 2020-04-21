@@ -156,4 +156,23 @@
     <string name="users">Users</string>
     <string name="form_exercise_save_button">Save exercise</string>
     <string name="form_exercise_delete_button">Delete exercise</string>
+    <string name="form_routine_create_button">Create routine</string>
+    <string name="form_routine_title_hint">Routine title</string>
+    <string name="form_routine_startDate_hint">Start date</string>
+    <string name="form_add_day_button">Add day</string>
+    <string name="form_day_cancel_button">Cancel</string>
+    <string name="t_tulo_de_la_actividad">Título de la actividad</string>
+    <string name="form_routine_day_title_hint">Day title</string>
+    <string name="form_day_save_button">Save</string>
+    <string name="Days">Days</string>
+    <string name="add_day_activity_button">Add activity</string>
+    <string name="action_save_day_activity">Save</string>
+    <string name="add_activity_sets_hint">Sets</string>
+    <string name="add_activity_repetitions_hint">Repetitions</string>
+    <string name="add_activity_weights_hint">Weights</string>
+    <string name="add_activity_exercise_hint">Exercise</string>
+    <string name="add_activity_note_hint">Note</string>
+    <string name="form_routine_delete_button">Delete routine</string>
+    <string name="form_routine_update_button">Save</string>
+    <string name="form_routine_edit_button">Edit</string>
 </resources>

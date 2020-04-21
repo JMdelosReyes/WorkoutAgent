@@ -11,6 +11,7 @@ import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Exercise
 import com.tfg.workoutagent.models.Routine
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments.ExerciseTrainerFragmentDirections
+import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.RoutineTrainerFragmentDirections
 import kotlinx.android.synthetic.main.item_row.view.*
 import kotlinx.android.synthetic.main.item_row_routine.view.*
 
@@ -44,7 +45,14 @@ class RoutineListAdapter(private val context: Context) :
         fun bindView(routine: Routine) {
 
             itemView.row_routine_title.text = routine.title
-            itemView.row_routine_customer_name.text = routine.customer.name+" "+ routine.customer.surname
+            itemView.row_routine_customer_name.text = (routine.customer?.name ?: "") +" "+ (routine.customer?.surname ?: "")
+            itemView.setOnClickListener {
+                itemView.findNavController().navigate(
+                    RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToDisplayRoutineFragment(
+                        routine.id, routine.title
+                    )
+                )
+            }
 
         }
     }

@@ -9,13 +9,36 @@
         android:id="@+id/navigation_activity_trainer"
         android:name="com.tfg.workoutagent.presentation.ui.activity.trainer.fragments.ActivityTrainerFragment"
         android:label="@string/my_activity_trainer"
-        tools:layout="@layout/fragment_trainer_activity" />
+        tools:layout="@layout/fragment_trainer_activity" >
+        <action
+            android:id="@+id/action_navigation_activity_trainer_to_displayCustomer"
+            app:destination="@id/displayCustomer"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_routine_trainer"
         android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.RoutineTrainerFragment"
         android:label="@string/my_routines_trainer"
-        tools:layout="@layout/fragment_trainer_routine" />
+        tools:layout="@layout/fragment_trainer_routine" >
+        <action
+            android:id="@+id/action_navigation_routine_trainer_to_displayRoutineFragment"
+            app:destination="@id/displayRoutine"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_navigation_routine_trainer_to_createRoutineFragment"
+            app:destination="@id/createRoutine"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_exercises_trainer"
@@ -125,6 +148,50 @@
             app:argType="string" />
     </fragment>
     <fragment
+        android:id="@+id/displayRoutine"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.DisplayRoutineFragment"
+        android:label="display_routine_fragment"
+        tools:layout="@layout/display_routine_fragment" >
+        <argument
+            android:name="routine_id"
+            app:argType="string" />
+        <argument
+            android:name="routine_title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_displayRoutine_to_editRoutineFragment"
+            app:destination="@id/editRoutineFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createRoutine"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.CreateRoutineFragment"
+        android:label="create_routine_fragment"
+        tools:layout="@layout/create_routine_fragment" >
+        <action
+            android:id="@+id/action_createRoutine_to_navigation_routine_trainer2"
+            app:destination="@id/navigation_routine_trainer" />
+        <action
+            android:id="@+id/action_createRoutine_to_addDayFragment"
+            app:destination="@id/addDayFragment"
+            app:popUpTo="@id/navigation_routine_trainer" />
+        <argument
+            android:name="clear_data"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDayFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFragment"
+        android:label="add_day_fragment"
+        tools:layout="@layout/add_day_fragment" >
+        <action
+            android:id="@+id/action_addDayFragment_to_createRoutine"
+            app:destination="@id/createRoutine"
+            app:popUpTo="@id/navigation_routine_trainer" />
+        <action
+            android:id="@+id/action_addDayFragment_to_addActivityFragment2"
+            app:destination="@id/addActivityFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/displayCustomer"
         android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.DisplayCustomerTrainer"
         android:label="Customer"
@@ -177,6 +244,22 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <dialog
+        android:id="@+id/addActivityFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddActivityFragment"
+        android:label="fragment_add_activity"
+        tools:layout="@layout/fragment_add_activity" />
+    <fragment
+        android:id="@+id/editRoutineFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.EditRoutineFragment"
+        android:label="EditRoutineFragment" >
+        <argument
+            android:name="routine_id"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_editRoutineFragment_to_navigation_routine_trainer"
+            app:destination="@id/navigation_routine_trainer" />
     </fragment>
 
 </navigation>

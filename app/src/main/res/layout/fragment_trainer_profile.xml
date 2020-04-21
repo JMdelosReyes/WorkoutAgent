@@ -6,28 +6,151 @@
     android:layout_height="match_parent"
     tools:context=".presentation.ui.profile.trainer.fragments.ProfileTrainerFragment">
 
-    <TextView
-        android:id="@+id/text_profile_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleImageViewTrainer_displayProfile"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="84dp"
+        app:civ_border_width="1dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/sign_out_button"
+    <TextView
+        android:id="@+id/display_trainer_name_displayProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/sign_out"
-        android:onClick=""
+        android:layout_marginBottom="24dp"
+        android:text="@string/name_text_display_customer"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/card_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewTrainer_displayProfile"
+        app:layout_constraintVertical_bias="0.75" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
+        android:layout_width="314dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="72dp"
+        app:cardBackgroundColor="#C1FFEF"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewTrainer_displayProfile">
+
+        <LinearLayout
+            android:id="@+id/ll_details_user"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp">
+
+            <TextView
+                android:id="@+id/display_trainer_dni_displayProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:drawableStart="@drawable/ic_contact_24dp"
+                android:drawablePadding="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/customer_dni"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+            <TextView
+                android:id="@+id/display_trainer_phone_displayProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="phone"
+                android:drawableStart="@drawable/ic_phone_black_24dp"
+                android:drawablePadding="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/customer_phone"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/display_trainer_email_displayProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="email"
+                android:drawableStart="@drawable/ic_email_black_24dp"
+                android:drawablePadding="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/customer_email"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/display_trainer_birthday_displayProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_cake_black_24dp"
+                android:drawablePadding="4dp"
+                android:paddingBottom="4dp"
+                android:text="@string/birthday_text_display_user"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="313dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_profile_fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/card_view"
+        app:layout_constraintVertical_bias="0.234">
+
+        <Button
+            android:id="@+id/display_trainer_button_curriculum"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_resume_48dp"
+            android:text="Curriculum"
+            android:textSize="32sp" />
+
+        <Button
+            android:id="@+id/display_trainer_button_evolution"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:drawableLeft="@drawable/ic_statistics_48dp"
+            android:text="Statistics"
+            android:textSize="32sp" />
+
+        <Button
+            android:id="@+id/display_trainer_button_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_edit_white_48dp"
+            android:text="@string/edit"
+            android:textSize="32sp" />
+
+        <Button
+            android:id="@+id/sign_out_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:drawableLeft="@drawable/ic_logout_white_48dp"
+            android:text="@string/sign_out"
+            android:textSize="32sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.879" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

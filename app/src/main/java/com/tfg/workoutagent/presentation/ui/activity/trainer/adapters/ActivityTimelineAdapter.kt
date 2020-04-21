@@ -5,10 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.TimelineActivity
+import com.tfg.workoutagent.presentation.ui.activity.trainer.fragments.ActivityTrainerFragmentDirections
+import com.tfg.workoutagent.presentation.ui.users.trainer.fragments.UserTrainerFragmentDirections
 import kotlinx.android.synthetic.main.item_row_activity_timeline.view.*
 import kotlin.math.truncate
 
@@ -56,11 +59,21 @@ class ActivityTimelineAdapter(private val context: Context) :
                 hours = truncate(hours.toDouble()).toLong()
                 itemView.row_finishDate_message.text = "$hours hours ago"
             }else if(minutesAgo < 60*24*7){
-                var days = minutesAgo/60*24
+                var days = minutesAgo/(60*24)
                 days = truncate(days.toDouble()).toLong()
-                itemView.row_finishDate_message.text = "$days days ago"
+                if(days.toInt() == 1){
+                    itemView.row_finishDate_message.text = "yesterday"
+                }else{
+                    itemView.row_finishDate_message.text = "$days days ago"
+                }
+
             }else{
                 itemView.row_finishDate_message.text = "A long time ago"
+            }
+            itemView.setOnClickListener {
+                itemView.findNavController().navigate(
+                    ActivityTrainerFragmentDirections.actionNavigationActivityTrainerToDisplayCustomer(customerId = timelineActivity.customerId, customerName = timelineActivity.customerName)
+                )
             }
 
         }

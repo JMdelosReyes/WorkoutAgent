@@ -9,6 +9,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.tfg.workoutagent.base.BaseActivity
+import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFragmentDirections
 import kotlinx.android.synthetic.main.activity_bottom_navigation_trainer.*
 
 class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
@@ -34,6 +35,22 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                 R.id.navigation_routine_trainer -> {
                     supportActionBar?.title = "Routines"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+                R.id.displayRoutine -> {
+                    supportActionBar?.title =
+                        arguments!!.get("routine_title").toString()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.createRoutine -> {
+                    supportActionBar?.title = "Create routine"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.addDayFragment -> {
+                    supportActionBar?.title = "Add day"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
                 R.id.navigation_exercises_trainer -> {
                     supportActionBar?.title = "Exercises"
@@ -89,7 +106,17 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                onBackPressed()
+                val navController = findNavController(R.id.nav_host_fragment)
+                when (navController.currentDestination?.id) {
+                    R.id.addDayFragment -> {
+                        navController.navigate(
+                            AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
+                                clearData = 2
+                            )
+                        )
+                    }
+                    else -> onBackPressed()
+                }
                 return true
             }
         }

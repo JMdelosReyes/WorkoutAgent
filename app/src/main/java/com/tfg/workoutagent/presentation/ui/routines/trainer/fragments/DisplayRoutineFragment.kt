@@ -1,42 +1,47 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
-import com.tfg.workoutagent.domain.routineUseCases.ListRoutinesUseCaseImpl
-import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.RoutineListAdapter
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListRoutineTrainerViewModel
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListRoutineTrainerViewModelFactory
+import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayRoutineViewModel
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayRoutineViewModelFactory
 import com.tfg.workoutagent.vo.Resource
-import kotlinx.android.synthetic.main.fragment_trainer_routine.*
+import kotlinx.android.synthetic.main.display_routine_fragment.*
 
-class RoutineTrainerFragment : Fragment() {
+class DisplayRoutineFragment : Fragment() {
 
-    private lateinit var adapter: RoutineListAdapter
+    private val routineId by lazy { DisplayRoutineFragmentArgs.fromBundle(arguments!!).routineId }
+    private val routineTitle by lazy { DisplayRoutineFragmentArgs.fromBundle(arguments!!).routineTitle }
+    private lateinit var adapter: DayListAdapter
+
+
     private val viewModel by lazy {
         ViewModelProvider(
             this,
-            ListRoutineTrainerViewModelFactory(
-                ListRoutinesUseCaseImpl(RoutineRepositoryImpl())
+            DisplayRoutineViewModelFactory(
+                routineId,
+                ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
-        ).get(ListRoutineTrainerViewModel::class.java)
+        ).get(DisplayRoutineViewModel::class.java)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_trainer_routine, container, false)
+        return inflater.inflate(R.layout.display_routine_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,24 +49,34 @@ class RoutineTrainerFragment : Fragment() {
 
         setupButtons()
 
-        adapter = RoutineListAdapter(this.context!!)
-        recyclerViewRoutine.layoutManager = LinearLayoutManager(this.context!!)
-        recyclerViewRoutine.adapter = adapter
+        adapter = DayListAdapter(this.context!!)
+        recyclerViewRoutineDay.layoutManager = LinearLayoutManager(this.context!!)
+        recyclerViewRoutineDay.adapter = adapter
         observeData()
+    }
+
+    private fun setupButtons() {
+        edit_routine_button.setOnClickListener {
+            findNavController().navigate(
+               DisplayRoutineFragmentDirections.actionDisplayRoutineToEditRoutineFragment(routineId)
+            )
+        }
     }
 
     private fun observeData() {
         //si es en un fragmento ponemos viewLifecycleowner como primer parametro
 
-        viewModel.routineList.observe(viewLifecycleOwner, Observer { result ->
+        viewModel.routine.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is Resource.Loading -> {
                     shimmer_view_container_routine.startShimmer()
+                    edit_routine_button.visibility = View.INVISIBLE
                 }
                 is Resource.Success -> {
                     shimmer_view_container_routine.visibility = View.GONE
                     shimmer_view_container_routine.stopShimmer()
-                    adapter.setListData(result.data)
+                    edit_routine_button.visibility = View.VISIBLE
+                    adapter.setListData(result.data.days)
                     adapter.notifyDataSetChanged()
                 }
                 is Resource.Failure -> {
@@ -76,15 +91,4 @@ class RoutineTrainerFragment : Fragment() {
             }
         })
     }
-
-    private fun setupButtons() {
-        fab_button_routine.setOnClickListener {
-            findNavController().navigate(
-                RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToCreateRoutineFragment(
-                    clearData = 1
-                )
-            )
-        }
-    }
 }
-
