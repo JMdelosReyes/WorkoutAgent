@@ -38,7 +38,9 @@ class ActivityListAdapter(private val context: Context) :
     }
 
     inner class ActivityListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        lateinit var activity: RoutineActivity
         fun bindView(activity: RoutineActivity) {
+            this.activity = activity
             itemView.row_routine_day_activity_name.text = activity.name
             itemView.row_routine_day_activity_repetitions.text =
                 "Repetitions: ${activity.repetitions.joinToString(",")}"

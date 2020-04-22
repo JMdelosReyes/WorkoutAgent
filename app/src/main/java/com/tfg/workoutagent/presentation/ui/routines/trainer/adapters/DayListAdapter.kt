@@ -13,7 +13,8 @@ import com.tfg.workoutagent.models.Day
 import kotlinx.android.synthetic.main.item_row_routine_day.view.*
 
 
-class DayListAdapter(private val context: Context) : RecyclerView.Adapter<DayListAdapter.DayListViewHolder>() {
+class DayListAdapter(private val context: Context) :
+    RecyclerView.Adapter<DayListAdapter.DayListViewHolder>() {
 
     private var dataList = mutableListOf<Day>()
     private val viewPool = RecyclerView.RecycledViewPool()
@@ -22,7 +23,8 @@ class DayListAdapter(private val context: Context) : RecyclerView.Adapter<DayLis
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayListViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_row_routine_day, parent, false)
+        val view =
+            LayoutInflater.from(context).inflate(R.layout.item_row_routine_day, parent, false)
         return DayListViewHolder(view)
     }
 
@@ -40,7 +42,8 @@ class DayListAdapter(private val context: Context) : RecyclerView.Adapter<DayLis
         val day: Day = dataList[position]
         holder.bindView(day)
 
-        val childLayoutManager = LinearLayoutManager(holder.recyclerView.context, LinearLayout.VERTICAL, false)
+        val childLayoutManager =
+            LinearLayoutManager(holder.recyclerView.context, LinearLayout.VERTICAL, false)
 
         holder.recyclerView.apply {
             layoutManager = childLayoutManager
@@ -51,8 +54,10 @@ class DayListAdapter(private val context: Context) : RecyclerView.Adapter<DayLis
 
 
     inner class DayListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val recyclerView : RecyclerView = itemView.recyclerViewRoutineDayActivity
+        val recyclerView: RecyclerView = itemView.recyclerViewRoutineDayActivity
+        lateinit var day: Day
         fun bindView(day: Day) {
+            this.day = day
             itemView.row_routine_day_name.text = day.name
         }
     }

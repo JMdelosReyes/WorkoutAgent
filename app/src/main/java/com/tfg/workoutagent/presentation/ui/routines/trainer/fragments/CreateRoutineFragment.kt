@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
@@ -71,10 +73,35 @@ class CreateRoutineFragment : Fragment() {
         adapter = DayListAdapter(this.context!!)
         recyclerViewRoutineNewDay.layoutManager = LinearLayoutManager(this.context!!)
         recyclerViewRoutineNewDay.adapter = adapter
+        val itemTouchHelper = setUpItemTouchHelper()
+        itemTouchHelper.attachToRecyclerView(recyclerViewRoutineNewDay)
+
         observeDayData()
         observeData()
         observeErrors()
         setupButtons()
+    }
+
+    private fun setUpItemTouchHelper(): ItemTouchHelper {
+        val simpleItemTouchCallback = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewHolder as DayListAdapter.DayListViewHolder
+                val day = viewHolder.day
+                viewModel.removeDay(day)
+                adapter.notifyDataSetChanged()
+            }
+        }
+
+        return ItemTouchHelper(simpleItemTouchCallback)
     }
 
     private fun observeErrors() {

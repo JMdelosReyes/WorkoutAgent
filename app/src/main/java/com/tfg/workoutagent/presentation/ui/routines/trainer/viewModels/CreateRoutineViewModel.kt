@@ -365,6 +365,15 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         _noteError.value = ""
     }
 
+    fun removeActivity(activity: RoutineActivity) {
+        this.activities.value?.remove(activity)
+        this.adapter?.notifyDataSetChanged()
+    }
+
+    fun removeDay(day: Day) {
+        this.days.value?.remove(day)
+    }
+
     // Para ek spinner
     fun getExercises() {
         viewModelScope.launch {
