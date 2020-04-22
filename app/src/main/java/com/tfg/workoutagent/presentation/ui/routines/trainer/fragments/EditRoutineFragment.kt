@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
@@ -67,13 +69,36 @@ class EditRoutineFragment : Fragment() {
         adapter = DayListAdapter(this.context!!)
         recyclerView_Routine_edit_Day.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_Routine_edit_Day.adapter = adapter
+        val itemTouchHelper = setUpItemTouchHelper()
+        itemTouchHelper.attachToRecyclerView(recyclerView_Routine_edit_Day)
 
         observeData()
         setupButtons()
-
     }
 
-    private fun observeData(){
+    private fun setUpItemTouchHelper(): ItemTouchHelper {
+        val simpleItemTouchCallback = object :
+            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewHolder as DayListAdapter.DayListViewHolder
+                val day = viewHolder.day
+                viewModel.removeDay(day)
+                adapter.notifyDataSetChanged()
+            }
+        }
+
+        return ItemTouchHelper(simpleItemTouchCallback)
+    }
+
+    private fun observeData() {
         viewModel.routine.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
@@ -118,7 +143,8 @@ class EditRoutineFragment : Fragment() {
 
     private fun setupButtons() {
         //TODO Hay que cambiar el valor que entra
-        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker().setSelection(Date().time)
+        val builder: MaterialDatePicker.Builder<*> =
+            MaterialDatePicker.Builder.datePicker().setSelection(Date().time)
         val currentTimeInMillis = Calendar.getInstance().timeInMillis
         //builder.setSelection()
         val picker: MaterialDatePicker<*> = builder.build()

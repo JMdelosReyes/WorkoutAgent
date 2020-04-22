@@ -5,13 +5,17 @@ import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCase
 import com.tfg.workoutagent.models.Day
 import com.tfg.workoutagent.models.Exercise
 import com.tfg.workoutagent.models.Routine
+import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class EditRoutineViewModel(private val routineId: String,private val manageRoutineUseCase: ManageRoutineUseCase) : ViewModel() {
+class EditRoutineViewModel(
+    private val routineId: String,
+    private val manageRoutineUseCase: ManageRoutineUseCase
+) : ViewModel() {
 
     // Routine fields
     val title = MutableLiveData("")
@@ -113,7 +117,7 @@ class EditRoutineViewModel(private val routineId: String,private val manageRouti
         }
     }
 
-
-
-
+    fun removeDay(day: Day) {
+        this.days.value?.remove(day)
+    }
 }
