@@ -193,7 +193,7 @@
     </fragment>
     <fragment
         android:id="@+id/displayCustomer"
-        android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.DisplayCustomerTrainer"
+        android:name="com.tfg.workoutagent.presentation.ui.users.trainer.fragments.DisplayCustomerTrainerFragment"
         android:label="Customer"
         tools:layout="@layout/fragment_display_customer_trainer">
         <argument

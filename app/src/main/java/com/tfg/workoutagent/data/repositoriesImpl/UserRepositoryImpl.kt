@@ -1,9 +1,13 @@
 package com.tfg.workoutagent.data.repositoriesImpl
 
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.tfg.workoutagent.data.repositories.UserRepository
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Trainer
@@ -11,6 +15,18 @@ import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
 
 class UserRepositoryImpl: UserRepository {
+
+    override suspend fun updateProfileAdmin(): Resource<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateProfileCustomer(): Resource<Boolean> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun updateProfileTrainer(): Resource<Boolean> {
+        TODO("Not yet implemented")
+    }
 
     //TRAINER
     override suspend fun getOwnCustomers(): Resource<MutableList<Customer>> {
@@ -29,12 +45,11 @@ class UserRepositoryImpl: UserRepository {
                         customer.id = customerdoc.id
                         customer.name = customerdoc.getString("name")!!
                         customer.surname = customerdoc.getString("surname")!!
-                        customer.photo = customerdoc.getString("photo")!!
+                        if(customerdoc.getString("photo") != null) customer.photo = customerdoc.getString("photo")!! else customer.photo = ""
+                        Log.i("customer.photo", "1 ${customer.photo}")
                         customer.phone = customerdoc.getString("phone")!!
                         customer.email = customerdoc.getString("email")!!
-                        customer.dni = customerdoc.getString("dni")!!
-                        customer.birthday = customerdoc.getTimestamp("birthday")!!.toDate()
-
+                        Log.i("customer repo", customer.toString())
                         customers.add(customer)
                     }
                 }
@@ -52,17 +67,6 @@ class UserRepositoryImpl: UserRepository {
         val customer = resultData.toObject(Customer::class.java)
         customer!!.id = id
         return Resource.Success(customer)
-    }
-
-    override suspend fun getTrainer(id: String): Resource<Trainer> {
-        //TODO: Revisar si hace el parseo correctamente por el MutableList de documentReference de customers
-        val resultData = FirebaseFirestore.getInstance()
-            .collection("users")
-            .document(id)
-            .get().await()
-        val trainer = resultData.toObject(Trainer::class.java)
-        trainer!!.id = id
-        return Resource.Success(trainer)
     }
 
     override suspend fun createCustomer(customer: Customer): Resource<Boolean> {
@@ -96,28 +100,53 @@ class UserRepositoryImpl: UserRepository {
         return Resource.Success(true)
     }
 
+    override suspend fun getLoggedUserCustomer(): Resource<Customer> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await()
+        val customer = resultData.documents[0].toObject(Customer::class.java)!!
+        customer.id = resultData.documents[0].id
+        return Resource.Success(customer)
+    }
+
+    override suspend fun getLoggedUserTrainer(): Resource<Trainer> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await().documents[0]
+        var trainer = Trainer(id = resultData.id,
+            name = resultData.getString("name")!!,
+            surname = resultData.getString("surname")!!,
+            email = resultData.getString("email")!!,
+            dni = resultData.getString("dni")!!,
+            phone = resultData.getString("phone")!!,
+            photo = resultData.getString("photo")!!,
+            birthday = resultData.getDate("birthday")!!
+            )
+        return Resource.Success(trainer)
+    }
+
     override suspend fun updateCustomer(customer: Customer): Resource<Boolean> {
         val resultData = FirebaseFirestore.getInstance()
             .collection("users")
             .document(customer.id)
-            .get().await().toObject(Customer::class.java)
+            .get().await().toObject(Customer::class.java)!!
         //Para no perder los goals anteriores del usuario, los extraemos de base de datos
         val goalsArray = mutableListOf<HashMap<String, Any>>()
-        for (goal in resultData!!.goals){
+        for (goal in resultData.goals){
             val hashGoal = hashMapOf<String, Any>("aim" to goal.aim, "isAchieved" to goal.isAchieved, "startDate" to goal.startDate, "endDate" to goal.endDate)
             goalsArray.add(hashGoal)
         }
         //Para actualizar el ultimo peso del usuario, tomo el array completo de base de datos para no perder el resto de información
         val prevWeights = resultData.weights
-        prevWeights.removeAt(resultData.weights.size-1)
-        prevWeights.add(customer.weights.get(0))
         val weightsArray = mutableListOf<HashMap<String, Any>>()
         for (weight in prevWeights){
             val hashWeight = hashMapOf<String, Any>("date" to weight.date, "weight" to weight.weight)
             weightsArray.add(hashWeight)
         }
         //TODO: Modificar para no perder la foto subida en Firestore
-        if(customer.photo == ""){
+        if(customer.photo == "" || customer.photo == "DEFAULT_PHOTO"){
             customer.photo = resultData.photo
         }
         val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goalsArray, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to customer.role, "weightPerWeek" to customer.weightPerWeek, "weights" to weightsArray)

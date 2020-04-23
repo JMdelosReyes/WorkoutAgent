@@ -9,7 +9,11 @@
         android:id="@+id/navigation_admin_profile"
         android:name="com.tfg.workoutagent.presentation.ui.profile.admin.fragments.ProfileAdminFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_admin_profile" />
+        tools:layout="@layout/fragment_admin_profile" >
+        <action
+            android:id="@+id/action_navigation_admin_profile_to_editProfileAdminFragment"
+            app:destination="@id/editProfileAdminFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_admin_users"
@@ -19,6 +23,12 @@
         <action
             android:id="@+id/action_navigation_admin_users_to_createTrainerAdminFragment"
             app:destination="@id/createTrainerAdminFragment" />
+        <action
+            android:id="@+id/action_navigation_admin_users_to_displayCustomerAdminFragment"
+            app:destination="@id/displayCustomerAdminFragment" />
+        <action
+            android:id="@+id/action_navigation_admin_users_to_displayTrainerAdminFragment"
+            app:destination="@id/displayTrainerAdminFragment" />
     </fragment>
     <fragment
         android:id="@+id/createTrainerAdminFragment"
@@ -28,5 +38,41 @@
         <action
             android:id="@+id/action_createTrainerAdminFragment_to_navigation_admin_users"
             app:destination="@id/navigation_admin_users" />
+    </fragment>
+    <fragment
+        android:id="@+id/displayCustomerAdminFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.users.admin.fragments.DisplayCustomerAdminFragment"
+        android:label="fragment_display_customer_admin"
+        tools:layout="@layout/fragment_display_customer_admin" >
+        <action
+            android:id="@+id/action_displayCustomerAdminFragment_to_navigation_admin_users"
+            app:destination="@id/navigation_admin_users" />
+    </fragment>
+    <fragment
+        android:id="@+id/displayTrainerAdminFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.users.admin.fragments.DisplayTrainerAdminFragment"
+        android:label="fragment_display_trainer_admin"
+        tools:layout="@layout/fragment_display_trainer_admin" >
+        <action
+            android:id="@+id/action_displayTrainerAdminFragment_to_editDeleteTrainerAdminFragment"
+            app:destination="@id/editDeleteTrainerAdminFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDeleteTrainerAdminFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.users.admin.fragments.EditDeleteTrainerAdminFragment"
+        android:label="fragment_edit_delete_trainer_admin"
+        tools:layout="@layout/fragment_edit_delete_trainer_admin" >
+        <action
+            android:id="@+id/action_editDeleteTrainerAdminFragment_to_navigation_admin_users"
+            app:destination="@id/navigation_admin_users" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileAdminFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.profile.admin.fragments.EditProfileAdminFragment"
+        android:label="fragment_edit_profile_admin"
+        tools:layout="@layout/fragment_edit_profile_admin" >
+        <action
+            android:id="@+id/action_editProfileAdminFragment_to_navigation_admin_profile"
+            app:destination="@id/navigation_admin_profile" />
     </fragment>
 </navigation>

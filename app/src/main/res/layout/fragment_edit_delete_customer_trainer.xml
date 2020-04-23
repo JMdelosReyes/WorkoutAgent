@@ -17,18 +17,32 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_selected"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="64dp"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/customer_email_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.069"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.105" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/edit_profile_customer_button_select_image_customer"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_marginTop="64dp"
                 android:contentDescription="@string/form_user_content_desc_photo"
                 android:src="@drawable/ic_add_a_photo_white_24dp"
+                app:layout_constraintBottom_toTopOf="@+id/customer_email_input"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-                app:layout_constraintHorizontal_bias="0.47"
+                app:layout_constraintHorizontal_bias="0.536"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.181" />
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -162,68 +176,11 @@
                     android:text="@={viewModel.birthday}" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
-            <ImageView
-                android:id="@+id/form_image_height_user"
-                android:layout_width="63dp"
-                android:layout_height="63dp"
-                android:layout_marginTop="12dp"
-                android:contentDescription="@string/image_height"
-                app:layout_constraintEnd_toStartOf="@+id/form_height_input_user"
-                app:layout_constraintHorizontal_bias="0.609"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
-                app:srcCompat="@drawable/ic_person_height_24dp" />
-
-            <EditText
-                android:id="@+id/form_height_input_user"
-                android:layout_width="80dp"
-                android:layout_height="63dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:digits="1234567890"
-                android:hint="@string/customer_height_input"
-                android:inputType="number"
-                android:maxLength="3"
-                android:nextFocusRight="@+id/form_height_input_user"
-                android:singleLine="true"
-                android:text="@={`` + viewModel.height}"
-                app:layout_constraintBottom_toBottomOf="@+id/form_image_kg_user"
-                app:layout_constraintEnd_toStartOf="@+id/form_image_kg_user"
-                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
-                app:layout_constraintVertical_bias="1.0"
-                android:autofillHints="" />
-
-            <ImageView
-                android:id="@+id/form_image_kg_user"
-                android:layout_width="63dp"
-                android:layout_height="63dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
-                android:contentDescription="@string/weight_image"
-                app:layout_constraintEnd_toStartOf="@+id/form_weight_input_user"
-                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
-                app:srcCompat="@drawable/ic_person_weight_24dp" />
-
-            <EditText
-                android:id="@+id/form_weight_input_user"
-                android:layout_width="97dp"
-                android:layout_height="63dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
-                android:digits=",.0123456789"
-                android:hint="@string/form_user_height_hint"
-                android:inputType="numberDecimal"
-                android:text="@={`` + viewModel.initialWeight}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
-                android:autofillHints="" />
-
             <Button
                 android:id="@+id/update_customer_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="24dp"
                 android:backgroundTint="#2979FF"
                 android:drawableLeft="@drawable/ic_refresh_48dp"
                 android:onClick="@{() -> viewModel.onSave()}"
@@ -232,7 +189,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/form_height_input_user" />
+                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input" />
 
             <Button
                 android:id="@+id/delete_customer_button"

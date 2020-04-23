@@ -22,7 +22,13 @@ interface UserRepository {
 
     suspend fun getTrainersAdmin() : Resource<MutableList<Trainer>>
 
-    suspend fun getTrainer(id: String) : Resource<Trainer>
-
     suspend fun createTrainer(trainer : Trainer) : Resource<Boolean>
+
+    suspend fun getLoggedUserCustomer() : Resource<Customer>
+
+    suspend fun getLoggedUserTrainer() : Resource<Trainer>
+
+    suspend fun updateProfileAdmin()  : Resource<Boolean>
+    suspend fun updateProfileCustomer()  : Resource<Boolean>
+    suspend fun updateProfileTrainer()  : Resource<Boolean>
 }

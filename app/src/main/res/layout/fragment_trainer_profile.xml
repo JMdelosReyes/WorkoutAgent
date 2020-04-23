@@ -10,7 +10,6 @@
         android:id="@+id/circleImageViewTrainer_displayProfile"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:layout_marginTop="84dp"
         app:civ_border_width="1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -119,7 +118,7 @@
             android:layout_marginTop="8dp"
             android:drawableLeft="@drawable/ic_resume_48dp"
             android:text="Curriculum"
-            android:textSize="32sp" />
+            android:textSize="30sp" />
 
         <Button
             android:id="@+id/display_trainer_button_evolution"

@@ -134,6 +134,9 @@
     <string name="birthday_text_display_user">Birth date of customer</string>
     <string name="surname_text_display_user">Surnames of customer</string>
     <string name="name_text_display_customer">Name of customer</string>
+    <string name="birthday_text_display_trainer">Birth date of trainer</string>
+    <string name="surname_text_display_trainer">Surnames of trainer</string>
+    <string name="name_text_display_trainer">Name of trainer</string>
     <string name="evolution_text_display_user">Evolution</string>
     <string name="edit">Edit</string>
     <string name="image_height">Image height</string>
@@ -175,4 +178,6 @@
     <string name="form_routine_delete_button">Delete routine</string>
     <string name="form_routine_update_button">Save</string>
     <string name="form_routine_edit_button">Edit</string>
+    <string name="customer_dni">Dni of customer</string>
+    <string name="customer_gender">Gender of customer</string>
 </resources>
