@@ -19,6 +19,7 @@ import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentEditRoutineBindingImpl
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
+import com.tfg.workoutagent.models.Day
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
@@ -66,7 +67,7 @@ class EditRoutineFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = DayListAdapter(this.context!!)
+        adapter = DayListAdapter(this.context!!) { _: Day -> }
         recyclerView_Routine_edit_Day.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_Routine_edit_Day.adapter = adapter
         val itemTouchHelper = setUpItemTouchHelper()

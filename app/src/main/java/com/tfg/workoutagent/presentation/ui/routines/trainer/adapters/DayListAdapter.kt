@@ -13,7 +13,7 @@ import com.tfg.workoutagent.models.Day
 import kotlinx.android.synthetic.main.item_row_routine_day.view.*
 
 
-class DayListAdapter(private val context: Context) :
+class DayListAdapter(private val context: Context, private val clickListener: (day: Day) -> Unit) :
     RecyclerView.Adapter<DayListAdapter.DayListViewHolder>() {
 
     private var dataList = mutableListOf<Day>()
@@ -59,6 +59,9 @@ class DayListAdapter(private val context: Context) :
         fun bindView(day: Day) {
             this.day = day
             itemView.row_routine_day_name.text = day.name
+            itemView.edit_activity_button.setOnClickListener {
+                clickListener(day)
+            }
         }
     }
 }

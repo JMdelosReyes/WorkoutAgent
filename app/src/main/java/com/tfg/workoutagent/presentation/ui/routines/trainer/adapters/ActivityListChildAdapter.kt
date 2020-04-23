@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,8 @@ import com.tfg.workoutagent.models.RoutineActivity
 import kotlinx.android.synthetic.main.item_row_routine_day_activity.view.*
 
 
-class ActivityListChildAdapter(private val children: MutableList<RoutineActivity>) : RecyclerView.Adapter<ActivityListChildAdapter.ActivityListViewHolder>() {
+class ActivityListChildAdapter(private val children: MutableList<RoutineActivity>) :
+    RecyclerView.Adapter<ActivityListChildAdapter.ActivityListViewHolder>() {
 
     /*private var dataList = mutableListOf<RoutineActivity>()
     fun setListData(data: MutableList<RoutineActivity>) {
@@ -17,7 +19,8 @@ class ActivityListChildAdapter(private val children: MutableList<RoutineActivity
     }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_row_routine_day_activity, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_row_routine_day_activity, parent, false)
         return ActivityListViewHolder(view)
     }
 
@@ -35,11 +38,13 @@ class ActivityListChildAdapter(private val children: MutableList<RoutineActivity
     }
 
     inner class ActivityListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        @SuppressLint("SetTextI18n")
         fun bindView(routineActivity: RoutineActivity) {
-
             itemView.row_routine_day_activity_name.text = routineActivity.name
-
-
+            itemView.row_routine_day_activity_repetitions.text =
+                "Repetitions: ${routineActivity.repetitions.joinToString(",")}"
+            itemView.row_routine_day_activity_weights.text =
+                "Weights: ${routineActivity.repetitions.joinToString(",")}"
         }
     }
 }

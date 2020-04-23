@@ -93,6 +93,12 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     // TODO
     var adapter: ActivityListAdapter? = null
 
+    // Edit day
+    private val _editingDay = MutableLiveData<Day>(null)
+    val editingDay: LiveData<Day>
+        get() = _editingDay
+    private var editingDayPosition: Int? = null
+
     // Para cerrar el dialog de activity
     private val _closeActivityDialog = MutableLiveData<Boolean>(null)
     val closeActivityDialog: LiveData<Boolean>
@@ -399,5 +405,27 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         pickerDate.value = Date(time)
         val date = simpleDateFormat.format(pickerDate.value)
         startDate.value = date
+    }
+
+    fun onEditDay(day: Day) {
+        this._editingDay.value = day
+        this.editingDayPosition = this.days.value?.indexOf(day)
+        this.dayName.value = day.name
+        this.activities.value = day.activities
+    }
+
+    fun onSaveEditDay() {
+        if (checkDayData()) {
+            replaceDay()
+        }
+    }
+
+    private fun replaceDay() {
+        val day = Day(name = dayName.value.toString(), activities = activities.value!!)
+        days.value!![this.editingDayPosition!!] = day
+        _dayCreated.value = true
+        clearDayData()
+        _dayCreated.value = null
+        _daysError.value = ""
     }
 }

@@ -171,4 +171,5 @@
     <string name="form_routine_delete_button">Delete routine</string>
     <string name="form_routine_update_button">Save</string>
     <string name="form_routine_edit_button">Edit</string>
+    <string name="edit_activity_button">Edit</string>
 </resources>

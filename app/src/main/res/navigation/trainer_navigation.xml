@@ -177,6 +177,9 @@
         <argument
             android:name="clear_data"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_createRoutine_to_editDayFragment"
+            app:destination="@id/editDayFragment" />
     </fragment>
     <fragment
         android:id="@+id/addDayFragment"
@@ -260,6 +263,18 @@
         <action
             android:id="@+id/action_editRoutineFragment_to_navigation_routine_trainer"
             app:destination="@id/navigation_routine_trainer" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDayFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.EditDayFragment"
+        android:label="EditDayFragment" >
+        <action
+            android:id="@+id/action_editDayFragment_to_createRoutine"
+            app:destination="@id/createRoutine"
+            app:popUpTo="@id/navigation_routine_trainer" />
+        <action
+            android:id="@+id/action_editDayFragment_to_addActivityFragment"
+            app:destination="@id/addActivityFragment" />
     </fragment>
 
 </navigation>

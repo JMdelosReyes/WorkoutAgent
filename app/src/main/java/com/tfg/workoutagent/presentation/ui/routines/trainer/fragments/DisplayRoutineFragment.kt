@@ -14,6 +14,7 @@ import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
+import com.tfg.workoutagent.models.Day
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayRoutineViewModelFactory
@@ -49,7 +50,7 @@ class DisplayRoutineFragment : Fragment() {
 
         setupButtons()
 
-        adapter = DayListAdapter(this.context!!)
+        adapter = DayListAdapter(this.context!!) { _: Day -> }
         recyclerViewRoutineDay.layoutManager = LinearLayoutManager(this.context!!)
         recyclerViewRoutineDay.adapter = adapter
         observeData()
@@ -58,7 +59,7 @@ class DisplayRoutineFragment : Fragment() {
     private fun setupButtons() {
         edit_routine_button.setOnClickListener {
             findNavController().navigate(
-               DisplayRoutineFragmentDirections.actionDisplayRoutineToEditRoutineFragment(routineId)
+                DisplayRoutineFragmentDirections.actionDisplayRoutineToEditRoutineFragment(routineId)
             )
         }
     }
