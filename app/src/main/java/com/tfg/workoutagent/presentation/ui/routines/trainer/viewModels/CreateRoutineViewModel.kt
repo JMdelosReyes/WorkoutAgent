@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import java.lang.Double.parseDouble
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 
 class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseCase) :
@@ -46,6 +47,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         get() = _dayNameError
 
     val activities = MutableLiveData<MutableList<RoutineActivity>>(mutableListOf())
+    val activitiesCopy = MutableLiveData<MutableList<RoutineActivity>>(mutableListOf())
     private val _activitiesError = MutableLiveData("")
     val activitiesError: LiveData<String>
         get() = _activitiesError
@@ -85,6 +87,8 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val addDay: LiveData<Boolean?>
         get() = _addDay
 
+    private var copyList = true
+
     // Para el spinner
     private val _exercises = MutableLiveData<List<Exercise>>()
     val exercises: LiveData<List<Exercise>>
@@ -98,6 +102,12 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val editingDay: LiveData<Day>
         get() = _editingDay
     private var editingDayPosition: Int? = null
+
+    // Edit activity
+    private val _editingActivity = MutableLiveData<RoutineActivity>(null)
+    val editingActivity: LiveData<RoutineActivity>
+        get() = _editingActivity
+    private var editingActivityPosition: Int? = null
 
     // Para cerrar el dialog de activity
     private val _closeActivityDialog = MutableLiveData<Boolean>(null)
@@ -233,6 +243,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         clearDayData()
         _dayCreated.value = null
         _daysError.value = ""
+        copyList = true
     }
 
     fun onSaveActivity() {
@@ -427,5 +438,93 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         clearDayData()
         _dayCreated.value = null
         _daysError.value = ""
+        copyList = true
+
+    }
+
+    //para editar la actividad
+    fun onEditActivity(routineActivity: RoutineActivity) {
+        this._editingActivity.value = routineActivity
+        this.editingActivityPosition = this.activities.value?.indexOf(routineActivity)
+        this.sets.value = routineActivity.sets.toString()
+        intListToString(routineActivity.repetitions)
+        this.repetitions.value = routineActivity.repetitions.joinToString(",")
+        this.weights.value = doubleListToString(routineActivity.weightsPerRepetition)
+        this.note.value = routineActivity.note
+        this.selectedExercise.value = routineActivity.exercise
+    }
+
+    fun onSaveEditActivity() {
+        if (checkActivityData()) {
+            replaceActivity()
+        }
+    }
+
+    private fun replaceActivity() {
+        val activity = RoutineActivity(
+            name = selectedExercise.value?.title!!,
+            sets = sets.value!!.toInt(),
+            repetitions = repetitions.value!!.split(",").map { x ->
+                x.trim().toInt()
+            } as MutableList<Int>,
+            weightsPerRepetition = weights.value!!.split(",").map { x ->
+                x.trim().toDouble()
+            } as MutableList<Double>,
+            exercise = selectedExercise.value!!,
+            note = note.value!!
+        )
+        if(copyList){
+            copyActivities()
+        }
+
+        activities.value!![this.editingActivityPosition!!] = activity
+        Log.i("AAAA", activity.toString())
+
+        // TODO
+        adapter?.notifyDataSetChanged()
+
+        _closeActivityDialog.value = true
+        clearActivityData()
+        _activitiesError.value = ""
+    }
+
+    fun onCancelEditDay(){
+        activities.value = activitiesCopy.value
+        copyList = true
+    }
+
+    fun copyActivities(){
+        activitiesCopy.value = activities.value
+        copyList = false
+    }
+
+    private fun intListToString(intList: MutableList<Int>): String{
+        var listString = ""
+        var i = 0
+        for (item in intList){
+            if(i == intList.size-1){
+                listString = listString + item
+            }else{
+                listString = listString + item+","
+            }
+            i++
+        }
+
+        return listString
+    }
+
+    private fun doubleListToString(doubleList: MutableList<Double>): String{
+        var listString = ""
+        var i = 0
+        for (item in doubleList){
+            if(i == doubleList.size-1){
+                listString = listString + item.roundToInt()
+            }else{
+                listString = listString + item.roundToInt()+","
+            }
+            i++
+        }
+
+        return listString
     }
 }

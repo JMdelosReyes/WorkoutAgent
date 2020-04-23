@@ -18,6 +18,7 @@ import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.AddDayFragmentBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
+import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
@@ -61,7 +62,11 @@ class AddDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ActivityListAdapter(this.context!!)
+        adapter = ActivityListAdapter(this.context!!){ routineActivity: RoutineActivity ->
+            viewModel.onEditActivity(routineActivity)
+            findNavController().navigate(AddDayFragmentDirections.actionAddDayFragmentToEditActivityFragment())
+        }
+
         recycler_add_day_activities.layoutManager = LinearLayoutManager(this.context!!)
         recycler_add_day_activities.adapter = adapter
 

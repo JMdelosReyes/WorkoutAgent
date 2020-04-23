@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.RoutineActivity
 import kotlinx.android.synthetic.main.item_row_routine_day_activity.view.*
+import kotlin.math.roundToInt
 
 
 class ActivityListChildAdapter(private val children: MutableList<RoutineActivity>) :
@@ -44,7 +45,22 @@ class ActivityListChildAdapter(private val children: MutableList<RoutineActivity
             itemView.row_routine_day_activity_repetitions.text =
                 "Repetitions: ${routineActivity.repetitions.joinToString(",")}"
             itemView.row_routine_day_activity_weights.text =
-                "Weights: ${routineActivity.repetitions.joinToString(",")}"
+                "Weights: "+doubleListToString(routineActivity.weightsPerRepetition)
         }
+    }
+
+    private fun doubleListToString(doubleList: MutableList<Double>): String{
+        var listString = ""
+        var i = 0
+        for (item in doubleList){
+            if(i == doubleList.size-1){
+                listString = listString + item.roundToInt()
+            }else{
+                listString = listString + item.roundToInt()+","
+            }
+            i++
+        }
+
+        return listString
     }
 }
