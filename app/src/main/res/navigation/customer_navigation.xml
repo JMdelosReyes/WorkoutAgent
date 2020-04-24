@@ -13,10 +13,26 @@
         android:id="@+id/navigation_profile_customer"
         android:name="com.tfg.workoutagent.presentation.ui.profile.customer.fragments.ProfileCustomerFragment"
         android:label="fragment_customer_profile"
-        tools:layout="@layout/fragment_customer_profile" />
+        tools:layout="@layout/fragment_customer_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_customer_to_editProfileCustomerFragment"
+            app:destination="@id/editProfileCustomerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_routine_customer"
         android:name="com.tfg.workoutagent.presentation.ui.routines.customer.fragments.RoutineCustomerFragment"
         android:label="routine_customer_fragment"
         tools:layout="@layout/routine_customer_fragment" />
+    <fragment
+        android:id="@+id/editProfileCustomerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.profile.customer.fragments.EditProfileCustomerFragment"
+        android:label="EditProfileCustomerFragment" >
+        <action
+            android:id="@+id/action_editProfileCustomerFragment_to_navigation_profile_customer"
+            app:destination="@id/navigation_profile_customer" />
+    </fragment>
 </navigation>

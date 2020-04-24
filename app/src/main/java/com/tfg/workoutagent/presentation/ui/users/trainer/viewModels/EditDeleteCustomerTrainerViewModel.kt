@@ -3,13 +3,13 @@ package com.tfg.workoutagent.presentation.ui.users.trainer.viewModels
 import androidx.lifecycle.*
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
-import com.tfg.workoutagent.models.Weight
 import com.tfg.workoutagent.vo.Resource
-import com.tfg.workoutagent.vo.getAgeWithError
-import com.tfg.workoutagent.vo.parseDateToFriendlyDate
-import com.tfg.workoutagent.vo.parseStringToDate
+import com.tfg.workoutagent.vo.utils.getAgeWithError
+import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
+import com.tfg.workoutagent.vo.utils.parseStringToDate
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class EditDeleteCustomerTrainerViewModel(private val id: String, private val manageCustomerTrainerUseCase: ManageCustomerTrainerUseCase) : ViewModel() {
 
@@ -43,20 +43,10 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
     val photoError: LiveData<String>
         get() = _photoError
 
-    var height = MutableLiveData(0)
-    private val _heightError = MutableLiveData("")
-    val heightError: LiveData<String>
-        get() = _heightError
-
     var phone = MutableLiveData("")
     private val _phoneError = MutableLiveData("")
     val phoneError: LiveData<String>
         get() = _phoneError
-
-    var initialWeight = MutableLiveData(0.0)
-    private val _initialWeightError = MutableLiveData("")
-    val initialWeightError: LiveData<String>
-        get() = _initialWeightError
 
     private val _customerDeleted = MutableLiveData<Boolean?>(null)
     val customerDeleted : LiveData<Boolean?>
@@ -92,17 +82,13 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
         checkName()
         checkSurname()
         checkPhone()
-        checkHeight()
-        checkInitialWeight()
-        return _birthdayError.value == "" && _dniError.value == "" && _emailError.value == "" && _nameError.value == "" && _surnameError.value == "" && _photoError.value == "" && _heightError.value == "" && _initialWeightError.value == "" && _phoneError.value == ""
+        return _birthdayError.value == "" && _dniError.value == "" && _emailError.value == "" && _nameError.value == "" && _surnameError.value == "" && _photoError.value == "" && _phoneError.value == ""
     }
 
     private fun editCustomer(){
         viewModelScope.launch {
             try{
-                val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, height = height.value!!)
-                val weight = Weight(weight = initialWeight.value!!)
-                customer.weights.add(weight)
+                val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                 manageCustomerTrainerUseCase.updateCustomer(customer)
                 _customerEdited.value = true
             }catch (e: Exception){
@@ -141,8 +127,6 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
         name.postValue(customer.data.name)
         surname.postValue(customer.data.surname)
         phone.postValue(customer.data.phone)
-        height.postValue(customer.data.height)
-        initialWeight.postValue(customer.data.weights.last().weight)
     }
 
     private fun checkBirthday() {
@@ -195,13 +179,5 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
             val isPhone = android.util.Patterns.PHONE.matcher(it).matches()
             if(isPhone) _phoneError.value = ""  else _phoneError.value="Must be a valid phone"
         }
-    }
-
-    private fun checkHeight(){
-        height.value?.let { if(it <= 0) _heightError.value = "The height must be greater than 0 centimeters" else _heightError.value = "" }
-    }
-
-    private fun checkInitialWeight(){
-        initialWeight.value?.let { if(it <= 0.0) _initialWeightError.value = "The weight must be greater than 0.0 kilograms" else _initialWeightError.value = "" }
     }
 }

@@ -1,16 +1,22 @@
 package com.tfg.workoutagent.presentation.ui.users.trainer.viewModels
 
+import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.*
+import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
+import com.tfg.workoutagent.domain.storageUseCases.UploadImageUserUseCase
+import com.tfg.workoutagent.domain.storageUseCases.UploadPhotoUserUseCaseImpl
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Weight
-import com.tfg.workoutagent.vo.getAgeWithError
-import com.tfg.workoutagent.vo.parseStringToDate
+import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.utils.getAgeWithError
+import com.tfg.workoutagent.vo.utils.parseStringToDate
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: ManageCustomerTrainerUseCase) : ViewModel() {
-
     //TODO: Hacer tratamiento para pasar de String a Date por ser mu coñazo el binding de Calendar
     var birthday : String = "dd-MM-yyyy"
     private val _birthdayError = MutableLiveData("")
@@ -37,10 +43,17 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
     val surnameError: LiveData<String>
         get() = _surnameError
 
+    var gender : String = ""
+    private val _genderError = MutableLiveData("")
+    val genderError: LiveData<String>
+        get() = _genderError
+
     var photo : String = ""
     private val _photoError = MutableLiveData("")
     val photoError: LiveData<String>
         get() = _photoError
+    //Guardo el resultado y datos del intent hasta hacer el submit y subir la foto
+    var dataPhoto : Intent? = null
 
     var height : Int = 0
     private val _heightError = MutableLiveData("")
@@ -63,14 +76,40 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
 
     fun onSubmit() {
         if(checkData()){
-            createCustomer()
+            uploadImage()
+        }
+    }
+    private fun uploadImage() {
+        viewModelScope.launch {
+            try{
+                if(dataPhoto != null){
+                    val upl = UploadPhotoUserUseCaseImpl(StorageRepositoryImpl())
+                    when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
+                        is Resource.Success -> {
+                            photo = photoUri.data
+                            createCustomer()
+                        }
+                        else -> {
+                            photo = "DEFAULT_IMAGE"
+                            createCustomer()
+                        }
+                    }
+                }else{
+                    photo = "DEFAULT_IMAGE"
+                    createCustomer()
+                }
+            }catch (e: Exception){
+                Log.i("FAIL", "${e}")
+            }
         }
     }
 
     private fun createCustomer(){
         viewModelScope.launch {
             try{
-                val customer: Customer = Customer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone, height = height)
+                val customer: Customer = Customer(birthday = parseStringToDate(
+                    birthday
+                )!!, dni = dni, email = email, gender = gender, name = name, surname = surname, photo = photo, phone = phone, height = height)
                 val weight = Weight(weight = initialWeight)
                 customer.weights.add(weight)
                 manageCustomerTrainerUseCase.createCustomer(customer)
@@ -89,6 +128,7 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         checkEmail()
         checkName()
         checkSurname()
+        checkGender()
         checkPhoto()
         checkPhone()
         checkHeight()
@@ -105,6 +145,10 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
                 _birthdayError.value = getAgeWithError(it)
             }
         }
+    }
+
+    private fun checkGender(){
+
     }
 
     private fun checkDni() {

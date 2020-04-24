@@ -2,7 +2,7 @@ package com.tfg.workoutagent.models
 
 import java.util.*
 
-class Trainer(
+data class Trainer(
     var id : String = "DEFAULT_ID",
     var academicTitle:String = "DEFAULT_ACADEMIC_TITLE",
     var birthday : Date = Date(System.currentTimeMillis()),

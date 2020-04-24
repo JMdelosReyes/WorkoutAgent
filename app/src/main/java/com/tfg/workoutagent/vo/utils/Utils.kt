@@ -1,4 +1,4 @@
-package com.tfg.workoutagent.vo
+package com.tfg.workoutagent.vo.utils
 
 import java.text.SimpleDateFormat
 import java.util.*
