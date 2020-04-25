@@ -54,6 +54,11 @@ class NutritionCustomerTrainerFragment : Fragment() {
 
     private fun observeData(){
         viewModel.getCustomer.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if(it is Resource.Success){
+                    viewModel.loadData(it)
+                }
+            }
         })
 
         viewModel.proteins.observe(viewLifecycleOwner, Observer {
