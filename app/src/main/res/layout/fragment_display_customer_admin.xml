@@ -7,7 +7,7 @@
     tools:context=".presentation.ui.users.admin.fragments.DisplayCustomerAdminFragment">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/circleImageViewCustomer"
+        android:id="@+id/circleImageViewCustomer_admin"
         android:layout_width="120dp"
         android:layout_height="120dp"
         app:civ_border_width="1dp"
@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/display_customer_name"
+        android:id="@+id/display_customer_name_admin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -27,7 +27,7 @@
         app:layout_constraintBottom_toTopOf="@+id/card_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageViewCustomer"
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewCustomer_admin"
         app:layout_constraintVertical_bias="0.75" />
 
     <com.google.android.material.card.MaterialCardView
@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageViewCustomer">
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewCustomer_admin">
 
         <LinearLayout
             android:id="@+id/ll_details_user"
@@ -55,11 +55,11 @@
             app:layout_constraintBottom_toTopOf="@+id/card_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circleImageViewCustomer"
+            app:layout_constraintTop_toBottomOf="@+id/circleImageViewCustomer_admin"
             app:layout_constraintVertical_bias="0.75">
 
             <TextView
-                android:id="@+id/display_customer_phone"
+                android:id="@+id/display_customer_phone_admin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="phone"
@@ -71,7 +71,7 @@
                 android:textStyle="normal" />
 
             <TextView
-                android:id="@+id/display_customer_email"
+                android:id="@+id/display_customer_email_admin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="email"
@@ -83,7 +83,7 @@
                 android:textStyle="normal" />
 
             <TextView
-                android:id="@+id/display_customer_gender"
+                android:id="@+id/display_customer_gender_admin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="email"
@@ -95,7 +95,7 @@
                 android:textStyle="normal" />
 
             <TextView
-                android:id="@+id/display_customer_height"
+                android:id="@+id/display_customer_height_admin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_person_height_24dp"
@@ -106,7 +106,7 @@
                 android:textStyle="normal" />
 
             <TextView
-                android:id="@+id/display_customer_weight"
+                android:id="@+id/display_customer_weight_admin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_person_weight_24dp"
@@ -117,7 +117,7 @@
                 android:textStyle="normal" />
 
             <TextView
-                android:id="@+id/display_customer_birthday"
+                android:id="@+id/display_customer_birthday_admin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_cake_black_24dp"
@@ -130,7 +130,7 @@
     </com.google.android.material.card.MaterialCardView>
 
     <Button
-        android:id="@+id/display_customer_button_delete"
+        android:id="@+id/display_customer_button_delete_admin"
         android:layout_width="314dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"

@@ -63,7 +63,7 @@ class CreateCustomerTrainerFragment : BaseFragment() {
         image_selected.visibility = View.GONE
         edit_profile_customer_button_select_image_customer.setOnClickListener {
             val intent = Intent()
-            intent.type = "application/pdf"
+            intent.type = "image/*"
             //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)

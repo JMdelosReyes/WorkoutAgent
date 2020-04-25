@@ -52,7 +52,7 @@ class CustomerListAdapter(private val context: Context) :  RecyclerView.Adapter<
 
             itemView.setOnClickListener {
                 itemView.findNavController().navigate(
-                    UserTrainerFragmentDirections.actionNavigationUsersTrainerToDisplayCustomer(customerId = customer.id, customerName = customer.name)
+                    UserTrainerFragmentDirections.actionNavigationUsersTrainerToDisplayCustomer(customerId = customer.id, customerName = customer.name + " " + customer.surname)
                 )
             }
         }

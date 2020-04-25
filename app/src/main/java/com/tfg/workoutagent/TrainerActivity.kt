@@ -79,6 +79,11 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                     supportActionBar?.title = "My profile"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
+                R.id.editProfileTrainerFragment -> {
+                    supportActionBar?.title = "Edit my account"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
                 R.id.displayExercise -> {
                     supportActionBar?.title =
                         arguments!!.get("exercise_title").toString()

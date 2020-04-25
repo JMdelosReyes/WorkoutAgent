@@ -25,7 +25,7 @@ class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener 
 
     private fun setupToolbar(navController: NavController) {
         setSupportActionBar(findViewById(R.id.main_toolbar_admin))
-        navController.addOnDestinationChangedListener { _, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, arguments ->
             when (destination.id) {
                 R.id.navigation_admin_profile -> {
                     supportActionBar?.title = "My profile"
@@ -37,6 +37,21 @@ class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener 
                 }
                 R.id.createTrainerAdminFragment -> {
                     supportActionBar?.title = "Create a trainer"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.displayCustomerAdminFragment -> {
+                    supportActionBar?.title = arguments!!.get("customerName").toString()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.displayTrainerAdminFragment -> {
+                    supportActionBar?.title = arguments!!.get("nameTrainer").toString()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.editDeleteTrainerAdminFragment -> {
+                    supportActionBar?.title = arguments!!.get("nameTrainer").toString()
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }

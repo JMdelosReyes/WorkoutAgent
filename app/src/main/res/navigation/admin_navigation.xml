@@ -25,10 +25,18 @@
             app:destination="@id/createTrainerAdminFragment" />
         <action
             android:id="@+id/action_navigation_admin_users_to_displayCustomerAdminFragment"
-            app:destination="@id/displayCustomerAdminFragment" />
+            app:destination="@id/displayCustomerAdminFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_navigation_admin_users_to_displayTrainerAdminFragment"
-            app:destination="@id/displayTrainerAdminFragment" />
+            app:destination="@id/displayTrainerAdminFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createTrainerAdminFragment"
@@ -47,6 +55,12 @@
         <action
             android:id="@+id/action_displayCustomerAdminFragment_to_navigation_admin_users"
             app:destination="@id/navigation_admin_users" />
+        <argument
+            android:name="customerId"
+            app:argType="string" />
+        <argument
+            android:name="customerName"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/displayTrainerAdminFragment"
@@ -55,7 +69,17 @@
         tools:layout="@layout/fragment_display_trainer_admin" >
         <action
             android:id="@+id/action_displayTrainerAdminFragment_to_editDeleteTrainerAdminFragment"
-            app:destination="@id/editDeleteTrainerAdminFragment" />
+            app:destination="@id/editDeleteTrainerAdminFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="trainerId"
+            app:argType="string" />
+        <argument
+            android:name="nameTrainer"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/editDeleteTrainerAdminFragment"
@@ -65,6 +89,11 @@
         <action
             android:id="@+id/action_editDeleteTrainerAdminFragment_to_navigation_admin_users"
             app:destination="@id/navigation_admin_users" />
+        <argument android:name="nameTrainer"
+            app:argType="string" />
+        <argument
+            android:name="trainerId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/editProfileAdminFragment"

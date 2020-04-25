@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -51,7 +52,7 @@ class ProfileTrainerFragment : Fragment() {
     private fun setupUI() {
         sign_out_button.setOnClickListener { signOut2() }
         display_trainer_button_curriculum.setOnClickListener {  }
-        display_trainer_button_edit.setOnClickListener {  }
+        display_trainer_button_edit.setOnClickListener { findNavController().navigate(ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToEditProfileTrainerFragment()) }
         display_trainer_button_evolution.setOnClickListener {  }
     }
 
