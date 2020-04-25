@@ -14,7 +14,7 @@ import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
-import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DisplayDayListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.DisplayRoutineViewModelFactory
 import com.tfg.workoutagent.vo.Resource
@@ -23,8 +23,9 @@ import kotlinx.android.synthetic.main.display_routine_fragment.*
 class DisplayRoutineFragment : Fragment() {
 
     private val routineId by lazy { DisplayRoutineFragmentArgs.fromBundle(arguments!!).routineId }
-    private val routineTitle by lazy { DisplayRoutineFragmentArgs.fromBundle(arguments!!).routineTitle }
-    private lateinit var adapter: DayListAdapter
+
+    // private val routineTitle by lazy { DisplayRoutineFragmentArgs.fromBundle(arguments!!).routineTitle }
+    private lateinit var adapter: DisplayDayListAdapter
 
 
     private val viewModel by lazy {
@@ -49,7 +50,7 @@ class DisplayRoutineFragment : Fragment() {
 
         setupButtons()
 
-        adapter = DayListAdapter(this.context!!)
+        adapter = DisplayDayListAdapter(this.context!!)
         recyclerViewRoutineDay.layoutManager = LinearLayoutManager(this.context!!)
         recyclerViewRoutineDay.adapter = adapter
         observeData()
@@ -58,14 +59,15 @@ class DisplayRoutineFragment : Fragment() {
     private fun setupButtons() {
         edit_routine_button.setOnClickListener {
             findNavController().navigate(
-               DisplayRoutineFragmentDirections.actionDisplayRoutineToEditRoutineFragment(routineId)
+                DisplayRoutineFragmentDirections.actionDisplayRoutineToEditRoutineFragment(
+                    routineId,
+                    0
+                )
             )
         }
     }
 
     private fun observeData() {
-        //si es en un fragmento ponemos viewLifecycleowner como primer parametro
-
         viewModel.routine.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is Resource.Loading -> {

@@ -1,37 +1,34 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
-import com.tfg.workoutagent.databinding.AddDayFragmentBinding
+import com.tfg.workoutagent.databinding.FragmentEditDayBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
-import kotlinx.android.synthetic.main.add_day_fragment.*
+import kotlinx.android.synthetic.main.fragment_edit_day.*
 
-
-class AddDayFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = AddDayFragment()
-    }
-
-    private lateinit var adapter: ActivityListAdapter
+/**
+ * A simple [Fragment] subclass.
+ */
+class EditDayFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -41,7 +38,9 @@ class AddDayFragment : Fragment() {
         ).get(CreateRoutineViewModel::class.java)
     }
 
-    private lateinit var binding: AddDayFragmentBinding
+    private lateinit var adapter: ActivityListAdapter
+
+    private lateinit var binding: FragmentEditDayBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,7 +48,7 @@ class AddDayFragment : Fragment() {
     ): View? {
         this.binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.add_day_fragment,
+            R.layout.fragment_edit_day,
             container,
             false
         )
@@ -64,14 +63,13 @@ class AddDayFragment : Fragment() {
 
         adapter = ActivityListAdapter(this.context!!){ routineActivity: RoutineActivity ->
             viewModel.onEditActivity(routineActivity)
-            findNavController().navigate(AddDayFragmentDirections.actionAddDayFragmentToEditActivityFragment())
+            findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToEditActivityFragment())
         }
-
-        recycler_add_day_activities.layoutManager = LinearLayoutManager(this.context!!)
-        recycler_add_day_activities.adapter = adapter
+        recycler_edit_day_activities.layoutManager = LinearLayoutManager(this.context!!)
+        recycler_edit_day_activities.adapter = adapter
 
         val itemTouchHelper = setUpItemTouchHelper()
-        itemTouchHelper.attachToRecyclerView(recycler_add_day_activities)
+        itemTouchHelper.attachToRecyclerView(recycler_edit_day_activities)
 
         // TODO
         viewModel.adapter = adapter
@@ -101,21 +99,6 @@ class AddDayFragment : Fragment() {
         }
 
         return ItemTouchHelper(simpleItemTouchCallback)
-    }
-
-    private fun onBackPressed() {
-        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
-            true
-        ) {
-            override fun handleOnBackPressed() {
-                findNavController().navigate(
-                    AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
-                        clearData = 2
-                    )
-                )
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
     }
 
     private fun observeErrors() {
@@ -148,7 +131,7 @@ class AddDayFragment : Fragment() {
             it?.let {
                 if (it) {
                     findNavController().navigate(
-                        AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
+                        EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
                             2
                         )
                     )
@@ -157,18 +140,34 @@ class AddDayFragment : Fragment() {
         })
     }
 
+    private fun onBackPressed() {
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
+            true
+        ) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(
+                    EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
+                        clearData = 2
+                    )
+                )
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
     private fun setupButtons() {
         save_create_day_button.setOnClickListener {
-            viewModel.onSaveDay()
+            viewModel.onSaveEditDay()
         }
 
         add_day_activity_button.setOnClickListener {
-            findNavController().navigate(AddDayFragmentDirections.actionAddDayFragmentToAddActivityFragment2())
+            findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToAddActivityFragment())
         }
 
         cancel_create_day_button.setOnClickListener {
+            viewModel.onCancelEditDay()
             findNavController().navigate(
-                AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
+                EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
                     clearData = 2
                 )
             )

@@ -13,12 +13,10 @@ import com.tfg.workoutagent.models.Day
 import kotlinx.android.synthetic.main.item_row_routine_day.view.*
 
 
-class DayListAdapter(
-    private val context: Context,
-    private val editClickListener: (day: Day) -> Unit,
-    private val deleteClickListener: (day: Day) -> Unit
+class DisplayDayListAdapter(
+    private val context: Context
 ) :
-    RecyclerView.Adapter<DayListAdapter.DayListViewHolder>() {
+    RecyclerView.Adapter<DisplayDayListAdapter.DayListViewHolder>() {
 
     private var dataList = mutableListOf<Day>()
     private val viewPool = RecyclerView.RecycledViewPool()
@@ -28,7 +26,8 @@ class DayListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayListViewHolder {
         val view =
-            LayoutInflater.from(context).inflate(R.layout.item_row_routine_day, parent, false)
+            LayoutInflater.from(context)
+                .inflate(R.layout.item_row_display_routine_day, parent, false)
         return DayListViewHolder(view)
     }
 
@@ -51,7 +50,7 @@ class DayListAdapter(
 
         holder.recyclerView.apply {
             layoutManager = childLayoutManager
-            adapter = ActivityListChildAdapter(day.activities)
+            adapter = DisplayActivityListChildAdapter(day.activities)
             setRecycledViewPool(viewPool)
         }
     }
@@ -63,12 +62,6 @@ class DayListAdapter(
         fun bindView(day: Day) {
             this.day = day
             itemView.row_routine_day_name.text = day.name
-            itemView.edit_day_button.setOnClickListener {
-                editClickListener(day)
-            }
-            itemView.delete_day_button.setOnClickListener {
-                deleteClickListener(day)
-            }
         }
     }
 }

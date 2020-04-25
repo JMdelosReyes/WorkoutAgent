@@ -17,6 +17,7 @@ import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentEditRoutineBindingImpl
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
+import com.tfg.workoutagent.models.Day
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
@@ -24,15 +25,13 @@ import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_edit_routine.*
 import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- */
 class EditRoutineFragment : Fragment() {
 
     private val routineId by lazy { EditRoutineFragmentArgs.fromBundle(arguments!!).routineId }
+    private val clearData by lazy { EditRoutineFragmentArgs.fromBundle(arguments!!).clearData }
     private val viewModel by lazy {
         ViewModelProvider(
-            this,
+            activity!!,
             EditRoutineViewModelFactory(
                 routineId,
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
@@ -46,8 +45,6 @@ class EditRoutineFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
         this.binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_edit_routine,
@@ -58,27 +55,66 @@ class EditRoutineFragment : Fragment() {
         this.binding.viewModel = viewModel
         this.binding.lifecycleOwner = this
 
+        when (clearData) {
+            0 -> this.viewModel.clearNothing()
+            1 -> this.viewModel.clearAllData()
+            2 -> this.viewModel.clearDayData()
+            3 -> this.viewModel.clearActivityData()
+        }
+
         return this.binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = DayListAdapter(this.context!!)
+        adapter = DayListAdapter(this.context!!, {
+            viewModel.onEditDay(it)
+            findNavController().navigate(
+                EditRoutineFragmentDirections.actionEditRoutineFragmentToEditDayEditRoutineFragment(
+                    routineId = routineId
+                )
+            )
+        }, {
+            viewModel.onDeleteDay(it)
+            adapter.notifyDataSetChanged()
+        })
         recyclerView_Routine_edit_Day.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_Routine_edit_Day.adapter = adapter
 
         observeData()
+        observeErrors()
+        observeDayData()
         setupButtons()
-
     }
 
-    private fun observeData(){
+    private fun observeErrors() {
+        viewModel.titleError.observe(viewLifecycleOwner, Observer {
+            binding.routineTitleInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.startDateError.observe(viewLifecycleOwner, Observer {
+            binding.routineStartDateInputEdit.error =
+                if (it != "") it else null
+        })
+
+        viewModel.daysError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it == "") {
+                    binding.routineDaysError.visibility = View.INVISIBLE
+                } else {
+                    binding.routineDaysError.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
+    private fun observeData() {
         viewModel.routine.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
                     // TODO
-
                 }
                 is Resource.Success -> {
                     // TODO
@@ -89,10 +125,7 @@ class EditRoutineFragment : Fragment() {
                 }
             }
         })
-        viewModel.days.observe(viewLifecycleOwner, Observer {
-            adapter.setListData(viewModel.days.value!!)
-            adapter.notifyDataSetChanged()
-        })
+
         viewModel.routineDeleted.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> {
@@ -114,11 +147,27 @@ class EditRoutineFragment : Fragment() {
                     .show()
             }
         })
+
+        viewModel.addDay.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    adapter.setListData(viewModel.days.value!!)
+                    adapter.notifyDataSetChanged()
+                    findNavController().navigate(
+                        EditRoutineFragmentDirections.actionEditRoutineFragmentToAddDayEditRoutineFragment(
+                            routineId
+                        )
+                    )
+                    viewModel.addDayNavigationCompleted()
+                }
+            }
+        })
     }
 
     private fun setupButtons() {
         //TODO Hay que cambiar el valor que entra
-        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker().setSelection(Date().time)
+        val builder: MaterialDatePicker.Builder<*> =
+            MaterialDatePicker.Builder.datePicker().setSelection(Date().time)
         val currentTimeInMillis = Calendar.getInstance().timeInMillis
         //builder.setSelection()
         val picker: MaterialDatePicker<*> = builder.build()
@@ -128,5 +177,14 @@ class EditRoutineFragment : Fragment() {
                 viewModel.setDate(it as Long)
             }
         }
+    }
+
+    private fun observeDayData() {
+        viewModel.days.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.setListData(viewModel.days.value!!)
+                adapter.notifyDataSetChanged()
+            }
+        })
     }
 }

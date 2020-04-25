@@ -8,25 +8,32 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentAddActivityBinding
+import com.tfg.workoutagent.databinding.FragmentEditActivityBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
 import kotlinx.android.synthetic.main.fragment_add_activity.*
 
-class AddActivityFragment : DialogFragment() {
+
+/**
+ * A simple [Fragment] subclass.
+ */
+class EditActivityFragment : DialogFragment() {
 
     private lateinit var toolbar: Toolbar
 
-    private lateinit var binding: FragmentAddActivityBinding
+    private lateinit var binding: FragmentEditActivityBinding
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -48,7 +55,7 @@ class AddActivityFragment : DialogFragment() {
 
         this.binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_add_activity,
+            R.layout.fragment_edit_activity,
             container,
             false
         )
@@ -125,7 +132,7 @@ class AddActivityFragment : DialogFragment() {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_save_day_activity -> {
-                    viewModel.onSaveActivity()
+                    viewModel.onSaveEditActivity()
                 }
                 else -> {
                     dismiss()
@@ -146,6 +153,7 @@ class AddActivityFragment : DialogFragment() {
                 ).also { adapter ->
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinner.adapter = adapter
+                    spinner.setSelection(adapter.getPosition(viewModel.selectedExercise.value?.title))
                     spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
                             parent: AdapterView<*>,

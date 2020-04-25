@@ -11,12 +11,12 @@ import kotlinx.android.synthetic.main.item_row_routine_day_activity.view.*
 import kotlin.math.roundToInt
 
 
-class ActivityListChildAdapter(private val children: MutableList<RoutineActivity>) :
-    RecyclerView.Adapter<ActivityListChildAdapter.ActivityListViewHolder>() {
+class DisplayActivityListChildAdapter(private val children: MutableList<RoutineActivity>) :
+    RecyclerView.Adapter<DisplayActivityListChildAdapter.ActivityListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityListViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_row_routine_day_activity_child, parent, false)
+            .inflate(R.layout.item_row_display_routine_day_activity, parent, false)
         return ActivityListViewHolder(view)
     }
 
@@ -37,23 +37,6 @@ class ActivityListChildAdapter(private val children: MutableList<RoutineActivity
         @SuppressLint("SetTextI18n")
         fun bindView(routineActivity: RoutineActivity) {
             itemView.row_routine_day_activity_name.text = routineActivity.name
-            itemView.row_routine_day_activity_repetitions.text =
-                "Repetitions: ${routineActivity.repetitions.joinToString(",")}"
-            itemView.row_routine_day_activity_weights.text =
-                "Weights: " + doubleListToString(routineActivity.weightsPerRepetition)
         }
-    }
-
-    private fun doubleListToString(doubleList: MutableList<Double>): String {
-        var listString = ""
-        for ((i, item) in doubleList.withIndex()) {
-            if (i == doubleList.size - 1) {
-                listString += item.roundToInt()
-            } else {
-                listString = listString + item.roundToInt() + ","
-            }
-        }
-
-        return listString
     }
 }

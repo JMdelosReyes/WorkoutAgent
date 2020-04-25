@@ -183,4 +183,6 @@
     <string name="carbohydrates_g">Carbohydrates(g)</string>
     <string name="fats_g">Fats(g)</string>
     <string name="nutrition">Nutrition</string>
+    <string name="edit_activity_button">Edit</string>
+    <string name="edit_day_button">Delete</string>
 </resources>
