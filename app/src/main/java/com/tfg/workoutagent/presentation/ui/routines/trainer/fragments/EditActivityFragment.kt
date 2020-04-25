@@ -153,6 +153,7 @@ class EditActivityFragment : DialogFragment() {
                 ).also { adapter ->
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     spinner.adapter = adapter
+                    spinner.setSelection(adapter.getPosition(viewModel.selectedExercise.value?.title))
                     spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
                             parent: AdapterView<*>,

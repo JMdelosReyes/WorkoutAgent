@@ -75,7 +75,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val noteError: LiveData<String>
         get() = _noteError
 
-    private val selectedExercise = MutableLiveData<Exercise>()
+    val selectedExercise = MutableLiveData<Exercise>()
 
     private val _routineCreated = MutableLiveData<Boolean?>(null)
     val routineCreated: LiveData<Boolean?>

@@ -1,19 +1,18 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
@@ -24,6 +23,10 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityLi
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
 import kotlinx.android.synthetic.main.fragment_edit_day.*
+import kotlinx.android.synthetic.main.fragment_edit_day.add_day_activity_button
+import kotlinx.android.synthetic.main.fragment_edit_day.recycler_edit_day_activities
+import kotlinx.android.synthetic.main.fragment_edit_day.save_create_day_button
+import kotlinx.android.synthetic.main.fragment_edit_day_edit_routine.*
 
 class EditDayEditRoutineFragment : Fragment() {
 
@@ -175,10 +178,11 @@ class EditDayEditRoutineFragment : Fragment() {
             )
         }
 
-        cancel_create_day_button.setOnClickListener {
+        cancel_create_day_edit_routine_button.setOnClickListener {
             viewModel.onCancelEditDay()
             findNavController().navigate(
-                EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
+                EditDayEditRoutineFragmentDirections.actionEditDayEditRoutineFragmentToEditRoutineFragment(
+                    routineId = routineId,
                     clearData = 2
                 )
             )
