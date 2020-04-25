@@ -20,7 +20,14 @@ class StorageRepositoryImpl : StorageRepository {
             }
             storageReference!!.downloadUrl
         }.await()
-        Log.i("TASK", "$task")
         return Resource.Success(task.toString())
+    }
+
+    override suspend fun uploadMultipleImages(intent: Intent): Resource<MutableList<String>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun uploadPdf(intent: Intent): Resource<String> {
+        TODO("Not yet implemented")
     }
 }

@@ -4,10 +4,12 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Customer
+import com.tfg.workoutagent.presentation.ui.users.admin.fragments.UserListFragmentDirections
 import kotlinx.android.synthetic.main.item_row_customer.view.*
 
 class CustomerAdminListAdapter (private val context: Context) : RecyclerView.Adapter<CustomerAdminListAdapter.CustomerAdminListViewHolder> (){
@@ -35,6 +37,10 @@ class CustomerAdminListAdapter (private val context: Context) : RecyclerView.Ada
             itemView.row_customer_name.text = customer.name + " " + customer.surname
             itemView.row_customer_email.text = customer.email
             itemView.row_customer_phone.text = customer.phone
+
+            itemView.setOnClickListener {
+                itemView.findNavController().navigate(UserListFragmentDirections.actionNavigationAdminUsersToDisplayCustomerAdminFragment(customerId = customer.id, customerName = customer.name + " " + customer.surname))
+            }
         }
     }
 }

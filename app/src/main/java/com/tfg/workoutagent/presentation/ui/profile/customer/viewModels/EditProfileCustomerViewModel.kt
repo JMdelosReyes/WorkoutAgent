@@ -112,7 +112,7 @@ class EditProfileCustomerViewModel(private val manageProfileUseCase: ManageProfi
         viewModelScope.launch {
             try{
                 val customer = Customer(birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
-                manageProfileUseCase.editProfileCustomer()
+                manageProfileUseCase.editProfileCustomer(customer)
                 _customerEdited.value = true
             }catch (e: Exception){
                 _customerEdited.value = false

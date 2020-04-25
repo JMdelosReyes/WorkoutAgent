@@ -89,7 +89,15 @@
         android:id="@+id/navigation_profile_trainer"
         android:name="com.tfg.workoutagent.presentation.ui.profile.trainer.fragments.ProfileTrainerFragment"
         android:label="@string/my_profile"
-        tools:layout="@layout/fragment_trainer_profile" />
+        tools:layout="@layout/fragment_trainer_profile" >
+        <action
+            android:id="@+id/action_navigation_profile_trainer_to_editProfileTrainerFragment"
+            app:destination="@id/editProfileTrainerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
     <fragment
         android:id="@+id/displayExercise"
         android:name="com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments.DisplayExerciseFragment"
@@ -274,6 +282,18 @@
         <argument
             android:name="customerId"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/editProfileTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.profile.trainer.fragments.EditProfileTrainerFragment"
+        android:label="EditProfileTrainerFragment" >
+        <action
+            android:id="@+id/action_editProfileTrainerFragment_to_navigation_profile_trainer"
+            app:destination="@id/navigation_profile_trainer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 
 </navigation>
