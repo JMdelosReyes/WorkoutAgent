@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
@@ -23,15 +22,12 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAda
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
 import kotlinx.android.synthetic.main.create_routine_fragment.*
-import java.util.*
 
 class CreateRoutineFragment : Fragment() {
-
 
     companion object {
         fun newInstance() = CreateRoutineFragment()
     }
-
 
     private val clearData by lazy { CreateRoutineFragmentArgs.fromBundle(arguments!!).clearData }
     private lateinit var adapter: DayListAdapter
@@ -60,7 +56,7 @@ class CreateRoutineFragment : Fragment() {
 
 
         when (clearData) {
-            //0 -> this.viewModel.clearData()
+            // 0 -> this.viewModel.clearData()
             1 -> this.viewModel.clearAllData()
             2 -> this.viewModel.clearDayData()
             3 -> this.viewModel.clearActivityData()
@@ -72,41 +68,20 @@ class CreateRoutineFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter =
-            DayListAdapter(this.context!!) { day: Day ->
-                viewModel.onEditDay(day)
+            DayListAdapter(this.context!!, {
+                viewModel.onEditDay(it)
                 findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToEditDayFragment())
-            }
+            }, {
+                viewModel.onDeleteDay(it)
+                adapter.notifyDataSetChanged()
+            })
         recyclerViewRoutineNewDay.layoutManager = LinearLayoutManager(this.context!!)
         recyclerViewRoutineNewDay.adapter = adapter
-        val itemTouchHelper = setUpItemTouchHelper()
-        itemTouchHelper.attachToRecyclerView(recyclerViewRoutineNewDay)
 
         observeDayData()
         observeData()
         observeErrors()
         setupButtons()
-    }
-
-    private fun setUpItemTouchHelper(): ItemTouchHelper {
-        val simpleItemTouchCallback = object :
-            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewHolder as DayListAdapter.DayListViewHolder
-                val day = viewHolder.day
-                viewModel.removeDay(day)
-                adapter.notifyDataSetChanged()
-            }
-        }
-
-        return ItemTouchHelper(simpleItemTouchCallback)
     }
 
     private fun observeErrors() {

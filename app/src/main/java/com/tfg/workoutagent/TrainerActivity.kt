@@ -52,6 +52,11 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
+                R.id.addDayEditRoutineFragment -> {
+                    supportActionBar?.title = "Add day"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
                 R.id.editDayFragment -> {
                     supportActionBar?.title = "Edit day"
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)

@@ -172,4 +172,5 @@
     <string name="form_routine_update_button">Save</string>
     <string name="form_routine_edit_button">Edit</string>
     <string name="edit_activity_button">Edit</string>
+    <string name="edit_day_button">Delete</string>
 </resources>

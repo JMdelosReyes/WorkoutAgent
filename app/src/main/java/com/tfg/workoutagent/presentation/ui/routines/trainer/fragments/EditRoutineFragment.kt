@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
@@ -27,15 +25,13 @@ import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_edit_routine.*
 import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- */
 class EditRoutineFragment : Fragment() {
 
     private val routineId by lazy { EditRoutineFragmentArgs.fromBundle(arguments!!).routineId }
+    private val clearData by lazy { EditRoutineFragmentArgs.fromBundle(arguments!!).clearData }
     private val viewModel by lazy {
         ViewModelProvider(
-            this,
+            activity!!,
             EditRoutineViewModelFactory(
                 routineId,
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
@@ -49,8 +45,6 @@ class EditRoutineFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-
         this.binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_edit_routine,
@@ -61,42 +55,59 @@ class EditRoutineFragment : Fragment() {
         this.binding.viewModel = viewModel
         this.binding.lifecycleOwner = this
 
+        when (clearData) {
+            0 -> this.viewModel.clearNothing()
+            1 -> this.viewModel.clearAllData()
+            2 -> this.viewModel.clearDayData()
+            3 -> this.viewModel.clearActivityData()
+        }
+
         return this.binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = DayListAdapter(this.context!!) { _: Day -> }
+        adapter = DayListAdapter(this.context!!, {
+            viewModel.onEditDay(it)
+            findNavController().navigate(
+                EditRoutineFragmentDirections.actionEditRoutineFragmentToEditDayEditRoutineFragment(
+                    routineId = routineId
+                )
+            )
+        }, {
+            viewModel.onDeleteDay(it)
+            adapter.notifyDataSetChanged()
+        })
         recyclerView_Routine_edit_Day.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_Routine_edit_Day.adapter = adapter
-        val itemTouchHelper = setUpItemTouchHelper()
-        itemTouchHelper.attachToRecyclerView(recyclerView_Routine_edit_Day)
 
         observeData()
+        observeErrors()
+        observeDayData()
         setupButtons()
     }
 
-    private fun setUpItemTouchHelper(): ItemTouchHelper {
-        val simpleItemTouchCallback = object :
-            ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
+    private fun observeErrors() {
+        viewModel.titleError.observe(viewLifecycleOwner, Observer {
+            binding.routineTitleInputEdit.error =
+                if (it != "") it else null
+        })
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewHolder as DayListAdapter.DayListViewHolder
-                val day = viewHolder.day
-                viewModel.removeDay(day)
-                adapter.notifyDataSetChanged()
-            }
-        }
+        viewModel.startDateError.observe(viewLifecycleOwner, Observer {
+            binding.routineStartDateInputEdit.error =
+                if (it != "") it else null
+        })
 
-        return ItemTouchHelper(simpleItemTouchCallback)
+        viewModel.daysError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it == "") {
+                    binding.routineDaysError.visibility = View.INVISIBLE
+                } else {
+                    binding.routineDaysError.visibility = View.VISIBLE
+                }
+            }
+        })
     }
 
     private fun observeData() {
@@ -104,7 +115,6 @@ class EditRoutineFragment : Fragment() {
             when (it) {
                 is Resource.Loading -> {
                     // TODO
-
                 }
                 is Resource.Success -> {
                     // TODO
@@ -115,10 +125,7 @@ class EditRoutineFragment : Fragment() {
                 }
             }
         })
-        viewModel.days.observe(viewLifecycleOwner, Observer {
-            adapter.setListData(viewModel.days.value!!)
-            adapter.notifyDataSetChanged()
-        })
+
         viewModel.routineDeleted.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> {
@@ -140,6 +147,21 @@ class EditRoutineFragment : Fragment() {
                     .show()
             }
         })
+
+        viewModel.addDay.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    adapter.setListData(viewModel.days.value!!)
+                    adapter.notifyDataSetChanged()
+                    findNavController().navigate(
+                        EditRoutineFragmentDirections.actionEditRoutineFragmentToAddDayEditRoutineFragment(
+                            routineId
+                        )
+                    )
+                    viewModel.addDayNavigationCompleted()
+                }
+            }
+        })
     }
 
     private fun setupButtons() {
@@ -155,5 +177,14 @@ class EditRoutineFragment : Fragment() {
                 viewModel.setDate(it as Long)
             }
         }
+    }
+
+    private fun observeDayData() {
+        viewModel.days.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.setListData(viewModel.days.value!!)
+                adapter.notifyDataSetChanged()
+            }
+        })
     }
 }

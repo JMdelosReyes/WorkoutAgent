@@ -1,6 +1,5 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -47,7 +46,6 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         get() = _dayNameError
 
     val activities = MutableLiveData<MutableList<RoutineActivity>>(mutableListOf())
-    val activitiesCopy = MutableLiveData<MutableList<RoutineActivity>>(mutableListOf())
     private val _activitiesError = MutableLiveData("")
     val activitiesError: LiveData<String>
         get() = _activitiesError
@@ -87,8 +85,6 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val addDay: LiveData<Boolean?>
         get() = _addDay
 
-    private var copyList = true
-
     // Para el spinner
     private val _exercises = MutableLiveData<List<Exercise>>()
     val exercises: LiveData<List<Exercise>>
@@ -108,6 +104,8 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     val editingActivity: LiveData<RoutineActivity>
         get() = _editingActivity
     private var editingActivityPosition: Int? = null
+
+    private var originalActivities = mutableListOf<RoutineActivity>()
 
     // Para cerrar el dialog de activity
     private val _closeActivityDialog = MutableLiveData<Boolean>(null)
@@ -243,7 +241,6 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         clearDayData()
         _dayCreated.value = null
         _daysError.value = ""
-        copyList = true
     }
 
     fun onSaveActivity() {
@@ -343,7 +340,6 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
             note = note.value!!
         )
         activities.value!!.add(activity)
-        Log.i("AAAA", activity.toString())
 
         // TODO
         adapter?.notifyDataSetChanged()
@@ -387,11 +383,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         this.adapter?.notifyDataSetChanged()
     }
 
-    fun removeDay(day: Day) {
-        this.days.value?.remove(day)
-    }
-
-    // Para ek spinner
+    // Para el spinner
     fun getExercises() {
         viewModelScope.launch {
             try {
@@ -423,6 +415,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         this.editingDayPosition = this.days.value?.indexOf(day)
         this.dayName.value = day.name
         this.activities.value = day.activities
+        this.originalActivities = this.activities.value!!.toMutableList()
     }
 
     fun onSaveEditDay() {
@@ -438,16 +431,13 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         clearDayData()
         _dayCreated.value = null
         _daysError.value = ""
-        copyList = true
-
+        this.originalActivities = mutableListOf()
     }
 
-    //para editar la actividad
     fun onEditActivity(routineActivity: RoutineActivity) {
         this._editingActivity.value = routineActivity
         this.editingActivityPosition = this.activities.value?.indexOf(routineActivity)
         this.sets.value = routineActivity.sets.toString()
-        intListToString(routineActivity.repetitions)
         this.repetitions.value = routineActivity.repetitions.joinToString(",")
         this.weights.value = doubleListToString(routineActivity.weightsPerRepetition)
         this.note.value = routineActivity.note
@@ -458,6 +448,10 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         if (checkActivityData()) {
             replaceActivity()
         }
+    }
+
+    fun onDeleteDay(day: Day) {
+        this.days.value?.remove(day)
     }
 
     private fun replaceActivity() {
@@ -473,12 +467,8 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
             exercise = selectedExercise.value!!,
             note = note.value!!
         )
-        if(copyList){
-            copyActivities()
-        }
 
         activities.value!![this.editingActivityPosition!!] = activity
-        Log.i("AAAA", activity.toString())
 
         // TODO
         adapter?.notifyDataSetChanged()
@@ -488,41 +478,20 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         _activitiesError.value = ""
     }
 
-    fun onCancelEditDay(){
-        activities.value = activitiesCopy.value
-        copyList = true
+    fun onCancelEditDay() {
+        activities.value = originalActivities.toMutableList()
+        this.editingDay.value?.activities = activities.value!!
+        originalActivities = mutableListOf()
     }
 
-    fun copyActivities(){
-        activitiesCopy.value = activities.value
-        copyList = false
-    }
-
-    private fun intListToString(intList: MutableList<Int>): String{
+    private fun doubleListToString(doubleList: MutableList<Double>): String {
         var listString = ""
-        var i = 0
-        for (item in intList){
-            if(i == intList.size-1){
-                listString = listString + item
-            }else{
-                listString = listString + item+","
+        for ((i, item) in doubleList.withIndex()) {
+            if (i == doubleList.size - 1) {
+                listString += item.roundToInt()
+            } else {
+                listString = listString + item.roundToInt() + ","
             }
-            i++
-        }
-
-        return listString
-    }
-
-    private fun doubleListToString(doubleList: MutableList<Double>): String{
-        var listString = ""
-        var i = 0
-        for (item in doubleList){
-            if(i == doubleList.size-1){
-                listString = listString + item.roundToInt()
-            }else{
-                listString = listString + item.roundToInt()+","
-            }
-            i++
         }
 
         return listString

@@ -17,30 +17,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
-import com.tfg.workoutagent.databinding.FragmentEditDayBinding
+import com.tfg.workoutagent.databinding.FragmentEditDayEditRoutineBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
 import kotlinx.android.synthetic.main.fragment_edit_day.*
 
-/**
- * A simple [Fragment] subclass.
- */
-class EditDayFragment : Fragment() {
+class EditDayEditRoutineFragment : Fragment() {
+
+    private val routineId by lazy { EditDayEditRoutineFragmentArgs.fromBundle(arguments!!).routineId }
 
     private val viewModel by lazy {
         ViewModelProvider(
-            activity!!, CreateRoutineViewModelFactory(
+            activity!!,
+            EditRoutineViewModelFactory(
+                routineId,
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
-        ).get(CreateRoutineViewModel::class.java)
+        ).get(EditRoutineViewModel::class.java)
     }
 
     private lateinit var adapter: ActivityListAdapter
 
-    private lateinit var binding: FragmentEditDayBinding
+    private lateinit var binding: FragmentEditDayEditRoutineBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +49,7 @@ class EditDayFragment : Fragment() {
     ): View? {
         this.binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_edit_day,
+            R.layout.fragment_edit_day_edit_routine,
             container,
             false
         )
@@ -61,9 +62,13 @@ class EditDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ActivityListAdapter(this.context!!){ routineActivity: RoutineActivity ->
+        adapter = ActivityListAdapter(this.context!!) { routineActivity: RoutineActivity ->
             viewModel.onEditActivity(routineActivity)
-            findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToEditActivityFragment())
+            findNavController().navigate(
+                EditDayEditRoutineFragmentDirections.actionEditDayEditRoutineFragmentToEditActivityEditRoutineFragment(
+                    routineId = routineId
+                )
+            )
         }
         recycler_edit_day_activities.layoutManager = LinearLayoutManager(this.context!!)
         recycler_edit_day_activities.adapter = adapter
@@ -131,8 +136,9 @@ class EditDayFragment : Fragment() {
             it?.let {
                 if (it) {
                     findNavController().navigate(
-                        EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
-                            2
+                        EditDayEditRoutineFragmentDirections.actionEditDayEditRoutineFragmentToEditRoutineFragment(
+                            clearData = 2,
+                            routineId = routineId
                         )
                     )
                 }
@@ -146,8 +152,9 @@ class EditDayFragment : Fragment() {
         ) {
             override fun handleOnBackPressed() {
                 findNavController().navigate(
-                    EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
-                        clearData = 2
+                    EditDayEditRoutineFragmentDirections.actionEditDayEditRoutineFragmentToEditRoutineFragment(
+                        clearData = 2,
+                        routineId = routineId
                     )
                 )
             }
@@ -161,7 +168,11 @@ class EditDayFragment : Fragment() {
         }
 
         add_day_activity_button.setOnClickListener {
-            findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToAddActivityFragment())
+            findNavController().navigate(
+                EditDayEditRoutineFragmentDirections.actionEditDayEditRoutineFragmentToAddActivityEditRoutineFragment(
+                    routineId = routineId
+                )
+            )
         }
 
         cancel_create_day_button.setOnClickListener {

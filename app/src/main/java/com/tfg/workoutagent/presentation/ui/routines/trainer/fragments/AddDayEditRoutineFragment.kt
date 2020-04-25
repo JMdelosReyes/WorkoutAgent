@@ -17,30 +17,31 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
-import com.tfg.workoutagent.databinding.FragmentEditDayBinding
+import com.tfg.workoutagent.databinding.FragmentAddDayEditRoutineBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
-import kotlinx.android.synthetic.main.fragment_edit_day.*
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
+import kotlinx.android.synthetic.main.fragment_add_day_edit_routine.*
 
-/**
- * A simple [Fragment] subclass.
- */
-class EditDayFragment : Fragment() {
+class AddDayEditRoutineFragment : Fragment() {
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            activity!!, CreateRoutineViewModelFactory(
-                ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
-            )
-        ).get(CreateRoutineViewModel::class.java)
-    }
+    private val routineId by lazy { AddDayEditRoutineFragmentArgs.fromBundle(arguments!!).routineId }
 
     private lateinit var adapter: ActivityListAdapter
 
-    private lateinit var binding: FragmentEditDayBinding
+    private val viewModel by lazy {
+        ViewModelProvider(
+            activity!!,
+            EditRoutineViewModelFactory(
+                routineId,
+                ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
+            )
+        ).get(EditRoutineViewModel::class.java)
+    }
+
+    private lateinit var binding: FragmentAddDayEditRoutineBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +49,7 @@ class EditDayFragment : Fragment() {
     ): View? {
         this.binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_edit_day,
+            R.layout.fragment_add_day_edit_routine,
             container,
             false
         )
@@ -61,15 +62,20 @@ class EditDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ActivityListAdapter(this.context!!){ routineActivity: RoutineActivity ->
+        adapter = ActivityListAdapter(this.context!!) { routineActivity: RoutineActivity ->
             viewModel.onEditActivity(routineActivity)
-            findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToEditActivityFragment())
+            findNavController().navigate(
+                AddDayEditRoutineFragmentDirections.actionAddDayEditRoutineFragmentToEditActivityEditRoutineFragment(
+                    routineId = routineId
+                )
+            )
         }
-        recycler_edit_day_activities.layoutManager = LinearLayoutManager(this.context!!)
-        recycler_edit_day_activities.adapter = adapter
+
+        recycler_add_day_activities.layoutManager = LinearLayoutManager(this.context!!)
+        recycler_add_day_activities.adapter = adapter
 
         val itemTouchHelper = setUpItemTouchHelper()
-        itemTouchHelper.attachToRecyclerView(recycler_edit_day_activities)
+        itemTouchHelper.attachToRecyclerView(recycler_add_day_activities)
 
         // TODO
         viewModel.adapter = adapter
@@ -101,6 +107,45 @@ class EditDayFragment : Fragment() {
         return ItemTouchHelper(simpleItemTouchCallback)
     }
 
+    private fun onBackPressed() {
+        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
+            true
+        ) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(
+                    AddDayEditRoutineFragmentDirections.actionAddDayEditRoutineFragmentToEditRoutineFragment(
+                        routineId = routineId,
+                        clearData = 2
+                    )
+                )
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+    }
+
+    private fun observeData() {
+        viewModel.activities.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.setListData(it)
+                adapter.notifyDataSetChanged()
+                // findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToAddDayFragment())
+            }
+        })
+
+        viewModel.dayCreated.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    findNavController().navigate(
+                        AddDayEditRoutineFragmentDirections.actionAddDayEditRoutineFragmentToEditRoutineFragment(
+                            routineId = routineId,
+                            clearData = 2
+                        )
+                    )
+                }
+            }
+        })
+    }
+
     private fun observeErrors() {
         viewModel.dayNameError.observe(viewLifecycleOwner, Observer {
             binding.routineDayNameInputEdit.error =
@@ -118,56 +163,23 @@ class EditDayFragment : Fragment() {
         })
     }
 
-    private fun observeData() {
-        viewModel.activities.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.setListData(it)
-                adapter.notifyDataSetChanged()
-                // findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToAddDayFragment())
-            }
-        })
-
-        viewModel.dayCreated.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                if (it) {
-                    findNavController().navigate(
-                        EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
-                            2
-                        )
-                    )
-                }
-            }
-        })
-    }
-
-    private fun onBackPressed() {
-        val callback: OnBackPressedCallback = object : OnBackPressedCallback(
-            true
-        ) {
-            override fun handleOnBackPressed() {
-                findNavController().navigate(
-                    EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
-                        clearData = 2
-                    )
-                )
-            }
-        }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
-    }
-
     private fun setupButtons() {
         save_create_day_button.setOnClickListener {
-            viewModel.onSaveEditDay()
+            viewModel.onSaveDay()
         }
 
         add_day_activity_button.setOnClickListener {
-            findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToAddActivityFragment())
+            findNavController().navigate(
+                AddDayEditRoutineFragmentDirections.actionAddDayEditRoutineFragmentToAddActivityEditRoutineFragment(
+                    routineId = routineId
+                )
+            )
         }
 
         cancel_create_day_button.setOnClickListener {
-            viewModel.onCancelEditDay()
             findNavController().navigate(
-                EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
+                AddDayEditRoutineFragmentDirections.actionAddDayEditRoutineFragmentToEditRoutineFragment(
+                    routineId = routineId,
                     clearData = 2
                 )
             )

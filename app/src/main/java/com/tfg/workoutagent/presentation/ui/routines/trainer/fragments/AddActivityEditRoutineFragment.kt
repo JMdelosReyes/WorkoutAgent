@@ -16,24 +16,28 @@ import androidx.lifecycle.ViewModelProvider
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
-import com.tfg.workoutagent.databinding.FragmentAddActivityBinding
+import com.tfg.workoutagent.databinding.FragmentAddActivityEditRoutineBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
-import kotlinx.android.synthetic.main.fragment_add_activity.*
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
+import kotlinx.android.synthetic.main.fragment_add_activity_edit_routine.*
 
-class AddActivityFragment : DialogFragment() {
+class AddActivityEditRoutineFragment : DialogFragment() {
 
     private lateinit var toolbar: Toolbar
 
-    private lateinit var binding: FragmentAddActivityBinding
+    private lateinit var binding: FragmentAddActivityEditRoutineBinding
+
+    private val routineId by lazy { AddActivityEditRoutineFragmentArgs.fromBundle(arguments!!).routineId }
 
     private val viewModel by lazy {
         ViewModelProvider(
-            activity!!, CreateRoutineViewModelFactory(
+            activity!!,
+            EditRoutineViewModelFactory(
+                routineId,
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
-        ).get(CreateRoutineViewModel::class.java)
+        ).get(EditRoutineViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,10 +49,9 @@ class AddActivityFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         this.binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_add_activity,
+            R.layout.fragment_add_activity_edit_routine,
             container,
             false
         )
@@ -120,7 +123,7 @@ class AddActivityFragment : DialogFragment() {
             viewModel.clearActivityData()
             dismiss()
         }
-        toolbar.title = "Some Title"
+        toolbar.title = "Add activity"
         toolbar.inflateMenu(R.menu.add_day_activity_dialog_menu)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {

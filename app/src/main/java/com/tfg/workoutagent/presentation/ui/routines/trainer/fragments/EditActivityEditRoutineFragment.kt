@@ -16,24 +16,28 @@ import androidx.lifecycle.ViewModelProvider
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
-import com.tfg.workoutagent.databinding.FragmentAddActivityBinding
+import com.tfg.workoutagent.databinding.FragmentEditActivityEditRoutineBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
 import kotlinx.android.synthetic.main.fragment_add_activity.*
 
-class AddActivityFragment : DialogFragment() {
+class EditActivityEditRoutineFragment : DialogFragment() {
 
     private lateinit var toolbar: Toolbar
 
-    private lateinit var binding: FragmentAddActivityBinding
+    private lateinit var binding: FragmentEditActivityEditRoutineBinding
+
+    private val routineId by lazy { EditActivityEditRoutineFragmentArgs.fromBundle(arguments!!).routineId }
 
     private val viewModel by lazy {
         ViewModelProvider(
-            activity!!, CreateRoutineViewModelFactory(
+            activity!!,
+            EditRoutineViewModelFactory(
+                routineId,
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
-        ).get(CreateRoutineViewModel::class.java)
+        ).get(EditRoutineViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,10 +49,9 @@ class AddActivityFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         this.binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_add_activity,
+            R.layout.fragment_edit_activity_edit_routine,
             container,
             false
         )
@@ -125,7 +128,7 @@ class AddActivityFragment : DialogFragment() {
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_save_day_activity -> {
-                    viewModel.onSaveActivity()
+                    viewModel.onSaveEditActivity()
                 }
                 else -> {
                     dismiss()
