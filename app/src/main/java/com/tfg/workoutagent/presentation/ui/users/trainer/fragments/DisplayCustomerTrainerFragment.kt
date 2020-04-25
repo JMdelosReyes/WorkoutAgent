@@ -80,5 +80,9 @@ class DisplayCustomerTrainerFragment : Fragment() {
                 customerId, customerName
             ))
         }
+
+        display_customer_button_nutrition.setOnClickListener {
+            findNavController().navigate(DisplayCustomerTrainerFragmentDirections.actionDisplayCustomerToNutritionCustomerTrainerFragment(customerId))
+        }
     }
 }

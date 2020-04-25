@@ -31,4 +31,5 @@ interface UserRepository {
     suspend fun updateProfileAdmin()  : Resource<Boolean>
     suspend fun updateProfileCustomer()  : Resource<Boolean>
     suspend fun updateProfileTrainer()  : Resource<Boolean>
+
 }

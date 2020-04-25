@@ -1,13 +1,13 @@
 package com.tfg.workoutagent.data.repositoriesImpl
 
+import android.util.Log
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
+//import com.google.firebase.storage.FirebaseStorage
 import com.tfg.workoutagent.data.repositories.UserRepository
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Trainer
@@ -149,7 +149,8 @@ class UserRepositoryImpl: UserRepository {
         if(customer.photo == "" || customer.photo == "DEFAULT_PHOTO"){
             customer.photo = resultData.photo
         }
-        val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goalsArray, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to customer.role, "weightPerWeek" to customer.weightPerWeek, "weights" to weightsArray)
+        val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goalsArray, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to customer.role, "weightPerWeek" to customer.weightPerWeek, "weights" to weightsArray,
+            "formula" to customer.formula, "formulaType" to customer.formulaType)
         FirebaseFirestore.getInstance().collection("users").document(customer.id).update(data).await()
         return Resource.Success(true)
     }

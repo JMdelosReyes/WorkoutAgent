@@ -209,6 +209,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_displayCustomer_to_nutritionCustomerTrainerFragment"
+            app:destination="@id/nutritionCustomerTrainerFragment" />
     </fragment>
     <fragment
         android:id="@+id/createCustomerTrainerFragment"
@@ -260,6 +263,17 @@
         <action
             android:id="@+id/action_editRoutineFragment_to_navigation_routine_trainer"
             app:destination="@id/navigation_routine_trainer" />
+    </fragment>
+    <fragment
+        android:id="@+id/nutritionCustomerTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.nutrition.trainer.fragments.NutritionCustomerTrainerFragment"
+        android:label="NutritionCustomerTrainerFragment" >
+        <action
+            android:id="@+id/action_nutritionCustomerTrainerFragment_to_displayCustomer"
+            app:destination="@id/displayCustomer" />
+        <argument
+            android:name="customerId"
+            app:argType="string" />
     </fragment>
 
 </navigation>
