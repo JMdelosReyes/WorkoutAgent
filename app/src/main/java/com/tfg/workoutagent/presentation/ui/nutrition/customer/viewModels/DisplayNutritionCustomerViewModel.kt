@@ -24,9 +24,6 @@ class DisplayNutritionCustomerViewModel(private val displayProfileUserUseCase: D
         try {
             val customer = displayProfileUserUseCase.getLoggedUserCustomer()
             emit(customer)
-            if (customer is Resource.Success) {
-                loadData(customer)
-            }
         }catch (e: Exception){
             emit(Resource.Failure(e))
         }
@@ -37,7 +34,6 @@ class DisplayNutritionCustomerViewModel(private val displayProfileUserUseCase: D
     var genre = MutableLiveData("")
     var initialWeight = MutableLiveData(0.0)
     var calories = MutableLiveData<String>("")
-    var loadedData = MutableLiveData<Boolean?>(false)
     var weights = MutableLiveData<MutableList<Weight>>(mutableListOf())
     var proteins = MutableLiveData<String>()
     var carbohydrates = MutableLiveData<String>()
@@ -57,7 +53,7 @@ class DisplayNutritionCustomerViewModel(private val displayProfileUserUseCase: D
                     }else{
                         kcal *= 1.2
                     }
-                    calories.postValue(kcal.roundToInt().toString())
+                    calories.value = (kcal.roundToInt().toString())
 
                 } else {
                     var kcal = ((10 + pesos[0].weight) + (6.25 * height.value!!) - (5 * years) -161)
@@ -66,7 +62,7 @@ class DisplayNutritionCustomerViewModel(private val displayProfileUserUseCase: D
                     }else{
                         kcal *= 1.2
                     }
-                    calories.postValue(kcal.roundToInt().toString())
+                    calories.value =(kcal.roundToInt().toString())
                 }
             } else {
                 if (genre.value == "M") {
@@ -76,7 +72,7 @@ class DisplayNutritionCustomerViewModel(private val displayProfileUserUseCase: D
                     }else{
                         kcal *= 1.2
                     }
-                    calories.postValue(kcal.roundToInt().toString())
+                    calories.value =(kcal.roundToInt().toString())
 
                 } else {
                     var kcal = 1000.0
@@ -85,25 +81,24 @@ class DisplayNutritionCustomerViewModel(private val displayProfileUserUseCase: D
                     }else{
                         kcal *= 1.2
                     }
-                    calories.postValue(kcal.roundToInt().toString())
+                    calories.value =(kcal.roundToInt().toString())
                 }
             }
-            proteins.postValue((weights.value!![0].weight * 2.2).roundToInt().toString())
-            fats.postValue((weights.value!![0].weight * 0.8).roundToInt().toString())
-            carbohydrates.postValue((calories.value!!.toDouble() - ((proteins.value!!.toDouble() * 4) + (fats.value!!.toDouble() * 9))).roundToInt().toString())
+            proteins.value = ((weights.value!![0].weight * 2.2).roundToInt().toString())
+            fats.value = ((weights.value!![0].weight * 0.8).roundToInt().toString())
+            carbohydrates.value =((calories.value!!.toDouble() - ((proteins.value!!.toDouble() * 4) + (fats.value!!.toDouble() * 9))).roundToInt().toString())
 
 
-            loadedData.postValue(true)
     }
 
     fun loadData(customer: Resource.Success<Customer>) {
-        birthday.postValue(parseDateToFriendlyDate(customer.data.birthday))
-        height.postValue(customer.data.height)
-        initialWeight.postValue(customer.data.weights.last().weight)
-        genre.postValue(customer.data.genre)
-        weights.postValue(customer.data.weights)
-        selectedFormula.postValue(customer.data.formula)
-        selectedFormulaType.postValue(customer.data.formulaType)
+        birthday.value = (parseDateToFriendlyDate(customer.data.birthday))
+        height.value = (customer.data.height)
+        initialWeight.value = (customer.data.weights.last().weight)
+        genre.value = (customer.data.genre)
+        weights.value = (customer.data.weights)
+        selectedFormula.value = (customer.data.formula)
+        selectedFormulaType.value = (customer.data.formulaType)
         weights.value!!.sortByDescending { weight: Weight ->
             weight.date
         }

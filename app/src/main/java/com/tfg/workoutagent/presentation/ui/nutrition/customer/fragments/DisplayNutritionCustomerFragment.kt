@@ -49,12 +49,16 @@ class DisplayNutritionCustomerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeData()
-        sleep(10)
 
     }
 
     private fun observeData(){
         viewModel.getCustomer.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if(it is Resource.Success){
+                    viewModel.loadData(it)
+                }
+            }
         })
 
         viewModel.calories.observe(viewLifecycleOwner, Observer {
