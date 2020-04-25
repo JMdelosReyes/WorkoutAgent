@@ -1,6 +1,9 @@
 package com.tfg.workoutagent.presentation.ui.users.admin.viewModels
 
+import android.content.Intent
 import androidx.lifecycle.*
+import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
+import com.tfg.workoutagent.domain.storageUseCases.UploadPhotoUserUseCaseImpl
 import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCase
 import com.tfg.workoutagent.models.Trainer
 import com.tfg.workoutagent.vo.Resource
@@ -25,7 +28,7 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
     private val _emailError = MutableLiveData("")
     val emailError: LiveData<String>
         get() = _emailError
-
+    var dataPhoto : Intent? = null
     var name : String = ""
     private val _nameError = MutableLiveData("")
     val nameError: LiveData<String>
@@ -68,8 +71,25 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
     private fun  createTrainer() {
         viewModelScope.launch {
             try {
-                val trainer = Trainer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
-                manageTrainerAdminUseCase.createTrainer(trainer)
+                if(dataPhoto != null){
+                    val upl = UploadPhotoUserUseCaseImpl(StorageRepositoryImpl())
+                    when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
+                        is Resource.Success -> {
+                            photo = photoUri.data
+                            val trainer = Trainer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
+                            manageTrainerAdminUseCase.createTrainer(trainer)
+                        }
+                        else -> {
+                            photo = "DEFAULT_IMAGE"
+                            val trainer = Trainer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
+                            manageTrainerAdminUseCase.createTrainer(trainer)
+                        }
+                    }
+                }else{
+                    photo = "DEFAULT_IMAGE"
+                    val trainer = Trainer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
+                    manageTrainerAdminUseCase.createTrainer(trainer)
+                }
                 _createdTrainer.value = true
             } catch (e: Exception) {
                 _createdTrainer.value = false

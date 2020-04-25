@@ -8,28 +8,40 @@
             type="com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.CreateCustomerTrainerViewModel" />
     </data>
     <ScrollView
+        android:id="@+id/sv_create_customer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.users.trainer.fragments.DisplayCustomerTrainerFragment">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp">
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/edit_profile_customer_button_select_image_customer"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="80dp"
                 android:contentDescription="@string/form_user_content_desc_photo"
                 android:src="@drawable/ic_add_a_photo_white_24dp"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-                app:layout_constraintHorizontal_bias="0.47"
+                app:layout_constraintHorizontal_bias="0.422"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/image_selected"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="64dp"
+                app:civ_border_width="1dp"
+                app:layout_constraintBottom_toTopOf="@+id/customer_email_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.069"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.105" />
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="220dp"
@@ -163,7 +175,6 @@
                     android:text="@={viewModel.birthday}" />
             </com.google.android.material.textfield.TextInputLayout>
 
-
             <ImageView
                 android:id="@+id/form_image_height_user"
                 android:layout_width="63dp"
@@ -218,21 +229,49 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input" />
 
+            <RadioGroup
+                android:id="@+id/radioGrpSex_customer"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input">
+
+                <RadioButton
+                    android:id="@+id/radioM"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Male"
+                    android:textSize="14dp" />
+
+                <RadioButton
+                    android:id="@+id/radioF"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Female"
+                    android:textSize="14dp" />
+
+            </RadioGroup>
+
             <Button
                 android:id="@+id/create_customer_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:drawableLeft="@drawable/ic_save_white_48dp"
                 android:onClick="@{() -> viewModel.onSubmit()}"
-                android:textSize="26sp"
                 android:text="Save customer"
+                android:textSize="26sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.761"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/form_height_input_user"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintTop_toBottomOf="@+id/radioGrpSex_customer"
+                app:layout_constraintVertical_bias="1.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

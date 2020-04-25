@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.users.trainer.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,15 +40,19 @@ class CustomerListAdapter(private val context: Context) :  RecyclerView.Adapter<
 
     inner class CustomerListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(customer: Customer) {
-            Glide.with(context).load(customer.photo)
-                .into(itemView.circleImageViewCustomer)
+            Log.i("customer viewHolder", customer.toString())
+            if(customer.photo == "" || customer.photo == "DEFAULT_IMAGE"){
+                Glide.with(context).load(R.drawable.ic_person_black_60dp).into(itemView.circleImageViewCustomer)
+            }else{
+                Glide.with(context).load(customer.photo).into(itemView.circleImageViewCustomer)
+            }
             itemView.row_customer_name.text = customer.name + " " + customer.surname
             itemView.row_customer_email.text = customer.email
             itemView.row_customer_phone.text = customer.phone
 
             itemView.setOnClickListener {
                 itemView.findNavController().navigate(
-                    UserTrainerFragmentDirections.actionNavigationUsersTrainerToDisplayCustomer(customerId = customer.id, customerName = customer.name)
+                    UserTrainerFragmentDirections.actionNavigationUsersTrainerToDisplayCustomer(customerId = customer.id, customerName = customer.name + " " + customer.surname)
                 )
             }
         }

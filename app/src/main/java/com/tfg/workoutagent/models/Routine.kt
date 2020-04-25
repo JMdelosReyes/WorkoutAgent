@@ -7,7 +7,7 @@ data class Routine(
     var startDate : Date = Date(System.currentTimeMillis()),
     var title : String = "DEFAULT_TITLE",
     var trainer: Trainer = Trainer(),
-    var customer: Customer=Customer(),
+    var customer: Customer? = null,
     var days :MutableList<Day> = mutableListOf()
                     ) {
 }

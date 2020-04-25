@@ -1,48 +1,77 @@
 package com.tfg.workoutagent.presentation.ui.profile.trainer.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
+import com.tfg.workoutagent.domain.profileUseCases.DisplayProfileUserUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivity
 import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.ProfileTrainerViewModel
+import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.ProfileTrainerViewModelFactory
+import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.fragment_trainer_profile.*
 
 class ProfileTrainerFragment : Fragment() {
 
-    private lateinit var profileTrainer: ProfileTrainerViewModel
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
-
+    private val viewModel by lazy { ViewModelProvider(
+        this, ProfileTrainerViewModelFactory(
+            DisplayProfileUserUseCaseImpl(
+                UserRepositoryImpl()
+            )
+        )
+    ).get(ProfileTrainerViewModel::class.java)}
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        profileTrainer =
-            ViewModelProvider(this@ProfileTrainerFragment).get(ProfileTrainerViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_trainer_profile, container, false)
-        profileTrainer.text.observe(viewLifecycleOwner, Observer {
-            text_profile_fragment.text = it
-        })
-        return root
+        return inflater.inflate(R.layout.fragment_trainer_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+        observeData()
     }
 
     private fun setupUI() {
         sign_out_button.setOnClickListener { signOut2() }
+        display_trainer_button_curriculum.setOnClickListener {  }
+        display_trainer_button_edit.setOnClickListener { findNavController().navigate(ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToEditProfileTrainerFragment()) }
+        display_trainer_button_evolution.setOnClickListener {  }
+    }
+
+    private fun observeData(){
+        viewModel.getProfileTrainer.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Success -> {
+                    Glide.with(this).load(it.data.photo).into(circleImageViewTrainer_displayProfile)
+                    display_trainer_name_displayProfile.text = it.data.name + " " + it.data.surname
+                    display_trainer_email_displayProfile.text = it.data.email
+                    display_trainer_phone_displayProfile.text = it.data.phone
+                    display_trainer_birthday_displayProfile.text = parseDateToFriendlyDate(it.data.birthday)
+                    display_trainer_dni_displayProfile.text = it.data.dni
+                }
+                is Resource.Failure -> {
+                    Log.i("ERROR", it.exception.toString())
+                }
+            }
+        })
     }
 
     private fun signOut2() {
