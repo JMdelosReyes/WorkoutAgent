@@ -1,5 +1,8 @@
 package com.tfg.workoutagent.presentation.ui.users.admin.fragments
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.Log
@@ -55,6 +58,24 @@ class DisplayTrainerAdminFragment : Fragment() {
                     display_trainer_dni_admin.text = it.data.dni
                     display_trainer_phone_admin.text = it.data.phone
                     Glide.with(this).load(it.data.photo).into(circleImageViewTrainer_admin)
+                    if(it.data.academicTitle =="" || it.data.academicTitle =="DEFAULT_ACADEMIC_TITLE"){
+                        display_trainer_button_curriculum_admin.setOnClickListener{
+                            Toast.makeText(this.context, "This trainer hasn't uploaded a CV. Try again later", Toast.LENGTH_LONG).show()
+                        }
+
+                    }else{
+                        display_trainer_button_curriculum_admin.setOnClickListener {_ ->
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.setDataAndType(Uri.parse(it.data.academicTitle), "application/pdf")
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            val newIntent = Intent.createChooser(intent, "Open File")
+                            try {
+                                startActivity(newIntent)
+                            } catch (e: ActivityNotFoundException) {
+                                Toast.makeText(this.context, "Please, install a PDF reader to visualize the CV", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
                 }
                 is Resource.Failure -> {
                     //TODO: hideProgress()

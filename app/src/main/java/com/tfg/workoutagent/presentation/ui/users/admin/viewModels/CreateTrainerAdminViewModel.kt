@@ -27,7 +27,7 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
     private val _emailError = MutableLiveData("")
     val emailError: LiveData<String>
         get() = _emailError
-    var dataPhoto : Intent? = null
+
     var name : String = ""
     private val _nameError = MutableLiveData("")
     val nameError: LiveData<String>
@@ -37,7 +37,8 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
     private val _surnameError = MutableLiveData("")
     val surnameError: LiveData<String>
         get() = _surnameError
-
+    
+    var dataPhoto : Intent? = null
     var photo : String = ""
     private val _photoError = MutableLiveData("")
     val photoError: LiveData<String>

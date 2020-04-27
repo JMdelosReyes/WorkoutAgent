@@ -221,6 +221,14 @@ class UserRepositoryImpl: UserRepository {
             .collection("users")
             .document(id)
             .get().await()
+        Log.i("name", resultData.getString("name"))
+        Log.i("surname", resultData.getString("surname"))
+        Log.i("email", resultData.getString("email"))
+        Log.i("dni",resultData.getString("dni"))
+        Log.i("phone", resultData.getString("phone"))
+        Log.i("photo",resultData.getString("photo") )
+        Log.i("birthday", resultData.getDate("birthday").toString())
+        Log.i("academicTitle", resultData.getString("academicTitle"))
         val trainer = Trainer(id = resultData.id,
             name = resultData.getString("name")!!,
             surname = resultData.getString("surname")!!,
@@ -266,7 +274,7 @@ class UserRepositoryImpl: UserRepository {
 
     override suspend fun createTrainer(trainer: Trainer): Resource<Boolean> {
         val customers = mutableListOf<DocumentReference>()
-        val data : HashMap<String, Any> = hashMapOf("birthday" to trainer.birthday, "customers" to customers, "dni" to trainer.dni, "email" to trainer.email, "name" to trainer.name, "surname" to trainer.surname, "phone" to trainer.phone, "photo" to trainer.photo, "role" to trainer.role)
+        val data : HashMap<String, Any> = hashMapOf("academicTitle" to trainer.academicTitle, "birthday" to trainer.birthday, "customers" to customers, "dni" to trainer.dni, "email" to trainer.email, "name" to trainer.name, "surname" to trainer.surname, "phone" to trainer.phone, "photo" to trainer.photo, "role" to trainer.role)
         val postResult = FirebaseFirestore.getInstance().collection("users").add(data).await()
         return Resource.Success(true)
     }

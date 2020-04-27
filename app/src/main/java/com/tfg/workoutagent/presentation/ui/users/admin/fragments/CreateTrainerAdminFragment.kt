@@ -55,6 +55,7 @@ class CreateTrainerAdminFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null){
             selectedPhotoUri = data.data
+            viewModel.dataPhoto = data
             Glide.with(this).asBitmap().load(selectedPhotoUri).into(image_selected_create_trainer_admin)
             create_trainer_button_select_image_admin.visibility = View.GONE
             image_selected_create_trainer_admin.visibility = View.VISIBLE

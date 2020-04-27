@@ -32,7 +32,7 @@ class ProfileTrainerFragment : Fragment() {
 
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    lateinit var urlAT : String
+
     private val viewModel by lazy { ViewModelProvider(
         this, ProfileTrainerViewModelFactory(
             DisplayProfileUserUseCaseImpl(
@@ -70,10 +70,9 @@ class ProfileTrainerFragment : Fragment() {
                     display_trainer_phone_displayProfile.text = it.data.phone
                     display_trainer_birthday_displayProfile.text = parseDateToFriendlyDate(it.data.birthday)
                     display_trainer_dni_displayProfile.text = it.data.dni
-                    urlAT = it.data.academicTitle
-                    display_trainer_button_curriculum.setOnClickListener {
+                    display_trainer_button_curriculum.setOnClickListener {_ ->
                         val intent = Intent(Intent.ACTION_VIEW)
-                        intent.setDataAndType(Uri.parse(urlAT), "application/pdf")
+                        intent.setDataAndType(Uri.parse(it.data.academicTitle), "application/pdf")
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                         val newIntent = Intent.createChooser(intent, "Open File")
                         try {
