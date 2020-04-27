@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,12 +69,20 @@ class CreateCustomerTrainerFragment : BaseFragment() {
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
         }
+        radioGrpSex_customer.setOnCheckedChangeListener { group, checkedId ->
+            if(checkedId == radioM.id){
+               viewModel.genre = "M"
+            }else if(checkedId == radioF.id){
+                viewModel.genre = "F"
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null){
             selectedPhotoUri = data.data
+            viewModel.dataPhoto = data
             Glide.with(this).asBitmap().load(selectedPhotoUri).into(image_selected)
             edit_profile_customer_button_select_image_customer.visibility = View.GONE
             image_selected.visibility = View.VISIBLE
@@ -97,12 +106,12 @@ class CreateCustomerTrainerFragment : BaseFragment() {
         })
 
         viewModel.heightError.observe(viewLifecycleOwner, Observer {
-            binding.formHeightInputUser.error =
+            binding.customerHeightInputEdit.error =
                 if (it != "") it else null
         })
 
         viewModel.initialWeightError.observe(viewLifecycleOwner, Observer {
-            binding.formWeightInputUser.error =
+            binding.customerWeightInputEdit.error =
                 if (it != "") it else null
         })
 
@@ -125,10 +134,7 @@ class CreateCustomerTrainerFragment : BaseFragment() {
             binding.customerNameInputEdit.error =
                 if (it != "") it else null
         })
-        viewModel.genderError.observe(viewLifecycleOwner, Observer {
-            binding
-                if (it != "") it else null
-        })
+
     }
     private fun observeData(){
 

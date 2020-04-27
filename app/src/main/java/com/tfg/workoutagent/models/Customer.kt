@@ -9,7 +9,6 @@ data class Customer(
     var email : String = "DEFAULT_EMAIL",
     var name : String = "DEFAULT_NAME",
     var surname : String = "DEFAULT_SURNAME",
-    var gender : String = "UNKNOWN",
     var goals : MutableList<Goal> = mutableListOf(),
     var photo : String = "DEFAULT_PHOTO",
     var height : Int = 150,

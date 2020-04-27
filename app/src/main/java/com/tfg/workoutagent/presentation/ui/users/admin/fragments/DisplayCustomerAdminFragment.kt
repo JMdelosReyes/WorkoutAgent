@@ -2,6 +2,7 @@ package com.tfg.workoutagent.presentation.ui.users.admin.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.DisplayCustom
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.fragment_display_customer_admin.*
+import kotlinx.android.synthetic.main.fragment_display_customer_trainer.*
 
 class DisplayCustomerAdminFragment : Fragment() {
 
@@ -54,10 +56,20 @@ class DisplayCustomerAdminFragment : Fragment() {
                     display_customer_name_admin.text = it.data.name + " " + it.data.surname
                     display_customer_email_admin.text = it.data.email
                     display_customer_phone_admin.text = it.data.phone
-                    display_customer_gender_admin.text = it.data.gender
+                    if(it.data.genre == "M"){
+                        display_customer_gender_admin.text = getString(R.string.genre_male)
+                    }else{
+                        display_customer_gender_admin.text = getString(R.string.genre_female)
+                    }
+                    Log.i("RESOURCE SUCCESS CM", it.data.height.toString() + " cm")
+                    Log.i("RESOURCE SUCCESS KG", it.data.weights[it.data.weights.lastIndex].weight.toString() + " kg")
                     display_customer_height_admin.text = it.data.height.toString() + " cm"
                     display_customer_weight_admin.text = it.data.weights[it.data.weights.lastIndex].weight.toString() + " kg"
-                    Glide.with(this).load(it.data.photo).into(circleImageViewCustomer_admin)
+                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE"){
+                        Glide.with(this).load(R.drawable.ic_person_black_60dp).into(circleImageViewCustomer_admin)
+                    }else{
+                        Glide.with(this).load(it.data.photo).into(circleImageViewCustomer_admin)
+                    }
                 }
                 is Resource.Failure -> {
                     //TODO: hideProgress()

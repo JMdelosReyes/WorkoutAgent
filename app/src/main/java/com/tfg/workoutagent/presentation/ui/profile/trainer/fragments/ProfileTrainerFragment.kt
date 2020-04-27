@@ -1,10 +1,14 @@
 package com.tfg.workoutagent.presentation.ui.profile.trainer.fragments
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +32,7 @@ class ProfileTrainerFragment : Fragment() {
 
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
+    lateinit var urlAT : String
     private val viewModel by lazy { ViewModelProvider(
         this, ProfileTrainerViewModelFactory(
             DisplayProfileUserUseCaseImpl(
@@ -51,7 +56,6 @@ class ProfileTrainerFragment : Fragment() {
 
     private fun setupUI() {
         sign_out_button.setOnClickListener { signOut2() }
-        display_trainer_button_curriculum.setOnClickListener {  }
         display_trainer_button_edit.setOnClickListener { findNavController().navigate(ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToEditProfileTrainerFragment()) }
         display_trainer_button_evolution.setOnClickListener {  }
     }
@@ -66,6 +70,18 @@ class ProfileTrainerFragment : Fragment() {
                     display_trainer_phone_displayProfile.text = it.data.phone
                     display_trainer_birthday_displayProfile.text = parseDateToFriendlyDate(it.data.birthday)
                     display_trainer_dni_displayProfile.text = it.data.dni
+                    urlAT = it.data.academicTitle
+                    display_trainer_button_curriculum.setOnClickListener {
+                        val intent = Intent(Intent.ACTION_VIEW)
+                        intent.setDataAndType(Uri.parse(urlAT), "application/pdf")
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        val newIntent = Intent.createChooser(intent, "Open File")
+                        try {
+                            startActivity(newIntent)
+                        } catch (e: ActivityNotFoundException) {
+                            Toast.makeText(this.context, "Please, install a PDF reader to visualize the CV", Toast.LENGTH_LONG).show()
+                        }
+                    }
                 }
                 is Resource.Failure -> {
                     Log.i("ERROR", it.exception.toString())

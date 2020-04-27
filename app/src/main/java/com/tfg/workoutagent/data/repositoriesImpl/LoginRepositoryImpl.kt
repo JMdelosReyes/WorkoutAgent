@@ -1,6 +1,5 @@
 package com.tfg.workoutagent.data.repositoriesImpl
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tfg.workoutagent.data.repositories.LoginRepository
@@ -9,15 +8,16 @@ import kotlinx.coroutines.tasks.await
 
 class LoginRepositoryImpl : LoginRepository {
     override suspend fun getRole(): Resource<String> {
-        val user_mail = FirebaseAuth.getInstance().currentUser!!.email
-        Log.i("LoginRepository", "user_email: ${user_mail}")
         val result = FirebaseFirestore.getInstance()
             .collection("users")
-            .whereEqualTo("email", user_mail)
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
             .limit(1)
             .get()
             .await()
-        val role = result.documents[0].getString("role")
-        return Resource.Success(role!!)
+        if(result.documents[0] != null){
+            return Resource.Success(result.documents[0].getString("role")!!)
+        }else{
+            return Resource.Success("NO_ACCOUNT")
+        }
     }
 }

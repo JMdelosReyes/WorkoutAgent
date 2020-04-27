@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.users.admin.fragments
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
@@ -13,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
@@ -48,6 +50,23 @@ class EditDeleteTrainerAdminFragment : Fragment() {
         this.binding.lifecycleOwner = this
 
         return  this.binding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null){
+            selectedPhotoUri = data.data
+            viewModel.photo.value = selectedPhotoUri.toString()
+            Glide.with(this).asBitmap().load(selectedPhotoUri).into(image_selected_edit_trainer_admin)
+            edit_profile_trainer_select_image_button.visibility = View.GONE
+            image_selected_edit_trainer_admin.visibility = View.VISIBLE
+            image_selected_edit_trainer_admin.setOnClickListener {
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(Intent.createChooser(intent, "Change Picture"), PICK_IMAGE_CODE)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

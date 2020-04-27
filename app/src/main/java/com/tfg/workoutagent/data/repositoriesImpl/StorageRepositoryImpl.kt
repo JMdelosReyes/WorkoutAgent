@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.data.repositoriesImpl
 
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import com.google.firebase.storage.FirebaseStorage
 import com.tfg.workoutagent.data.repositories.StorageRepository
@@ -20,6 +21,7 @@ class StorageRepositoryImpl : StorageRepository {
             }
             storageReference!!.downloadUrl
         }.await()
+        Log.i("UPLOADED", task.toString())
         return Resource.Success(task.toString())
     }
 
@@ -28,6 +30,15 @@ class StorageRepositoryImpl : StorageRepository {
     }
 
     override suspend fun uploadPdf(intent: Intent): Resource<String> {
-        TODO("Not yet implemented")
+        val filename = UUID.randomUUID().toString()
+        val storageReference = FirebaseStorage.getInstance().getReference("/academicTitles/$filename")
+        val uploadTask = storageReference.putFile(intent.data!!)
+        val task = uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                Log.i("ERROR", "ERROR UPLOADING PDF REPOSITORY")
+            }
+            storageReference!!.downloadUrl
+        }.await()
+        return Resource.Success(task.toString())
     }
 }

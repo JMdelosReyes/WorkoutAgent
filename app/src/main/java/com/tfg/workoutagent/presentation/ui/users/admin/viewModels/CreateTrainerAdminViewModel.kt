@@ -3,11 +3,10 @@ package com.tfg.workoutagent.presentation.ui.users.admin.viewModels
 import android.content.Intent
 import androidx.lifecycle.*
 import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
-import com.tfg.workoutagent.domain.storageUseCases.UploadPhotoUserUseCaseImpl
+import com.tfg.workoutagent.domain.storageUseCases.ManageFilesUseCaseImpl
 import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCase
 import com.tfg.workoutagent.models.Trainer
 import com.tfg.workoutagent.vo.Resource
-import com.tfg.workoutagent.vo.*
 import com.tfg.workoutagent.vo.utils.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -72,7 +71,7 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
         viewModelScope.launch {
             try {
                 if(dataPhoto != null){
-                    val upl = UploadPhotoUserUseCaseImpl(StorageRepositoryImpl())
+                    val upl = ManageFilesUseCaseImpl(StorageRepositoryImpl())
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             photo = photoUri.data

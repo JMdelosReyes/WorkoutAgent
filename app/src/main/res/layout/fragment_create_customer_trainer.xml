@@ -175,59 +175,67 @@
                     android:text="@={viewModel.birthday}" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/form_image_height_user"
-                android:layout_width="63dp"
-                android:layout_height="63dp"
-                android:layout_marginTop="12dp"
-                android:contentDescription="Image height"
-                app:layout_constraintEnd_toStartOf="@+id/form_height_input_user"
-                app:layout_constraintHorizontal_bias="0.609"
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/customer_height_input"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/radioGrpSex_customer"
+                app:layout_constraintEnd_toEndOf="@+id/customer_weight_input"
+                app:layout_constraintHorizontal_bias="0.04"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
-                app:srcCompat="@drawable/ic_person_height_24dp" />
+                app:layout_constraintVertical_bias="1.0"
+                app:startIconDrawable="@drawable/ic_person_height_24dp">
 
-            <EditText
-                android:id="@+id/form_height_input_user"
-                android:layout_width="80dp"
-                android:layout_height="63dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
-                android:digits="1234567890"
-                android:hint="Height (cm)"
-                android:inputType="number"
-                android:maxLength="5"
-                android:nextFocusRight="@+id/form_height_input_user"
-                android:singleLine="true"
-                android:text="@={`` + viewModel.height}"
-                app:layout_constraintBottom_toBottomOf="@+id/form_image_kg_user"
-                app:layout_constraintEnd_toStartOf="@+id/form_image_kg_user"
-                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
-                app:layout_constraintVertical_bias="1.0" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/customer_height_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:digits="1234567890"
+                    android:hint="@string/customer_height_input"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:nextFocusRight="@+id/customer_height_input_edit"
+                    android:singleLine="true"
+                    android:text="@={`` + viewModel.height}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.949"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_profile_customer_birthday_input" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <ImageView
-                android:id="@+id/form_image_kg_user"
-                android:layout_width="63dp"
-                android:layout_height="63dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintEnd_toStartOf="@+id/form_weight_input_user"
-                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
-                app:srcCompat="@drawable/ic_person_weight_24dp" />
-
-            <EditText
-                android:id="@+id/form_weight_input_user"
-                android:layout_width="97dp"
-                android:layout_height="63dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="16dp"
-                android:digits=",.0123456789"
-                android:hint="Weight (kg)"
-                android:inputType="numberDecimal"
-                android:maxLength="5"
-                android:text="@={`` + viewModel.initialWeight}"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/customer_weight_input"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/radioGrpSex_customer"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input" />
+                app:layout_constraintHorizontal_bias="0.979"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
+                app:startIconDrawable="@drawable/ic_person_weight_24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/customer_weight_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:digits=",.1234567890"
+                    android:hint="@string/form_user_height_hint"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:nextFocusRight="@+id/customer_height_input_edit"
+                    android:singleLine="true"
+                    android:text="@={`` + viewModel.initialWeight}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.949"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_profile_customer_birthday_input" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <RadioGroup
                 android:id="@+id/radioGrpSex_customer"
@@ -241,6 +249,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input">
 
                 <RadioButton
+                    android:layout_marginStart="6dp"
                     android:id="@+id/radioM"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -249,6 +258,7 @@
                     android:textSize="14dp" />
 
                 <RadioButton
+                    android:layout_marginStart="22dp"
                     android:id="@+id/radioF"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

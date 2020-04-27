@@ -7,6 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirestoreRegistrar
 //import com.google.firebase.storage.FirebaseStorage
 import com.tfg.workoutagent.data.repositories.UserRepository
 import com.tfg.workoutagent.models.Administrator
@@ -25,6 +26,7 @@ class UserRepositoryImpl: UserRepository {
             .get().await()
         val customer = resultData.toObject(Customer::class.java)
         customer!!.id = id
+        Log.i("customer", customer.toString())
         return Resource.Success(customer)
     }
 
@@ -62,7 +64,7 @@ class UserRepositoryImpl: UserRepository {
             val hashWeight = hashMapOf<String, Any>("date" to weight.date, "weight" to weight.weight)
             weightsArray.add(hashWeight)
         }
-        val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goalsArray, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to customer.role, "weightPerWeek" to customer.weightPerWeek, "weights" to weightsArray)
+        val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "genre" to customer.genre, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goalsArray, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to "CUSTOMER", "weightPerWeek" to customer.weightPerWeek, "weights" to weightsArray)
         val postResult = FirebaseFirestore.getInstance().collection("users").add(data).await()
         val trainerLoggedId = FirebaseFirestore.getInstance()
             .collection("users")
@@ -91,7 +93,7 @@ class UserRepositoryImpl: UserRepository {
         if(customer.photo == "" || customer.photo == "DEFAULT_PHOTO"){
             customer.photo = resultData.photo
         }
-        val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goalsArray, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to customer.role, "weightPerWeek" to customer.weightPerWeek, "weights" to weightsArray,
+        val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni,"genre" to resultData.genre, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goalsArray, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to customer.role, "weightPerWeek" to customer.weightPerWeek, "weights" to weightsArray,
             "formula" to customer.formula, "formulaType" to customer.formulaType)
         FirebaseFirestore.getInstance().collection("users").document(customer.id).update(data).await()
         return Resource.Success(true)
@@ -121,10 +123,21 @@ class UserRepositoryImpl: UserRepository {
     }
 
     override suspend fun deleteCustomer(id: String): Resource<Boolean> {
-        val currentTrainerId = FirebaseFirestore.getInstance()
+        val customerQuery = FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
-            .get().await().documents[0].id
+            .get().await()
+
+        val currentTrainerId = customerQuery.documents[0].id
+
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("routines")
+            .whereEqualTo("customer", customerQuery.documents[0].reference)
+            .get().await()
+        for (document in resultData){
+            FirebaseFirestore.getInstance().collection("routines").document(currentTrainerId).update("customer", null)
+        }
+
         val customerToBeDeleted = FirebaseFirestore.getInstance().collection("users").document(id)
         FirebaseFirestore.getInstance().collection("users").document(currentTrainerId).update("customers", FieldValue.arrayRemove(customerToBeDeleted)).await()
         FirebaseFirestore.getInstance().collection("users").document(id).delete().await()
@@ -132,15 +145,43 @@ class UserRepositoryImpl: UserRepository {
     }
 
     override suspend fun deleteLoggedCustomer(): Resource<Boolean> {
-        TODO("Not yet implemented")
+        val customerDB = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await()
+
+        val id = FirebaseFirestore.getInstance()
+           .collection("users")
+           .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+           .get().await().documents[0].id
+
+        val resultData = FirebaseFirestore.getInstance()
+          .collection("routines")
+          .whereEqualTo("customer", customerDB.documents[0].reference)
+          .get().await()
+
+        for (document in resultData){
+            FirebaseFirestore.getInstance().collection("routines").document(document.id).update("customer", null)
+        }
+        FirebaseFirestore.getInstance().collection("users").document(id).delete().await()
+        return Resource.Success(true)
     }
 
     override suspend fun deleteCustomerAdmin(id: String): Resource<Boolean> {
         val customerToBeDeleted = FirebaseFirestore.getInstance().collection("users").document(id)
+
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("routines")
+            .whereEqualTo("customer", customerToBeDeleted)
+            .get().await()
+        for (document in resultData){
+            FirebaseFirestore.getInstance().collection("routines").document(document.id).update("customer", null)
+        }
         val searchUser = FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("role","TRAINER")
             .whereArrayContains("customers", customerToBeDeleted).get().await().documents[0].id
+
         FirebaseFirestore.getInstance().collection("users").document(searchUser).update("customers", FieldValue.arrayRemove(customerToBeDeleted)).await()
         FirebaseFirestore.getInstance().collection("users").document(id).delete().await()
         return Resource.Success(true)
@@ -163,7 +204,7 @@ class UserRepositoryImpl: UserRepository {
             val hashWeight = hashMapOf<String, Any>("date" to weight.date, "weight" to weight.weight)
             weightsArray.add(hashWeight)
         }
-        if(customer.photo != "" && customer.photo != "DEFAULT_PHOTO"){
+        if(customer.photo == "" || customer.photo == "DEFAULT_PHOTO"){
             customer.photo = resultData.photo
         }
         val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to goalsArray, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to "CUSTOMER", "weightPerWeek" to customer.weightPerWeek, "weights" to weightsArray)
@@ -180,8 +221,15 @@ class UserRepositoryImpl: UserRepository {
             .collection("users")
             .document(id)
             .get().await()
-        val trainer = resultData.toObject(Trainer::class.java)
-        trainer!!.id = id
+        val trainer = Trainer(id = resultData.id,
+            name = resultData.getString("name")!!,
+            surname = resultData.getString("surname")!!,
+            email = resultData.getString("email")!!,
+            dni = resultData.getString("dni")!!,
+            phone = resultData.getString("phone")!!,
+            photo = resultData.getString("photo")!!,
+            birthday = resultData.getDate("birthday")!!,
+            academicTitle = resultData.getString("academicTitle")!!)
         return Resource.Success(trainer)
     }
 
@@ -197,7 +245,8 @@ class UserRepositoryImpl: UserRepository {
             dni = resultData.getString("dni")!!,
             phone = resultData.getString("phone")!!,
             photo = resultData.getString("photo")!!,
-            birthday = resultData.getDate("birthday")!!
+            birthday = resultData.getDate("birthday")!!,
+            academicTitle = resultData.getString("academicTitle")!!
         )
         return Resource.Success(trainer)
     }
@@ -261,15 +310,28 @@ class UserRepositoryImpl: UserRepository {
     }
 
     override suspend fun deleteTrainer(id: String): Resource<Boolean> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(id)
+            .get().await()
+
         FirebaseFirestore.getInstance().collection("users").document(id).delete().await()
         return Resource.Success(true)
     }
 
     override suspend fun deleteLoggedTrainer(): Resource<Boolean> {
-        val id = FirebaseFirestore.getInstance()
+        val trainerDB = FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
-            .get().await().documents[0].id
+            .get().await()
+        val id = trainerDB.documents[0].id
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("routines")
+            .whereEqualTo("trainer", trainerDB.documents[0].reference)
+            .get().await()
+        for (document in resultData){
+            FirebaseFirestore.getInstance().collection("routines").document(document.id).update("trainer", null)
+        }
         FirebaseFirestore.getInstance().collection("users").document(id).delete().await()
         return Resource.Success(true)
     }
@@ -317,7 +379,7 @@ class UserRepositoryImpl: UserRepository {
                 }
             }
         }
-
+        Log.i("TRAINER PARAM", trainerEdited.toString())
         val trainer = Trainer(id = resultData.id,
             name = resultData.getString("name")!!,
             surname = resultData.getString("surname")!!,
@@ -328,6 +390,7 @@ class UserRepositoryImpl: UserRepository {
             birthday = resultData.getDate("birthday")!!,
             academicTitle = resultData.getString("academicTitle")!!
         )
+        Log.i("TRAINER FIREBASE", trainer.toString())
 
         if(trainerEdited.photo != "" && trainerEdited.photo != "DEFAULT_PHOTO"){
             trainer.photo = trainerEdited.photo
@@ -335,7 +398,7 @@ class UserRepositoryImpl: UserRepository {
         if(trainerEdited.academicTitle != "" && trainerEdited.academicTitle != "DEFAULT_ACADEMIC_TITLE"){
             trainer.academicTitle = trainerEdited.academicTitle
         }
-        val data : HashMap<String, Any?> = hashMapOf("birthday" to trainer.birthday, "dni" to trainer.dni, "email" to trainer.email, "name" to trainer.name, "surname" to trainer.surname, "photo" to trainer.photo,  "phone" to trainer.phone, "role" to trainer.role,  "customers" to customers)
+        val data : HashMap<String, Any?> = hashMapOf("birthday" to trainerEdited.birthday, "dni" to trainerEdited.dni, "email" to trainerEdited.email, "name" to trainerEdited.name, "surname" to trainerEdited.surname, "photo" to trainer.photo,  "phone" to trainerEdited.phone, "role" to trainer.role,  "customers" to customers, "academicTitle" to trainer.academicTitle)
         FirebaseFirestore.getInstance().collection("users").document(trainer.id).update(data).await()
         return Resource.Success(true)
     }

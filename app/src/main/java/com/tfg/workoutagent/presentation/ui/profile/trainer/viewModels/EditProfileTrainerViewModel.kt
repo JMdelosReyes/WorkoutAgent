@@ -1,10 +1,12 @@
 package com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels
 
 import android.content.Intent
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
 import com.tfg.workoutagent.domain.profileUseCases.ManageProfileUseCase
-import com.tfg.workoutagent.domain.storageUseCases.UploadPhotoUserUseCaseImpl
+import com.tfg.workoutagent.domain.storageUseCases.ManageFilesUseCaseImpl
 import com.tfg.workoutagent.models.Trainer
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.*
@@ -44,16 +46,20 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
     val photoError: LiveData<String>
         get() = _photoError
 
+    var dataPDF : Intent? = null
+    var academicTitle = MutableLiveData("")
+    private val _academicTitleError = MutableLiveData("")
+    val academicError: LiveData<String>
+        get() = _academicTitleError
+
     var phone = MutableLiveData("")
     private val _phoneError = MutableLiveData("")
     val phoneError: LiveData<String>
         get() = _phoneError
 
-
     var idTrainer = MutableLiveData("")
 
-
-    val getCustomer = liveData(Dispatchers.IO) {
+    val getTrainer = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
             val trainer = manageProfileUseCase.getLoggedUserTrainer()
@@ -83,6 +89,7 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
         surname.postValue(trainer.data.surname)
         phone.postValue(trainer.data.phone)
         idTrainer.postValue(trainer.data.id)
+        academicTitle.postValue(trainer.data.academicTitle)
     }
 
     fun onSave(){
@@ -104,35 +111,70 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
         viewModelScope.launch {
             try{
                 if(dataPhoto != null){
-                    val upl = UploadPhotoUserUseCaseImpl(StorageRepositoryImpl())
+                    val upl = ManageFilesUseCaseImpl(StorageRepositoryImpl())
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             //Modificated image
                             photo.value = photoUri.data
-                            val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
-                            manageProfileUseCase.editProfileTrainer(trainer)
-                            _trainerUpdated.value = true
+                            if(dataPDF != null){
+                                when(val pdfUri = upl.uploadPDF(dataPDF!!)){
+                                    is Resource.Success -> {
+                                        academicTitle.value = pdfUri.data
+                                        val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                                        manageProfileUseCase.editProfileTrainer(trainer)
+                                        _trainerUpdated.value = true
+                                    }
+                                    else -> {
+                                        Log.i("ERROR EDIT TRAINER", photoUri.toString())
+                                    }
+                                }
+                            }else{
+                                academicTitle.value = ""
+                                val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                                manageProfileUseCase.editProfileTrainer(trainer)
+                                _trainerUpdated.value = true
+                            }
                         }
                         else -> {
-                            //Bad upload image
-                            photo.value = ""
-                            val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
-                            manageProfileUseCase.editProfileTrainer(trainer)
-                            _trainerUpdated.value = true
+                           Log.i("ERROR EDIT TRAINER", photoUri.toString())
                         }
                     }
                 }else{
-                    //Non modification image
-                    val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
-                    manageProfileUseCase.editProfileTrainer(trainer)
-                    _trainerUpdated.value = true
+                    if(dataPDF != null){
+                        val upl = ManageFilesUseCaseImpl(StorageRepositoryImpl())
+                        when(val pdfUri = upl.uploadPDF(dataPDF!!)){
+                            is Resource.Success -> {
+                                //Modificated pdf
+                                academicTitle.value = pdfUri.data
+                                val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                                manageProfileUseCase.editProfileTrainer(trainer)
+                                _trainerUpdated.value = true
+                            }
+                            else -> {
+                                //Bad upload pdf
+                                academicTitle.value = ""
+                                val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                                manageProfileUseCase.editProfileTrainer(trainer)
+                                _trainerUpdated.value = true
+                            }
+                        }
+                    }else{
+                        //Non modification image - Non modification PDF
+                        photo.value = ""
+                        academicTitle.value = ""
+                        val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                        manageProfileUseCase.editProfileTrainer(trainer)
+                        _trainerUpdated.value = true
+                    }
                 }
             }catch (e: Exception){
+                Log.i("ERROR VM", e.toString())
                 _trainerUpdated.value = false
             }
             _trainerUpdated.value = null
         }
     }
+
 
     fun onDelete(){
         viewModelScope.launch {

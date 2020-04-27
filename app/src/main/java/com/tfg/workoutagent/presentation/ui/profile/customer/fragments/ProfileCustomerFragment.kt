@@ -65,8 +65,8 @@ class ProfileCustomerFragment : Fragment() {
                     display_customer_name_displayProfile.text = it.data.name + " " + it.data.surname
                     display_customer_email_displayProfile.text = it.data.email
                     display_customer_phone_displayProfile.text = it.data.phone
-                    display_customer_height_displayProfile.text = it.data.height.toString()
-                    display_customer_weight_displayProfile.text = it.data.weights[0].weight.toString()
+                    display_customer_height_displayProfile.text = it.data.height.toString() + " cm"
+                    display_customer_weight_displayProfile.text = it.data.weights[0].weight.toString() + " kg"
                     display_customer_birthday_displayProfile.text = parseDateToFriendlyDate(it.data.birthday)
                     display_customer_dni_displayProfile.text = it.data.dni
                 }

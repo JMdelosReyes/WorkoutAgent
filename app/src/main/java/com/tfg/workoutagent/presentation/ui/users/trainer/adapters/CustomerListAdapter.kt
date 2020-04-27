@@ -40,7 +40,6 @@ class CustomerListAdapter(private val context: Context) :  RecyclerView.Adapter<
 
     inner class CustomerListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(customer: Customer) {
-            Log.i("customer viewHolder", customer.toString())
             if(customer.photo == "" || customer.photo == "DEFAULT_IMAGE"){
                 Glide.with(context).load(R.drawable.ic_person_black_60dp).into(itemView.circleImageViewCustomer)
             }else{

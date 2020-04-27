@@ -175,7 +175,7 @@ xmlns:tools="http://schemas.android.com/tools">
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/update_trainer_button_admin"
+            android:id="@+id/update_trainer_button_profile"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -202,7 +202,7 @@ xmlns:tools="http://schemas.android.com/tools">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/update_trainer_button_admin"
+            app:layout_constraintTop_toBottomOf="@+id/update_trainer_button_profile"
             app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

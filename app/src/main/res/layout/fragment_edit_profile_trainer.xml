@@ -175,10 +175,23 @@ xmlns:tools="http://schemas.android.com/tools">
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/update_trainer_button_admin"
+            android:id="@+id/upload_cv_trainer_button_admin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            android:backgroundTint="#2979FF"
+            android:drawableLeft="@drawable/ic_picture_as_pdf_white_24dp"
+            android:text="Upload new CV"
+            android:textSize="32sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trainer_birthday_input_profile" />
+
+        <Button
+            android:id="@+id/update_trainer_button_profile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:backgroundTint="#2979FF"
             android:drawableLeft="@drawable/ic_refresh_48dp"
             android:onClick="@{() -> viewModel.onSave()}"
@@ -187,7 +200,7 @@ xmlns:tools="http://schemas.android.com/tools">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/trainer_birthday_input_profile" />
+            app:layout_constraintTop_toBottomOf="@+id/upload_cv_trainer_button_admin" />
 
         <Button
             android:id="@+id/delete_trainer_button_admin"
@@ -202,7 +215,7 @@ xmlns:tools="http://schemas.android.com/tools">
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/update_trainer_button_admin"
+            app:layout_constraintTop_toBottomOf="@+id/update_trainer_button_profile"
             app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

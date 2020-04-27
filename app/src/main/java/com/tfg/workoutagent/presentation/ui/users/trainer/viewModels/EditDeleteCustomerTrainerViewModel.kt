@@ -1,6 +1,9 @@
 package com.tfg.workoutagent.presentation.ui.users.trainer.viewModels
 
+import android.content.Intent
 import androidx.lifecycle.*
+import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
+import com.tfg.workoutagent.domain.storageUseCases.ManageFilesUseCaseImpl
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.vo.Resource
@@ -38,6 +41,7 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
     val surnameError: LiveData<String>
         get() = _surnameError
 
+    var dataPhoto : Intent? = null
     var photo = MutableLiveData("")
     private val _photoError = MutableLiveData("")
     val photoError: LiveData<String>
@@ -88,9 +92,27 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
     private fun editCustomer(){
         viewModelScope.launch {
             try{
-                val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
-                manageCustomerTrainerUseCase.updateCustomer(customer)
-                _customerEdited.value = true
+                if(dataPhoto!= null){
+                    val upl = ManageFilesUseCaseImpl(StorageRepositoryImpl())
+                    when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
+                        is Resource.Success -> {
+                            photo.value  = photoUri.data
+                            val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            manageCustomerTrainerUseCase.updateCustomer(customer)
+                            _customerEdited.value = true
+                        }
+                        else -> {
+                            photo.value = "DEFAULT_IMAGE"
+                            val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            manageCustomerTrainerUseCase.updateCustomer(customer)
+                            _customerEdited.value = true
+                        }
+                    }
+                }else{
+                    val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                    manageCustomerTrainerUseCase.updateCustomer(customer)
+                    _customerEdited.value = true
+                }
             }catch (e: Exception){
                 _customerEdited.value = false
             }

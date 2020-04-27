@@ -171,42 +171,42 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/form_user_birthday_input"
-                    android:nextFocusRight="@+id/edit_profile_form_height_input_user"
+                    android:nextFocusRight="@+id/customer_height_input_edit"
                     android:singleLine="true"
                     android:text="@={viewModel.birthday}" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <ImageView
-                android:id="@+id/edit_profile_form_image_height_user"
-                android:layout_width="63dp"
-                android:layout_height="63dp"
-                android:layout_marginTop="12dp"
-                android:contentDescription="@string/image_height"
-                app:layout_constraintEnd_toStartOf="@+id/edit_profile_form_height_input_user"
-                app:layout_constraintHorizontal_bias="0.362"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/customer_height_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.818"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_profile_customer_birthday_input"
-                app:srcCompat="@drawable/ic_person_height_24dp" />
+                app:startIconDrawable="@drawable/ic_person_height_24dp">
 
-            <EditText
-                android:id="@+id/edit_profile_form_height_input_user"
-                android:layout_width="257dp"
-                android:layout_height="60dp"
+                <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/customer_height_input_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:autofillHints=""
                 android:digits="1234567890"
                 android:hint="@string/customer_height_input"
                 android:inputType="number"
                 android:maxLength="3"
-                android:nextFocusRight="@+id/edit_profile_form_height_input_user"
+                android:nextFocusRight="@+id/customer_height_input_edit"
                 android:singleLine="true"
                 android:text="@={`` + viewModel.height}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.949"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_profile_customer_birthday_input" />
-
+            </com.google.android.material.textfield.TextInputLayout>
             <Button
                 android:id="@+id/edit_profile_update_customer_button"
                 android:layout_width="match_parent"
@@ -219,7 +219,7 @@
                 android:textSize="32sp"
                 app:layout_constraintEnd_toEndOf="@+id/delete_customer_button"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_profile_form_height_input_user" />
+                app:layout_constraintTop_toBottomOf="@+id/customer_height_input" />
 
             <Button
                 android:id="@+id/delete_customer_button"
