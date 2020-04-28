@@ -221,14 +221,7 @@ class UserRepositoryImpl: UserRepository {
             .collection("users")
             .document(id)
             .get().await()
-        Log.i("name", resultData.getString("name"))
-        Log.i("surname", resultData.getString("surname"))
-        Log.i("email", resultData.getString("email"))
-        Log.i("dni",resultData.getString("dni"))
-        Log.i("phone", resultData.getString("phone"))
-        Log.i("photo",resultData.getString("photo") )
-        Log.i("birthday", resultData.getDate("birthday").toString())
-        Log.i("academicTitle", resultData.getString("academicTitle"))
+
         val trainer = Trainer(id = resultData.id,
             name = resultData.getString("name")!!,
             surname = resultData.getString("surname")!!,
@@ -306,13 +299,15 @@ class UserRepositoryImpl: UserRepository {
             academicTitle = resultData.getString("academicTitle")!!
         )
 
-        if(trainer.photo != "" && trainer.photo != "DEFAULT_PHOTO"){
-            trainerFB.photo = trainer.photo
+        if(trainer.photo == "" || trainer.photo == "DEFAULT_PHOTO"){
+            trainer.photo = trainerFB.photo
         }
-        if(trainer.academicTitle != "" && trainer.academicTitle != "DEFAULT_ACADEMIC_TITLE"){
-            trainerFB.academicTitle = trainer.academicTitle
+
+        if(trainer.academicTitle == "" || trainer.academicTitle == "DEFAULT_ACADEMIC_TITLE"){
+             trainer.academicTitle = trainerFB.academicTitle
         }
-        val data : HashMap<String, Any?> = hashMapOf("birthday" to trainerFB.birthday, "dni" to trainerFB.dni, "email" to trainerFB.email, "name" to trainerFB.name, "surname" to trainerFB.surname, "photo" to trainerFB.photo,  "phone" to trainerFB.phone, "role" to trainerFB.role,  "customers" to customers)
+
+        val data : HashMap<String, Any?> = hashMapOf("birthday" to trainer.birthday, "dni" to trainer.dni, "email" to trainer.email, "name" to trainer.name, "surname" to trainer.surname, "photo" to trainer.photo,  "phone" to trainer.phone, "role" to trainer.role, "customers" to customers, "academicTitle" to trainer.academicTitle)
         FirebaseFirestore.getInstance().collection("users").document(trainer.id).update(data).await()
         return Resource.Success(true)
     }
