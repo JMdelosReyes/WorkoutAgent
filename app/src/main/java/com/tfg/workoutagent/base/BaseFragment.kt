@@ -11,7 +11,7 @@ import com.tfg.workoutagent.R
 /**
  * A simple [Fragment] subclass.
  */
-class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -3,6 +3,7 @@ package com.tfg.workoutagent.presentation.ui.login.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,8 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.tfg.workoutagent.AdminActivity
+import com.tfg.workoutagent.CustomerActivity
 import com.tfg.workoutagent.TrainerActivity
 import com.tfg.workoutagent.base.BaseActivity
 import com.tfg.workoutagent.data.repositoriesImpl.LoginRepositoryImpl
@@ -75,19 +78,18 @@ class GoogleSignInActivity : BaseActivity() {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                val email = FirebaseAuth.getInstance().currentUser?.email.toString()
                 viewModel.fechtRole.observe(this, Observer { result ->
                     when(result){
                         is Resource.Loading -> {
                            //showProgress()
                         }
                         is Resource.Success -> {
-                            val role = result.data
                             //hideProgress()
-                            when(role){
+                            when(result.data){
                                 "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
-                                "CUSTOMER" -> { Toast.makeText(this, "YOU ARE A CUSTOMER", Toast.LENGTH_LONG).show()}
-                                "ADMIN" -> { Toast.makeText(this, "YOU ARE AN ADMIN", Toast.LENGTH_LONG).show()}
+                                "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
+                                "ADMIN" -> { startActivity(AdminActivity.getLaunchIntent(this))}
+                                "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                             }
                         }
                         is Resource.Failure -> {
@@ -105,9 +107,29 @@ class GoogleSignInActivity : BaseActivity() {
         super.onStart()
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
+            viewModel.fechtRole.observe(this, Observer { result ->
+                when(result){
+                    is Resource.Loading -> {
+                        //showProgress()
+                    }
+                    is Resource.Success -> {
+                        val role = result.data
+                        //hideProgress()
+                         when(role){
+                             "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
+                             "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
+                             "ADMIN" -> { startActivity(AdminActivity.getLaunchIntent(this))}
+                         }
+                        finish()
+                    }
+                    is Resource.Failure -> {
+                        //hideProgress()
+                        Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
+                        finish()
+                    }
+                }
+            })
 
-            startActivity(TrainerActivity.getLaunchIntent(this))
-            finish()
         }
     }
     companion object {
