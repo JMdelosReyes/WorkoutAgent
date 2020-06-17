@@ -54,7 +54,6 @@ class DisplayExerciseFragment : Fragment() {
             when (it) {
                 is Resource.Loading -> {
                     // TODO
-                    Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Success -> {
                     exercise_title.text = it.data.title

@@ -68,7 +68,7 @@ class EditProfileCustomerFragment : Fragment() {
 
             builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
                 dialog.dismiss()
-                //viewModel.onDelete()
+                viewModel.onDelete()
             }
 
             builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
@@ -126,10 +126,10 @@ class EditProfileCustomerFragment : Fragment() {
             when(it){
                 true -> {
                     findNavController().navigate(EditProfileCustomerFragmentDirections.actionEditProfileCustomerFragmentToNavigationProfileCustomer())
-                    Toast.makeText(this.context, "SAVEDDD", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this.context, "Customer edited successfully!", Toast.LENGTH_LONG).show()
                 }
                 false -> {
-                    Toast.makeText(this.context, "FUCK", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this.context, "Something went wrong", Toast.LENGTH_LONG).show()
                 }
             }
         })

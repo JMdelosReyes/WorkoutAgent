@@ -19,14 +19,36 @@ class StorageRepositoryImpl : StorageRepository {
             if (!task.isSuccessful) {
                 Log.i("ERROR", "ERROR UPLOADING PHOTO REPOSITORY")
             }
-            storageReference!!.downloadUrl
+            storageReference.downloadUrl
         }.await()
         Log.i("UPLOADED", task.toString())
         return Resource.Success(task.toString())
     }
 
     override suspend fun uploadMultipleImages(intent: Intent): Resource<MutableList<String>> {
-        TODO("Not yet implemented")
+        val res : MutableList<String> = mutableListOf()
+        if(intent.clipData != null){
+            for (index in 0 until intent.clipData!!.itemCount) run {
+                val filename = UUID.randomUUID().toString()
+                val storageReference = FirebaseStorage.getInstance().getReference("/photos/$filename")
+                val photoUri: Uri = intent.clipData!!.getItemAt(index).uri
+                val uploadTask = storageReference.putFile(photoUri)
+                val task = uploadTask.continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        Log.i("ERROR", "ERROR UPLOADING PHOTO REPOSITORY")
+                    }
+                    storageReference.downloadUrl
+                }.await()
+                res.add(task.toString())
+            }
+        }else if(intent.data != null){
+            when(val result = this.uploadImage(intent)) {
+                is Resource.Success -> {
+                    res.add(result.data)
+                }
+            }
+        }
+        return Resource.Success(res)
     }
 
     override suspend fun uploadPdf(intent: Intent): Resource<String> {
