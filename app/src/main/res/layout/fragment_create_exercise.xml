@@ -145,7 +145,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#F6F1F1"
-                        android:src="@drawable/ic_leg_40dp" />
+                        android:src="@drawable/ic_legs_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -238,7 +238,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:backgroundTint="#F6F1F1"
-                        android:src="@drawable/ic_chest_pro_40dp" />
+                        android:src="@drawable/ic_chest_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
