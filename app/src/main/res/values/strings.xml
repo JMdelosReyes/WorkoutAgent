@@ -145,6 +145,7 @@
     <string name="delete">Delete</string>
     <string name="weight_image">weight_image</string>
     <string name="alert_title_delete_user">You will delete this user</string>
+    <string name="alert_title_delete_exercise">You will delete this exercise</string>
     <string name="alert_message_delete">Are you sure?</string>
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>

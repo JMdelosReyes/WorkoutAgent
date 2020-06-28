@@ -258,13 +258,6 @@
                 android:drawableLeft="@drawable/ic_multiple_photo_48dp"
                 android:text="Select multiple images"
                 android:textSize="26sp" />
-
-            <LinearLayout
-                android:id="@+id/ll_photos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-            </LinearLayout>
             <Button
                 android:id="@+id/create_exercise_button"
                 android:layout_width="match_parent"
@@ -276,6 +269,13 @@
                 android:drawableLeft="@drawable/ic_save_white_48dp"
                 android:onClick="@{() -> viewModel.onSubmit()}"
                 android:text="@string/form_exercise_create_button" />
+            <LinearLayout
+                android:id="@+id/ll_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+
 
         </LinearLayout>
 
