@@ -124,9 +124,6 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
                                         manageProfileUseCase.editProfileTrainer(trainer)
                                         _trainerUpdated.value = true
                                     }
-                                    else -> {
-                                        Log.i("ERROR EDIT TRAINER", photoUri.toString())
-                                    }
                                 }
                             }else{
                                 academicTitle.value = ""
@@ -134,9 +131,6 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
                                 manageProfileUseCase.editProfileTrainer(trainer)
                                 _trainerUpdated.value = true
                             }
-                        }
-                        else -> {
-                           Log.i("ERROR EDIT TRAINER", photoUri.toString())
                         }
                     }
                 }else{
@@ -168,7 +162,6 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
                     }
                 }
             }catch (e: Exception){
-                Log.i("ERROR VM", e.toString())
                 _trainerUpdated.value = false
             }
             _trainerUpdated.value = null

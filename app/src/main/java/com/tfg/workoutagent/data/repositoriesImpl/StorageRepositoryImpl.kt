@@ -17,11 +17,10 @@ class StorageRepositoryImpl : StorageRepository {
         val uploadTask = storageReference.putFile(intent.data!!)
         val task = uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {
-                Log.i("ERROR", "ERROR UPLOADING PHOTO REPOSITORY")
+                //Log.i("ERROR", "ERROR UPLOADING PHOTO REPOSITORY")
             }
             storageReference.downloadUrl
         }.await()
-        Log.i("UPLOADED", task.toString())
         return Resource.Success(task.toString())
     }
 
@@ -35,7 +34,7 @@ class StorageRepositoryImpl : StorageRepository {
                 val uploadTask = storageReference.putFile(photoUri)
                 val task = uploadTask.continueWithTask { task ->
                     if (!task.isSuccessful) {
-                        Log.i("ERROR", "ERROR UPLOADING PHOTO REPOSITORY")
+                        //Log.i("ERROR", "ERROR UPLOADING PHOTO REPOSITORY")
                     }
                     storageReference.downloadUrl
                 }.await()
@@ -57,7 +56,7 @@ class StorageRepositoryImpl : StorageRepository {
         val uploadTask = storageReference.putFile(intent.data!!)
         val task = uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {
-                Log.i("ERROR", "ERROR UPLOADING PDF REPOSITORY")
+                //Log.i("ERROR", "ERROR UPLOADING PDF REPOSITORY")
             }
             storageReference!!.downloadUrl
         }.await()

@@ -27,7 +27,6 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
     private fun setupToolbar(navController: NavController) {
         setSupportActionBar(findViewById(R.id.main_toolbar))
         navController.addOnDestinationChangedListener { _, destination, arguments ->
-            Log.i("Id del destino", "${destination.id}")
             when (destination.id) {
                 R.id.navigation_day_customer -> {
                     supportActionBar?.title = "My activity"

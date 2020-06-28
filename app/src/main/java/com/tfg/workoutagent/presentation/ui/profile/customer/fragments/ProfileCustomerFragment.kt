@@ -71,7 +71,6 @@ class ProfileCustomerFragment : Fragment() {
                     display_customer_dni_displayProfile.text = it.data.dni
                 }
                 is Resource.Failure -> {
-                    Log.i("ERROR", it.exception.toString())
                 }
             }
         })

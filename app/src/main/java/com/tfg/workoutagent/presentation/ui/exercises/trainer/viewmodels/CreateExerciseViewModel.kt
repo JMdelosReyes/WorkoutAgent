@@ -72,7 +72,6 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
                     }
                 }
             } catch (e: Exception) {
-                Log.i("ERROR createExercise", e.toString())
                 _exerciseCreated.value = false
             }
             _exerciseCreated.value = null

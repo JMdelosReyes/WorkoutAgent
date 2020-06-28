@@ -61,8 +61,6 @@ class DisplayCustomerAdminFragment : Fragment() {
                     }else{
                         display_customer_gender_admin.text = getString(R.string.genre_female)
                     }
-                    Log.i("RESOURCE SUCCESS CM", it.data.height.toString() + " cm")
-                    Log.i("RESOURCE SUCCESS KG", it.data.weights[it.data.weights.lastIndex].weight.toString() + " kg")
                     display_customer_height_admin.text = it.data.height.toString() + " cm"
                     display_customer_weight_admin.text = it.data.weights[it.data.weights.lastIndex].weight.toString() + " kg"
                     if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE"){

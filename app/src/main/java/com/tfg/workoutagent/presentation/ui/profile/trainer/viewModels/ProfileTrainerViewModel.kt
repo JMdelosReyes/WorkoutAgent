@@ -12,7 +12,6 @@ class ProfileTrainerViewModel(private val displayProfileUserUseCase: DisplayProf
         emit(Resource.Loading())
         try {
             val trainer = displayProfileUserUseCase.getLoggedUserTrainer()
-            Log.i("TRAINER", "${trainer}")
             emit(trainer)
         }catch (e: Exception){
             emit(Resource.Failure(e))

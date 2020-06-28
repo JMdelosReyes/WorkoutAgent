@@ -26,7 +26,6 @@ class UserRepositoryImpl: UserRepository {
             .get().await()
         val customer = resultData.toObject(Customer::class.java)
         customer!!.id = id
-        Log.i("customer", customer.toString())
         return Resource.Success(customer)
     }
 
@@ -382,7 +381,6 @@ class UserRepositoryImpl: UserRepository {
                 }
             }
         }
-        Log.i("TRAINER PARAM", trainerEdited.toString())
         val trainer = Trainer(id = resultData.id,
             name = resultData.getString("name")!!,
             surname = resultData.getString("surname")!!,
@@ -393,7 +391,6 @@ class UserRepositoryImpl: UserRepository {
             birthday = resultData.getDate("birthday")!!,
             academicTitle = resultData.getString("academicTitle")!!
         )
-        Log.i("TRAINER FIREBASE", trainer.toString())
 
         if(trainerEdited.photo != "" && trainerEdited.photo != "DEFAULT_PHOTO"){
             trainer.photo = trainerEdited.photo

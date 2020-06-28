@@ -83,7 +83,6 @@ class ProfileTrainerFragment : Fragment() {
                     }
                 }
                 is Resource.Failure -> {
-                    Log.i("ERROR", it.exception.toString())
                 }
             }
         })

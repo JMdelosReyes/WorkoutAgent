@@ -79,7 +79,6 @@ class DisplayTrainerAdminFragment : Fragment() {
                 }
                 is Resource.Failure -> {
                     //TODO: hideProgress()
-                    Log.i("ERROR DTAF", it.toString())
                     Toast.makeText(context, "${it}", Toast.LENGTH_SHORT).show()
                     findNavController().navigateUp()
                 }

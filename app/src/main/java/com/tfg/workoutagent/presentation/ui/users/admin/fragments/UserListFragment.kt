@@ -72,7 +72,6 @@ class UserListFragment : Fragment() {
                 is Resource.Failure -> {
                     sfl_rv_customer_admin.visibility = View.GONE
                     sfl_rv_customer_admin.stopShimmer()
-                    Log.i("ERROR", "${it.exception.message}");
                     Toast.makeText(this.context!!,"Ocurrió un error ${it.exception.message}",Toast.LENGTH_LONG).show()
                 }
             }
@@ -94,7 +93,6 @@ class UserListFragment : Fragment() {
                 is Resource.Failure -> {
                     sfl_rv_customer_admin.visibility = View.GONE
                     sfl_rv_customer_admin.stopShimmer()
-                    Log.i("ERROR", "${it.exception.message}");
                     Toast.makeText(this.context!!,"Ocurrió un error ${it.exception.message}",Toast.LENGTH_LONG).show()
                 }
             }

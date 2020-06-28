@@ -69,13 +69,11 @@ class EditProfileCustomerViewModel(private val manageProfileUseCase: ManageProfi
         emit(Resource.Loading())
         try {
             val customer = manageProfileUseCase.getLoggedUserCustomer()
-            Log.i("getCustomer",customer.toString())
             emit(customer)
             if (customer is Resource.Success){
                 loadData(customer)
             }
         }catch (e: Exception){
-            Log.i("VM GETCUSTOMER", "${e}")
             emit(Resource.Failure(e))
         }
     }
@@ -117,13 +115,6 @@ class EditProfileCustomerViewModel(private val manageProfileUseCase: ManageProfi
         _surnameError.value = checkSurname(surname.value)
         _phoneError.value = checkPhone(phone.value)
         _heightError.value = checkHeight(height.value)
-        Log.i("_birthdayError.value", _birthdayError.value)
-        Log.i("_dniError.value", _dniError.value)
-        Log.i("_emailError.value", _emailError.value)
-        Log.i("_nameError.value", _nameError.value)
-        Log.i("_surnameError.value", _surnameError.value)
-        Log.i("_phoneError.value.value", _phoneError.value)
-        Log.i("_heightError.value", _heightError.value)
         return _birthdayError.value == "" && _dniError.value == "" && _emailError.value == "" && _nameError.value == "" && _surnameError.value == "" && _photoError.value == "" && _phoneError.value == ""
     }
 
