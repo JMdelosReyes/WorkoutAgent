@@ -42,6 +42,12 @@ class ExerciseRepositoryImpl : ExerciseRepository {
     }
 
     override suspend fun editExercise(exercise: Exercise): Resource<Boolean> {
+        val exerciseData =
+            FirebaseFirestore.getInstance().collection("exercises").document(exercise.id).get().await()
+        val exerciseFb = exerciseData.toObject(Exercise::class.java)!!
+        if(exercise.photos.isEmpty()){
+            exercise.photos = exerciseFb.photos
+        }
         val data = hashMapOf(
             "title" to exercise.title,
             "description" to exercise.description,

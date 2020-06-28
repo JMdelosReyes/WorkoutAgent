@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -53,7 +54,9 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         observeData()
+        observeErrors()
         setupUI()
+        //AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
     private fun setupUI(){
@@ -88,6 +91,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
         if(requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null){
             selectedPhotoUri = data.data
             viewModel.photo.value = selectedPhotoUri.toString()
+            viewModel.dataPhoto = data
             Glide.with(this).asBitmap().load(selectedPhotoUri).into(image_selected)
             edit_profile_customer_button_select_image_customer.visibility = View.GONE
             image_selected.visibility = View.VISIBLE
@@ -100,32 +104,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
         }
     }
 
-    private fun observeData(){
-        viewModel.getCustomer.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Loading -> {
-                    //TODO: showProgress()
-                }
-                is Resource.Success -> {
-                    //TODO: hideProgress()
-                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
-                        edit_profile_customer_button_select_image_customer.visibility = View.GONE
-                        image_selected.visibility = View.VISIBLE
-                        Glide.with(this).load(it.data.photo).into(image_selected)
-                        image_selected.setOnClickListener {
-                            val intent = Intent()
-                            intent.type = "image/*"
-                            intent.action = Intent.ACTION_GET_CONTENT
-                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
-                        }
-                    }
-                }
-                is Resource.Failure -> {
-                    //TODO: hideProgress()
-                }
-            }
-        })
-
+    private fun observeErrors(){
         viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
             binding.customerBirthdayInputEdit.error =
                 if (it != "") it else null
@@ -156,6 +135,42 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
                 if (it != "") it else null
         })
 
+    }
+
+    private fun observeData(){
+        viewModel.getCustomer.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading -> {
+                    //TODO: showProgress()
+                }
+                is Resource.Success -> {
+                    //TODO: hideProgress()
+                    if(it.data.photo != "" && it.data.photo != "DEFAULT_IMAGE"){
+                        edit_profile_customer_button_select_image_customer.visibility = View.GONE
+                        image_selected.visibility = View.VISIBLE
+                        Glide.with(this).load(it.data.photo).into(image_selected)
+                        image_selected.setOnClickListener {
+                            val intent = Intent()
+                            intent.type = "image/*"
+                            intent.action = Intent.ACTION_GET_CONTENT
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
+                        }
+                    }else{
+                        edit_profile_customer_button_select_image_customer.visibility = View.VISIBLE
+                        image_selected.visibility = View.GONE
+                        edit_profile_customer_button_select_image_customer.setOnClickListener {
+                            val intent = Intent()
+                            intent.type = "image/*"
+                            intent.action = Intent.ACTION_GET_CONTENT
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
+                        }
+                    }
+                }
+                is Resource.Failure -> {
+                    //TODO: hideProgress()
+                }
+            }
+        })
         viewModel.customerDeleted.observe(viewLifecycleOwner, Observer {
             when(it){
                 true -> {
@@ -174,7 +189,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
             when(it){
                 true -> {
                     //TODO: hideProgress()
-                    findNavController().navigate(EditDeleteCustomerTrainerFragmentDirections.actionEditDeleteCustomerTrainerFragmentToDisplayCustomer(customerId, "HOLA"))
+                    findNavController().navigate(EditDeleteCustomerTrainerFragmentDirections.actionEditDeleteCustomerTrainerFragmentToDisplayCustomer(customerId, "UPDATED"))
                 }
                 false -> {
                     //TODO: hideProgress()

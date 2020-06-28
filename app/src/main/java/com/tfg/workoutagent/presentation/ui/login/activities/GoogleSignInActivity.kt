@@ -75,7 +75,6 @@ class GoogleSignInActivity : BaseActivity() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.i("Prueba log in", "Soy el login")
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
@@ -85,12 +84,12 @@ class GoogleSignInActivity : BaseActivity() {
                            //showProgress()
                         }
                         is Resource.Success -> {
-                            val role = result.data
                             //hideProgress()
-                            when(role){
+                            when(result.data){
                                 "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
                                 "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
                                 "ADMIN" -> { startActivity(AdminActivity.getLaunchIntent(this))}
+                                "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                             }
                         }
                         is Resource.Failure -> {

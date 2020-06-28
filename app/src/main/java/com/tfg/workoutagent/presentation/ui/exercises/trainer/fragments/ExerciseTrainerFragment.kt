@@ -16,7 +16,7 @@ import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.domain.exerciseUseCases.ListExercisesUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.adapters.ExerciseListAdapter
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.ListExerciseViewModel
-import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.ListExerciselViewModelFactory
+import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.ListExerciseViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_trainer_exercise.*
 import kotlinx.android.synthetic.main.fragment_trainer_exercise.shimmer_view_container
@@ -26,7 +26,7 @@ class ExerciseTrainerFragment : Fragment() {
     private lateinit var adapter: ExerciseListAdapter
     private val viewModel by lazy {
         ViewModelProvider(
-            this, ListExerciselViewModelFactory(
+            this, ListExerciseViewModelFactory(
                 ListExercisesUseCaseImpl(ExerciseRepositoryImpl())
             )
         ).get(ListExerciseViewModel::class.java)

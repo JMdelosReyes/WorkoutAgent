@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.users.admin.fragments
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
@@ -13,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
@@ -20,6 +22,7 @@ import com.tfg.workoutagent.databinding.FragmentEditDeleteTrainerAdminBinding
 import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModel
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModelFactory
+import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_create_trainer_admin.*
 import kotlinx.android.synthetic.main.fragment_edit_delete_trainer_admin.*
 
@@ -31,7 +34,7 @@ class EditDeleteTrainerAdminFragment : Fragment() {
 
     private val trainerId by lazy { EditDeleteTrainerAdminFragmentArgs.fromBundle(arguments!!).trainerId }
     private val trainerName by lazy { EditDeleteTrainerAdminFragmentArgs.fromBundle(arguments!!).nameTrainer }
-    private val viewModel by lazy { ViewModelProvider(this, EditDeleteTrainerAdminViewModelFactory("", ManageTrainerAdminUseCaseImpl(UserRepositoryImpl()))).get(EditDeleteTrainerAdminViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProvider(this, EditDeleteTrainerAdminViewModelFactory(trainerId, ManageTrainerAdminUseCaseImpl(UserRepositoryImpl()))).get(EditDeleteTrainerAdminViewModel::class.java) }
     private lateinit var binding : FragmentEditDeleteTrainerAdminBinding
     private var selectedPhotoUri : Uri? = null
 
@@ -48,6 +51,24 @@ class EditDeleteTrainerAdminFragment : Fragment() {
         this.binding.lifecycleOwner = this
 
         return  this.binding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null){
+            selectedPhotoUri = data.data
+            viewModel.dataPhoto = data
+            viewModel.photo.value = selectedPhotoUri.toString()
+            Glide.with(this).asBitmap().load(selectedPhotoUri).into(image_selected_edit_trainer_admin)
+            edit_profile_trainer_select_image_button.visibility = View.GONE
+            image_selected_edit_trainer_admin.visibility = View.VISIBLE
+            image_selected_edit_trainer_admin.setOnClickListener {
+                val intent = Intent()
+                intent.type = "image/*"
+                intent.action = Intent.ACTION_GET_CONTENT
+                startActivityForResult(Intent.createChooser(intent, "Change Picture"), PICK_IMAGE_CODE)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,6 +106,45 @@ class EditDeleteTrainerAdminFragment : Fragment() {
     }
 
     private fun observeData(){
+        viewModel.getTrainer.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading -> {
+                    //TODO: showProgress()
+                }
+                is Resource.Success -> {
+                    //TODO: hideProgress()
+                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
+                        edit_profile_trainer_select_image_button.visibility = View.GONE
+                        image_selected_edit_trainer_admin.visibility = View.VISIBLE
+                        Glide.with(this).load(it.data.photo).into(image_selected_edit_trainer_admin)
+                        image_selected_edit_trainer_admin.setOnClickListener {
+                            val intent = Intent()
+                            intent.type = "image/*"
+                            intent.action = Intent.ACTION_GET_CONTENT
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
+                        }
+                    }
+                }
+                is Resource.Failure -> {
+                    //TODO: hideProgress()
+                }
+            }
+        })
+
+        viewModel.trainerUpdated.observe(viewLifecycleOwner, Observer {
+            when(it){
+                true -> {
+                    //TODO: hideProgress()
+                    findNavController().navigate(EditDeleteTrainerAdminFragmentDirections.actionEditDeleteTrainerAdminFragmentToNavigationAdminUsers())
+                }
+                false -> {
+                    //TODO: hideProgress()
+                    Toast.makeText(this.context, "Something went wrong", Toast.LENGTH_LONG).show()
+                    findNavController().navigateUp()
+                }
+            }
+        })
+
         viewModel.trainerDeleted.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> {

@@ -5,41 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.users.admin.fragments.UserListFragment">
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
+        android:fillViewport="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/sfl_rv_customer_admin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <LinearLayout
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/sfl_rv_customer_admin"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <include layout="@layout/item_row_load" />
-                <include layout="@layout/item_row_load" />
-                <include layout="@layout/item_row_load" />
-                <include layout="@layout/item_row_load" />
-                <include layout="@layout/item_row_load" />
-                <include layout="@layout/item_row_load" />
-                <include layout="@layout/item_row_load" />
-                <include layout="@layout/item_row_load" />
-                <include layout="@layout/item_row_load" />
-                <include layout="@layout/item_row_load" />
-            </LinearLayout>
-        </com.facebook.shimmer.ShimmerFrameLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <include layout="@layout/item_row_load" />
+                    <include layout="@layout/item_row_load" />
+                    <include layout="@layout/item_row_load" />
+                    <include layout="@layout/item_row_load" />
+                    <include layout="@layout/item_row_load" />
+                    <include layout="@layout/item_row_load" />
+                    <include layout="@layout/item_row_load" />
+                    <include layout="@layout/item_row_load" />
+                    <include layout="@layout/item_row_load" />
+                    <include layout="@layout/item_row_load" />
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <TextView
                 android:id="@+id/customer_text_list_admin"
                 android:layout_width="wrap_content"
@@ -48,14 +48,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_customer_admin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/customer_text_list_admin" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_customer_admin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/customer_text_list_admin" />
 
             <TextView
                 android:id="@+id/trainer_text_list_admin"
@@ -65,17 +65,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView_customer_admin" />
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_trainer_admin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/trainer_text_list_admin" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView_trainer_admin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trainer_text_list_admin" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_trainer"
         android:layout_width="wrap_content"

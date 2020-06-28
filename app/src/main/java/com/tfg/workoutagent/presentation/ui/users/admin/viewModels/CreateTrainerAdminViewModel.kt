@@ -3,11 +3,10 @@ package com.tfg.workoutagent.presentation.ui.users.admin.viewModels
 import android.content.Intent
 import androidx.lifecycle.*
 import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
-import com.tfg.workoutagent.domain.storageUseCases.UploadPhotoUserUseCaseImpl
+import com.tfg.workoutagent.domain.storageUseCases.ManageFilesUseCaseImpl
 import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCase
 import com.tfg.workoutagent.models.Trainer
 import com.tfg.workoutagent.vo.Resource
-import com.tfg.workoutagent.vo.*
 import com.tfg.workoutagent.vo.utils.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -28,7 +27,7 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
     private val _emailError = MutableLiveData("")
     val emailError: LiveData<String>
         get() = _emailError
-    var dataPhoto : Intent? = null
+
     var name : String = ""
     private val _nameError = MutableLiveData("")
     val nameError: LiveData<String>
@@ -38,7 +37,8 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
     private val _surnameError = MutableLiveData("")
     val surnameError: LiveData<String>
         get() = _surnameError
-
+    
+    var dataPhoto : Intent? = null
     var photo : String = ""
     private val _photoError = MutableLiveData("")
     val photoError: LiveData<String>
@@ -72,7 +72,7 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
         viewModelScope.launch {
             try {
                 if(dataPhoto != null){
-                    val upl = UploadPhotoUserUseCaseImpl(StorageRepositoryImpl())
+                    val upl = ManageFilesUseCaseImpl(StorageRepositoryImpl())
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             photo = photoUri.data

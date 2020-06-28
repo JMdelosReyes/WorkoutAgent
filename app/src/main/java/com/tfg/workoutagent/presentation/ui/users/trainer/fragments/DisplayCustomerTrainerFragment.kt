@@ -60,10 +60,19 @@ class DisplayCustomerTrainerFragment : Fragment() {
                     display_customer_birthday.text = parseDateToFriendlyDate(it.data.birthday)
                     display_customer_email.text = it.data.email
                     display_customer_phone.text = it.data.phone
-                    display_customer_gender.text = it.data.gender
+                    if(it.data.genre == "M"){
+                        display_customer_gender.text = getString(R.string.genre_male)
+                    }else{
+                        display_customer_gender.text = getString(R.string.genre_female)
+                    }
                     display_customer_height.text = it.data.height.toString() + " cm"
                     display_customer_weight.text = it.data.weights[it.data.weights.lastIndex].weight.toString() + " kg"
-                    Glide.with(this).load(it.data.photo).into(circleImageViewCustomer)
+
+                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE"){
+                        Glide.with(this).load(R.drawable.ic_person_black_60dp).into(circleImageViewCustomer)
+                    }else{
+                        Glide.with(this).load(it.data.photo).into(circleImageViewCustomer)
+                    }
                 }
                 is Resource.Failure -> {
                     //TODO: hideProgress()

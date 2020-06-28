@@ -1,9 +1,10 @@
 package com.tfg.workoutagent.presentation.ui.users.admin.viewModels
 
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.*
 import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
-import com.tfg.workoutagent.domain.storageUseCases.UploadPhotoUserUseCaseImpl
+import com.tfg.workoutagent.domain.storageUseCases.ManageFilesUseCaseImpl
 import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCase
 import com.tfg.workoutagent.models.Trainer
 import com.tfg.workoutagent.vo.Resource
@@ -50,7 +51,7 @@ class EditDeleteTrainerAdminViewModel(private val id: String, private val manage
     val phoneError: LiveData<String>
         get() = _phoneError
 
-    val getCustomer = liveData(Dispatchers.IO) {
+    val getTrainer = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
             val trainer = manageTrainerAdminUseCase.getTrainer(id)
@@ -93,6 +94,8 @@ class EditDeleteTrainerAdminViewModel(private val id: String, private val manage
         _emailError.value =checkEmail(email.value)
         _nameError.value =checkName(name.value)
         _surnameError.value =checkSurname(surname.value)
+        Log.i("checkData", "ENTRA")
+        Log.i("ERRORS", _dniError.value +" " +_birthdayError.value +" " +_emailError.value +" " +_nameError.value +" " + _surnameError.value)
         return _dniError.value=="" && _birthdayError.value=="" && _emailError.value=="" && _nameError.value=="" && _surnameError.value==""
     }
 
@@ -100,26 +103,26 @@ class EditDeleteTrainerAdminViewModel(private val id: String, private val manage
         viewModelScope.launch {
             try{
                 if(dataPhoto != null){
-                    val upl = UploadPhotoUserUseCaseImpl(StorageRepositoryImpl())
+                    val upl = ManageFilesUseCaseImpl(StorageRepositoryImpl())
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             //Modificated image
                             photo.value = photoUri.data
-                            val trainer = Trainer(birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val trainer = Trainer(id = id,birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageTrainerAdminUseCase.updateTrainer(trainer)
                             _trainerUpdated.value = true
                         }
                         else -> {
                             //Bad upload image
                             photo.value = ""
-                            val trainer = Trainer(birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val trainer = Trainer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageTrainerAdminUseCase.updateTrainer(trainer)
                             _trainerUpdated.value = true
                         }
                     }
                 }else{
                     //Non modification image
-                    val trainer = Trainer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                    val trainer = Trainer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, phone = phone.value!!)
                     manageTrainerAdminUseCase.updateTrainer(trainer)
                     _trainerUpdated.value = true
                 }
