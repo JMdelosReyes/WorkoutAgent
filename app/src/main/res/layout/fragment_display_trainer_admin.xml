@@ -24,6 +24,7 @@
         android:text="@string/name_text_display_customer"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:layout_gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/card_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:drawableLeft="@drawable/ic_resume_48dp"
-            android:text="Curriculum"
+            android:text="@string/curriculum"
             android:textSize="30sp" />
         <Button
             android:id="@+id/display_trainer_button_edit_admin"

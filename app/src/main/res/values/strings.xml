@@ -188,4 +188,5 @@
     <string name="edit_day_button">Delete</string>
     <string name="genre_male">Male</string>
     <string name="genre_female">Female</string>
+    <string name="curriculum">Curriculum</string>
 </resources>
