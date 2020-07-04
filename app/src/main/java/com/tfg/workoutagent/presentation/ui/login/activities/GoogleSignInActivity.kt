@@ -85,6 +85,22 @@ class GoogleSignInActivity : BaseActivity() {
                         }
                         is Resource.Success -> {
                             //hideProgress()
+
+                            viewModel.fetchToken.observe(this, Observer { r ->
+                                when(r){
+                                    is Resource.Loading -> {
+                                        //showProgress()
+                                    }
+                                    is Resource.Success -> {
+                                        //hideProgress()
+                                    }
+                                    is Resource.Failure -> {
+                                        //hideProgress()
+                                        Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            })
+
                             when(result.data){
                                 "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
                                 "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
@@ -98,6 +114,7 @@ class GoogleSignInActivity : BaseActivity() {
                         }
                     }
                 })
+
             } else {
                 Toast.makeText(this, "Google sign in failed:(", Toast.LENGTH_LONG).show()
             }
@@ -113,8 +130,23 @@ class GoogleSignInActivity : BaseActivity() {
                         //showProgress()
                     }
                     is Resource.Success -> {
+
                         val role = result.data
                         //hideProgress()
+                        viewModel.fetchToken.observe(this, Observer { r ->
+                            when(r){
+                                is Resource.Loading -> {
+                                    //showProgress()
+                                }
+                                is Resource.Success -> {
+                                    //hideProgress()
+                                }
+                                is Resource.Failure -> {
+                                    //hideProgress()
+                                    Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        })
                          when(role){
                              "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
                              "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
@@ -129,6 +161,7 @@ class GoogleSignInActivity : BaseActivity() {
                     }
                 }
             })
+
 
         }
     }

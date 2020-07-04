@@ -4,4 +4,5 @@ import com.tfg.workoutagent.vo.Resource
 
 interface LoginRepository {
     suspend fun getRole() : Resource<String>
+    suspend fun updateToken(): Resource<String>
 }

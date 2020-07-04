@@ -17,6 +17,7 @@ data class Customer(
     var weightPerWeek : Double = 1.0,
     var weights : MutableList<Weight> = mutableListOf(),
     var formula : String = "Harris-Benedict",
+    var token: String = "TOKEN",
     var formulaType : String = "Harris-Benedict",
     var genre: String = "M"
                     ) {

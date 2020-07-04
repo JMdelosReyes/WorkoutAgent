@@ -13,5 +13,6 @@ data class Trainer(
     var phone : String = "DEFAULT_PHONE",
     var photo : String = "DEFAULT_PHOTO",
     var role: String = "TRAINER",
+    var token: String = "TOKEN",
     var surname: String = "DEFAULT_SURNAME") {
 }
