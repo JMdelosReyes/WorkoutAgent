@@ -15,8 +15,48 @@ import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Trainer
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class UserRepositoryImpl: UserRepository {
+    override suspend fun getTrainerByCustomerId(customerId: String): Resource<Trainer> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("role", "TRAINER")
+            .get().await()
+        for (document in resultData.documents){
+            val custos = document.get("customers")
+            if (custos is List<*>) {
+                for (ref in custos) {
+                    if (ref is DocumentReference) {
+                        val customerdoc = ref.get().await()
+                        if(customerdoc.id == customerId){
+                            val trainer = Trainer(id = document.id,
+                                name = document.getString("name")!!,
+                                surname = document.getString("surname")!!,
+                                email = document.getString("email")!!,
+                                dni = document.getString("dni")!!,
+                                phone = document.getString("phone")!!,
+                                photo = document.getString("photo")!!,
+                                birthday = document.getDate("birthday")!!,
+                                academicTitle = document.getString("academicTitle")!!)
+                            return Resource.Success(trainer)
+                        }
+                    }
+                }
+            }
+        }
+        return Resource.Failure(Exception("There's no trainer associated to this customer"))
+    }
+
+    override suspend fun getAdminEmail(): Resource<String> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("role", "ADMIN")
+            .limit(1)
+            .get().await()
+        val email = resultData.documents[0].getString("email")
+        return Resource.Success(email!!)
+    }
 
     //CUSTOMER
     override suspend fun getCustomer(id: String): Resource<Customer> {

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModel" />
+            type="com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.DeleteProfileSendEmailCustomerViewModel" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/body_send_mail_delete_trainer"
+                android:id="@+id/body_send_mail_delete_profile_customer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
@@ -32,13 +32,13 @@
                 app:startIconDrawable="@drawable/ic_email_white_24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/body_send_mail_delete_trainer_edit"
+                    android:id="@+id/body_send_mail_delete_profile_customer_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
-                android:id="@+id/delete_trainer_button_admin"
+                android:id="@+id/delete_profile_customer_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="#F50057"

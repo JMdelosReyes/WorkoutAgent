@@ -38,7 +38,7 @@ class EditProfileCustomerFragment : Fragment() {
     private val viewModel by lazy { ViewModelProvider(this, EditProfileCustomerViewModelFactory(ManageProfileUseCaseImpl(UserRepositoryImpl()))).get(EditProfileCustomerViewModel::class.java)}
     private lateinit var binding: FragmentEditProfileCustomerBinding
     private var selectedPhotoUri : Uri? = null
-
+    private lateinit var customerId : String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,12 +63,12 @@ class EditProfileCustomerFragment : Fragment() {
     private fun setupUI(){
         edit_profile_customer_button_select_image_customer.visibility = View.GONE
         delete_customer_button.setOnClickListener {  val builder = AlertDialog.Builder(this.context)
-            builder.setTitle(getString(R.string.alert_title_delete_user))
+            builder.setTitle(getString(R.string.alert_title_delete_profile))
             builder.setMessage(getString(R.string.alert_message_delete))
 
             builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
+                findNavController().navigate(EditProfileCustomerFragmentDirections.actionEditProfileCustomerFragmentToDeleteProfileSendEmailCustomerFragment(customerId))
                 dialog.dismiss()
-                viewModel.onDelete()
             }
 
             builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
@@ -104,6 +104,7 @@ class EditProfileCustomerFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     //TODO: hideProgress()
+                    customerId = it.data.id
                     if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
                         edit_profile_customer_button_select_image_customer.visibility = View.GONE
                         edit_profile_customer_image_selected.visibility = View.VISIBLE
