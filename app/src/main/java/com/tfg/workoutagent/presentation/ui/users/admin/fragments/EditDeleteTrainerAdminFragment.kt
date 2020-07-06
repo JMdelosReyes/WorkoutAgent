@@ -2,9 +2,11 @@ package com.tfg.workoutagent.presentation.ui.users.admin.fragments
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,9 +24,14 @@ import com.tfg.workoutagent.databinding.FragmentEditDeleteTrainerAdminBinding
 import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModel
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModelFactory
+import com.tfg.workoutagent.vo.AppExecutors
+import com.tfg.workoutagent.vo.Credentials
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_create_trainer_admin.*
 import kotlinx.android.synthetic.main.fragment_edit_delete_trainer_admin.*
+import javax.mail.*
+import javax.mail.internet.InternetAddress
+import javax.mail.internet.MimeMessage
 
 class EditDeleteTrainerAdminFragment : Fragment() {
 
@@ -53,7 +60,7 @@ class EditDeleteTrainerAdminFragment : Fragment() {
         return  this.binding.root
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+       override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null){
             selectedPhotoUri = data.data
@@ -94,7 +101,7 @@ class EditDeleteTrainerAdminFragment : Fragment() {
 
             builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
                 dialog.dismiss()
-                viewModel.onDelete()
+                findNavController().navigate(EditDeleteTrainerAdminFragmentDirections.actionEditDeleteTrainerAdminFragmentToDeleteTrainerSendMailFragment(trainerId))
             }
 
             builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->

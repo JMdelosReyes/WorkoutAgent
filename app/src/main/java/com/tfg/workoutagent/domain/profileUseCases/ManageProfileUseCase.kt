@@ -10,7 +10,9 @@ interface ManageProfileUseCase {
     suspend fun editProfileCustomer(customer: Customer) : Resource<Boolean>
     suspend fun editProfileTrainer(trainer: Trainer) : Resource<Boolean>
     suspend fun getLoggedUserTrainer() : Resource<Trainer>
+    suspend fun getTrainerByCustomerId(customerId: String) : Resource<Trainer>
     //suspend fun getOwnUserAdmin() : Resource<Administrator>
+    suspend fun getAdminEmail() : Resource<String>
     suspend fun getLoggedUserCustomer() : Resource<Customer>
     suspend fun deleteLoggedTrainer() : Resource<Boolean>
     suspend fun deleteLoggedCustomer() : Resource<Boolean>

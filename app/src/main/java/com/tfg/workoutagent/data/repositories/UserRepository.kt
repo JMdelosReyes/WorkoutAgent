@@ -19,7 +19,8 @@ interface UserRepository {
     suspend fun getLoggedUserCustomer() : Resource<Customer>
     suspend fun updateProfileCustomer(customer: Customer)  : Resource<Boolean>
     suspend fun deleteLoggedCustomer(): Resource<Boolean>
-
+    suspend fun getTrainerByCustomerId(customerId: String) : Resource<Trainer>
+    suspend fun getAdminEmail() : Resource<String>
     suspend fun getTrainer(id: String) : Resource<Trainer>
     suspend fun createTrainer(trainer : Trainer) : Resource<Boolean>
     suspend fun updateTrainer(trainer : Trainer) : Resource<Boolean>

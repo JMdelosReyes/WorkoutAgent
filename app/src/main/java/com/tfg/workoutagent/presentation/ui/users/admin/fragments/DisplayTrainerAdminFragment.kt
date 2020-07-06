@@ -57,7 +57,11 @@ class DisplayTrainerAdminFragment : Fragment() {
                     display_trainer_email_admin.text = it.data.email
                     display_trainer_dni_admin.text = it.data.dni
                     display_trainer_phone_admin.text = it.data.phone
-                    Glide.with(this).load(it.data.photo).into(circleImageViewTrainer_admin)
+                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE"){
+                        Glide.with(this).load(R.drawable.ic_person_black_60dp).into(circleImageViewTrainer_admin)
+                    }else{
+                        Glide.with(this).load(it.data.photo).into(circleImageViewTrainer_admin)
+                    }
                     if(it.data.academicTitle =="" || it.data.academicTitle =="DEFAULT_ACADEMIC_TITLE"){
                         display_trainer_button_curriculum_admin.setOnClickListener{
                             Toast.makeText(this.context, "This trainer hasn't uploaded a CV. Try again later", Toast.LENGTH_LONG).show()

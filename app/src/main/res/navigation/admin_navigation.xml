@@ -94,6 +94,9 @@
         <argument
             android:name="trainerId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_editDeleteTrainerAdminFragment_to_deleteTrainerSendMailFragment"
+            app:destination="@id/deleteTrainerSendMailFragment" />
     </fragment>
     <fragment
         android:id="@+id/editProfileAdminFragment"
@@ -103,5 +106,23 @@
         <action
             android:id="@+id/action_editProfileAdminFragment_to_navigation_admin_profile"
             app:destination="@id/navigation_admin_profile" />
+    </fragment>
+    <fragment
+        android:id="@+id/deleteTrainerSendMailFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.users.admin.fragments.DeleteTrainerSendMailFragment"
+        android:label="fragment_delete_trainer_send_mail"
+        tools:layout="@layout/fragment_delete_trainer_send_mail" >
+        <action
+            android:id="@+id/action_deleteTrainerSendMailFragment_to_editDeleteTrainerAdminFragment"
+            app:destination="@id/editDeleteTrainerAdminFragment" />
+        <argument android:name="trainerId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_deleteTrainerSendMailFragment_to_navigation_admin_users"
+            app:destination="@id/navigation_admin_users"
+            app:enterAnim="@anim/slide_out_left"
+            app:exitAnim="@anim/slide_in_right"
+            app:popEnterAnim="@anim/slide_out_right"
+            app:popExitAnim="@anim/slide_in_left" />
     </fragment>
 </navigation>

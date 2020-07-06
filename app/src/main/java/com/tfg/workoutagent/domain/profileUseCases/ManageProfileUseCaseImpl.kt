@@ -11,6 +11,8 @@ class ManageProfileUseCaseImpl(private val repo: UserRepository) : ManageProfile
     override suspend fun editProfileCustomer(customer: Customer): Resource<Boolean> = repo.updateProfileCustomer(customer)
     override suspend fun editProfileTrainer(trainer: Trainer): Resource<Boolean>  = repo.updateProfileTrainer(trainer)
     override suspend fun getLoggedUserTrainer(): Resource<Trainer> = repo.getLoggedUserTrainer()
+    override suspend fun getTrainerByCustomerId(customerId: String) : Resource<Trainer> =  repo.getTrainerByCustomerId(customerId)
+    override suspend fun getAdminEmail(): Resource<String> = repo.getAdminEmail()
     override suspend fun getLoggedUserCustomer(): Resource<Customer> = repo.getLoggedUserCustomer()
     override suspend fun deleteLoggedTrainer(): Resource<Boolean> = repo.deleteLoggedTrainer()
     override suspend fun deleteLoggedCustomer(): Resource<Boolean> = repo.deleteLoggedCustomer()
