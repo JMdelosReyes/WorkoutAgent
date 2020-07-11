@@ -12,11 +12,7 @@ class ProfileTrainerViewModel(private val darkMode: Boolean, private val display
     private val _currentTheme = MutableLiveData<Boolean>()
     val currentTheme: LiveData<Boolean>
         get() = _currentTheme
-
-    private val _changeTheme = MutableLiveData<Boolean>()
-    val changeTheme: LiveData<Boolean>
-        get() = _changeTheme
-
+    
     init {
         _currentTheme.value = darkMode
     }
@@ -29,14 +25,5 @@ class ProfileTrainerViewModel(private val darkMode: Boolean, private val display
         }catch (e: Exception){
             emit(Resource.Failure(e))
         }
-    }
-
-    fun onChangeTheme() {
-        _changeTheme.value = true
-    }
-
-    fun themeChanged() {
-        _changeTheme.value = null
-        _currentTheme.value = !currentTheme.value!!
     }
 }

@@ -2,11 +2,8 @@ package com.tfg.workoutagent
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.MenuItem
-import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -15,8 +12,10 @@ import com.tfg.workoutagent.base.BaseActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFragmentDirections
 import kotlinx.android.synthetic.main.activity_bottom_navigation_trainer.*
 
+
 private const val FRAGMENT_KEY = "Fragment"
 const val PROFILE_TRAINER_FRAGMENT = "MyProfileTrainer"
+const val PREFERENCE_FILE_KEY_TRAINER = "SharedPreferenceKeyTrainer"
 
 class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
 
@@ -84,8 +83,8 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                 }
                 R.id.displayCustomer -> {
                     supportActionBar?.title = arguments!!.get("customerName").toString()
-                    supportActionBar?.setDisplayHomeAsUpEnabled(true);
-                    supportActionBar?.setDisplayShowHomeEnabled(true);
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
                 R.id.createCustomerTrainerFragment -> {
                     supportActionBar?.title = "Create a customer"

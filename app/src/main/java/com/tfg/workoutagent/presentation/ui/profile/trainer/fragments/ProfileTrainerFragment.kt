@@ -1,10 +1,12 @@
 package com.tfg.workoutagent.presentation.ui.profile.trainer.fragments
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.tfg.workoutagent.PREFERENCE_FILE_KEY_TRAINER
 import com.tfg.workoutagent.PROFILE_TRAINER_FRAGMENT
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.TrainerActivity
@@ -48,8 +51,8 @@ class ProfileTrainerFragment : Fragment() {
     ): View? {
         val root = inflater.inflate(R.layout.fragment_trainer_profile, container, false)
         darkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_NO -> false // Night mode is not active, we're using the light theme
-            else -> true // Night mode is active, we're using dark theme
+            Configuration.UI_MODE_NIGHT_NO -> false
+            else -> true
         }
         viewModel = ViewModelProvider(
             this, ProfileTrainerViewModelFactory(darkMode,
@@ -78,10 +81,28 @@ class ProfileTrainerFragment : Fragment() {
             val dialogView = inflater.inflate(R.layout.dialog_settings_trainer, null)
             dialogBuilder.setView(dialogView)
             dialogView.dark_mode_switch.isChecked = darkMode
-            dialogView.dark_mode_switch.setOnCheckedChangeListener { _, _ -> viewModel.onChangeTheme() }
+            dialogView.dark_mode_switch.setOnCheckedChangeListener { _, _ -> changeMode() }
             val alertDialog = dialogBuilder.create()
             alertDialog.show()
         }
+    }
+
+    private fun changeMode(){
+        if (darkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        val sharedPreferences = activity?.getSharedPreferences(PREFERENCE_FILE_KEY_TRAINER, Context.MODE_PRIVATE)
+        with(sharedPreferences?.edit()){
+            this!!.putBoolean("darkMode_sp", !darkMode)
+            this.commit()
+        }
+        val written = sharedPreferences?.getBoolean("darkMode_sp", false)
+        activity!!.finish()
+        (activity!! as TrainerActivity).restartActivityWithSelectedFragment(
+            PROFILE_TRAINER_FRAGMENT
+        )
     }
 
     private fun observeData(){
@@ -107,22 +128,6 @@ class ProfileTrainerFragment : Fragment() {
                     }
                 }
                 is Resource.Failure -> {
-                }
-            }
-        })
-        viewModel.changeTheme.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                if (it) {
-                    if (viewModel.currentTheme.value == true) {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                    } else {
-                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                    }
-                    viewModel.themeChanged()
-                    activity!!.finish()
-                    (activity!! as TrainerActivity).restartActivityWithSelectedFragment(
-                        PROFILE_TRAINER_FRAGMENT
-                    )
                 }
             }
         })

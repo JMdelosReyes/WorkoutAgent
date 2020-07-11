@@ -2,12 +2,13 @@ package com.tfg.workoutagent.presentation.ui.login.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.tfg.workoutagent.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -16,9 +17,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.tfg.workoutagent.AdminActivity
-import com.tfg.workoutagent.CustomerActivity
-import com.tfg.workoutagent.TrainerActivity
+import com.tfg.workoutagent.*
 import com.tfg.workoutagent.base.BaseActivity
 import com.tfg.workoutagent.data.repositoriesImpl.LoginRepositoryImpl
 import com.tfg.workoutagent.domain.loginUseCases.LoginUseCaseImpl
@@ -38,7 +37,16 @@ class GoogleSignInActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
-
+        val sharedPref: SharedPreferences = this.getSharedPreferences(
+            PREFERENCE_FILE_KEY_TRAINER,
+            Context.MODE_PRIVATE
+        )
+        val darkModeBool = sharedPref.getBoolean("darkMode_sp", false)
+        if(darkModeBool){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
         configureGoogleSignIn()
         setupUI()
 
