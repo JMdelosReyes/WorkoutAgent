@@ -13,6 +13,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton.COLOR_DARK
+import com.google.android.gms.common.SignInButton.COLOR_LIGHT
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -50,7 +52,7 @@ class GoogleSignInActivity : BaseActivity() {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
         configureGoogleSignIn()
-        setupUI()
+        setupUI(darkModeBool)
 
         firebaseAuth = FirebaseAuth.getInstance()
     }
@@ -62,7 +64,14 @@ class GoogleSignInActivity : BaseActivity() {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
     }
-    private fun setupUI() {
+    private fun setupUI(darkMode: Boolean) {
+        if(darkMode){
+            logo_image.setImageResource(R.drawable.darklogo)
+            google_button.setColorScheme(COLOR_DARK)
+        }else{
+            logo_image.setImageResource(R.drawable.logo)
+            google_button.setColorScheme(COLOR_LIGHT)
+        }
         google_button.setOnClickListener {
             signIn()
         }

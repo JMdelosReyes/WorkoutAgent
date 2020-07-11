@@ -25,8 +25,7 @@
         android:layout_marginTop="33dp"
         android:contentDescription="@string/logo_image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/logo_title"
