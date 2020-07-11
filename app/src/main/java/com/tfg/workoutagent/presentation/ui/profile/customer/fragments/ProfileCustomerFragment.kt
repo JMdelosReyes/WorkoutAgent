@@ -1,10 +1,13 @@
 package com.tfg.workoutagent.presentation.ui.profile.customer.fragments
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,21 +17,25 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.tfg.workoutagent.CustomerActivity
+import com.tfg.workoutagent.PROFILE_CUSTOMER_FRAGMENT
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
 import com.tfg.workoutagent.domain.profileUseCases.DisplayProfileUserUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivity
+import com.tfg.workoutagent.presentation.ui.login.activities.PREFERENCE_FILE_KEY
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.ProfileCustomerViewModel
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.ProfileCustomerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
+import kotlinx.android.synthetic.main.dialog_settings_trainer.view.*
 import kotlinx.android.synthetic.main.fragment_customer_profile.*
-import kotlinx.android.synthetic.main.fragment_edit_profile_customer.*
 
 class ProfileCustomerFragment : Fragment() {
 
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
+    private var darkMode : Boolean = false
 
     private val viewModel by lazy {
         ViewModelProvider(this, ProfileCustomerViewModelFactory(
@@ -42,6 +49,10 @@ class ProfileCustomerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        darkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> false
+            else -> true
+        }
         return inflater.inflate(R.layout.fragment_customer_profile, container, false)
     }
 
@@ -55,6 +66,17 @@ class ProfileCustomerFragment : Fragment() {
         sign_out_button.setOnClickListener { signOut2() }
         display_customer_button_edit.setOnClickListener { findNavController().navigate(ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToEditProfileCustomerFragment()) }
         display_customer_button_nutrition.setOnClickListener { findNavController().navigate(ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToDisplayNutritionCustomerFragment()) }
+        settings_image_profile_customer.setOnClickListener {
+            val dialogBuilder = AlertDialog.Builder(context!!)
+            dialogBuilder.setTitle("Settings")
+            val inflater = this.layoutInflater
+            val dialogView = inflater.inflate(R.layout.dialog_settings_trainer, null)
+            dialogBuilder.setView(dialogView)
+            dialogView.dark_mode_switch.isChecked = darkMode
+            dialogView.dark_mode_switch.setOnCheckedChangeListener { _, _ -> changeMode() }
+            val alertDialog = dialogBuilder.create()
+            alertDialog.show()
+        }
     }
 
     private fun observeData(){
@@ -74,6 +96,23 @@ class ProfileCustomerFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun changeMode(){
+        if (darkMode) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        val sharedPreferences = activity?.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
+        with(sharedPreferences?.edit()){
+            this!!.putBoolean("darkMode_sp", !darkMode)
+            this.commit()
+        }
+        activity!!.finish()
+        (activity!! as CustomerActivity).restartActivityWithSelectedFragmentCustomer(
+            PROFILE_CUSTOMER_FRAGMENT
+        )
     }
 
     private fun signOut2() {

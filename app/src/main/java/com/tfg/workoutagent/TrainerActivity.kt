@@ -12,6 +12,10 @@ import com.tfg.workoutagent.base.BaseActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFragmentDirections
 import kotlinx.android.synthetic.main.activity_bottom_navigation_trainer.*
 
+
+const val FRAGMENT_KEY = "Fragment"
+const val PROFILE_TRAINER_FRAGMENT = "MyProfileTrainer"
+
 class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,6 +26,12 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
 
         setupBottombar(navController)
         setupToolbar(navController)
+
+        intent.extras?.let {
+            if (it.get(FRAGMENT_KEY) == PROFILE_TRAINER_FRAGMENT) {
+                navController.navigate(R.id.navigation_profile_trainer)
+            }
+        }
     }
 
     private fun setupToolbar(navController: NavController) {
@@ -72,8 +82,8 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                 }
                 R.id.displayCustomer -> {
                     supportActionBar?.title = arguments!!.get("customerName").toString()
-                    supportActionBar?.setDisplayHomeAsUpEnabled(true);
-                    supportActionBar?.setDisplayShowHomeEnabled(true);
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
                 R.id.createCustomerTrainerFragment -> {
                     supportActionBar?.title = "Create a customer"
@@ -136,6 +146,18 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun restartActivityWithSelectedFragment(fragment: String) {
+        val intent = Intent(this, TrainerActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra(FRAGMENT_KEY, fragment)
+
+        startActivity(intent)
+        this.overridePendingTransition(
+            android.R.anim.fade_in,
+            android.R.anim.fade_out
+        )
     }
 
     companion object {
