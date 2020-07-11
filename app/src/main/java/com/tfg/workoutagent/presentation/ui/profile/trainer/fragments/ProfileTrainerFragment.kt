@@ -22,13 +22,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.tfg.workoutagent.PREFERENCE_FILE_KEY_TRAINER
 import com.tfg.workoutagent.PROFILE_TRAINER_FRAGMENT
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.TrainerActivity
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
 import com.tfg.workoutagent.domain.profileUseCases.DisplayProfileUserUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivity
+import com.tfg.workoutagent.presentation.ui.login.activities.PREFERENCE_FILE_KEY
 import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.ProfileTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.ProfileTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
@@ -93,12 +93,11 @@ class ProfileTrainerFragment : Fragment() {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
-        val sharedPreferences = activity?.getSharedPreferences(PREFERENCE_FILE_KEY_TRAINER, Context.MODE_PRIVATE)
+        val sharedPreferences = activity?.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
         with(sharedPreferences?.edit()){
             this!!.putBoolean("darkMode_sp", !darkMode)
             this.commit()
         }
-        val written = sharedPreferences?.getBoolean("darkMode_sp", false)
         activity!!.finish()
         (activity!! as TrainerActivity).restartActivityWithSelectedFragment(
             PROFILE_TRAINER_FRAGMENT

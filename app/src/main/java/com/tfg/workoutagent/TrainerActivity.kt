@@ -13,9 +13,8 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFra
 import kotlinx.android.synthetic.main.activity_bottom_navigation_trainer.*
 
 
-private const val FRAGMENT_KEY = "Fragment"
+const val FRAGMENT_KEY = "Fragment"
 const val PROFILE_TRAINER_FRAGMENT = "MyProfileTrainer"
-const val PREFERENCE_FILE_KEY_TRAINER = "SharedPreferenceKeyTrainer"
 
 class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
 

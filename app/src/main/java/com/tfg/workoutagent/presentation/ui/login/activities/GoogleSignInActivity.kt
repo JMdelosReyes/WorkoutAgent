@@ -26,6 +26,8 @@ import com.tfg.workoutagent.presentation.ui.login.viewmodels.LoginViewModelFacto
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.login_activity.*
 
+const val PREFERENCE_FILE_KEY = "SharedPreferenceKey"
+
 class GoogleSignInActivity : BaseActivity() {
 
     val RC_SIGN_IN: Int = 1
@@ -38,7 +40,7 @@ class GoogleSignInActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
         val sharedPref: SharedPreferences = this.getSharedPreferences(
-            PREFERENCE_FILE_KEY_TRAINER,
+            PREFERENCE_FILE_KEY,
             Context.MODE_PRIVATE
         )
         val darkModeBool = sharedPref.getBoolean("darkMode_sp", false)
