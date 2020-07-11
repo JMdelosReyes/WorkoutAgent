@@ -32,7 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:text="@string/name_text_display_customer"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/card_view"
@@ -47,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="72dp"
-        app:cardBackgroundColor="#C1FFEF"
+        app:cardBackgroundColor="#FF008577"
         app:cardCornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -72,9 +71,8 @@
                 android:drawableStart="@drawable/ic_contact_24dp"
                 android:drawablePadding="4dp"
                 android:paddingBottom="4dp"
-                android:text="@string/customer_dni"
                 android:textSize="16sp"
-                android:textStyle="normal" />
+                android:textStyle="bold" />
             <TextView
                 android:id="@+id/display_customer_phone_displayProfile"
                 android:layout_width="match_parent"
@@ -83,9 +81,8 @@
                 android:drawableStart="@drawable/ic_phone_black_24dp"
                 android:drawablePadding="4dp"
                 android:paddingBottom="4dp"
-                android:text="@string/customer_phone"
                 android:textSize="16sp"
-                android:textStyle="normal" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/display_customer_email_displayProfile"
@@ -95,9 +92,8 @@
                 android:drawableStart="@drawable/ic_email_black_24dp"
                 android:drawablePadding="4dp"
                 android:paddingBottom="4dp"
-                android:text="@string/customer_email"
                 android:textSize="16sp"
-                android:textStyle="normal" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/display_customer_height_displayProfile"
@@ -106,9 +102,8 @@
                 android:drawableStart="@drawable/ic_person_height_24dp"
                 android:drawablePadding="4dp"
                 android:paddingBottom="4dp"
-                android:text="@string/display_customer_height"
                 android:textSize="16sp"
-                android:textStyle="normal" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/display_customer_weight_displayProfile"
@@ -117,9 +112,8 @@
                 android:drawableStart="@drawable/ic_person_weight_24dp"
                 android:drawablePadding="4dp"
                 android:paddingBottom="4dp"
-                android:text="@string/display_customer_weight"
                 android:textSize="16sp"
-                android:textStyle="normal" />
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/display_customer_birthday_displayProfile"
@@ -128,9 +122,8 @@
                 android:drawableStart="@drawable/ic_cake_black_24dp"
                 android:drawablePadding="4dp"
                 android:paddingBottom="4dp"
-                android:text="@string/birthday_text_display_user"
                 android:textSize="16sp"
-                android:textStyle="normal" />
+                android:textStyle="bold" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
