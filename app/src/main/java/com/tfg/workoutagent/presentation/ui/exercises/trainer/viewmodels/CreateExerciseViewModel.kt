@@ -1,11 +1,16 @@
 package com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels
 
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
 import com.tfg.workoutagent.domain.exerciseUseCases.ManageExerciseUseCase
+import com.tfg.workoutagent.domain.storageUseCases.ManageFilesUseCaseImpl
 import com.tfg.workoutagent.models.Exercise
+import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
@@ -22,12 +27,16 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
     val descriptionError: LiveData<String>
         get() = _descriptionError
 
-    var tags: String = ""
+    var tags: MutableList<String> = mutableListOf()
     private val _tagsError = MutableLiveData("")
     val tagsError: LiveData<String>
         get() = _tagsError
+    var dataPhoto : Intent? = null
+    private val photos = MutableLiveData("")
+    private val _photosError =  MutableLiveData("")
+    val photosError: LiveData<String>
+        get() = _photosError
 
-    var photos: String = ""
     // TODO Define error
 
     private val _exerciseCreated = MutableLiveData<Boolean?>(null)
@@ -40,18 +49,28 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
         }
     }
 
+    fun addTag(string: String) = tags.add(string)
+    fun removeTag(index: Int) = tags.removeAt(index)
+
     private fun createExercise() {
         viewModelScope.launch {
             try {
-                manageExerciseUseCase.createExercise(
-                    Exercise(
-                        title = title,
-                        description = description,
-                        tags = tags.split(",") as MutableList<String>,
-                        photos = photos.split(",") as MutableList<String>
-                    )
-                )
-                _exerciseCreated.value = true
+                if(dataPhoto != null) {
+                    val upload = ManageFilesUseCaseImpl(StorageRepositoryImpl())
+                    when(val photoUris = upload.uploadMultipleImages(dataPhoto!!)) {
+                        is Resource.Success -> {
+                            manageExerciseUseCase.createExercise(
+                                Exercise(
+                                    title = title,
+                                    description = description,
+                                    tags = tags,
+                                    photos = photoUris.data
+                                )
+                            )
+                            _exerciseCreated.value = true
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 _exerciseCreated.value = false
             }

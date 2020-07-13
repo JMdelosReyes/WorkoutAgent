@@ -139,12 +139,14 @@
     <string name="evolution_text_display_user">Evolution</string>
     <string name="edit">Edit</string>
     <string name="image_height">Image height</string>
-    <string name="customer_height_input">Height</string>
-    <string name="form_user_height_hint">Weight</string>
+    <string name="customer_height_input">Height (cm)</string>
+    <string name="form_user_height_hint">Weight (kg)</string>
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="weight_image">weight_image</string>
     <string name="alert_title_delete_user">You will delete this user</string>
+    <string name="alert_title_delete_profile">You will delete this profile</string>
+    <string name="alert_title_delete_exercise">You will delete this exercise</string>
     <string name="alert_message_delete">Are you sure?</string>
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
@@ -183,4 +185,9 @@
     <string name="carbohydrates_g">Carbohydrates(g)</string>
     <string name="fats_g">Fats(g)</string>
     <string name="nutrition">Nutrition</string>
+    <string name="edit_activity_button">Edit</string>
+    <string name="edit_day_button">Delete</string>
+    <string name="genre_male">Male</string>
+    <string name="genre_female">Female</string>
+    <string name="curriculum">Curriculum</string>
 </resources>

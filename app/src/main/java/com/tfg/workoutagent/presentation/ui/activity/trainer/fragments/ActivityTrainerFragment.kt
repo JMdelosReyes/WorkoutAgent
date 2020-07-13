@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
@@ -41,11 +42,18 @@ class ActivityTrainerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //setupButtons()
-
         adapter = ActivityTimelineAdapter(this.context!!)
         recyclerView_activity_timeline.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_activity_timeline.adapter = adapter
         observeData()
+
+        swipeContainerId.setOnRefreshListener {
+
+            findNavController().navigate(
+                ActivityTrainerFragmentDirections.actionNavigationActivityTrainerSelf()
+            )
+            swipeContainerId.isRefreshing = false
+        }
     }
 
     private fun observeData() {

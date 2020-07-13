@@ -1,9 +1,16 @@
 package com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments
 
+import android.app.ActionBar
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -16,7 +23,9 @@ import com.tfg.workoutagent.domain.exerciseUseCases.DisplayExerciseUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.DisplayExerciseViewModel
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.DisplayExerciseViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import kotlinx.android.synthetic.main.fragment_create_exercise.*
 import kotlinx.android.synthetic.main.fragment_display_exercise.*
+import kotlinx.android.synthetic.main.fragment_display_exercise.ll_photos
 
 
 /**
@@ -54,14 +63,12 @@ class DisplayExerciseFragment : Fragment() {
             when (it) {
                 is Resource.Loading -> {
                     // TODO
-                    Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Success -> {
                     exercise_title.text = it.data.title
                     exercise_description.text = it.data.description
-                    exercise_tags.text = it.data.tags.joinToString()
-                    Glide.with(this).load(it.data.photos[0])
-                        .into(exercise_image)
+                    setPhotos(it.data.photos)
+                    setTags(it.data.tags)
                 }
                 is Resource.Failure -> {
                     // TODO
@@ -70,6 +77,69 @@ class DisplayExerciseFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun setPhotos(items: MutableList<String>){
+        if(items.size == 0){
+            //TODO: No image available
+            // val image = ImageView(this.context)
+            // Glide.with(this).load(photo).into(image)
+            // ll_photos.addView(image)
+        } else {
+            for (photo in items) {
+                val image = ImageView(this.context)
+                image.maxHeight = 1000
+                image.maxWidth = 1000
+                image.adjustViewBounds = true
+                Glide.with(this).load(photo).into(image)
+                ll_photos.addView(image)
+            }
+        }
+    }
+
+    private fun setTags(items: MutableList<String>){
+        if(items.size == 0){
+            //TODO: No image available
+            // val image = ImageView(this.context)
+            // Glide.with(this).load(photo).into(image)
+            // ll_photos.addView(image)
+        } else {
+            for (tag in items) {
+                val ll_vert = LinearLayout(this.context)
+                ll_vert.orientation = LinearLayout.VERTICAL
+                val image = ImageView(this.context)
+                ll_vert.addView(image)
+                ll_vert.layoutParams = LinearLayout.LayoutParams(170,170)
+                image.adjustViewBounds = true
+                when(tag) {
+                    "Arms" -> {
+                        Glide.with(this).load(R.drawable.ic_arms_40dp).into(image)
+                    }
+                    "Back" -> {
+                        Glide.with(this).load(R.drawable.ic_back_40dp).into(image)
+                    }
+                    "Legs" -> {
+                        Glide.with(this).load(R.drawable.ic_legs_40dp).into(image)
+                    }
+                    "Cardio" -> {
+                        Glide.with(this).load(R.drawable.ic_cardio_40dp).into(image)
+                    }
+                    "Abs" -> {
+                        Glide.with(this).load(R.drawable.ic_abs_40dp).into(image)
+                    }
+                    "Gluteus" -> {
+                        Glide.with(this).load(R.drawable.ic_gluteus_40dp).into(image)
+                    }
+                    "Chest" -> {
+                        Glide.with(this).load(R.drawable.ic_chest_40dp).into(image)
+                    }
+                    "Shoulder" -> {
+                        Glide.with(this).load(R.drawable.ic_shoulder_40dp).into(image)
+                    }
+                }
+                ll_tags.addView(ll_vert)
+            }
+        }
     }
 
     private fun setupButtons() {

@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,19 +17,17 @@ import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.CreateRoutineFragmentBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
+import com.tfg.workoutagent.models.Day
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
 import kotlinx.android.synthetic.main.create_routine_fragment.*
-import java.util.*
 
 class CreateRoutineFragment : Fragment() {
-
 
     companion object {
         fun newInstance() = CreateRoutineFragment()
     }
-
 
     private val clearData by lazy { CreateRoutineFragmentArgs.fromBundle(arguments!!).clearData }
     private lateinit var adapter: DayListAdapter
@@ -57,7 +56,7 @@ class CreateRoutineFragment : Fragment() {
 
 
         when (clearData) {
-            //0 -> this.viewModel.clearData()
+            // 0 -> this.viewModel.clearData()
             1 -> this.viewModel.clearAllData()
             2 -> this.viewModel.clearDayData()
             3 -> this.viewModel.clearActivityData()
@@ -68,9 +67,17 @@ class CreateRoutineFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = DayListAdapter(this.context!!)
+        adapter =
+            DayListAdapter(this.context!!, {
+                viewModel.onEditDay(it)
+                findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToEditDayFragment())
+            }, {
+                viewModel.onDeleteDay(it)
+                adapter.notifyDataSetChanged()
+            })
         recyclerViewRoutineNewDay.layoutManager = LinearLayoutManager(this.context!!)
         recyclerViewRoutineNewDay.adapter = adapter
+
         observeDayData()
         observeData()
         observeErrors()

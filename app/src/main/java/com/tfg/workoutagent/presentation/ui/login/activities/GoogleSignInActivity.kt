@@ -2,23 +2,24 @@ package com.tfg.workoutagent.presentation.ui.login.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.tfg.workoutagent.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton.COLOR_DARK
+import com.google.android.gms.common.SignInButton.COLOR_LIGHT
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.tfg.workoutagent.AdminActivity
-import com.tfg.workoutagent.CustomerActivity
-import com.tfg.workoutagent.TrainerActivity
+import com.tfg.workoutagent.*
 import com.tfg.workoutagent.base.BaseActivity
 import com.tfg.workoutagent.data.repositoriesImpl.LoginRepositoryImpl
 import com.tfg.workoutagent.domain.loginUseCases.LoginUseCaseImpl
@@ -26,6 +27,8 @@ import com.tfg.workoutagent.presentation.ui.login.viewmodels.LoginViewModel
 import com.tfg.workoutagent.presentation.ui.login.viewmodels.LoginViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.login_activity.*
+
+const val PREFERENCE_FILE_KEY = "SharedPreferenceKey"
 
 class GoogleSignInActivity : BaseActivity() {
 
@@ -38,9 +41,18 @@ class GoogleSignInActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
-
+        val sharedPref: SharedPreferences = this.getSharedPreferences(
+            PREFERENCE_FILE_KEY,
+            Context.MODE_PRIVATE
+        )
+        val darkModeBool = sharedPref.getBoolean("darkMode_sp", false)
+        if(darkModeBool){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
         configureGoogleSignIn()
-        setupUI()
+        setupUI(darkModeBool)
 
         firebaseAuth = FirebaseAuth.getInstance()
     }
@@ -52,7 +64,14 @@ class GoogleSignInActivity : BaseActivity() {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
     }
-    private fun setupUI() {
+    private fun setupUI(darkMode: Boolean) {
+        if(darkMode){
+            logo_image.setImageResource(R.drawable.darklogo)
+            google_button.setColorScheme(COLOR_DARK)
+        }else{
+            logo_image.setImageResource(R.drawable.logo)
+            google_button.setColorScheme(COLOR_LIGHT)
+        }
         google_button.setOnClickListener {
             signIn()
         }
@@ -75,7 +94,6 @@ class GoogleSignInActivity : BaseActivity() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.i("Prueba log in", "Soy el login")
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
@@ -85,12 +103,12 @@ class GoogleSignInActivity : BaseActivity() {
                            //showProgress()
                         }
                         is Resource.Success -> {
-                            val role = result.data
                             //hideProgress()
-                            when(role){
+                            when(result.data){
                                 "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
                                 "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
                                 "ADMIN" -> { startActivity(AdminActivity.getLaunchIntent(this))}
+                                "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                             }
                         }
                         is Resource.Failure -> {

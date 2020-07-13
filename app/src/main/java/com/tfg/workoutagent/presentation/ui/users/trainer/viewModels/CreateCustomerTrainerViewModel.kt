@@ -1,12 +1,10 @@
 package com.tfg.workoutagent.presentation.ui.users.trainer.viewModels
 
 import android.content.Intent
-import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.*
 import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
-import com.tfg.workoutagent.domain.storageUseCases.UploadImageUserUseCase
-import com.tfg.workoutagent.domain.storageUseCases.UploadPhotoUserUseCaseImpl
+import com.tfg.workoutagent.domain.storageUseCases.ManageFilesUseCaseImpl
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Weight
@@ -17,7 +15,6 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: ManageCustomerTrainerUseCase) : ViewModel() {
-    //TODO: Hacer tratamiento para pasar de String a Date por ser mu coñazo el binding de Calendar
     var birthday : String = "dd-MM-yyyy"
     private val _birthdayError = MutableLiveData("")
     val birthdayError: LiveData<String>
@@ -43,10 +40,10 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
     val surnameError: LiveData<String>
         get() = _surnameError
 
-    var gender : String = ""
-    private val _genderError = MutableLiveData("")
-    val genderError: LiveData<String>
-        get() = _genderError
+    var genre : String = ""
+    private val _genreError = MutableLiveData("")
+    val genreError: LiveData<String>
+        get() = _genreError
 
     var photo : String = ""
     private val _photoError = MutableLiveData("")
@@ -83,44 +80,39 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         viewModelScope.launch {
             try{
                 if(dataPhoto != null){
-                    val upl = UploadPhotoUserUseCaseImpl(StorageRepositoryImpl())
+                    val upl = ManageFilesUseCaseImpl(StorageRepositoryImpl())
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             photo = photoUri.data
-                            createCustomer()
+                            val customer = Customer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
+                            val weight = Weight(weight = initialWeight)
+                            customer.weights.add(weight)
+                            manageCustomerTrainerUseCase.createCustomer(customer)
+                            _customerCreated.value = true
                         }
                         else -> {
                             photo = "DEFAULT_IMAGE"
-                            createCustomer()
+                            val customer = Customer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
+                            val weight = Weight(weight = initialWeight)
+                            customer.weights.add(weight)
+                            manageCustomerTrainerUseCase.createCustomer(customer)
+                            _customerCreated.value = true
                         }
                     }
                 }else{
+                    Log.i("uploadImage", "null")
                     photo = "DEFAULT_IMAGE"
-                    createCustomer()
+                    val customer = Customer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
+                    val weight = Weight(weight = initialWeight)
+                    customer.weights.add(weight)
+                    manageCustomerTrainerUseCase.createCustomer(customer)
+                    _customerCreated.value = true
                 }
             }catch (e: Exception){
                 Log.i("FAIL", "${e}")
             }
         }
     }
-
-    private fun createCustomer(){
-        viewModelScope.launch {
-            try{
-                val customer: Customer = Customer(birthday = parseStringToDate(
-                    birthday
-                )!!, dni = dni, email = email, gender = gender, name = name, surname = surname, photo = photo, phone = phone, height = height)
-                val weight = Weight(weight = initialWeight)
-                customer.weights.add(weight)
-                manageCustomerTrainerUseCase.createCustomer(customer)
-                _customerCreated.value = true
-            }catch (e: Exception){
-                _customerCreated.value = false
-            }
-            _customerCreated.value = null
-        }
-    }
-
 
     private fun checkData(): Boolean {
         checkBirthday()
@@ -148,7 +140,11 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
     }
 
     private fun checkGender(){
-
+        genre.let {
+            if(genre != "Male" || genre != "Female"){
+                _genreError.value = "You should select one genre"
+            }
+        }
     }
 
     private fun checkDni() {

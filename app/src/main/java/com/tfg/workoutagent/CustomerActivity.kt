@@ -12,6 +12,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.tfg.workoutagent.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_bottom_navigation_customer.*
 
+
+const val PROFILE_CUSTOMER_FRAGMENT = "MyProfileCustomer"
+
 class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,12 +25,17 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
 
         setupBottomBar(navController)
         setupToolbar(navController)
+
+        intent.extras?.let {
+            if (it.get(FRAGMENT_KEY) == PROFILE_CUSTOMER_FRAGMENT) {
+                navController.navigate(R.id.navigation_profile_customer)
+            }
+        }
     }
 
     private fun setupToolbar(navController: NavController) {
         setSupportActionBar(findViewById(R.id.main_toolbar))
         navController.addOnDestinationChangedListener { _, destination, arguments ->
-            Log.i("Id del destino", "${destination.id}")
             when (destination.id) {
                 R.id.navigation_day_customer -> {
                     supportActionBar?.title = "My activity"
@@ -57,6 +65,18 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun restartActivityWithSelectedFragmentCustomer(fragment: String) {
+        val intent = Intent(this, CustomerActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra(FRAGMENT_KEY, fragment)
+
+        startActivity(intent)
+        this.overridePendingTransition(
+            android.R.anim.fade_in,
+            android.R.anim.fade_out
+        )
     }
 
     companion object {

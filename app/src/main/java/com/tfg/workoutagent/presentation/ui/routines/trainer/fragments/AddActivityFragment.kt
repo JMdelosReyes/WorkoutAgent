@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.tfg.workoutagent.R
@@ -24,10 +22,6 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRo
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
 import kotlinx.android.synthetic.main.fragment_add_activity.*
 
-
-/**
- * A simple [Fragment] subclass.
- */
 class AddActivityFragment : DialogFragment() {
 
     private lateinit var toolbar: Toolbar

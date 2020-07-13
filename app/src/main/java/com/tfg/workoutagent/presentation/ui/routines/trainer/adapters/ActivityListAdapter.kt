@@ -8,8 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.RoutineActivity
 import kotlinx.android.synthetic.main.item_row_routine_day_activity.view.*
+import kotlin.math.roundToInt
 
-class ActivityListAdapter(private val context: Context) :
+class ActivityListAdapter(private val context: Context, private val clickListener: (routineActivity: RoutineActivity) -> Unit) :
     RecyclerView.Adapter<ActivityListAdapter.ActivityListViewHolder>() {
 
     private var dataList = mutableListOf<RoutineActivity>()
@@ -38,12 +39,33 @@ class ActivityListAdapter(private val context: Context) :
     }
 
     inner class ActivityListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        lateinit var activity: RoutineActivity
         fun bindView(activity: RoutineActivity) {
+            this.activity = activity
+            itemView.edit_day_activity_button.setOnClickListener {
+                clickListener(activity)
+            }
             itemView.row_routine_day_activity_name.text = activity.name
             itemView.row_routine_day_activity_repetitions.text =
                 "Repetitions: ${activity.repetitions.joinToString(",")}"
+
             itemView.row_routine_day_activity_weights.text =
-                "Weights: ${activity.repetitions.joinToString(",")}"
+                "Weights: "+doubleListToString(activity.weightsPerRepetition)
         }
+    }
+
+    private fun doubleListToString(doubleList: MutableList<Double>): String{
+        var listString = ""
+        var i = 0
+        for (item in doubleList){
+            if(i == doubleList.size-1){
+                listString = listString + item.roundToInt()
+            }else{
+                listString = listString + item.roundToInt()+","
+            }
+            i++
+        }
+
+        return listString
     }
 }
