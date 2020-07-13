@@ -11,5 +11,6 @@ data class Administrator(
     var phone : String = "DEFAULT_PHONE",
     var photo : String = "DEFAULT_PHOTO",
     var role: String = "ADMINISTRATOR",
+    var token: String = "TOKEN",
     var surname: String = "DEFAULT_SURNAME") {
 }
