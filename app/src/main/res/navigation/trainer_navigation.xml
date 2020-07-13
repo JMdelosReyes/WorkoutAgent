@@ -229,7 +229,11 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_displayCustomer_to_nutritionCustomerTrainerFragment"
-            app:destination="@id/nutritionCustomerTrainerFragment" />
+            app:destination="@id/nutritionCustomerTrainerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createCustomerTrainerFragment"
@@ -366,7 +370,11 @@
         android:label="NutritionCustomerTrainerFragment" >
         <action
             android:id="@+id/action_nutritionCustomerTrainerFragment_to_displayCustomer"
-            app:destination="@id/displayCustomer" />
+            app:destination="@id/displayCustomer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <argument
             android:name="customerId"
             app:argType="string" />
