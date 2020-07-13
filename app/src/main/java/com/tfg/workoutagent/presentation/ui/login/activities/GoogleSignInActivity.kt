@@ -16,6 +16,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.messaging.FirebaseMessaging
 import com.tfg.workoutagent.AdminActivity
 import com.tfg.workoutagent.CustomerActivity
 import com.tfg.workoutagent.TrainerActivity
@@ -148,9 +149,18 @@ class GoogleSignInActivity : BaseActivity() {
                             }
                         })
                          when(role){
-                             "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
-                             "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
-                             "ADMIN" -> { startActivity(AdminActivity.getLaunchIntent(this))}
+                             "TRAINER" -> {
+
+                                 startActivity(TrainerActivity.getLaunchIntent(this))
+                             }
+                             "CUSTOMER" -> {
+                                 startActivity(CustomerActivity.getLaunchIntent(this))
+                             }
+                             "ADMIN" -> {
+                                 val topic = "/topics/admin" //topic has to match what the receiver subscribed to
+                                 FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                                 startActivity(AdminActivity.getLaunchIntent(this))
+                             }
                          }
                         finish()
                     }
