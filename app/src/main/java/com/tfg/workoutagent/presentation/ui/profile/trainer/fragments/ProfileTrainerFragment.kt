@@ -32,7 +32,7 @@ import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.ProfileTr
 import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.ProfileTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
-import kotlinx.android.synthetic.main.dialog_settings_profile.view.dark_mode_switch
+import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_trainer_profile.*
 
 
@@ -82,6 +82,10 @@ class ProfileTrainerFragment : Fragment() {
             dialogView.dark_mode_switch.isChecked = darkMode
             dialogView.dark_mode_switch.setOnCheckedChangeListener { _, _ -> changeMode() }
             val alertDialog = dialogBuilder.create()
+            dialogView.button_terms.setOnClickListener {
+                alertDialog.dismiss()
+                findNavController().navigate(ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToTermsConditionsFragment3())
+            }
             alertDialog.show()
         }
     }
