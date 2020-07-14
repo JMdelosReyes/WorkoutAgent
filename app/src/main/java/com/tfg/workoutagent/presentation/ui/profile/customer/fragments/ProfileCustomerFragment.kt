@@ -28,7 +28,7 @@ import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.ProfileC
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.ProfileCustomerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
-import kotlinx.android.synthetic.main.dialog_settings_trainer.view.*
+import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_customer_profile.*
 
 class ProfileCustomerFragment : Fragment() {
@@ -70,7 +70,7 @@ class ProfileCustomerFragment : Fragment() {
             val dialogBuilder = AlertDialog.Builder(context!!)
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
-            val dialogView = inflater.inflate(R.layout.dialog_settings_trainer, null)
+            val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)
             dialogBuilder.setView(dialogView)
             dialogView.dark_mode_switch.isChecked = darkMode
             dialogView.dark_mode_switch.setOnCheckedChangeListener { _, _ -> changeMode() }
