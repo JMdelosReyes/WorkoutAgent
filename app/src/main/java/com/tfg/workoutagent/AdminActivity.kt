@@ -11,6 +11,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.tfg.workoutagent.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_bottom_navigation_admin.*
 
+
+const val PROFILE_ADMIN_FRAGMENT = "MyProfileAdmin"
+
 class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,6 +24,12 @@ class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener 
 
         setupBottombar(navController)
         setupToolbar(navController)
+
+        intent.extras?.let {
+            if (it.get(FRAGMENT_KEY) == PROFILE_ADMIN_FRAGMENT) {
+                navController.navigate(R.id.navigation_admin_profile)
+            }
+        }
     }
 
     private fun setupToolbar(navController: NavController) {
@@ -71,6 +80,18 @@ class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener 
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun restartActivityWithSelectedFragmentAdmin(fragment: String) {
+        val intent = Intent(this, AdminActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra(FRAGMENT_KEY, fragment)
+
+        startActivity(intent)
+        this.overridePendingTransition(
+            android.R.anim.fade_in,
+            android.R.anim.fade_out
+        )
     }
 
     companion object {

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,7 +32,7 @@ import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.ProfileTr
 import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.ProfileTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
-import kotlinx.android.synthetic.main.dialog_settings_trainer.view.dark_mode_switch
+import kotlinx.android.synthetic.main.dialog_settings_profile.view.dark_mode_switch
 import kotlinx.android.synthetic.main.fragment_trainer_profile.*
 
 
@@ -78,7 +77,7 @@ class ProfileTrainerFragment : Fragment() {
             val dialogBuilder = AlertDialog.Builder(context!!)
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
-            val dialogView = inflater.inflate(R.layout.dialog_settings_trainer, null)
+            val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)
             dialogBuilder.setView(dialogView)
             dialogView.dark_mode_switch.isChecked = darkMode
             dialogView.dark_mode_switch.setOnCheckedChangeListener { _, _ -> changeMode() }
