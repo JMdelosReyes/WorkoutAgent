@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_admin_profile_to_editProfileAdminFragment"
             app:destination="@id/editProfileAdminFragment" />
+        <action
+            android:id="@+id/action_navigation_admin_profile_to_termsConditionsFragment2"
+            app:destination="@id/termsConditionsFragment2" />
     </fragment>
 
     <fragment
@@ -125,4 +128,8 @@
             app:popEnterAnim="@anim/slide_out_right"
             app:popExitAnim="@anim/slide_in_left" />
     </fragment>
+    <fragment
+        android:id="@+id/termsConditionsFragment2"
+        android:name="com.tfg.workoutagent.presentation.ui.gdpr.TermsConditionsFragment"
+        android:label="TermsConditionsFragment" />
 </navigation>

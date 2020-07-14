@@ -3,6 +3,7 @@ package com.tfg.workoutagent.presentation.ui.profile.customer.fragments
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,6 +76,10 @@ class ProfileCustomerFragment : Fragment() {
             dialogView.dark_mode_switch.isChecked = darkMode
             dialogView.dark_mode_switch.setOnCheckedChangeListener { _, _ -> changeMode() }
             val alertDialog = dialogBuilder.create()
+            dialogView.button_terms.setOnClickListener {
+                alertDialog.dismiss()
+                findNavController().navigate(ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToTermsConditionsFragment())
+            }
             alertDialog.show()
         }
     }

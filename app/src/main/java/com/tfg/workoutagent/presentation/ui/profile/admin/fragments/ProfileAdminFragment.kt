@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -20,6 +21,7 @@ import com.tfg.workoutagent.R
 import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivity
 import com.tfg.workoutagent.presentation.ui.login.activities.PREFERENCE_FILE_KEY
 import com.tfg.workoutagent.presentation.ui.profile.admin.viewModels.ProfileAdminViewModel
+import com.tfg.workoutagent.presentation.ui.profile.customer.fragments.ProfileCustomerFragmentDirections
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_admin_profile.*
 
@@ -60,6 +62,10 @@ class ProfileAdminFragment : Fragment() {
             dialogView.dark_mode_switch.isChecked = darkMode
             dialogView.dark_mode_switch.setOnCheckedChangeListener { _, _ -> changeMode() }
             val alertDialog = dialogBuilder.create()
+            dialogView.button_terms.setOnClickListener {
+                alertDialog.dismiss()
+                findNavController().navigate(ProfileAdminFragmentDirections.actionNavigationAdminProfileToTermsConditionsFragment2())
+            }
             alertDialog.show()
         }
     }

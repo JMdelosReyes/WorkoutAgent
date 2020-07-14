@@ -100,6 +100,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_profile_trainer_to_termsConditionsFragment3"
+            app:destination="@id/termsConditionsFragment3" />
     </fragment>
     <fragment
         android:id="@+id/displayExercise"
@@ -391,5 +394,9 @@
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
     </fragment>
+    <fragment
+        android:id="@+id/termsConditionsFragment3"
+        android:name="com.tfg.workoutagent.presentation.ui.gdpr.TermsConditionsFragment"
+        android:label="TermsConditionsFragment" />
 
 </navigation>
