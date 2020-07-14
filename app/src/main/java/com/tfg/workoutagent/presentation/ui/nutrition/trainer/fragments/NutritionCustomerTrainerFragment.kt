@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.nutrition.trainer.fragments
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentNutritionCustomerTrainerBinding
@@ -49,7 +51,30 @@ class NutritionCustomerTrainerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeData()
+        setupUI()
+    }
 
+    private fun setupUI(){
+        val darkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> false
+            else -> true
+        }
+        if(darkMode){
+            Glide.with(this).load(R.drawable.proteins_dark).into(protein_image)
+            Glide.with(this).load(R.drawable.carbohydrates_dark).into(carbohydrate_image)
+            Glide.with(this).load(R.drawable.fats_dark).into(fats_image)
+        }else{
+            Glide.with(this).load(R.drawable.proteins).into(protein_image)
+            Glide.with(this).load(R.drawable.carbohydrates).into(carbohydrate_image)
+            Glide.with(this).load(R.drawable.fats).into(fats_image)
+        }
+        radioGrp_gainlose.setOnCheckedChangeListener { group, checkedId ->
+            if(checkedId == radioHipercaloric.id){
+                viewModel.selectedFormulaType.value = "Hypocaloric"
+            }else if(checkedId == radioHypocaloric.id){
+                viewModel.selectedFormulaType.value = "Hipercaloric"
+            }
+        }
     }
 
     private fun observeData(){
@@ -62,13 +87,13 @@ class NutritionCustomerTrainerFragment : Fragment() {
         })
 
         viewModel.proteins.observe(viewLifecycleOwner, Observer {
-            protein_column.text = viewModel.proteins.value
+            protein_column.text = viewModel.proteins.value + " g."
         })
         viewModel.carbohydrates.observe(viewLifecycleOwner, Observer {
-            carbohydrate_column.text = viewModel.carbohydrates.value
+            carbohydrate_column.text = viewModel.carbohydrates.value + " g."
         })
         viewModel.fats.observe(viewLifecycleOwner, Observer {
-            fat_column.text = viewModel.fats.value
+            fat_column.text = viewModel.fats.value + " g."
         })
 
         viewModel.selectedFormula.observe(viewLifecycleOwner, Observer {
@@ -137,7 +162,7 @@ class NutritionCustomerTrainerFragment : Fragment() {
                 }
             }
         })
-
+        /*
         viewModel.formulaTypes.observe(viewLifecycleOwner, Observer {
             it?.let {
                 val spinner: Spinner = nutrition_trainer_customer_formula_type_spinner
@@ -167,5 +192,7 @@ class NutritionCustomerTrainerFragment : Fragment() {
                 }
             }
         })
+
+         */
     }
 }

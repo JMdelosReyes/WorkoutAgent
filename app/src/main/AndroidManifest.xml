@@ -13,13 +13,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".AdminActivity"
-            android:label="@string/title_activity_admin"></activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".CustomerActivity"
-            android:label="@string/title_activity_bottom_navigation_customer" />
+            android:label="@string/app_name" />
         <activity
             android:name=".TrainerActivity"
-            android:label="@string/title_activity_bottom_navigation_trainer" />
+            android:label="@string/app_name" />
         <activity android:name=".presentation.ui.login.activities.GoogleSignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,6 +27,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel"
+            android:value="tfg-Channel" />
+        <service
+            android:name=".FirebaseMessagingService"
+            android:permission="com.google.android.c2dm.permission.SEND">
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

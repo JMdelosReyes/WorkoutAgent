@@ -19,7 +19,11 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.messaging.FirebaseMessaging
 import com.tfg.workoutagent.*
+import com.tfg.workoutagent.AdminActivity
+import com.tfg.workoutagent.CustomerActivity
+import com.tfg.workoutagent.TrainerActivity
 import com.tfg.workoutagent.base.BaseActivity
 import com.tfg.workoutagent.data.repositoriesImpl.LoginRepositoryImpl
 import com.tfg.workoutagent.domain.loginUseCases.LoginUseCaseImpl
@@ -104,6 +108,22 @@ class GoogleSignInActivity : BaseActivity() {
                         }
                         is Resource.Success -> {
                             //hideProgress()
+
+                            viewModel.fetchToken.observe(this, Observer { r ->
+                                when(r){
+                                    is Resource.Loading -> {
+                                        //showProgress()
+                                    }
+                                    is Resource.Success -> {
+                                        //hideProgress()
+                                    }
+                                    is Resource.Failure -> {
+                                        //hideProgress()
+                                        Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            })
+
                             when(result.data){
                                 "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
                                 "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
@@ -117,6 +137,7 @@ class GoogleSignInActivity : BaseActivity() {
                         }
                     }
                 })
+
             } else {
                 Toast.makeText(this, "Google sign in failed:(", Toast.LENGTH_LONG).show()
             }
@@ -132,12 +153,36 @@ class GoogleSignInActivity : BaseActivity() {
                         //showProgress()
                     }
                     is Resource.Success -> {
+
                         val role = result.data
                         //hideProgress()
+                        viewModel.fetchToken.observe(this, Observer { r ->
+                            when(r){
+                                is Resource.Loading -> {
+                                    //showProgress()
+                                }
+                                is Resource.Success -> {
+                                    //hideProgress()
+                                }
+                                is Resource.Failure -> {
+                                    //hideProgress()
+                                    Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        })
                          when(role){
-                             "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
-                             "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
-                             "ADMIN" -> { startActivity(AdminActivity.getLaunchIntent(this))}
+                             "TRAINER" -> {
+
+                                 startActivity(TrainerActivity.getLaunchIntent(this))
+                             }
+                             "CUSTOMER" -> {
+                                 startActivity(CustomerActivity.getLaunchIntent(this))
+                             }
+                             "ADMIN" -> {
+                                 val topic = "/topics/admin" //topic has to match what the receiver subscribed to
+                                 FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                                 startActivity(AdminActivity.getLaunchIntent(this))
+                             }
                          }
                         finish()
                     }
@@ -148,6 +193,7 @@ class GoogleSignInActivity : BaseActivity() {
                     }
                 }
             })
+
 
         }
     }

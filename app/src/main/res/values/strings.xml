@@ -181,9 +181,9 @@
     <string name="form_routine_edit_button">Edit</string>
     <string name="customer_dni">Dni of customer</string>
     <string name="customer_gender">Gender of customer</string>
-    <string name="protein_g">Protein(g)</string>
-    <string name="carbohydrates_g">Carbohydrates(g)</string>
-    <string name="fats_g">Fats(g)</string>
+    <string name="protein_g">Protein (g)</string>
+    <string name="carbohydrates_g">Carbohydrates (g)</string>
+    <string name="fats_g">Fats (g)</string>
     <string name="nutrition">Nutrition</string>
     <string name="edit_activity_button">Edit</string>
     <string name="edit_day_button">Delete</string>
