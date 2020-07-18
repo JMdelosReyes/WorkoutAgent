@@ -18,7 +18,17 @@ fun parseStringToDate(string: String?) : Date? {
         nullDate
     }
 }
-
+fun parseStringToDateBar(string: String?) : Date? {
+    val pattern = "dd-MM-yyyy"
+    val sdf = SimpleDateFormat(pattern)
+    val string2 = string?.replace("/", "-")!!
+    return if (string2 != null && string2 != "" && string2 != "dd-MM-yyyy") {
+        sdf.parse(string2)
+    } else {
+        val nullDate : Date? = null
+        nullDate
+    }
+}
 
 fun getAgeWithError(it : String) : String {
     var error = ""

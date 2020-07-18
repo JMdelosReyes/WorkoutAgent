@@ -1,7 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.profile.customer.viewModels
 
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.*
 import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
 import com.tfg.workoutagent.domain.profileUseCases.ManageProfileUseCase

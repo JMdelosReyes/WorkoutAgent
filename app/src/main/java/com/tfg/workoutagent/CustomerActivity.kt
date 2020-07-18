@@ -49,6 +49,22 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                     supportActionBar?.title = "My profile"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
+                R.id.listGoalCustomerFragment -> {
+                    supportActionBar?.title = "My goals"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+                R.id.createGoalCustomerFragment -> {
+                    supportActionBar?.title = "Create a goals"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+                R.id.editProfileCustomerFragment -> {
+                    supportActionBar?.title = "Edit my profile"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+                R.id.deleteProfileSendEmailCustomerFragment -> {
+                    supportActionBar?.title = "Deleting my account"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
             }
         }
     }
