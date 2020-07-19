@@ -103,6 +103,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_listGoalCustomerFragment_self"
+            app:destination="@id/listGoalCustomerFragment" />
+        <action
+            android:id="@+id/action_listGoalCustomerFragment_self2"
+            app:destination="@id/listGoalCustomerFragment"
+            app:popUpTo="@id/navigation_profile_customer" />
     </fragment>
     <fragment
         android:id="@+id/createGoalCustomerFragment"

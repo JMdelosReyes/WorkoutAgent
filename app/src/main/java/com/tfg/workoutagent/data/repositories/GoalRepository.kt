@@ -7,4 +7,5 @@ interface GoalRepository {
     suspend fun getGoalsCustomer() : Resource<MutableList<Goal>>
     suspend fun createGoal(goal: Goal): Resource<Boolean>
     suspend fun deleteGoal(index: Int): Resource<Boolean>
+    suspend fun finishGoal(index: Int): Resource<Boolean>
 }

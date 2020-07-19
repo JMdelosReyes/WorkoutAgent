@@ -15,8 +15,7 @@ import java.util.*
 
 class GoalsCustomerListAdapter (private val context: Context, private val darkMode : Boolean):
     RecyclerView.Adapter<GoalsCustomerListAdapter.GoalsCustomerListViewHolder> (){
-
-    private var dataGoalsList = mutableListOf<Goal>()
+    var dataGoalsList = mutableListOf<Goal>()
     fun setListData(data: MutableList<Goal>){
         dataGoalsList = data
     }
