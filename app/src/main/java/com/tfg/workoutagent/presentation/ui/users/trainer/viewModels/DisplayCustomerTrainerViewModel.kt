@@ -15,7 +15,6 @@ class DisplayCustomerTrainerViewModel(private val customerId: String, private va
             val customer = displayCustomerTrainerUseCase.getCustomer(customerId)
             emit(customer)
         }catch (e : Exception){
-            Log.i("EXCEPTION", "$e")
             emit(Resource.Failure(e))
         }
     }

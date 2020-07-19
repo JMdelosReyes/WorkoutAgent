@@ -61,4 +61,18 @@ class GoalRepositoryImpl: GoalRepository {
         FirebaseFirestore.getInstance().collection("users").document(customer.id).update(data).await()
         return Resource.Success(true)
     }
+
+    override suspend fun getGoalsByCustomerId(id: String): Resource<MutableList<Goal>> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(id)
+            .get().await()
+        val customer = resultData.toObject(Customer::class.java)
+        customer!!.id = id
+        var goals = mutableListOf<Goal>()
+        if(!customer.goals.isEmpty()){
+            goals = customer.goals.asReversed()
+        }
+        return Resource.Success(goals)
+    }
 }

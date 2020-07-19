@@ -93,5 +93,8 @@ class DisplayCustomerTrainerFragment : Fragment() {
         display_customer_button_nutrition.setOnClickListener {
             findNavController().navigate(DisplayCustomerTrainerFragmentDirections.actionDisplayCustomerToNutritionCustomerTrainerFragment(customerId))
         }
+        display_customer_button_evolution.setOnClickListener {
+            findNavController().navigate(DisplayCustomerTrainerFragmentDirections.actionDisplayCustomerToListGoalCustomerTrainerFragment(customerId, customerName))
+        }
     }
 }

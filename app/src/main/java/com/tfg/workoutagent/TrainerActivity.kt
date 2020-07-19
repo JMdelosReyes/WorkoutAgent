@@ -126,6 +126,11 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                     supportActionBar?.setDisplayShowHomeEnabled(true)
 
                 }
+                R.id.listGoalCustomerTrainerFragment -> {
+                    supportActionBar?.title = "Goals of ${arguments!!.get("customerName").toString()}"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
             }
         }
     }

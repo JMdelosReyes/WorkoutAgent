@@ -237,6 +237,9 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_displayCustomer_to_listGoalCustomerTrainerFragment"
+            app:destination="@id/listGoalCustomerTrainerFragment" />
     </fragment>
     <fragment
         android:id="@+id/createCustomerTrainerFragment"
@@ -398,5 +401,20 @@
         android:id="@+id/termsConditionsFragment3"
         android:name="com.tfg.workoutagent.presentation.ui.gdpr.TermsConditionsFragment"
         android:label="TermsConditionsFragment" />
+    <fragment
+        android:id="@+id/listGoalCustomerTrainerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.goals.trainer.fragments.ListGoalCustomerTrainerFragment"
+        android:label="fragment_list_goal_customer_trainer"
+        tools:layout="@layout/fragment_list_goal_customer_trainer" >
+        <action
+            android:id="@+id/action_listGoalCustomerTrainerFragment_to_displayCustomer"
+            app:destination="@id/displayCustomer" />
+        <argument
+            android:name="customerId"
+            app:argType="string" />
+        <argument
+            android:name="customerName"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

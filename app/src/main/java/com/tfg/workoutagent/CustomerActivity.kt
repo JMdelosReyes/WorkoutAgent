@@ -35,7 +35,7 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
 
     private fun setupToolbar(navController: NavController) {
         setSupportActionBar(findViewById(R.id.main_toolbar))
-        navController.addOnDestinationChangedListener { _, destination, arguments ->
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_day_customer -> {
                     supportActionBar?.title = "My activity"
@@ -54,7 +54,7 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
                 R.id.createGoalCustomerFragment -> {
-                    supportActionBar?.title = "Create a goals"
+                    supportActionBar?.title = "Create a goal"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
                 R.id.editProfileCustomerFragment -> {
