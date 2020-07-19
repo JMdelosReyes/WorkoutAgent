@@ -17,8 +17,10 @@ import com.google.android.gms.common.SignInButton.COLOR_DARK
 import com.google.android.gms.common.SignInButton.COLOR_LIGHT
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.auto.value.AutoAnnotation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import com.tfg.workoutagent.*
 import com.tfg.workoutagent.AdminActivity
@@ -125,9 +127,46 @@ class GoogleSignInActivity : BaseActivity() {
                             })
 
                             when(result.data){
-                                "TRAINER" -> {startActivity(TrainerActivity.getLaunchIntent(this))}
-                                "CUSTOMER" -> {startActivity(CustomerActivity.getLaunchIntent(this))}
-                                "ADMIN" -> { startActivity(AdminActivity.getLaunchIntent(this))}
+                                "TRAINER" -> {
+                                    viewModel.loggedTrainer.observe(this, Observer { r1 ->
+                                        when(r1){
+                                            is Resource.Loading -> {
+                                                //showProgress()
+                                            }
+                                            is Resource.Success -> {
+                                                val myId = r1.data.id
+                                                FirebaseMessaging.getInstance().subscribeToTopic("/topics/trainer_$myId")
+                                                startActivity(TrainerActivity.getLaunchIntent(this))
+                                            }
+                                            is Resource.Failure -> {
+                                                Log.i("Cannot get trainer", "trainer does not exist")
+                                                startActivity(TrainerActivity.getLaunchIntent(this))
+                                            }
+                                        }
+                                    })
+                                }
+                                "CUSTOMER" -> {
+                                    viewModel.trainer.observe(this, Observer { r1 ->
+                                        when(r1){
+                                            is Resource.Loading -> {
+                                                //showProgress()
+                                            }
+                                            is Resource.Success -> {
+                                                val trainerId = r1.data.id
+                                                FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
+                                                startActivity(CustomerActivity.getLaunchIntent(this))
+                                            }
+                                            is Resource.Failure -> {
+                                                Log.i("Cannot get trainer", "trainer does not exist")
+                                                startActivity(CustomerActivity.getLaunchIntent(this))
+                                            }
+                                        }
+                                    })
+                                }
+                                "ADMIN" -> {
+                                    FirebaseMessaging.getInstance().subscribeToTopic("/topics/admin")
+                                    startActivity(AdminActivity.getLaunchIntent(this))
+                                }
                                 "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                             }
                         }
@@ -172,17 +211,46 @@ class GoogleSignInActivity : BaseActivity() {
                         })
                          when(role){
                              "TRAINER" -> {
-
-                                 startActivity(TrainerActivity.getLaunchIntent(this))
+                                 viewModel.loggedTrainer.observe(this, Observer { r1 ->
+                                     when(r1){
+                                         is Resource.Loading -> {
+                                             //showProgress()
+                                         }
+                                         is Resource.Success -> {
+                                             val myId = r1.data.id
+                                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/trainer_$myId")
+                                             startActivity(TrainerActivity.getLaunchIntent(this))
+                                         }
+                                         is Resource.Failure -> {
+                                             Log.i("Cannot get trainer", "trainer does not exist")
+                                             startActivity(TrainerActivity.getLaunchIntent(this))
+                                         }
+                                     }
+                                 })
                              }
                              "CUSTOMER" -> {
-                                 startActivity(CustomerActivity.getLaunchIntent(this))
+                                 viewModel.trainer.observe(this, Observer { r1 ->
+                                     when(r1){
+                                         is Resource.Loading -> {
+                                             //showProgress()
+                                         }
+                                         is Resource.Success -> {
+                                             val trainerId = r1.data.id
+                                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
+                                             startActivity(CustomerActivity.getLaunchIntent(this))
+                                         }
+                                         is Resource.Failure -> {
+                                             Log.i("Cannot get trainer", "trainer does not exist")
+                                             startActivity(CustomerActivity.getLaunchIntent(this))
+                                         }
+                                     }
+                                 })
                              }
                              "ADMIN" -> {
-                                 val topic = "/topics/admin" //topic has to match what the receiver subscribed to
-                                 FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                                 FirebaseMessaging.getInstance().subscribeToTopic("/topics/admin")
                                  startActivity(AdminActivity.getLaunchIntent(this))
                              }
+                             "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                          }
                         finish()
                     }

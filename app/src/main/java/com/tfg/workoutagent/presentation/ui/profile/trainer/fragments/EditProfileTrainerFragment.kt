@@ -28,6 +28,7 @@ import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivit
 import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.EditProfileTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.EditProfileTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_edit_delete_trainer_admin.*
 import kotlinx.android.synthetic.main.fragment_edit_profile_trainer.*
 import kotlinx.android.synthetic.main.fragment_edit_profile_trainer.delete_trainer_button_admin
@@ -45,6 +46,8 @@ class EditProfileTrainerFragment : Fragment() {
     private lateinit var binding : FragmentEditProfileTrainerBinding
     private var selectedPhotoUri : Uri? = null
     private var selectedPDFUri : Uri? = null
+    private lateinit var trainerId : String
+    private lateinit var trainerName : String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -100,6 +103,8 @@ class EditProfileTrainerFragment : Fragment() {
             builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
                 dialog.dismiss()
                 viewModel.onDelete()
+                sendNotification(this.context!!, "Trainer $trainerName has deleted his/her account", "", "/topics/admin")
+                sendNotification(this.context!!, "Trainer $trainerName has deleted his/her account", "", "/topics/trainer_$trainerId")
             }
 
             builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
@@ -124,6 +129,8 @@ class EditProfileTrainerFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     //TODO: hideProgress()
+                    trainerId = it.data.id
+                    trainerName = it.data.name +" "+ it.data.surname
                     if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
                         edit_profile_trainer_button_select_image.visibility = View.GONE
                         image_selected_edit_profile_trainer.visibility = View.VISIBLE

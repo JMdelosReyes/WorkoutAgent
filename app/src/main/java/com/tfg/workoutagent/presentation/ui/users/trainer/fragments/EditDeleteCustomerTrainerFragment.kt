@@ -24,6 +24,7 @@ import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.EditDeleteCustomerTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.EditDeleteCustomerTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_edit_delete_customer_trainer.*
 
 class EditDeleteCustomerTrainerFragment : Fragment() {
@@ -75,6 +76,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
 
             builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
                 dialog.dismiss()
+                sendNotification(this.context!!, "${viewModel.name} account has been deleted", "His/her trainer decided to remove this account", "/topics/admin")
                 viewModel.onDelete()
             }
 

@@ -2,32 +2,27 @@ package com.tfg.workoutagent.presentation.ui.users.admin.fragments
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentEditDeleteTrainerAdminBinding
 import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModel
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModelFactory
-import com.tfg.workoutagent.vo.AppExecutors
-import com.tfg.workoutagent.vo.Credentials
 import com.tfg.workoutagent.vo.Resource
-import kotlinx.android.synthetic.main.fragment_create_trainer_admin.*
+import com.tfg.workoutagent.vo.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_edit_delete_trainer_admin.*
 import javax.mail.*
 import javax.mail.internet.InternetAddress
@@ -101,6 +96,7 @@ class EditDeleteTrainerAdminFragment : Fragment() {
 
             builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
                 dialog.dismiss()
+                sendNotification(this.context!!, "$trainerName account has been deleted", "You may have to look for a new trainer", "/topics/customers_$trainerId")
                 findNavController().navigate(EditDeleteTrainerAdminFragmentDirections.actionEditDeleteTrainerAdminFragmentToDeleteTrainerSendMailFragment(trainerId))
             }
 
