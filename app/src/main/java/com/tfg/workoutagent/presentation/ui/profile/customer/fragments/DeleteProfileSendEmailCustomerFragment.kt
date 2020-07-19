@@ -22,6 +22,7 @@ import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.DeletePr
 import com.tfg.workoutagent.vo.AppExecutors
 import com.tfg.workoutagent.vo.Credentials
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_delete_profile_send_email_customer.*
 import javax.mail.*
 import javax.mail.internet.InternetAddress
@@ -32,6 +33,7 @@ class DeleteProfileSendEmailCustomerFragment : Fragment() {
     private lateinit var nameUser : String
     private lateinit var emailAdmin : String
     private lateinit var emailTrainer : String
+    private lateinit var trainerId : String
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
 
@@ -69,6 +71,7 @@ class DeleteProfileSendEmailCustomerFragment : Fragment() {
             builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
                 viewModel.onDelete()
                 sendMail()
+                sendNotification(this.context!!, "$nameUser has deleted his/her account", "", "/topics/trainer_$trainerId")
                 dialog.dismiss()
             }
 
@@ -188,7 +191,10 @@ class DeleteProfileSendEmailCustomerFragment : Fragment() {
         })
         viewModel.getTrainerEmail.observe(viewLifecycleOwner, Observer {
             when(it) {
-                is Resource.Success -> emailTrainer = it.data.email
+                is Resource.Success -> {
+                    emailTrainer = it.data.email
+                    trainerId = it.data.id
+                }
                 is Resource.Failure -> {  }
             }
         })

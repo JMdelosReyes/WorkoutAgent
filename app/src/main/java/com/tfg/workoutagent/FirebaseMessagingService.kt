@@ -45,12 +45,12 @@ class FirebaseMessagingService: FirebaseMessagingService() {
 
         val largeIcon = BitmapFactory.decodeResource(
             resources,
-            android.R.drawable.ic_delete
+            android.R.drawable.stat_notify_chat
         )
 
         val notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, ADMIN_CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_delete)
+            .setSmallIcon(android.R.drawable.stat_notify_chat)
             .setLargeIcon(largeIcon)
             .setContentTitle(p0.data["title"])
             .setContentText(p0.data["message"])
