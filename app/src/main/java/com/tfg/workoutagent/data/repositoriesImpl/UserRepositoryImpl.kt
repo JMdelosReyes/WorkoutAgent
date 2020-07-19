@@ -95,7 +95,7 @@ class UserRepositoryImpl: UserRepository {
     override suspend fun createCustomer(customer: Customer): Resource<Boolean> {
         val goalsArray = mutableListOf<HashMap<String, Any>>()
         for (goal in customer.goals){
-            val hashGoal = hashMapOf<String, Any>("aim" to goal.aim, "isAchieved" to goal.isAchieved, "startDate" to goal.startDate, "endDate" to goal.endDate)
+            val hashGoal = hashMapOf<String, Any>("aim" to goal.aim, "description" to goal.description, "isAchieved" to goal.isAchieved, "startDate" to goal.startDate, "endDate" to goal.endDate)
             goalsArray.add(hashGoal)
         }
         val weightsArray = mutableListOf<HashMap<String, Any>>()
@@ -120,7 +120,7 @@ class UserRepositoryImpl: UserRepository {
             .get().await().toObject(Customer::class.java)!!
         val goalsArray = mutableListOf<HashMap<String, Any>>()
         for (goal in resultData.goals){
-            val hashGoal = hashMapOf<String, Any>("aim" to goal.aim, "isAchieved" to goal.isAchieved, "startDate" to goal.startDate, "endDate" to goal.endDate)
+            val hashGoal = hashMapOf<String, Any>("aim" to goal.aim, "description" to goal.description, "isAchieved" to goal.isAchieved, "startDate" to goal.startDate, "endDate" to goal.endDate)
             goalsArray.add(hashGoal)
         }
         val prevWeights = resultData.weights
@@ -234,7 +234,7 @@ class UserRepositoryImpl: UserRepository {
         //Para no perder los goals anteriores del usuario, los extraemos de base de datos
         val goalsArray = mutableListOf<HashMap<String, Any>>()
         for (goal in resultData.goals){
-            val hashGoal = hashMapOf<String, Any>("aim" to goal.aim, "isAchieved" to goal.isAchieved, "startDate" to goal.startDate, "endDate" to goal.endDate)
+            val hashGoal = hashMapOf<String, Any>("aim" to goal.aim, "description" to goal.description,"isAchieved" to goal.isAchieved, "startDate" to goal.startDate, "endDate" to goal.endDate)
             goalsArray.add(hashGoal)
         }
         val prevWeights = resultData.weights

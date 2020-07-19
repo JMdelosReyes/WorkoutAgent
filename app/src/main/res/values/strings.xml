@@ -245,4 +245,8 @@
     <string name="h17">Complaints to data protection authorities</string>
     <string name="p17">You have the right to withdraw at any time the consent you gave us to process your personal data.</string>
     <string name="p18">You have the right to complain to the data protection supervisory authorities if you feel that your personal data is not being processed correctly.</string>
+    <string name="goal_aim">Aim</string>
+    <string name="goal_description">Description</string>
+    <string name="form_goal_create_button">Create goal</string>
+    <string name="form_goal_endDate_hint">Deadline</string>
 </resources>

@@ -67,6 +67,7 @@ class ProfileCustomerFragment : Fragment() {
         sign_out_button.setOnClickListener { signOut2() }
         display_customer_button_edit.setOnClickListener { findNavController().navigate(ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToEditProfileCustomerFragment()) }
         display_customer_button_nutrition.setOnClickListener { findNavController().navigate(ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToDisplayNutritionCustomerFragment()) }
+        display_customer_button_evolution.setOnClickListener { findNavController().navigate(ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToListGoalCustomerFragment()) }
         settings_image_profile_customer.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(context!!)
             dialogBuilder.setTitle("Settings")

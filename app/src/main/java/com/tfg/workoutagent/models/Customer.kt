@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.models
 
+import com.google.firebase.firestore.PropertyName
 import java.util.*
 
 data class Customer(
@@ -9,6 +10,8 @@ data class Customer(
     var email : String = "DEFAULT_EMAIL",
     var name : String = "DEFAULT_NAME",
     var surname : String = "DEFAULT_SURNAME",
+    @set:PropertyName("goals")
+    @get:PropertyName("goals")
     var goals : MutableList<Goal> = mutableListOf(),
     var photo : String = "DEFAULT_PHOTO",
     var height : Int = 150,

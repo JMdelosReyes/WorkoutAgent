@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.tfg.workoutagent.presentation.ui.goals.customer.viewmodels.CreateGoalCustomerViewModel" />
+
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.ui.goals.customer.fragments.CreateGoalCustomerFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:paddingTop="16dp">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/goal_aim_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/goal_aim"
+                app:startIconDrawable="@drawable/ic_finish_32dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/goal_aim_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nextFocusRight="@+id/goal_description_input_edit"
+                    android:text="@={viewModel.aim}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/goal_description_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/goal_description"
+                android:nextFocusRight="@+id/goal_tags_input_edit"
+                app:startIconDrawable="@drawable/ic_description_24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/goal_description_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@={viewModel.description}" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/goal_startDate_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/form_routine_startDate_hint"
+                app:startIconDrawable="@drawable/ic_hourglass_28dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/goal_startDate_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:inputType="text"
+                    android:text="@={viewModel.startDate}" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/goal_endDate_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:hint="@string/form_goal_endDate_hint"
+                app:startIconDrawable="@drawable/ic_hourglass_inverted_28dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/goal_endDate_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:inputType="text"
+                    android:text="@={viewModel.endDate}" />
+            </com.google.android.material.textfield.TextInputLayout>
+            <Button
+                android:id="@+id/create_goal_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="4dp"
+                android:textSize="26sp"
+                android:drawableLeft="@drawable/ic_save_white_48dp"
+                android:onClick="@{() -> viewModel.onSubmit()}"
+                android:text="@string/form_goal_create_button" />
+            <LinearLayout
+                android:id="@+id/ll_photos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</layout>

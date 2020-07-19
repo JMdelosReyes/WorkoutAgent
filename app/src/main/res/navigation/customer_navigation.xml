@@ -27,6 +27,13 @@
         <action
             android:id="@+id/action_navigation_profile_customer_to_termsConditionsFragment"
             app:destination="@id/termsConditionsFragment" />
+        <action
+            android:id="@+id/action_navigation_profile_customer_to_listGoalCustomerFragment"
+            app:destination="@id/listGoalCustomerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/navigation_routine_customer"
@@ -39,7 +46,11 @@
         android:label="EditProfileCustomerFragment" >
         <action
             android:id="@+id/action_editProfileCustomerFragment_to_navigation_profile_customer"
-            app:destination="@id/navigation_profile_customer" />
+            app:destination="@id/navigation_profile_customer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_editProfileCustomerFragment_to_deleteProfileSendEmailCustomerFragment"
             app:destination="@id/deleteProfileSendEmailCustomerFragment"
@@ -59,7 +70,11 @@
         tools:layout="@layout/fragment_delete_profile_send_email_customer" >
         <action
             android:id="@+id/action_deleteProfileSendEmailCustomerFragment_to_editProfileCustomerFragment"
-            app:destination="@id/editProfileCustomerFragment" />
+            app:destination="@id/editProfileCustomerFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <argument
             android:name="customerId"
             app:argType="string" />
@@ -69,4 +84,44 @@
         android:name="com.tfg.workoutagent.presentation.ui.gdpr.TermsConditionsFragment"
         android:label="fragment_terms_and_conditions"
         tools:layout="@layout/fragment_terms_and_conditions" />
+    <fragment
+        android:id="@+id/listGoalCustomerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.goals.customer.fragments.ListGoalCustomerFragment"
+        android:label="fragment_list_goals_customer"
+        tools:layout="@layout/fragment_list_goals_customer" >
+        <action
+            android:id="@+id/action_listGoalCustomerFragment_to_navigation_profile_customer"
+            app:destination="@id/navigation_profile_customer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_listGoalCustomerFragment_to_createGoalCustomerFragment"
+            app:destination="@id/createGoalCustomerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_listGoalCustomerFragment_self"
+            app:destination="@id/listGoalCustomerFragment" />
+        <action
+            android:id="@+id/action_listGoalCustomerFragment_self2"
+            app:destination="@id/listGoalCustomerFragment"
+            app:popUpTo="@id/navigation_profile_customer" />
+    </fragment>
+    <fragment
+        android:id="@+id/createGoalCustomerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.goals.customer.fragments.CreateGoalCustomerFragment"
+        android:label="fragment_create_goal_customer"
+        tools:layout="@layout/fragment_create_goal_customer" >
+        <action
+            android:id="@+id/action_createGoalCustomerFragment_to_listGoalCustomerFragment"
+            app:destination="@id/listGoalCustomerFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
 </navigation>

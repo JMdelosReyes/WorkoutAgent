@@ -248,8 +248,7 @@ class CreateExerciseFragment : Fragment() {
                         Toast.makeText(context, "Exercise created", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(CreateExerciseFragmentDirections.actionCreateExerciseFragmentToNavigationExercisesTrainer())
                     }
-                    false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
-                        .show()
+                    false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show()
                 }
             }
         })
