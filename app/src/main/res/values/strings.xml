@@ -249,4 +249,5 @@
     <string name="goal_description">Description</string>
     <string name="form_goal_create_button">Create goal</string>
     <string name="form_goal_endDate_hint">Deadline</string>
+    <string name="search">Search</string>
 </resources>
