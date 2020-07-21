@@ -3,10 +3,14 @@ package com.tfg.workoutagent.presentation.ui.users.admin.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import com.tfg.workoutagent.domain.userUseCases.ListUserAdminUseCase
+import com.tfg.workoutagent.models.Customer
+import com.tfg.workoutagent.models.Trainer
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.Dispatchers
 
 class UserListViewModel(listUserAdminUseCase: ListUserAdminUseCase): ViewModel() {
+    var filteredCustomerList = mutableListOf<Customer>()
+    var filteredTrainerList = mutableListOf<Trainer>()
     val trainerList = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
