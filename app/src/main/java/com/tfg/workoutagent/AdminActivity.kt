@@ -1,30 +1,20 @@
 package com.tfg.workoutagent
 
-import android.os.Bundle
-import android.view.MenuItem
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
 import android.content.Context
 import android.content.Intent
-import androidx.navigation.ui.setupWithNavController
+import android.view.MenuItem
+import androidx.navigation.NavController
 import com.tfg.workoutagent.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_bottom_navigation_admin.*
 
-class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
+class AdminActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bottom_navigation_admin)
+    override val viewID = R.layout.activity_bottom_navigation_admin
+    override var navHostFragmentID: Int? = R.id.nav_host_fragment
+    override var toolbarID: Int? = R.id.main_toolbar
+    override var navViewID: Int? = R.id.nav_view_admin
 
-        val navController = findNavController(R.id.nav_host_fragment)
-
-        setupBottombar(navController)
-        setupToolbar(navController)
-    }
-
-    private fun setupToolbar(navController: NavController) {
-        setSupportActionBar(findViewById(R.id.main_toolbar))
+    override fun setupToolbar(navController: NavController) {
+        super.setupToolbar(navController)
         navController.addOnDestinationChangedListener { _, destination, arguments ->
             when (destination.id) {
                 R.id.navigation_admin_profile -> {
@@ -37,10 +27,6 @@ class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener 
                 }
             }
         }
-    }
-
-    private fun setupBottombar(navController: NavController) {
-        nav_view.setupWithNavController(navController)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -10,84 +10,99 @@
             type="com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel" />
     </data>
 
-
-    <ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".presentation.ui.routines.trainer.fragments.EditDayEditRoutineFragment">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipChildren="false"
-            android:clipToPadding="false"
-            android:orientation="vertical"
-            android:padding="24dp"
-            android:paddingTop="16dp">
+            android:layout_height="match_parent"
+            tools:context=".presentation.ui.routines.trainer.fragments.EditDayEditRoutineFragment">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@{viewModel.title}" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/routine_day_name_input"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:hint="@string/form_routine_day_title_hint">
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="vertical"
+                android:padding="24dp"
+                android:paddingTop="16dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/routine_day_name_input_edit"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@{viewModel.title}" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/routine_day_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@={viewModel.dayName}" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_margin="4dp"
+                    android:hint="@string/form_routine_day_title_hint">
 
-            <TextView
-                android:id="@+id/day_activities_error"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@{viewModel.activitiesError}"
-                android:visibility="invisible" />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/routine_day_name_input_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.dayName}" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_edit_day_activities"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/day_activities_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@{viewModel.activitiesError}"
+                    android:visibility="invisible" />
 
-            <Button
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_edit_day_activities"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <!--<Button
+                    android:id="@+id/cancel_create_day_edit_routine_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="4dp"
+                    android:text="@string/form_day_cancel_button" />-->
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/add_day_activity_button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
-                android:text="@string/add_day_activity_button" />
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toTopOf="@+id/save_create_day_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@android:drawable/ic_input_add" />
 
-            <Button
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/save_create_day_button"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
-                android:text="@string/form_day_save_button" />
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@android:drawable/ic_menu_save" />
 
-            <Button
-                android:id="@+id/cancel_create_day_edit_routine_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
-                android:text="@string/form_day_cancel_button" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </LinearLayout>
+    </FrameLayout>
 
-    </ScrollView>
 </layout>

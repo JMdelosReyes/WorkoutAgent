@@ -28,11 +28,11 @@ class EditActivityEditRoutineFragment : DialogFragment() {
 
     private lateinit var binding: FragmentEditActivityEditRoutineBinding
 
-    private val routineId by lazy { EditActivityEditRoutineFragmentArgs.fromBundle(arguments!!).routineId }
+    private val routineId by lazy { EditActivityEditRoutineFragmentArgs.fromBundle(requireArguments()).routineId }
 
     private val viewModel by lazy {
         ViewModelProvider(
-            activity!!,
+            requireActivity(),
             EditRoutineViewModelFactory(
                 routineId,
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
@@ -143,7 +143,7 @@ class EditActivityEditRoutineFragment : DialogFragment() {
             it?.let {
                 val spinner: Spinner = activity_exercise_spinner
                 ArrayAdapter(
-                    this.context!!,
+                    this.requireContext(),
                     android.R.layout.simple_spinner_item,
                     it.map { e -> e.title }
                 ).also { adapter ->

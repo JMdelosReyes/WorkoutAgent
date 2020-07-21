@@ -2,11 +2,11 @@ package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Day
@@ -46,16 +46,14 @@ class DayListAdapter(
         val day: Day = dataList[position]
         holder.bindView(day)
 
-        val childLayoutManager =
-            LinearLayoutManager(holder.recyclerView.context, LinearLayout.VERTICAL, false)
+        val childLayoutManager = GridLayoutManager(holder.recyclerView.context, 2)
 
         holder.recyclerView.apply {
             layoutManager = childLayoutManager
-            adapter = ActivityListChildAdapter(day.activities)
+            adapter = ActivityListChildAdapter(context, day.activities)
             setRecycledViewPool(viewPool)
         }
     }
-
 
     inner class DayListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val recyclerView: RecyclerView = itemView.recyclerViewRoutineDayActivity
@@ -68,6 +66,15 @@ class DayListAdapter(
             }
             itemView.delete_day_button.setOnClickListener {
                 deleteClickListener(day)
+            }
+
+            this.recyclerView.visibility = View.GONE
+            itemView.setOnClickListener {
+                if (this.recyclerView.visibility == View.GONE) {
+                    this.recyclerView.visibility = View.VISIBLE
+                } else {
+                    this.recyclerView.visibility = View.GONE
+                }
             }
         }
     }

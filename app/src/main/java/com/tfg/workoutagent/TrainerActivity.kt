@@ -2,30 +2,21 @@ package com.tfg.workoutagent
 
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.tfg.workoutagent.base.BaseActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AddDayFragmentDirections
-import kotlinx.android.synthetic.main.activity_bottom_navigation_trainer.*
 
-class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
+class TrainerActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bottom_navigation_trainer)
+    override val viewID = R.layout.activity_bottom_navigation_trainer
+    override var navHostFragmentID: Int? = R.id.nav_host_fragment
+    override var toolbarID: Int? = R.id.main_toolbar
+    override var navViewID: Int? = R.id.nav_view_trainer
 
-        val navController = findNavController(R.id.nav_host_fragment)
-
-        setupBottombar(navController)
-        setupToolbar(navController)
-    }
-
-    private fun setupToolbar(navController: NavController) {
-        setSupportActionBar(findViewById(R.id.main_toolbar))
+    override fun setupToolbar(navController: NavController) {
+        super.setupToolbar(navController)
         navController.addOnDestinationChangedListener { _, destination, arguments ->
             when (destination.id) {
                 R.id.navigation_activity_trainer -> {
@@ -72,8 +63,8 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                 }
                 R.id.displayCustomer -> {
                     supportActionBar?.title = arguments!!.get("customerName").toString()
-                    supportActionBar?.setDisplayHomeAsUpEnabled(true);
-                    supportActionBar?.setDisplayShowHomeEnabled(true);
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
                 R.id.createCustomerTrainerFragment -> {
                     supportActionBar?.title = "Create a customer"
@@ -107,10 +98,6 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                 }
             }
         }
-    }
-
-    private fun setupBottombar(navController: NavController) {
-        nav_view.setupWithNavController(navController)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -32,7 +32,7 @@ class EditDayFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
-            activity!!, CreateRoutineViewModelFactory(
+            requireActivity(), CreateRoutineViewModelFactory(
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
         ).get(CreateRoutineViewModel::class.java)
@@ -61,11 +61,11 @@ class EditDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ActivityListAdapter(this.context!!){ routineActivity: RoutineActivity ->
+        adapter = ActivityListAdapter(this.requireContext()) { routineActivity: RoutineActivity ->
             viewModel.onEditActivity(routineActivity)
             findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToEditActivityFragment())
         }
-        recycler_edit_day_activities.layoutManager = LinearLayoutManager(this.context!!)
+        recycler_edit_day_activities.layoutManager = LinearLayoutManager(this.requireContext())
         recycler_edit_day_activities.adapter = adapter
 
         val itemTouchHelper = setUpItemTouchHelper()
@@ -152,7 +152,7 @@ class EditDayFragment : Fragment() {
                 )
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callback)
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
     }
 
     private fun setupButtons() {

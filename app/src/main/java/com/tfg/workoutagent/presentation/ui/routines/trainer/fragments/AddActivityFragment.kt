@@ -30,7 +30,7 @@ class AddActivityFragment : DialogFragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
-            activity!!, CreateRoutineViewModelFactory(
+            requireActivity(), CreateRoutineViewModelFactory(
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
         ).get(CreateRoutineViewModel::class.java)
@@ -140,7 +140,7 @@ class AddActivityFragment : DialogFragment() {
             it?.let {
                 val spinner: Spinner = activity_exercise_spinner
                 ArrayAdapter(
-                    this.context!!,
+                    this.requireContext(),
                     android.R.layout.simple_spinner_item,
                     it.map { e -> e.title }
                 ).also { adapter ->

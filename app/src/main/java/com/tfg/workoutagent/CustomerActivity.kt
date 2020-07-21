@@ -3,31 +3,20 @@ package com.tfg.workoutagent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
 import com.tfg.workoutagent.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_bottom_navigation_customer.*
 
-class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
+class CustomerActivity : BaseActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bottom_navigation_customer)
+    override val viewID = R.layout.activity_bottom_navigation_customer
+    override var navHostFragmentID: Int? = R.id.nav_host_fragment
+    override var toolbarID: Int? = R.id.main_toolbar
+    override var navViewID: Int? = R.id.nav_view_customer
 
-        val navController = findNavController(R.id.nav_host_fragment)
-
-        setupBottomBar(navController)
-        setupToolbar(navController)
-    }
-
-    private fun setupToolbar(navController: NavController) {
-        setSupportActionBar(findViewById(R.id.main_toolbar))
+    override fun setupToolbar(navController: NavController) {
+        super.setupToolbar(navController)
         navController.addOnDestinationChangedListener { _, destination, arguments ->
-            Log.i("Id del destino", "${destination.id}")
             when (destination.id) {
                 R.id.navigation_day_customer -> {
                     supportActionBar?.title = "My activity"
@@ -43,10 +32,6 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                 }
             }
         }
-    }
-
-    private fun setupBottomBar(navController: NavController) {
-        nav_view.setupWithNavController(navController)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
