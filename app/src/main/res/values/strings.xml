@@ -175,4 +175,5 @@
     <string name="edit_day_button">Delete</string>
     <string name="repetitions_routine_day_activity">Repetitions</string>
     <string name="weights_routine_day_activity">Weights</string>
+    <string name="add_activity_set_error_message">Mensaje de error</string>
 </resources>

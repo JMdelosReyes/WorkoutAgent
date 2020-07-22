@@ -2,6 +2,7 @@ package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,6 +91,9 @@ class EditRoutineFragment : Fragment() {
         recyclerView_Routine_edit_Day.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerView_Routine_edit_Day.adapter = adapter
 
+        this.viewModel.updateRoutineId(this.routineId)
+        this.viewModel.loadRoutine()
+
         observeData()
         observeErrors()
         observeDayData()
@@ -119,17 +123,10 @@ class EditRoutineFragment : Fragment() {
     }
 
     private fun observeData() {
-        viewModel.routine.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resource.Loading -> {
-                    // TODO
-                }
-                is Resource.Success -> {
-                    // TODO
-                }
-                is Resource.Failure -> {
-                    // TODO
-                    Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show()
+        viewModel.routineLoaded.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    this.viewModel.routineLoaded()
                 }
             }
         })

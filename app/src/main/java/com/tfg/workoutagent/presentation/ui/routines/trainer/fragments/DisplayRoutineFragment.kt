@@ -27,7 +27,6 @@ class DisplayRoutineFragment : Fragment() {
     // private val routineTitle by lazy { DisplayRoutineFragmentArgs.fromBundle(arguments!!).routineTitle }
     private lateinit var adapter: DisplayDayListAdapter
 
-
     private val viewModel by lazy {
         ViewModelProvider(
             this,

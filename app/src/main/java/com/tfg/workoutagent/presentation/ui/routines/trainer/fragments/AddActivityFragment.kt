@@ -13,11 +13,14 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentAddActivityBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
+import com.tfg.workoutagent.models.ActivitySet
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.SetListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
 import kotlinx.android.synthetic.main.fragment_add_activity.*
@@ -35,6 +38,8 @@ class AddActivityFragment : DialogFragment() {
             )
         ).get(CreateRoutineViewModel::class.java)
     }
+
+    private lateinit var adapter: SetListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,10 +71,46 @@ class AddActivityFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adapter = SetListAdapter(
+            requireContext(),
+            { position: Int -> this.viewModel.removeSet(position) },
+            updateListener@{ repetitions, weight, position ->
+                val validSet = this.viewModel.checkSet(repetitions, weight)
+                if (validSet) {
+                    this.viewModel.updateSet(ActivitySet(repetitions!!, weight!!), position)
+                    return@updateListener ""
+                }
+                return@updateListener "Error"
+            })
+        recyclerView_activity_sets.layoutManager = LinearLayoutManager(this.requireContext())
+        recyclerView_activity_sets.adapter = adapter
+
         setupToolbar()
         setupSpinnerAdapter()
         observeErrors()
         observeDialogState()
+        setupButtons()
+    }
+
+    private fun setupButtons() {
+        add_set_button.setOnClickListener {
+            val repetitions = repetitions_add_activity_input.text.toString().toIntOrNull()
+            val weight = weights_add_activity_input.text.toString().toDoubleOrNull()
+
+            val validSet = this.viewModel.addSet(repetitions, weight)
+            if (validSet == "") {
+                add_activity_set_error_message.text = ""
+                add_activity_set_error_message.visibility = View.GONE
+                this.adapter.addElement(ActivitySet(repetitions!!, weight!!))
+                repetitions_add_activity_input.text.clear()
+                weights_add_activity_input.text.clear()
+                repetitions_add_activity_input.requestFocus()
+            } else {
+                add_activity_set_error_message.text = validSet
+                add_activity_set_error_message.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun observeDialogState() {
@@ -85,11 +126,21 @@ class AddActivityFragment : DialogFragment() {
 
     private fun observeErrors() {
         viewModel.setsError.observe(viewLifecycleOwner, Observer {
-            binding.activitySetInputEdit.error =
-                if (it != "") it else null
+            it?.let {
+                if (it != "") {
+                    binding.addActivitySetErrorMessage.text = it
+                    binding.addActivitySetErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.addActivitySetErrorMessage.text = ""
+                    binding.addActivitySetErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.addActivitySetErrorMessage.text = ""
+                binding.addActivitySetErrorMessage.visibility = View.GONE
+            }
         })
 
-        viewModel.repetitionsError.observe(viewLifecycleOwner, Observer {
+        /*viewModel.repetitionsError.observe(viewLifecycleOwner, Observer {
             binding.activityRepetitionsInputEdit.error =
                 if (it != "") it else null
         })
@@ -97,7 +148,7 @@ class AddActivityFragment : DialogFragment() {
         viewModel.weightsError.observe(viewLifecycleOwner, Observer {
             binding.activityWeightsInputEdit.error =
                 if (it != "") it else null
-        })
+        })*/
 
         viewModel.noteError.observe(viewLifecycleOwner, Observer {
             binding.activityNoteInputEdit.error =

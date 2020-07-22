@@ -26,41 +26,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--<androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/constraint_buttons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/row_routine_day_activity_photo"
-            app:layout_constraintStart_toStartOf="@+id/row_routine_day_activity_photo"
-            app:layout_constraintTop_toBottomOf="@+id/row_routine_day_activity_photo">
-
-            <TextView
-                android:id="@+id/edit_day_activity_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_edit_pencil_black_24dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/delete_day_activity_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:drawableStart="@drawable/ic_delete_black_24dp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/edit_day_activity_button"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
         <TextView
             android:id="@+id/row_routine_day_activity_name"
             android:layout_width="0dp"
@@ -77,11 +42,63 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraint_row_routine_day_activity"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/delete_day_activity_button"
+            app:layout_constraintStart_toEndOf="@+id/row_routine_day_activity_photo"
+            app:layout_constraintTop_toBottomOf="@+id/row_routine_day_activity_name">
+
+            <RelativeLayout
+                android:id="@+id/linear_icons"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/repetitions_icon_routine_day_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_repetitions_black_24dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/weights_icon_routine_day_activity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:drawableStart="@drawable/ic_weights_black_24dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/relative_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/linear_icons"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--<androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_repetitions"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/edit_day_activity_button"
             app:layout_constraintStart_toEndOf="@+id/row_routine_day_activity_photo"
             app:layout_constraintTop_toBottomOf="@+id/row_routine_day_activity_name">
 
@@ -97,9 +114,11 @@
 
             <TextView
                 android:id="@+id/row_routine_day_activity_repetitions"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:lines="1"
                 android:text="@string/repetitions_routine_day_activity"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary"
@@ -108,15 +127,16 @@
                 app:layout_constraintStart_toEndOf="@+id/repetitions_icon_routine_day_activity"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!--<androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint_weights"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/delete_day_activity_button"
             app:layout_constraintStart_toEndOf="@+id/row_routine_day_activity_photo"
             app:layout_constraintTop_toBottomOf="@+id/constraint_repetitions">
 
@@ -132,9 +152,11 @@
 
             <TextView
                 android:id="@+id/row_routine_day_activity_weights"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:ellipsize="end"
+                android:lines="1"
                 android:text="@string/weights_routine_day_activity"
                 android:textAppearance="?attr/textAppearanceBody2"
                 android:textColor="?android:attr/textColorSecondary"
@@ -143,7 +165,7 @@
                 app:layout_constraintStart_toEndOf="@+id/weights_icon_routine_day_activity"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
         <TextView
             android:id="@+id/edit_day_activity_button"

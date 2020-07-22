@@ -44,8 +44,8 @@ class RoutineTrainerFragment : Fragment() {
 
         setupButtons()
 
-        adapter = RoutineListAdapter(this.context!!)
-        recyclerViewRoutine.layoutManager = LinearLayoutManager(this.context!!)
+        adapter = RoutineListAdapter(this.requireContext())
+        recyclerViewRoutine.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerViewRoutine.adapter = adapter
         observeData()
     }
@@ -68,7 +68,7 @@ class RoutineTrainerFragment : Fragment() {
                     shimmer_view_container_routine.visibility = View.GONE
                     shimmer_view_container_routine.stopShimmer()
                     Toast.makeText(
-                        this.context!!,
+                        this.requireContext(),
                         "Ocurrió un error ${result.exception.message}",
                         Toast.LENGTH_SHORT
                     ).show()

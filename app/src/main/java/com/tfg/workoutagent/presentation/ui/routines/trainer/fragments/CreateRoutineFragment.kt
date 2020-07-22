@@ -29,11 +29,11 @@ class CreateRoutineFragment : Fragment() {
         fun newInstance() = CreateRoutineFragment()
     }
 
-    private val clearData by lazy { CreateRoutineFragmentArgs.fromBundle(arguments!!).clearData }
+    private val clearData by lazy { CreateRoutineFragmentArgs.fromBundle(requireArguments()).clearData }
     private lateinit var adapter: DayListAdapter
     private val viewModel by lazy {
         ViewModelProvider(
-            activity!!, CreateRoutineViewModelFactory(
+            requireActivity(), CreateRoutineViewModelFactory(
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
         ).get(CreateRoutineViewModel::class.java)
@@ -68,14 +68,14 @@ class CreateRoutineFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter =
-            DayListAdapter(this.context!!, {
+            DayListAdapter(this.requireContext(), {
                 viewModel.onEditDay(it)
                 findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToEditDayFragment())
             }, {
                 viewModel.onDeleteDay(it)
                 adapter.notifyDataSetChanged()
             })
-        recyclerViewRoutineNewDay.layoutManager = LinearLayoutManager(this.context!!)
+        recyclerViewRoutineNewDay.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerViewRoutineNewDay.adapter = adapter
 
         observeDayData()
@@ -112,7 +112,7 @@ class CreateRoutineFragment : Fragment() {
         //builder.setSelection()
         val picker: MaterialDatePicker<*> = builder.build()
         routine_startDate_input_edit.setOnClickListener {
-            picker.show(activity!!.supportFragmentManager, picker.toString())
+            picker.show(requireActivity().supportFragmentManager, picker.toString())
             picker.addOnPositiveButtonClickListener {
                 viewModel.setDate(it as Long)
             }
