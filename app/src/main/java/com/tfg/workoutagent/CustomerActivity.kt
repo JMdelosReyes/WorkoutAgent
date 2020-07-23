@@ -3,20 +3,39 @@ package com.tfg.workoutagent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.tfg.workoutagent.base.BaseActivity
+import kotlinx.android.synthetic.main.activity_bottom_navigation_customer.*
 
-class CustomerActivity : BaseActivity() {
 
-    override val viewID = R.layout.activity_bottom_navigation_customer
-    override var navHostFragmentID: Int? = R.id.nav_host_fragment
-    override var toolbarID: Int? = R.id.main_toolbar
-    override var navViewID: Int? = R.id.nav_view_customer
+const val PROFILE_CUSTOMER_FRAGMENT = "MyProfileCustomer"
 
-    override fun setupToolbar(navController: NavController) {
-        super.setupToolbar(navController)
-        navController.addOnDestinationChangedListener { _, destination, arguments ->
+class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_bottom_navigation_customer)
+
+        val navController = findNavController(R.id.nav_host_fragment)
+
+        setupBottomBar(navController)
+        setupToolbar(navController)
+
+        intent.extras?.let {
+            if (it.get(FRAGMENT_KEY) == PROFILE_CUSTOMER_FRAGMENT) {
+                navController.navigate(R.id.navigation_profile_customer)
+            }
+        }
+    }
+
+    private fun setupToolbar(navController: NavController) {
+        setSupportActionBar(findViewById(R.id.main_toolbar))
+        navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_day_customer -> {
                     supportActionBar?.title = "My activity"
@@ -30,8 +49,28 @@ class CustomerActivity : BaseActivity() {
                     supportActionBar?.title = "My profile"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
+                R.id.listGoalCustomerFragment -> {
+                    supportActionBar?.title = "My goals"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+                R.id.createGoalCustomerFragment -> {
+                    supportActionBar?.title = "Create a goal"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+                R.id.editProfileCustomerFragment -> {
+                    supportActionBar?.title = "Edit my profile"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
+                R.id.deleteProfileSendEmailCustomerFragment -> {
+                    supportActionBar?.title = "Deleting my account"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                }
             }
         }
+    }
+
+    private fun setupBottomBar(navController: NavController) {
+        nav_view.setupWithNavController(navController)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -42,6 +81,18 @@ class CustomerActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    fun restartActivityWithSelectedFragmentCustomer(fragment: String) {
+        val intent = Intent(this, CustomerActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra(FRAGMENT_KEY, fragment)
+
+        startActivity(intent)
+        this.overridePendingTransition(
+            android.R.anim.fade_in,
+            android.R.anim.fade_out
+        )
     }
 
     companion object {

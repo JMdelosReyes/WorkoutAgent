@@ -2,20 +2,27 @@ package com.tfg.workoutagent.presentation.ui.login.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.tfg.workoutagent.R
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton.COLOR_DARK
+import com.google.android.gms.common.SignInButton.COLOR_LIGHT
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
+import com.google.auto.value.AutoAnnotation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
+import com.tfg.workoutagent.*
 import com.tfg.workoutagent.AdminActivity
 import com.tfg.workoutagent.CustomerActivity
 import com.tfg.workoutagent.TrainerActivity
@@ -27,26 +34,32 @@ import com.tfg.workoutagent.presentation.ui.login.viewmodels.LoginViewModelFacto
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.login_activity.*
 
-class GoogleSignInActivity : BaseActivity() {
+const val PREFERENCE_FILE_KEY = "SharedPreferenceKey"
 
-    override val viewID = R.layout.login_activity
+class GoogleSignInActivity : BaseActivity() {
 
     val RC_SIGN_IN: Int = 1
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
 
     private lateinit var firebaseAuth: FirebaseAuth
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            LoginViewModelFactory(LoginUseCaseImpl(LoginRepositoryImpl()))
-        ).get(LoginViewModel::class.java)
-    }
-
+    private val viewModel by lazy { ViewModelProvider(this, LoginViewModelFactory(LoginUseCaseImpl(LoginRepositoryImpl()))).get(LoginViewModel::class.java) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.login_activity)
+        val sharedPref: SharedPreferences = this.getSharedPreferences(
+            PREFERENCE_FILE_KEY,
+            Context.MODE_PRIVATE
+        )
+        val darkModeBool = sharedPref.getBoolean("darkMode_sp", false)
+        if(darkModeBool){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
         configureGoogleSignIn()
-        setupUI()
+        setupUI(darkModeBool)
+
         firebaseAuth = FirebaseAuth.getInstance()
     }
 
@@ -57,18 +70,22 @@ class GoogleSignInActivity : BaseActivity() {
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
     }
-
-    private fun setupUI() {
+    private fun setupUI(darkMode: Boolean) {
+        if(darkMode){
+            logo_image.setImageResource(R.drawable.darklogo)
+            google_button.setColorScheme(COLOR_DARK)
+        }else{
+            logo_image.setImageResource(R.drawable.logo)
+            google_button.setColorScheme(COLOR_LIGHT)
+        }
         google_button.setOnClickListener {
             signIn()
         }
     }
-
     private fun signIn() {
         val signInIntent: Intent = mGoogleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
@@ -83,85 +100,171 @@ class GoogleSignInActivity : BaseActivity() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.i("Prueba log in", "Soy el login")
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
                 viewModel.fechtRole.observe(this, Observer { result ->
-                    when (result) {
+                    when(result){
                         is Resource.Loading -> {
-                            //showProgress()
+                           //showProgress()
                         }
                         is Resource.Success -> {
-                            val role = result.data
                             //hideProgress()
-                            when (role) {
+
+                            viewModel.fetchToken.observe(this, Observer { r ->
+                                when(r){
+                                    is Resource.Loading -> {
+                                        //showProgress()
+                                    }
+                                    is Resource.Success -> {
+                                        //hideProgress()
+                                    }
+                                    is Resource.Failure -> {
+                                        //hideProgress()
+                                        Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                            })
+
+                            when(result.data){
                                 "TRAINER" -> {
-                                    startActivity(TrainerActivity.getLaunchIntent(this))
+                                    viewModel.loggedTrainer.observe(this, Observer { r1 ->
+                                        when(r1){
+                                            is Resource.Loading -> {
+                                                //showProgress()
+                                            }
+                                            is Resource.Success -> {
+                                                val myId = r1.data.id
+                                                FirebaseMessaging.getInstance().subscribeToTopic("/topics/trainer_$myId")
+                                                startActivity(TrainerActivity.getLaunchIntent(this))
+                                            }
+                                            is Resource.Failure -> {
+                                                Log.i("Cannot get trainer", "trainer does not exist")
+                                                startActivity(TrainerActivity.getLaunchIntent(this))
+                                            }
+                                        }
+                                    })
                                 }
                                 "CUSTOMER" -> {
-                                    startActivity(CustomerActivity.getLaunchIntent(this))
+                                    viewModel.trainer.observe(this, Observer { r1 ->
+                                        when(r1){
+                                            is Resource.Loading -> {
+                                                //showProgress()
+                                            }
+                                            is Resource.Success -> {
+                                                val trainerId = r1.data.id
+                                                FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
+                                                startActivity(CustomerActivity.getLaunchIntent(this))
+                                            }
+                                            is Resource.Failure -> {
+                                                Log.i("Cannot get trainer", "trainer does not exist")
+                                                startActivity(CustomerActivity.getLaunchIntent(this))
+                                            }
+                                        }
+                                    })
                                 }
                                 "ADMIN" -> {
+                                    FirebaseMessaging.getInstance().subscribeToTopic("/topics/admin")
                                     startActivity(AdminActivity.getLaunchIntent(this))
                                 }
+                                "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                             }
                         }
                         is Resource.Failure -> {
                             //hideProgress()
-                            Toast.makeText(
-                                this,
-                                "Cannot find this user in Firebase",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
                         }
                     }
                 })
+
             } else {
                 Toast.makeText(this, "Google sign in failed:(", Toast.LENGTH_LONG).show()
             }
         }
     }
-
     override fun onStart() {
         super.onStart()
         val user = FirebaseAuth.getInstance().currentUser
-        Log.i("Prueba inicio", "$user")
         if (user != null) {
-            val email = FirebaseAuth.getInstance().currentUser?.email.toString()
             viewModel.fechtRole.observe(this, Observer { result ->
-                when (result) {
+                when(result){
                     is Resource.Loading -> {
                         //showProgress()
                     }
                     is Resource.Success -> {
+
                         val role = result.data
                         //hideProgress()
-                        when (role) {
-                            "TRAINER" -> {
-                                startActivity(TrainerActivity.getLaunchIntent(this))
+                        viewModel.fetchToken.observe(this, Observer { r ->
+                            when(r){
+                                is Resource.Loading -> {
+                                    //showProgress()
+                                }
+                                is Resource.Success -> {
+                                    //hideProgress()
+                                }
+                                is Resource.Failure -> {
+                                    //hideProgress()
+                                    Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                }
                             }
-                            "CUSTOMER" -> {
-                                startActivity(CustomerActivity.getLaunchIntent(this))
-                            }
-                            "ADMIN" -> {
-                                startActivity(AdminActivity.getLaunchIntent(this))
-                            }
-                        }
+                        })
+                         when(role){
+                             "TRAINER" -> {
+                                 viewModel.loggedTrainer.observe(this, Observer { r1 ->
+                                     when(r1){
+                                         is Resource.Loading -> {
+                                             //showProgress()
+                                         }
+                                         is Resource.Success -> {
+                                             val myId = r1.data.id
+                                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/trainer_$myId")
+                                             startActivity(TrainerActivity.getLaunchIntent(this))
+                                         }
+                                         is Resource.Failure -> {
+                                             Log.i("Cannot get trainer", "trainer does not exist")
+                                             startActivity(TrainerActivity.getLaunchIntent(this))
+                                         }
+                                     }
+                                 })
+                             }
+                             "CUSTOMER" -> {
+                                 viewModel.trainer.observe(this, Observer { r1 ->
+                                     when(r1){
+                                         is Resource.Loading -> {
+                                             //showProgress()
+                                         }
+                                         is Resource.Success -> {
+                                             val trainerId = r1.data.id
+                                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
+                                             startActivity(CustomerActivity.getLaunchIntent(this))
+                                         }
+                                         is Resource.Failure -> {
+                                             Log.i("Cannot get trainer", "trainer does not exist")
+                                             startActivity(CustomerActivity.getLaunchIntent(this))
+                                         }
+                                     }
+                                 })
+                             }
+                             "ADMIN" -> {
+                                 FirebaseMessaging.getInstance().subscribeToTopic("/topics/admin")
+                                 startActivity(AdminActivity.getLaunchIntent(this))
+                             }
+                             "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
+                         }
                         finish()
                     }
                     is Resource.Failure -> {
                         //hideProgress()
-                        Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG)
-                            .show()
+                        Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
                         finish()
                     }
                 }
             })
 
+
         }
     }
-
     companion object {
         fun getLaunchIntent(from: Context) = Intent(from, GoogleSignInActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
