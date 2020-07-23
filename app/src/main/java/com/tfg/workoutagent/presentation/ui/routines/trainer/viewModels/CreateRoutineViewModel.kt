@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCase
 import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
-import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.SetListAdapter
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.launch
 import java.lang.Double.parseDouble
@@ -339,11 +339,11 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         val newRepetitions = this.newSets.map { s -> s.repetitions } as MutableList<Int>
         val newWeights = this.newSets.map { s -> s.weight } as MutableList<Double>
         val activity = RoutineActivity(
-            name = selectedExercise.value?.title!!,
+            name = newSelectedExercise!!.title,
             sets = this.newSets.size,
             repetitions = newRepetitions,
             weightsPerRepetition = newWeights,
-            exercise = selectedExercise.value!!,
+            exercise = newSelectedExercise!!,
             note = (if (note.value != null) note.value else "")!!
         )
         /*val activity = RoutineActivity(
@@ -398,6 +398,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         _weightsError.value = ""
         note.value = ""
         _noteError.value = ""
+        resetSelectedCategories()
     }
 
     fun removeActivity(activity: RoutineActivity) {
@@ -540,4 +541,34 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     fun removeSet(position: Int) {
         this.newSets.removeAt(position)
     }
+
+    private var selectedCategories = mutableListOf<SelectedCategory>()
+
+    fun getSelectedCategories() = this.selectedCategories
+
+    fun addSelectedCategory(categoryName: String, categoryPosition: Int) {
+        this.selectedCategories.add(SelectedCategory(categoryName, categoryPosition))
+    }
+
+    fun removeSelectedCategory(categoryName: String, categoryPosition: Int) {
+        this.selectedCategories.remove(SelectedCategory(categoryName, categoryPosition))
+    }
+
+    fun resetSelectedCategories() {
+        this.selectedCategories = mutableListOf()
+    }
+
+    fun updateAvailableExercises(): MutableList<Exercise> {
+        return this.exercises.value?.filter { it.tags.containsAll(this.selectedCategories.map { c -> c.name }) } as MutableList<Exercise>
+    }
+
+    private var newSelectedExercise: Exercise? = null
+
+    fun getNewSelectedExercise() = this.newSelectedExercise
+
+    fun updateNewSelectedExercise(exercise: Exercise?) {
+        this.newSelectedExercise = exercise
+    }
+
+    data class SelectedCategory(val name: String, val position: Int)
 }

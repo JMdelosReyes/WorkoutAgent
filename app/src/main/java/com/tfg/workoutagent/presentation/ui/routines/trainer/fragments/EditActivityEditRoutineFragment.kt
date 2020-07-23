@@ -20,7 +20,7 @@ import com.tfg.workoutagent.databinding.FragmentEditActivityEditRoutineBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
-import kotlinx.android.synthetic.main.fragment_add_activity.*
+import kotlinx.android.synthetic.main.fragment_edit_activity_edit_routine.*
 
 class EditActivityEditRoutineFragment : DialogFragment() {
 

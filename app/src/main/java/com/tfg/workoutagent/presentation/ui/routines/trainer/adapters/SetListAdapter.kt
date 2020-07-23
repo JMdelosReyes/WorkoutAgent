@@ -52,8 +52,8 @@ class SetListAdapter(
 
     inner class SetListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private lateinit var activitySet: ActivitySet
-        fun bindView(activitySet: ActivitySet) {
 
+        fun bindView(activitySet: ActivitySet) {
             this.activitySet = activitySet
             itemView.repetitions_activity_input.setText(this.activitySet.repetitions.toString())
             itemView.weights_activity_input.setText(this.activitySet.weight.toString())

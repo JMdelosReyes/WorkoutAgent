@@ -176,4 +176,6 @@
     <string name="repetitions_routine_day_activity">Repetitions</string>
     <string name="weights_routine_day_activity">Weights</string>
     <string name="add_activity_set_error_message">Mensaje de error</string>
+    <string name="category_name">Category name</string>
+    <string name="exercise_name">Exercise name</string>
 </resources>
