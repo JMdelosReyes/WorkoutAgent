@@ -136,7 +136,7 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
     }
 
     private fun setupBottombar(navController: NavController) {
-        nav_view.setupWithNavController(navController)
+        nav_view_trainer.setupWithNavController(navController)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

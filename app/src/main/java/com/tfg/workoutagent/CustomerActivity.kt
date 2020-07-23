@@ -70,7 +70,7 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
     }
 
     private fun setupBottomBar(navController: NavController) {
-        nav_view.setupWithNavController(navController)
+        nav_view_customer.setupWithNavController(navController)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

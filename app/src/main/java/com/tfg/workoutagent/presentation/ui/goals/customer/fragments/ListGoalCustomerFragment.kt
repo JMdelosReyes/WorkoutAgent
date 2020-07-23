@@ -99,7 +99,7 @@ class ListGoalCustomerFragment : Fragment() {
                     }
 
                     builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                        adapterGoals.notifyDataSetChanged()
+                        //adapterGoals.notifyDataSetChanged()
                         dialog.dismiss()
                     }
                     builder.create()
