@@ -71,7 +71,10 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="4dp"
                     android:text="@string/form_day_cancel_button" />-->
-
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"/>
             </LinearLayout>
 
         </ScrollView>
@@ -85,10 +88,10 @@
                 android:id="@+id/add_day_activity_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintBottom_toTopOf="@+id/save_create_day_button"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/save_create_day_button"
                 app:srcCompat="@android:drawable/ic_input_add" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton

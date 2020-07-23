@@ -18,4 +18,6 @@ interface RoutineRepository {
     suspend fun editRoutine(routine: Routine): Resource<Boolean>
 
     suspend fun deleteRoutine(id: String): Resource<Boolean>
+
+    suspend fun getAssignedRoutine() : Resource<Routine>
 }
