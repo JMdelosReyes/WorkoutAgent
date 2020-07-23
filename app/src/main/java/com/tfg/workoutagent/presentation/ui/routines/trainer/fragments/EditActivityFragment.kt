@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
@@ -18,12 +17,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
-import com.tfg.workoutagent.databinding.FragmentAddActivityBinding
 import com.tfg.workoutagent.databinding.FragmentEditActivityBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
-import kotlinx.android.synthetic.main.fragment_add_activity.*
+import kotlinx.android.synthetic.main.fragment_edit_activity.*
 
 
 /**
@@ -37,7 +35,7 @@ class EditActivityFragment : DialogFragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(
-            activity!!, CreateRoutineViewModelFactory(
+            requireActivity(), CreateRoutineViewModelFactory(
                 ManageRoutineUseCaseImpl(RoutineRepositoryImpl(), ExerciseRepositoryImpl())
             )
         ).get(CreateRoutineViewModel::class.java)
@@ -147,7 +145,7 @@ class EditActivityFragment : DialogFragment() {
             it?.let {
                 val spinner: Spinner = activity_exercise_spinner
                 ArrayAdapter(
-                    this.context!!,
+                    this.requireContext(),
                     android.R.layout.simple_spinner_item,
                     it.map { e -> e.title }
                 ).also { adapter ->

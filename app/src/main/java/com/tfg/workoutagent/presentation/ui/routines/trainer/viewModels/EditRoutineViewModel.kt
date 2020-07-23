@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCase
 import com.tfg.workoutagent.models.Day
@@ -16,7 +17,7 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class EditRoutineViewModel(
-    private val routineId: String,
+    private var routineId: String,
     private val manageRoutineUseCase: ManageRoutineUseCase
 ) : ViewModel() {
 
@@ -40,6 +41,10 @@ class EditRoutineViewModel(
     val routineDeleted: LiveData<Boolean?>
         get() = _routineDeleted
 
+    private val _routineLoaded = MutableLiveData<Boolean?>(null)
+    val routineLoaded: LiveData<Boolean?>
+        get() = _routineLoaded
+
     private val _routineSaved = MutableLiveData<Boolean?>(null)
     val routineSaved: LiveData<Boolean?>
         get() = _routineSaved
@@ -48,9 +53,30 @@ class EditRoutineViewModel(
     val addDay: LiveData<Boolean?>
         get() = _addDay
 
-    val routine = liveData(Dispatchers.IO) {
+    fun routineLoaded() {
+        _routineLoaded.value = null
+    }
+
+    fun updateRoutineId(routineId: String) {
+        this.routineId = routineId
+    }
+
+    fun loadRoutine() = viewModelScope.launch(Dispatchers.IO) {
+        try {
+            val routineVal = manageRoutineUseCase.getRoutine(routineId)
+            if (routineVal is Resource.Success) {
+                loadData(routineVal)
+                _routineLoaded.value = true
+            }
+        } catch (e: Exception) {
+            Log.i("Routine", "Fail")
+        }
+    }
+
+    /*val routine = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
         try {
+            Log.i("Routine ViewModel", routineId)
             val routineVal = manageRoutineUseCase.getRoutine(routineId)
             emit(routineVal)
             if (routineVal is Resource.Success) {
@@ -59,7 +85,7 @@ class EditRoutineViewModel(
         } catch (e: Exception) {
             emit(Resource.Failure(e))
         }
-    }
+    }*/
 
     val pickerDate = MutableLiveData<Date>()
 

@@ -5,8 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Day
@@ -45,12 +44,10 @@ class DisplayDayListAdapter(
         val day: Day = dataList[position]
         holder.bindView(day)
 
-        val childLayoutManager =
-            LinearLayoutManager(holder.recyclerView.context, LinearLayout.VERTICAL, false)
-
+        val childLayoutManager = GridLayoutManager(holder.recyclerView.context, 2)
         holder.recyclerView.apply {
             layoutManager = childLayoutManager
-            adapter = DisplayActivityListChildAdapter(day.activities)
+            adapter = DisplayActivityListChildAdapter(context, day.activities)
             setRecycledViewPool(viewPool)
         }
     }
@@ -62,6 +59,14 @@ class DisplayDayListAdapter(
         fun bindView(day: Day) {
             this.day = day
             itemView.row_routine_day_name.text = day.name
+            this.recyclerView.visibility = View.GONE
+            itemView.setOnClickListener {
+                if (this.recyclerView.visibility == View.GONE) {
+                    this.recyclerView.visibility = View.VISIBLE
+                } else {
+                    this.recyclerView.visibility = View.GONE
+                }
+            }
         }
     }
 }

@@ -37,9 +37,9 @@
     </fragment>
     <fragment
         android:id="@+id/navigation_routine_customer"
-        android:name="com.tfg.workoutagent.presentation.ui.routines.customer.fragments.RoutineCustomerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.customer.fragments.MyRoutineCustomerFragment"
         android:label="routine_customer_fragment"
-        tools:layout="@layout/routine_customer_fragment" />
+        tools:layout="@layout/fragment_my_routine_customer" />
     <fragment
         android:id="@+id/editProfileCustomerFragment"
         android:name="com.tfg.workoutagent.presentation.ui.profile.customer.fragments.EditProfileCustomerFragment"

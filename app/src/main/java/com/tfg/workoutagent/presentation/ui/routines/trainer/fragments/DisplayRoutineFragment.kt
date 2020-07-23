@@ -22,11 +22,10 @@ import kotlinx.android.synthetic.main.display_routine_fragment.*
 
 class DisplayRoutineFragment : Fragment() {
 
-    private val routineId by lazy { DisplayRoutineFragmentArgs.fromBundle(arguments!!).routineId }
+    private val routineId by lazy { DisplayRoutineFragmentArgs.fromBundle(requireArguments()).routineId }
 
     // private val routineTitle by lazy { DisplayRoutineFragmentArgs.fromBundle(arguments!!).routineTitle }
     private lateinit var adapter: DisplayDayListAdapter
-
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -50,8 +49,8 @@ class DisplayRoutineFragment : Fragment() {
 
         setupButtons()
 
-        adapter = DisplayDayListAdapter(this.context!!)
-        recyclerViewRoutineDay.layoutManager = LinearLayoutManager(this.context!!)
+        adapter = DisplayDayListAdapter(this.requireContext())
+        recyclerViewRoutineDay.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerViewRoutineDay.adapter = adapter
         observeData()
     }
@@ -85,7 +84,7 @@ class DisplayRoutineFragment : Fragment() {
                     shimmer_view_container_routine.visibility = View.GONE
                     shimmer_view_container_routine.stopShimmer()
                     Toast.makeText(
-                        this.context!!,
+                        this.requireContext(),
                         "Ocurrió un error ${result.exception.message}",
                         Toast.LENGTH_SHORT
                     ).show()

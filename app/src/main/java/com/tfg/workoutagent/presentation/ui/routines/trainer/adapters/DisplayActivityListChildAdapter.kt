@@ -1,22 +1,26 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.RoutineActivity
-import kotlinx.android.synthetic.main.item_row_routine_day_activity.view.*
-import kotlin.math.roundToInt
+import kotlinx.android.synthetic.main.item_row_display_routine_day_activity_child.view.*
 
 
-class DisplayActivityListChildAdapter(private val children: MutableList<RoutineActivity>) :
+class DisplayActivityListChildAdapter(
+    private val context: Context,
+    private val children: MutableList<RoutineActivity>
+) :
     RecyclerView.Adapter<DisplayActivityListChildAdapter.ActivityListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityListViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_row_display_routine_day_activity, parent, false)
+            .inflate(R.layout.item_row_display_routine_day_activity_child, parent, false)
         return ActivityListViewHolder(view)
     }
 
@@ -37,6 +41,8 @@ class DisplayActivityListChildAdapter(private val children: MutableList<RoutineA
         @SuppressLint("SetTextI18n")
         fun bindView(routineActivity: RoutineActivity) {
             itemView.row_routine_day_activity_name.text = routineActivity.name
+            Glide.with(context).load(routineActivity.exercise.photos[0])
+                .into(itemView.row_routine_day_activity_photo)
         }
     }
 }
