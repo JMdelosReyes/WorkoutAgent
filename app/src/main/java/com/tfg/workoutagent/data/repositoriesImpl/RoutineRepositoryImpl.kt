@@ -403,4 +403,17 @@ class RoutineRepositoryImpl: RoutineRepository {
         FirebaseFirestore.getInstance().collection("routines").document(id).delete().await()
         return Resource.Success(true)
     }
+
+    override suspend fun getAssignedRoutine() : Resource<Routine>{
+        val customerRef = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await().documents[0].reference
+        val routineId = FirebaseFirestore.getInstance()
+            .collection("routines")
+            .whereEqualTo("customer", customerRef)
+            .limit(1)
+            .get().await().documents[0].id
+        return this.getRoutine(routineId)
+    }
 }
