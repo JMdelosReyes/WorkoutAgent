@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.base.BaseFragment
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentEditDeleteExerciseBinding
 import com.tfg.workoutagent.domain.exerciseUseCases.ManageExerciseUseCaseImpl
@@ -31,7 +32,7 @@ import kotlinx.android.synthetic.main.fragment_edit_delete_exercise.*
 /**
  * A simple [Fragment] subclass.
  */
-class EditDeleteExerciseFragment : Fragment() {
+class EditDeleteExerciseFragment : BaseFragment() {
     companion object{
         private val PICK_MULTI_IMAGE_CODE = 10001
     }
@@ -192,92 +193,157 @@ class EditDeleteExerciseFragment : Fragment() {
     }
 
     private fun setTags(tags : MutableList<String>){
-        if(tags.contains("Arms")) ll_arms.setBackgroundColor(Color.GREEN) else ll_arms.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Legs")) ll_legs.setBackgroundColor(Color.GREEN) else ll_legs.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Back")) ll_back.setBackgroundColor(Color.GREEN) else ll_back.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Chest")) ll_chest.setBackgroundColor(Color.GREEN) else ll_chest.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Shoulder")) ll_shoulder.setBackgroundColor(Color.GREEN) else ll_shoulder.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Gluteus")) ll_gluteus.setBackgroundColor(Color.GREEN) else ll_gluteus.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Abs")) ll_abs.setBackgroundColor(Color.GREEN) else ll_abs.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Cardio")) ll_cardio.setBackgroundColor(Color.GREEN) else ll_cardio.setBackgroundColor(Color.WHITE)
+        val darkMode = getDarkMode()
+        if(tags.contains("Arms")) ll_arms.setBackgroundResource(R.drawable.item_border_primary_color) else if(darkMode){
+            ll_arms.setBackgroundResource(R.drawable.item_border_dark)
+        }else{
+            ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
+        }
+        if(tags.contains("Legs")) ll_legs.setBackgroundResource(R.drawable.item_border_primary_color) else if(darkMode){
+            ll_legs.setBackgroundResource(R.drawable.item_border_dark)
+        }else {
+            ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
+        }
+        if(tags.contains("Back")) ll_back.setBackgroundResource(R.drawable.item_border_primary_color) else if(darkMode){
+            ll_back.setBackgroundResource(R.drawable.item_border_dark)
+        }else{
+            ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
+        }
+        if(tags.contains("Chest")) ll_chest.setBackgroundResource(R.drawable.item_border_primary_color) else if(darkMode){
+            ll_chest.setBackgroundResource(R.drawable.item_border_dark)
+        }else{
+            ll_chest.setBackgroundResource(R.drawable.item_white_dark_border)
+        }
+        if(tags.contains("Shoulder")) ll_shoulder.setBackgroundResource(R.drawable.item_border_primary_color) else if(darkMode){
+            ll_shoulder.setBackgroundResource(R.drawable.item_border_dark)
+        }else{
+            ll_shoulder.setBackgroundColor(Color.WHITE)
+        }
+        if(tags.contains("Gluteus")) ll_gluteus.setBackgroundResource(R.drawable.item_border_primary_color) else if(darkMode){
+            ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
+        }else{
+            ll_gluteus.setBackgroundColor(Color.WHITE)
+        }
+        if(tags.contains("Abs")) ll_abs.setBackgroundResource(R.drawable.item_border_primary_color) else if(darkMode){
+            ll_abs.setBackgroundResource(R.drawable.item_border_dark)
+        }else{
+            ll_abs.setBackgroundColor(Color.WHITE)
+        }
+        if(tags.contains("Cardio")) ll_cardio.setBackgroundResource(R.drawable.item_border_primary_color) else if(darkMode){
+            ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
+        }else{
+            ll_cardio.setBackgroundColor(Color.WHITE)
+        }
         button_ll_arms.setOnClickListener {
             val index = tags.indexOf("Arms")
             if(index == -1){
                 viewModel.addTag("Arms")
-                ll_arms.setBackgroundColor(Color.GREEN)
+                ll_arms.setBackgroundResource(R.drawable.item_border_primary_color)
             }else{
                 viewModel.removeTag(index)
-                ll_arms.setBackgroundColor(Color.WHITE)
+                if(darkMode){
+                    ll_arms.setBackgroundResource(R.drawable.item_border_dark)
+                }else{
+                    ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
+                }
             }
         }
         button_ll_legs.setOnClickListener {
             val index = tags.indexOf("Legs")
             if(index == -1){
                 viewModel.addTag("Legs")
-                ll_legs.setBackgroundColor(Color.GREEN)
+                ll_legs.setBackgroundResource(R.drawable.item_border_primary_color)
             }else{
                 viewModel.removeTag(index)
-                ll_legs.setBackgroundColor(Color.WHITE)
+                if(darkMode){
+                    ll_legs.setBackgroundResource(R.drawable.item_border_dark)
+                }else {
+                    ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
+                }
             }
         }
         button_ll_back.setOnClickListener {
             val index = tags.indexOf("Back")
             if(index == -1){
                 viewModel.addTag("Back")
-                ll_back.setBackgroundColor(Color.GREEN)
+                ll_back.setBackgroundResource(R.drawable.item_border_primary_color)
             }else{
                 viewModel.removeTag(index)
-                ll_back.setBackgroundColor(Color.WHITE)
+                if(darkMode){
+                    ll_back.setBackgroundResource(R.drawable.item_border_dark)
+                }else{
+                    ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
+                }
             }
         }
         button_ll_chest.setOnClickListener {
             val index = tags.indexOf("Chest")
             if(index == -1){
                 viewModel.addTag("Chest")
-                ll_chest.setBackgroundColor(Color.GREEN)
+                ll_chest.setBackgroundResource(R.drawable.item_border_primary_color)
             }else{
                 viewModel.removeTag(index)
-                ll_chest.setBackgroundColor(Color.WHITE)
+                if(darkMode){
+                    ll_chest.setBackgroundResource(R.drawable.item_border_dark)
+                }else{
+                    ll_chest.setBackgroundResource(R.drawable.item_white_dark_border)
+                }
             }
         }
         button_ll_shoulder.setOnClickListener {
             val index = tags.indexOf("Shoulder")
             if(index == -1){
                 viewModel.addTag("Shoulder")
-                ll_shoulder.setBackgroundColor(Color.GREEN)
+                ll_shoulder.setBackgroundResource(R.drawable.item_border_primary_color)
             }else{
                 viewModel.removeTag(index)
-                ll_shoulder.setBackgroundColor(Color.WHITE)
+                if(darkMode){
+                    ll_shoulder.setBackgroundResource(R.drawable.item_border_dark)
+                }else{
+                    ll_shoulder.setBackgroundColor(Color.WHITE)
+                }
             }
         }
         button_ll_gluteus.setOnClickListener {
             val index = tags.indexOf("Gluteus")
             if(index == -1){
                 viewModel.addTag("Gluteus")
-                ll_gluteus.setBackgroundColor(Color.GREEN)
+                ll_gluteus.setBackgroundResource(R.drawable.item_border_primary_color)
             }else{
                 viewModel.removeTag(index)
-                ll_gluteus.setBackgroundColor(Color.WHITE)
+                if(darkMode){
+                    ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
+                }else{
+                    ll_gluteus.setBackgroundColor(Color.WHITE)
+                }
             }
         }
         button_ll_abs.setOnClickListener {
             val index = tags.indexOf("Abs")
             if(index == -1){
                 viewModel.addTag("Abs")
-                ll_abs.setBackgroundColor(Color.GREEN)
+                ll_abs.setBackgroundResource(R.drawable.item_border_primary_color)
             }else{
                 viewModel.removeTag(index)
-                ll_abs.setBackgroundColor(Color.WHITE)
+                if(darkMode){
+                    ll_abs.setBackgroundResource(R.drawable.item_border_dark)
+                }else{
+                    ll_abs.setBackgroundColor(Color.WHITE)
+                }
             }
         }
         button_ll_cardio.setOnClickListener {
             val index = tags.indexOf("Cardio")
             if(index == -1){
                 viewModel.addTag("Cardio")
-                ll_cardio.setBackgroundColor(Color.GREEN)
+                ll_cardio.setBackgroundResource(R.drawable.item_border_primary_color)
             }else{
                 viewModel.removeTag(index)
-                ll_cardio.setBackgroundColor(Color.WHITE)
+                if(darkMode){
+                    ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
+                }else{
+                    ll_cardio.setBackgroundColor(Color.WHITE)
+                }
             }
         }
         viewModel.tags.value?.clear()
