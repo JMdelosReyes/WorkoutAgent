@@ -226,6 +226,7 @@ class GoogleSignInActivity : BaseActivity() {
                                              startActivity(TrainerActivity.getLaunchIntent(this))
                                          }
                                      }
+                                     finish()
                                  })
                              }
                              "CUSTOMER" -> {
@@ -244,15 +245,16 @@ class GoogleSignInActivity : BaseActivity() {
                                              startActivity(CustomerActivity.getLaunchIntent(this))
                                          }
                                      }
+                                     finish()
                                  })
                              }
                              "ADMIN" -> {
                                  FirebaseMessaging.getInstance().subscribeToTopic("/topics/admin")
                                  startActivity(AdminActivity.getLaunchIntent(this))
+                                 finish()
                              }
                              "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                          }
-                        finish()
                     }
                     is Resource.Failure -> {
                         //hideProgress()

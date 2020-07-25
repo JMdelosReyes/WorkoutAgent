@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.app.Dialog
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -75,10 +76,22 @@ class AddActivityFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val darkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> false
+            else -> true
+        }
+        if(darkMode){
+            nsv_add_activity.setBackgroundResource(R.drawable.item_no_border_dark)
+            rl_add_activity_plus.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            activity_note_input.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            activity_note_input_edit.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            repetitions_add_activity_input.setTextColor(Color.WHITE)
+            weights_add_activity_input.setTextColor(Color.WHITE)
+            activity_note_input_edit.setTextColor(Color.WHITE)
+        }
         setupSetListRecycler()
-        setupCategoryListRecycler()
-        setupExerciseListRecycler()
+        setupCategoryListRecycler(darkMode)
+        setupExerciseListRecycler(darkMode)
         setupToolbar()
         // setupSpinnerAdapter()
         observeErrors()
@@ -227,16 +240,20 @@ class AddActivityFragment : DialogFragment() {
         recyclerView_activity_sets.adapter = setListAdapter
     }
 
-    private fun setupCategoryListRecycler() {
+    private fun setupCategoryListRecycler(darkMode: Boolean) {
         this.categoryListAdapter =
-            CategoryListAdapter(this.requireContext()) { categoryName, categoryPosition, view ->
+            CategoryListAdapter(this.requireContext(), darkMode) { categoryName, categoryPosition, view ->
                 val currentCategories = this.viewModel.getSelectedCategories()
                 if (currentCategories.map { c -> c.name }.contains(categoryName)) {
                     this.viewModel.removeSelectedCategory(categoryName, categoryPosition)
-                    view.setBackgroundColor(Color.WHITE)
+                    if(darkMode){
+                        view.setBackgroundResource(R.drawable.item_border_dark)
+                    }else{
+                        view.setBackgroundColor(Color.WHITE)
+                    }
                 } else {
                     this.viewModel.addSelectedCategory(categoryName, categoryPosition)
-                    view.setBackgroundColor(Color.GREEN)
+                    view.setBackgroundResource(R.drawable.item_border_primary_color)
                 }
 
                 val exercises = this.viewModel.updateAvailableExercises()
@@ -250,9 +267,9 @@ class AddActivityFragment : DialogFragment() {
         this.categoryListAdapter.setListData(getAllCategories())
     }
 
-    private fun setupExerciseListRecycler() {
+    private fun setupExerciseListRecycler(darkMode: Boolean) {
         this.exerciseListAdapter =
-            ExerciseListAdapter(this.requireContext()) updateExercise@{ exercise, view ->
+            ExerciseListAdapter(this.requireContext(),darkMode) updateExercise@{ exercise, view ->
                 val selectedExercise = this.viewModel.getNewSelectedExercise()
                 if (selectedExercise == null) {
                     this.viewModel.updateNewSelectedExercise(exercise)

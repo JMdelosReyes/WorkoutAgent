@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.item_row_exercise_activity.view.*
 
 class ExerciseListAdapter(
     private val context: Context,
+    private val darkMode: Boolean,
     private val clickListener: (exercise: Exercise, view: View) -> Unit
 ) :
     RecyclerView.Adapter<ExerciseListAdapter.ExerciseListViewHolder>() {
@@ -71,12 +72,20 @@ class ExerciseListAdapter(
 
         private fun updateColor() {
             if (selectedExercise == null) {
-                this.itemView.setBackgroundColor(Color.WHITE)
+                if(darkMode){
+                    this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                }else{
+                    this.itemView.setBackgroundColor(Color.WHITE)
+                }
             } else {
                 if (selectedExercise?.id == exercise.id) {
-                    itemView.setBackgroundColor(Color.GREEN)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_primary_color)
                 } else {
-                    this.itemView.setBackgroundColor(Color.WHITE)
+                    if(darkMode) {
+                        this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                    }else{
+                        this.itemView.setBackgroundColor(Color.WHITE)
+                    }
                 }
             }
         }

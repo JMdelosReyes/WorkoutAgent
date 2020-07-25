@@ -32,6 +32,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_add_activity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/display_pdf_profile_trainer_appbar">
@@ -50,16 +51,17 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent" />
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/add_set_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:padding="16dp"
                     app:cardCornerRadius="6dp"
-                    app:cardElevation="6dp">
+                    app:cardElevation="2dp">
 
                     <RelativeLayout
+                        android:id="@+id/rl_add_activity_plus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -68,7 +70,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginStart="24dp"
+                            android:layout_marginStart="12dp"
                             android:drawableStart="@drawable/ic_repetitions_black_24dp"
                             android:textStyle="bold" />
 
@@ -86,7 +88,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginStart="32dp"
+                            android:layout_marginStart="24dp"
                             android:layout_toEndOf="@id/repetitions_add_activity_input"
                             android:drawableStart="@drawable/ic_weights_black_24dp"
                             android:textStyle="bold" />
@@ -106,13 +108,13 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginEnd="24dp"
+                            android:layout_marginEnd="4dp"
                             app:fabSize="mini"
                             app:srcCompat="@android:drawable/ic_input_add" />
 
                     </RelativeLayout>
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_activity_categories"
@@ -182,7 +184,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:hint="@string/add_activity_note_hint">
+                    android:hint="@string/add_activity_note_hint"
+                    app:startIconDrawable="@drawable/ic_description_24dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/activity_note_input_edit"

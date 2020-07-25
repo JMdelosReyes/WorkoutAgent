@@ -42,9 +42,9 @@ class GoalsCustomerTrainerListAdapter (private val context: Context, private val
     inner class GoalsCustomerTrainerListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bindView(goal: Goal){
             if(darkMode) {
-                itemView.ll_all_goal.setBackgroundResource(R.drawable.goal_item_border_dark)
+                itemView.ll_all_goal.setBackgroundResource(R.drawable.item_border_dark)
             }else{
-                itemView.ll_all_goal.setBackgroundResource(R.drawable.goal_item_border)
+                itemView.ll_all_goal.setBackgroundResource(R.drawable.item_white_dark_border)
             }
             if(goal.isAchieved){
                 Glide.with(context).load(R.drawable.ic_trophy_accomplished_48dp).into(itemView.circleImageViewGoal)

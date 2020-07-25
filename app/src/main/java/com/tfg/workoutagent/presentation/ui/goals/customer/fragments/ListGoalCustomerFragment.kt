@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +20,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.GoalRepositoryImpl
 import com.tfg.workoutagent.domain.goalUseCases.ListGoalCustomerUseCaseImpl
@@ -72,7 +70,7 @@ class ListGoalCustomerFragment : Fragment() {
                 var xMarkMargin = 0
                 var initiated = false
                 private fun init() {
-                    background = resources.getDrawable(R.drawable.goal_item_border_delete)
+                    background = resources.getDrawable(R.drawable.item_border_delete)
                     xMark = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete_white_48dp)
                     xMark!!.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
                     xMarkMargin = this@ListGoalCustomerFragment.resources
@@ -99,7 +97,6 @@ class ListGoalCustomerFragment : Fragment() {
                     }
 
                     builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                        //adapterGoals.notifyDataSetChanged()
                         dialog.dismiss()
                     }
                     builder.create()
@@ -164,7 +161,7 @@ class ListGoalCustomerFragment : Fragment() {
                 var xMarkMargin = 0
                 var initiated = false
                 private fun init() {
-                    background = resources.getDrawable(R.drawable.goal_item_border_achieve)
+                    background = resources.getDrawable(R.drawable.item_border_achieve)
                     xMark = ContextCompat.getDrawable(requireContext(), R.drawable.ic_finish_32dp)
                     xMark!!.setColorFilter(Color.HSVToColor(floatArrayOf(38F, 0.75F, 0.98F)), PorterDuff.Mode.SRC_ATOP)
                     xMarkMargin = this@ListGoalCustomerFragment.resources
@@ -180,7 +177,7 @@ class ListGoalCustomerFragment : Fragment() {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                     val swipedPosition = viewHolder.adapterPosition
                     val adapter: GoalsCustomerListAdapter = recyclerView_goals_customer.adapter as GoalsCustomerListAdapter
-                    adapterGoals.dataGoalsList.removeAt(viewHolder.adapterPosition)
+                    adapterGoals.notifyItemChanged(viewHolder.adapterPosition)
                     viewModel.finishGoal(viewHolder.adapterPosition)
                 }
 
