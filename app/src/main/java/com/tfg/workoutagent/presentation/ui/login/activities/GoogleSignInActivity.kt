@@ -42,7 +42,6 @@ class GoogleSignInActivity : BaseActivity() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
 
-    private var token = ""
     private lateinit var firebaseAuth: FirebaseAuth
     private val viewModel by lazy { ViewModelProvider(this, LoginViewModelFactory(LoginUseCaseImpl(LoginRepositoryImpl()))).get(LoginViewModel::class.java) }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,12 +114,14 @@ class GoogleSignInActivity : BaseActivity() {
                             viewModel.fetchToken.observe(this, Observer { r ->
                                 when(r){
                                     is Resource.Loading -> {
+                                        //showProgress()
                                     }
                                     is Resource.Success -> {
-                                        this.token = r.data
+                                        //hideProgress()
                                     }
                                     is Resource.Failure -> {
-                                        Log.i("FailureFetchToken", "Cannot update this token in Firebase")
+                                        //hideProgress()
+                                        Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
                                     }
                                 }
                             })
@@ -136,12 +137,10 @@ class GoogleSignInActivity : BaseActivity() {
                                                 val myId = r1.data.id
                                                 FirebaseMessaging.getInstance().subscribeToTopic("/topics/trainer_$myId")
                                                 startActivity(TrainerActivity.getLaunchIntent(this))
-                                                finish()
                                             }
                                             is Resource.Failure -> {
                                                 Log.i("Cannot get trainer", "trainer does not exist")
                                                 startActivity(TrainerActivity.getLaunchIntent(this))
-                                                finish()
                                             }
                                         }
                                     })
@@ -156,12 +155,10 @@ class GoogleSignInActivity : BaseActivity() {
                                                 val trainerId = r1.data.id
                                                 FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
                                                 startActivity(CustomerActivity.getLaunchIntent(this))
-                                                finish()
                                             }
                                             is Resource.Failure -> {
                                                 Log.i("Cannot get trainer", "trainer does not exist")
                                                 startActivity(CustomerActivity.getLaunchIntent(this))
-                                                finish()
                                             }
                                         }
                                     })
@@ -169,14 +166,13 @@ class GoogleSignInActivity : BaseActivity() {
                                 "ADMIN" -> {
                                     FirebaseMessaging.getInstance().subscribeToTopic("/topics/admin")
                                     startActivity(AdminActivity.getLaunchIntent(this))
-                                    finish()
                                 }
-                                else -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
+                                "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                             }
                         }
                         is Resource.Failure -> {
+                            //hideProgress()
                             Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
-                            finish()
                         }
                     }
                 })
@@ -190,8 +186,6 @@ class GoogleSignInActivity : BaseActivity() {
         super.onStart()
         val user = FirebaseAuth.getInstance().currentUser
         if (user != null) {
-            viewModel.updatetoken(token)
-            viewModel.loadtoken()
             viewModel.fechtRole.observe(this, Observer { result ->
                 when(result){
                     is Resource.Loading -> {
@@ -200,13 +194,21 @@ class GoogleSignInActivity : BaseActivity() {
                     is Resource.Success -> {
 
                         val role = result.data
-                        viewModel.tokenLoaded.observe(this, Observer {
-                               it?.let {
-                                   if (it) {
-                                       this.viewModel.tokenLoaded()
-                                   }
-                               }
-                           })
+                        //hideProgress()
+                        viewModel.fetchToken.observe(this, Observer { r ->
+                            when(r){
+                                is Resource.Loading -> {
+                                    //showProgress()
+                                }
+                                is Resource.Success -> {
+                                    //hideProgress()
+                                }
+                                is Resource.Failure -> {
+                                    //hideProgress()
+                                    Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        })
                          when(role){
                              "TRAINER" -> {
                                  viewModel.loggedTrainer.observe(this, Observer { r1 ->
@@ -236,12 +238,10 @@ class GoogleSignInActivity : BaseActivity() {
                                              val trainerId = r1.data.id
                                              FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
                                              startActivity(CustomerActivity.getLaunchIntent(this))
-                                             finish()
                                          }
                                          is Resource.Failure -> {
                                              Log.i("Cannot get trainer", "trainer does not exist")
                                              startActivity(CustomerActivity.getLaunchIntent(this))
-                                             finish()
                                          }
                                      }
                                  })
@@ -249,10 +249,10 @@ class GoogleSignInActivity : BaseActivity() {
                              "ADMIN" -> {
                                  FirebaseMessaging.getInstance().subscribeToTopic("/topics/admin")
                                  startActivity(AdminActivity.getLaunchIntent(this))
-                                 finish()
                              }
-                             else -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
+                             "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                          }
+                        finish()
                     }
                     is Resource.Failure -> {
                         //hideProgress()
