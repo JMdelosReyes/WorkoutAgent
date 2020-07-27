@@ -90,6 +90,40 @@ class LoginRepositoryImpl : LoginRepository {
         }
     }
 
+    override suspend fun getIdTrainerByCustomerId(): Resource<String> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("role", "TRAINER")
+            .get().await()
+        val resultDataCustomer = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await()
+        val customer = resultDataCustomer.documents[0].toObject(Customer::class.java)!!
+        customer.id = resultDataCustomer.documents[0].id
+        var trainerId: String = ""
+        stop@ for (document in resultData.documents) {
+            val custos = document.get("customers")
+            if (custos is List<*>) {
+                for (ref in custos) {
+                    if (ref is DocumentReference) {
+                        val customerdoc = ref.get().await()
+                        if (customerdoc.id == customer.id) {
+                            trainerId = document.id
+                            break@stop
+                        }
+                    }
+                }
+            }
+        }
+        return if (trainerId != "") {
+            Resource.Success(trainerId)
+        } else {
+            Resource.Failure(Exception("There's no trainer associated to you"))
+        }
+    }
+
+
     override suspend fun getLoggedUserTrainer(): Resource<Trainer> {
         val resultData = FirebaseFirestore.getInstance()
             .collection("users")
