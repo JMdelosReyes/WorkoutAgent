@@ -1,3 +1,3 @@
 package com.tfg.workoutagent.models
 
-data class ActivitySet(val repetitions: Int, val weight: Double)
+open class ActivitySet(val repetitions: Int, val weight: Double, val isValid: Boolean = true)

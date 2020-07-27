@@ -15,7 +15,8 @@ import kotlinx.android.synthetic.main.item_row_routine_day_activity.view.*
 
 class ActivityListAdapter(
     private val context: Context,
-    private val clickListener: (routineActivity: RoutineActivity) -> Unit
+    private val editListener: (routineActivity: RoutineActivity) -> Unit,
+    private val deleteListener: (routineActivity: RoutineActivity) -> Unit
 ) :
     RecyclerView.Adapter<ActivityListAdapter.ActivityListViewHolder>() {
 
@@ -51,9 +52,14 @@ class ActivityListAdapter(
                 .into(itemView.row_routine_day_activity_photo)
             this.activity = activity
             itemView.edit_day_activity_button.setOnClickListener {
-                clickListener(activity)
+                editListener(activity)
+            }
+            itemView.delete_day_activity_button.setOnClickListener {
+                deleteListener(activity)
             }
             itemView.row_routine_day_activity_name.text = activity.name
+
+            itemView.relative_content.removeAllViews()
 
             activity.repetitions.forEachIndexed { index, valor ->
                 val repetitionView = TextView(context).apply {

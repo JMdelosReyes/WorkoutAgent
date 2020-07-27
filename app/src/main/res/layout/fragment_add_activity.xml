@@ -116,6 +116,24 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+                <TextView
+                    android:id="@+id/add_activity_set_error_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/add_activity_set_error_message"
+                    android:textColor="@color/design_default_color_error"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/add_exercise_set_error_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/add_activity_set_error_message"
+                    android:textColor="@color/design_default_color_error"
+                    android:visibility="gone" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_activity_categories"
                     android:layout_width="match_parent"
@@ -127,15 +145,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="48dp" />
-
-                <TextView
-                    android:id="@+id/add_activity_set_error_message"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="@string/add_activity_set_error_message"
-                    android:textColor="@color/design_default_color_error"
-                    android:visibility="gone" />
 
                 <!--<com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/activity_set_input"

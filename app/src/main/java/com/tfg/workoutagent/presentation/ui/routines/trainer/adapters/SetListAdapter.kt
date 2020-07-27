@@ -1,12 +1,12 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.base.BaseAdapterInterface
 import com.tfg.workoutagent.models.ActivitySet
 import kotlinx.android.synthetic.main.item_row_set.view.*
 
@@ -15,7 +15,7 @@ class SetListAdapter(
     private val removeSetListener: (position: Int) -> Unit,
     private val updateSetListener: (repetitions: Int?, weight: Double?, position: Int) -> String
 ) :
-    RecyclerView.Adapter<SetListAdapter.SetListViewHolder>() {
+    RecyclerView.Adapter<SetListAdapter.SetListViewHolder>(), BaseAdapterInterface {
 
     private var dataList = mutableListOf<ActivitySet>()
     fun setListData(data: MutableList<ActivitySet>) {

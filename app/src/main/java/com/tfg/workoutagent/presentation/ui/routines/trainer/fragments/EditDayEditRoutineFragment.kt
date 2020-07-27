@@ -20,6 +20,7 @@ import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.fragment_edit_day_edit_routine.*
 
 class EditDayEditRoutineFragment : Fragment() {
@@ -59,14 +60,23 @@ class EditDayEditRoutineFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ActivityListAdapter(this.requireContext()) { routineActivity: RoutineActivity ->
+        adapter = ActivityListAdapter(this.requireContext(), { routineActivity: RoutineActivity ->
             viewModel.onEditActivity(routineActivity)
             findNavController().navigate(
                 EditDayEditRoutineFragmentDirections.actionEditDayEditRoutineFragmentToEditActivityEditRoutineFragment(
                     routineId = routineId
                 )
             )
-        }
+        }, { routineActivity: RoutineActivity ->
+            createAlertDialog(
+                requireContext(),
+                "Delete day",
+                "Are you sure you want to delete this day?",
+                {
+                    viewModel.removeActivity(routineActivity)
+                },
+                {})
+        })
         recycler_edit_day_activities.layoutManager = LinearLayoutManager(this.requireContext())
         recycler_edit_day_activities.adapter = adapter
 
