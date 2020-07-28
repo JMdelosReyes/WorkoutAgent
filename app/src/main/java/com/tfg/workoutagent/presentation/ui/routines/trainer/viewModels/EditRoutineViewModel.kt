@@ -3,10 +3,7 @@ package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 import android.util.Log
 import androidx.lifecycle.*
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCase
-import com.tfg.workoutagent.models.Day
-import com.tfg.workoutagent.models.Exercise
-import com.tfg.workoutagent.models.Routine
-import com.tfg.workoutagent.models.RoutineActivity
+import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.Dispatchers
@@ -126,6 +123,11 @@ class EditRoutineViewModel(
         get() = _noteError
 
     val selectedExercise = MutableLiveData<Exercise>()
+
+    // Error para el nuevo selector
+    private val _exerciseError = MutableLiveData("")
+    val exerciseError: LiveData<String>
+        get() = _exerciseError
 
     private val _routineCreated = MutableLiveData<Boolean?>(null)
     val routineCreated: LiveData<Boolean?>
@@ -350,6 +352,8 @@ class EditRoutineViewModel(
         days.value = mutableListOf()
         _daysError.value = ""
         pickerDate.value = Date()
+        clearDayData()
+        clearActivityData()
     }
 
     fun clearDayData() {
@@ -360,6 +364,7 @@ class EditRoutineViewModel(
     }
 
     fun clearActivityData() {
+        this.newSets = mutableListOf()
         sets.value = ""
         _setsError.value = ""
         repetitions.value = ""
@@ -368,6 +373,9 @@ class EditRoutineViewModel(
         _weightsError.value = ""
         note.value = ""
         _noteError.value = ""
+        resetSelectedCategories()
+        _exerciseError.value = ""
+        newSelectedExercise = null
     }
 
     fun clearNothing() {
@@ -385,11 +393,13 @@ class EditRoutineViewModel(
     }
 
     private fun checkActivityData(): Boolean {
-        checkActivitySets()
-        checkActivityRepetitions()
-        checkActivityWeights()
+        // checkActivitySets()
+        // checkActivityRepetitions()
+        // checkActivityWeights()
+        checkNewActivitySets()
+        checkNewExercise()
         checkActivityNote()
-        return _setsError.value == "" && _repetitionsError.value == "" && _weightsError.value == "" && _noteError.value == ""
+        return _setsError.value == "" && _noteError.value == "" && _exerciseError.value == ""
     }
 
     private fun checkActivityNote() {
@@ -400,6 +410,14 @@ class EditRoutineViewModel(
             }
         }
         _noteError.value = ""
+    }
+
+    private fun checkNewExercise() {
+        if (this.newSelectedExercise == null) {
+            _exerciseError.value = "You have to select an exercise"
+            return
+        }
+        _exerciseError.value = ""
     }
 
     private fun checkActivityWeights() {
@@ -461,18 +479,31 @@ class EditRoutineViewModel(
         }
     }
 
+    private fun checkNewActivitySets() {
+        newSets.let {
+            if (it.isEmpty() || it.size == 0) {
+                _setsError.value = "Sets cannot be empty"
+                return
+            }
+
+            if (!it.all { s -> s.isValid }) {
+                _setsError.value = "There's an invalid set"
+                return
+            }
+            _setsError.value = ""
+        }
+    }
+
     private fun saveActivity() {
+        val newRepetitions = this.newSets.map { s -> s.repetitions } as MutableList<Int>
+        val newWeights = this.newSets.map { s -> s.weight } as MutableList<kotlin.Double>
         val activity = RoutineActivity(
-            name = selectedExercise.value?.title!!,
-            sets = sets.value!!.toInt(),
-            repetitions = repetitions.value!!.split(",").map { x ->
-                x.trim().toInt()
-            } as MutableList<Int>,
-            weightsPerRepetition = weights.value!!.split(",").map { x ->
-                x.trim().toDouble()
-            } as MutableList<kotlin.Double>,
-            exercise = selectedExercise.value!!,
-            note = note.value!!
+            name = newSelectedExercise!!.title,
+            sets = this.newSets.size,
+            repetitions = newRepetitions,
+            weightsPerRepetition = newWeights,
+            exercise = newSelectedExercise!!,
+            note = (if (note.value != null) note.value else "")!!
         )
         activities.value!!.add(activity)
 
@@ -491,17 +522,15 @@ class EditRoutineViewModel(
     }
 
     private fun replaceActivity() {
+        val newRepetitions = this.newSets.map { s -> s.repetitions } as MutableList<Int>
+        val newWeights = this.newSets.map { s -> s.weight } as MutableList<kotlin.Double>
         val activity = RoutineActivity(
-            name = selectedExercise.value?.title!!,
-            sets = sets.value!!.toInt(),
-            repetitions = repetitions.value!!.split(",").map { x ->
-                x.trim().toInt()
-            } as MutableList<Int>,
-            weightsPerRepetition = weights.value!!.split(",").map { x ->
-                x.trim().toDouble()
-            } as MutableList<kotlin.Double>,
-            exercise = selectedExercise.value!!,
-            note = note.value!!
+            name = newSelectedExercise!!.title,
+            sets = this.newSets.size,
+            repetitions = newRepetitions,
+            weightsPerRepetition = newWeights,
+            exercise = newSelectedExercise!!,
+            note = (if (note.value != null) note.value else "")!!
         )
 
         activities.value!![this.editingActivityPosition!!] = activity
@@ -515,6 +544,9 @@ class EditRoutineViewModel(
     }
 
     fun onEditActivity(routineActivity: RoutineActivity) {
+        this.newSets =
+            this.formatSets(routineActivity.repetitions, routineActivity.weightsPerRepetition)
+        this.newSelectedExercise = routineActivity.exercise
         this._editingActivity.value = routineActivity
         this.editingActivityPosition = this.activities.value?.indexOf(routineActivity)
         this.sets.value = routineActivity.sets.toString()
@@ -522,6 +554,17 @@ class EditRoutineViewModel(
         this.weights.value = doubleListToString(routineActivity.weightsPerRepetition)
         this.note.value = routineActivity.note
         this.selectedExercise.value = routineActivity.exercise
+    }
+
+    private fun formatSets(
+        repetitions: MutableList<Int>,
+        weightsPerRepetition: MutableList<kotlin.Double>
+    ): MutableList<ActivitySet> {
+        val setsTemp = mutableListOf<ActivitySet>()
+        repetitions.forEachIndexed() { index, rep ->
+            setsTemp.add(ActivitySet(rep, weightsPerRepetition[index]))
+        }
+        return setsTemp
     }
 
     private fun doubleListToString(doubleList: MutableList<kotlin.Double>): String {
@@ -566,4 +609,72 @@ class EditRoutineViewModel(
         this.activities.value = day.activities
         this.originalActivities = this.activities.value!!.toMutableList()
     }
+
+    private var newSets = mutableListOf<ActivitySet>()
+
+    fun getNewSets(): MutableList<ActivitySet> {
+        val res: MutableList<ActivitySet> = mutableListOf()
+        res.addAll(this.newSets)
+        return res
+    }
+
+    fun checkSet(repetitions: Int?, weight: kotlin.Double?): Boolean {
+        return repetitions != null && weight != null
+    }
+
+    fun updateSet(activitySet: ActivitySet, position: Int) {
+        this.newSets[position] = activitySet
+        this.checkNewActivitySets()
+    }
+
+    fun updateSet(isValid: Boolean, position: Int) {
+        this.newSets[position] =
+            ActivitySet(this.newSets[position].repetitions, this.newSets[position].weight, isValid)
+        this.checkNewActivitySets()
+    }
+
+    fun addSet(repetitions: Int?, weight: kotlin.Double?): String {
+        if (checkSet(repetitions, weight)) {
+            this.newSets.add(ActivitySet(repetitions!!, weight!!))
+            return ""
+        }
+        return "Error"
+    }
+
+    fun removeSet(position: Int) {
+        this.newSets.removeAt(position)
+    }
+
+    private var selectedCategories = mutableListOf<SelectedCategory>()
+
+    fun getSelectedCategories() = this.selectedCategories
+
+    fun addSelectedCategory(categoryName: String, categoryPosition: Int) {
+        this.selectedCategories.add(SelectedCategory(categoryName, categoryPosition))
+    }
+
+    fun removeSelectedCategory(categoryName: String, categoryPosition: Int) {
+        this.selectedCategories.remove(SelectedCategory(categoryName, categoryPosition))
+    }
+
+    fun resetSelectedCategories() {
+        this.selectedCategories = mutableListOf()
+    }
+
+    fun updateAvailableExercises(): MutableList<Exercise> {
+        return this.exercises.value?.filter { it.tags.containsAll(this.selectedCategories.map { c -> c.name }) } as MutableList<Exercise>
+    }
+
+    private var newSelectedExercise: Exercise? = null
+
+    fun getNewSelectedExercise() = this.newSelectedExercise
+
+    fun updateNewSelectedExercise(exercise: Exercise?) {
+        if (exercise != null) {
+            _exerciseError.value = ""
+        }
+        this.newSelectedExercise = exercise
+    }
+
+    data class SelectedCategory(val name: String, val position: Int)
 }
