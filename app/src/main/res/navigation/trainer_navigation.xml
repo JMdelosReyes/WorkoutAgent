@@ -368,7 +368,8 @@
             app:argType="string" />
         <action
             android:id="@+id/action_editDayEditRoutineFragment_to_editRoutineFragment"
-            app:destination="@id/editRoutineFragment" />
+            app:destination="@id/editRoutineFragment"
+            app:popUpTo="@id/navigation_routine_trainer" />
     </fragment>
     <fragment
         android:id="@+id/nutritionCustomerTrainerFragment"
