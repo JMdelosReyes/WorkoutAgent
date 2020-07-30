@@ -175,7 +175,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_displayRoutine_to_editRoutineFragment"
-            app:destination="@id/editRoutineFragment" />
+            app:destination="@id/editRoutineFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createRoutine"
@@ -188,13 +192,21 @@
         <action
             android:id="@+id/action_createRoutine_to_addDayFragment"
             app:destination="@id/addDayFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/navigation_routine_trainer" />
         <argument
             android:name="clear_data"
             app:argType="integer" />
         <action
             android:id="@+id/action_createRoutine_to_editDayFragment"
-            app:destination="@id/editDayFragment" />
+            app:destination="@id/editDayFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/addDayFragment"
@@ -204,6 +216,8 @@
         <action
             android:id="@+id/action_addDayFragment_to_createRoutine"
             app:destination="@id/createRoutine"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
             app:popUpTo="@id/navigation_routine_trainer" />
         <action
             android:id="@+id/action_addDayFragment_to_addActivityFragment2"
@@ -294,13 +308,21 @@
             app:popUpTo="@id/mobile_navigation" />
         <action
             android:id="@+id/action_editRoutineFragment_to_addDayEditRoutineFragment"
-            app:destination="@id/addDayEditRoutineFragment" />
+            app:destination="@id/addDayEditRoutineFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <argument
             android:name="clear_data"
             app:argType="integer" />
         <action
             android:id="@+id/action_editRoutineFragment_to_editDayEditRoutineFragment"
-            app:destination="@id/editDayEditRoutineFragment" />
+            app:destination="@id/editDayEditRoutineFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/editDayFragment"
@@ -309,6 +331,8 @@
         <action
             android:id="@+id/action_editDayFragment_to_createRoutine"
             app:destination="@id/createRoutine"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
             app:popUpTo="@id/navigation_routine_trainer" />
         <action
             android:id="@+id/action_editDayFragment_to_addActivityFragment"
@@ -331,6 +355,8 @@
         <action
             android:id="@+id/action_addDayEditRoutineFragment_to_editRoutineFragment"
             app:destination="@id/editRoutineFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
             app:popUpTo="@id/navigation_routine_trainer" />
         <action
             android:id="@+id/action_addDayEditRoutineFragment_to_addActivityEditRoutineFragment"
@@ -369,6 +395,8 @@
         <action
             android:id="@+id/action_editDayEditRoutineFragment_to_editRoutineFragment"
             app:destination="@id/editRoutineFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
             app:popUpTo="@id/navigation_routine_trainer" />
     </fragment>
     <fragment

@@ -52,7 +52,9 @@
                     android:id="@+id/day_activities_error"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginHorizontal="4dp"
                     android:text="@{viewModel.activitiesError}"
+                    android:textColor="@color/design_default_color_error"
                     android:visibility="invisible" />
 
                 <androidx.recyclerview.widget.RecyclerView
