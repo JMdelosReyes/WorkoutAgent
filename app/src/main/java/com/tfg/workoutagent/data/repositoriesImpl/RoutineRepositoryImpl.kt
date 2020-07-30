@@ -85,7 +85,7 @@ class RoutineRepositoryImpl: RoutineRepository {
                                                         "note"-> routineActivity.note = actividadesValues[activityAtributo].toString()
                                                         "repetitions" -> routineActivity.repetitions =
                                                             actividadesValues[activityAtributo] as MutableList<Int>
-                                                        "set" -> routineActivity.sets =
+                                                        "sets" -> routineActivity.sets =
                                                             actividadesValues[activityAtributo] as Int
                                                         "type" -> routineActivity.type = actividadesValues[activityAtributo].toString()
                                                         "weightsPerRepetition" -> routineActivity.weightsPerRepetition =
@@ -215,8 +215,10 @@ class RoutineRepositoryImpl: RoutineRepository {
                                                     "name"-> routineActivity.name = activity[activityAttribute].toString()
                                                     "repetitions" -> routineActivity.repetitions =
                                                         activity[activityAttribute] as MutableList<Int>
-                                                    "set" -> routineActivity.sets =
-                                                        activity[activityAttribute] as Int
+                                                    "sets" -> {
+                                                        routineActivity.sets =
+                                                            (activity[activityAttribute] as Long).toInt()
+                                                    }
                                                     "type" -> routineActivity.type = activity[activityAttribute].toString()
                                                     "weightsPerRepetition" -> routineActivity.weightsPerRepetition =
                                                         activity[activityAttribute] as MutableList<Double>
@@ -407,11 +409,21 @@ class RoutineRepositoryImpl: RoutineRepository {
             .collection("users")
             .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
             .get().await().documents[0].reference
-        val routineId = FirebaseFirestore.getInstance()
+        val routine = FirebaseFirestore.getInstance()
             .collection("routines")
             .whereEqualTo("customer", customerRef)
             .limit(1)
-            .get().await().documents[0].id
-        return this.getRoutine(routineId)
+            .get().await()
+        return if(routine.documents.isEmpty()){
+            val routine = Routine()
+            Resource.Success(routine)
+        }else{
+            val routineId = routine.documents[0].id
+            this.getRoutine(routineId)
+        }
+    }
+
+    override suspend fun getTodayActivities(): Resource<MutableList<RoutineActivity>> {
+        return Resource.Success(mutableListOf())
     }
 }

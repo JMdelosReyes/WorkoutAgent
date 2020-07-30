@@ -71,6 +71,7 @@ class LoginViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
                 _tokenLoaded.value = true
             }
         } catch (e: Exception) {
+            Log.i("FAIL TUS MUERTOS", e.toString())
             Log.i("Trainer", "Fail")
         }
     }

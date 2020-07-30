@@ -3,7 +3,6 @@ package com.tfg.workoutagent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -37,7 +36,7 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
         setSupportActionBar(findViewById(R.id.main_toolbar))
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.navigation_day_customer -> {
+                R.id.navigation_today_customer -> {
                     supportActionBar?.title = "My activity"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }

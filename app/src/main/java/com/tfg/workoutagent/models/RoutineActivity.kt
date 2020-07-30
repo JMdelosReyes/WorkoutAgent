@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.models
 
+import com.google.firebase.firestore.PropertyName
 import java.util.*
 
 data class RoutineActivity(
@@ -7,8 +8,9 @@ data class RoutineActivity(
     var exercise: Exercise = Exercise(),
     var note : String = "DEFAULT_NOTE",
     var repetitions :MutableList<Int> = mutableListOf(),
-    var sets : Int = 3,
+    var sets : Int = 0,
     var type : String = "DEFAULT_TYPE",
-    var weightsPerRepetition :MutableList<Double> = mutableListOf()
+    var weightsPerRepetition :MutableList<Double> = mutableListOf(),
+    var isCompleted : Boolean = false
                     ) {
 }

@@ -255,4 +255,6 @@
     <string name="add_activity_set_error_message">Mensaje de error</string>
     <string name="category_name">Category name</string>
     <string name="exercise_name">Exercise name</string>
+    <string name="today">Today</string>
+    <string name="completed">Completed</string>
 </resources>

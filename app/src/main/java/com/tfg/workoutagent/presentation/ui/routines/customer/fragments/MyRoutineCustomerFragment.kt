@@ -52,11 +52,12 @@ class MyRoutineCustomerFragment : BaseFragment() {
                 is Resource.Loading -> { sv_my_routine.startShimmer()}
                 is Resource.Success -> { sv_my_routine.visibility = View.GONE
                     sv_my_routine.stopShimmer()
-                    if(it.data.days.size == 0){
+                    if(it.data.days.size == 0 || it.data.id == "DEFAULT_ID"){
                         //TODO: Show a message like --> "You have no routine assigned! Talk with your trainer to start training!"
+                    }else{
+                        adapter.setDataList(it.data.days)
+                        adapter.notifyDataSetChanged()
                     }
-                    adapter.setDataList(it.data.days)
-                    adapter.notifyDataSetChanged()
                 }
                 is Resource.Failure -> {
                     sv_my_routine.visibility = View.GONE

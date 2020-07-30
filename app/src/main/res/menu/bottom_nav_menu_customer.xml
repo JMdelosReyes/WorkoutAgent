@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_day_customer"
+        android:id="@+id/navigation_today_customer"
         android:icon="@drawable/ic_timeline_24dp"
-        android:title="@string/my_activity" />
+        android:title="@string/today" />
     <item
         android:id="@+id/navigation_routine_customer"
         android:icon="@drawable/ic_workout_24dp"

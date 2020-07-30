@@ -2,6 +2,7 @@ package com.tfg.workoutagent.data.repositories
 
 
 import com.tfg.workoutagent.models.Routine
+import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.models.TimelineActivity
 import com.tfg.workoutagent.vo.Resource
 
@@ -20,4 +21,6 @@ interface RoutineRepository {
     suspend fun deleteRoutine(id: String): Resource<Boolean>
 
     suspend fun getAssignedRoutine() : Resource<Routine>
+
+    suspend fun getTodayActivities() : Resource<MutableList<RoutineActivity>>
 }
