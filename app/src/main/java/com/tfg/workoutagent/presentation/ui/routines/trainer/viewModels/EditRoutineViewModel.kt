@@ -361,6 +361,7 @@ class EditRoutineViewModel(
         _dayNameError.value = ""
         activities.value = mutableListOf()
         _activitiesError.value = ""
+        clearActivityData()
     }
 
     fun clearActivityData() {

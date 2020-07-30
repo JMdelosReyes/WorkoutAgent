@@ -404,6 +404,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         _dayNameError.value = ""
         activities.value = mutableListOf()
         _activitiesError.value = ""
+        clearActivityData()
     }
 
     fun clearActivityData() {
