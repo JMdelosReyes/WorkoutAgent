@@ -51,19 +51,23 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                 }
                 R.id.listGoalCustomerFragment -> {
                     supportActionBar?.title = "My goals"
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
                 R.id.createGoalCustomerFragment -> {
                     supportActionBar?.title = "Create a goal"
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
                 R.id.editProfileCustomerFragment -> {
                     supportActionBar?.title = "Edit my profile"
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
                 R.id.deleteProfileSendEmailCustomerFragment -> {
                     supportActionBar?.title = "Deleting my account"
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                }
+                R.id.displayNutritionCustomerFragment -> {
+                    supportActionBar?.title = "Nutrition"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
             }
         }

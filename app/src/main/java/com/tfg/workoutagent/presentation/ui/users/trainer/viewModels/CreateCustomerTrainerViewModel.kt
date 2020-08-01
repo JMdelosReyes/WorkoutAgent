@@ -11,11 +11,14 @@ import com.tfg.workoutagent.models.Weight
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.getAgeWithError
 import com.tfg.workoutagent.vo.utils.parseStringToDate
+import com.tfg.workoutagent.vo.utils.parseStringToDateBar
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: ManageCustomerTrainerUseCase) : ViewModel() {
-    var birthday : String = "dd-MM-yyyy"
+    var birthday = MutableLiveData("")
     private val _birthdayError = MutableLiveData("")
     val birthdayError: LiveData<String>
         get() = _birthdayError
@@ -71,11 +74,22 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
     val customerCreated : LiveData<Boolean?>
         get() = _customerCreated
 
+    val pickerDate = MutableLiveData<Date>(Date())
+
     fun onSubmit() {
         if(checkData()){
             uploadImage()
         }
     }
+
+    fun setDate(time: Long) {
+        val pattern = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+        pickerDate.value = Date(time)
+        val date = simpleDateFormat.format(pickerDate.value)
+        birthday.value = date
+    }
+
     private fun uploadImage() {
         viewModelScope.launch {
             try{
@@ -84,7 +98,7 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             photo = photoUri.data
-                            val customer = Customer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
+                            val customer = Customer(birthday = parseStringToDateBar(birthday.value)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
                             val weight = Weight(weight = initialWeight)
                             customer.weights.add(weight)
                             manageCustomerTrainerUseCase.createCustomer(customer)
@@ -92,7 +106,7 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
                         }
                         else -> {
                             photo = "DEFAULT_IMAGE"
-                            val customer = Customer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
+                            val customer = Customer(birthday = parseStringToDateBar(birthday.value)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
                             val weight = Weight(weight = initialWeight)
                             customer.weights.add(weight)
                             manageCustomerTrainerUseCase.createCustomer(customer)
@@ -102,7 +116,7 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
                 }else{
                     Log.i("uploadImage", "null")
                     photo = "DEFAULT_IMAGE"
-                    val customer = Customer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
+                    val customer = Customer(birthday = parseStringToDateBar(birthday.value)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
                     val weight = Weight(weight = initialWeight)
                     customer.weights.add(weight)
                     manageCustomerTrainerUseCase.createCustomer(customer)
@@ -115,8 +129,8 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
     }
 
     private fun checkData(): Boolean {
-        checkBirthday()
-        checkDni()
+        _birthdayError.value = com.tfg.workoutagent.vo.utils.checkBirthday(birthday.value)
+        _dniError.value = com.tfg.workoutagent.vo.utils.checkDni(dni)
         checkEmail()
         checkName()
         checkSurname()
@@ -128,16 +142,6 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         return _birthdayError.value == "" && _dniError.value == "" && _emailError.value == "" && _nameError.value == "" && _surnameError.value == "" && _photoError.value == "" && _heightError.value == "" && _initialWeightError.value == "" && _phoneError.value == ""
     }
 
-    private fun checkBirthday() {
-        birthday.let {
-            val date = parseStringToDate(it)
-            if(date == null){
-                _birthdayError.value = "Birthday cannot be null"
-            }else{
-                _birthdayError.value = getAgeWithError(it)
-            }
-        }
-    }
 
     private fun checkGender(){
         genre.let {
@@ -147,12 +151,6 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         }
     }
 
-    private fun checkDni() {
-        //TODO: Regexpresion de dni de 8 digitos y 1 letra (al menos)
-        dni.let {
-            _dniError.value = ""
-        }
-    }
 
     private fun checkEmail() {
         email.let {

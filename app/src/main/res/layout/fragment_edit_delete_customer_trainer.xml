@@ -172,6 +172,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/form_user_birthday_input"
                     android:nextFocusRight="@+id/form_height_input_user"
+                    android:focusable="false"
                     android:singleLine="true"
                     android:text="@={viewModel.birthday}" />
             </com.google.android.material.textfield.TextInputLayout>

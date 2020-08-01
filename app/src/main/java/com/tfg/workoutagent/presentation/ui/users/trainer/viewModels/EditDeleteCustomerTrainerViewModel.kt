@@ -7,12 +7,12 @@ import com.tfg.workoutagent.domain.storageUseCases.ManageFilesUseCaseImpl
 import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.vo.Resource
-import com.tfg.workoutagent.vo.utils.getAgeWithError
-import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
-import com.tfg.workoutagent.vo.utils.parseStringToDate
+import com.tfg.workoutagent.vo.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EditDeleteCustomerTrainerViewModel(private val id: String, private val manageCustomerTrainerUseCase: ManageCustomerTrainerUseCase) : ViewModel() {
 
@@ -73,6 +73,16 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
         }
     }
 
+    val pickerDate = MutableLiveData<Date>()
+
+    fun setDate(time: Long) {
+        val pattern = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+        pickerDate.value = Date(time)
+        val date = simpleDateFormat.format(pickerDate.value)
+        birthday.value = date
+    }
+
     fun onSave() {
         if(checkData()){
             editCustomer()
@@ -80,8 +90,8 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
     }
 
     private fun checkData(): Boolean {
-        checkBirthday()
-        checkDni()
+        _birthdayError.value = checkBirthday(birthday.value)
+        _dniError.value = checkDni(dni.value)
         checkEmail()
         checkName()
         checkSurname()
@@ -97,19 +107,19 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             photo.value  = photoUri.data
-                            val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val customer = Customer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageCustomerTrainerUseCase.updateCustomer(customer)
                             _customerEdited.value = true
                         }
                         else -> {
                             photo.value = "DEFAULT_IMAGE"
-                            val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val customer = Customer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageCustomerTrainerUseCase.updateCustomer(customer)
                             _customerEdited.value = true
                         }
                     }
                 }else{
-                    val customer = Customer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                    val customer = Customer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                     manageCustomerTrainerUseCase.updateCustomer(customer)
                     _customerEdited.value = true
                 }
@@ -143,7 +153,7 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
     }
 
     private fun loadData(customer : Resource.Success<Customer>){
-        birthday.postValue(parseDateToFriendlyDate(customer.data.birthday))
+        birthday.postValue(parseDateToFriendlyDateBar(customer.data.birthday))
         dni.postValue(customer.data.dni)
         email.postValue(customer.data.email)
         name.postValue(customer.data.name)
@@ -162,12 +172,6 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
         }
     }
 
-    private fun checkDni() {
-        //TODO: Regexpresion de dni de 8 digitos y 1 letra (al menos)
-        dni.value?.let {
-            _dniError.value = ""
-        }
-    }
 
     private fun checkEmail() {
         email.value?.let {

@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
@@ -28,6 +29,7 @@ import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.EditProf
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.EditProfileCustomerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_edit_profile_customer.*
+import java.util.*
 
 class EditProfileCustomerFragment : Fragment() {
     companion object{
@@ -78,6 +80,19 @@ class EditProfileCustomerFragment : Fragment() {
             builder.show()
         }
     }
+
+    private fun setupButtons(it: Date) {
+        viewModel.pickerDate.value = it
+        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setSelection(viewModel.pickerDate.value!!.time.toLong())
+        val picker: MaterialDatePicker<*> = builder.build()
+        edit_profile_customer_birthday_input_edit.setOnClickListener {
+            picker.show(requireActivity().supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                viewModel.setDate(it as Long)
+            }
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null){
@@ -104,6 +119,7 @@ class EditProfileCustomerFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     //TODO: hideProgress()
+                    setupButtons(it.data.birthday)
                     customerId = it.data.id
                     if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
                         edit_profile_customer_button_select_image_customer.visibility = View.GONE
