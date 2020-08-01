@@ -10,10 +10,12 @@ import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageTrainerAdminUseCase) : ViewModel() {
 
-    var birthday : String = "dd-MM-yyyy"
+    val birthday = MutableLiveData("")
     private val _birthdayError = MutableLiveData("")
     val birthdayError: LiveData<String>
         get() = _birthdayError
@@ -53,12 +55,14 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
     val createdTrainer: LiveData<Boolean?>
         get() = _createdTrainer
 
+    val pickerDate = MutableLiveData<Date>(Date())
+
     fun onSubmit(){
         if(checkData()) createTrainer()
     }
 
     private fun checkData(): Boolean {
-        _birthdayError.value = checkBirthday(birthday)
+        _birthdayError.value = checkBirthday(birthday.value)
         _dniError.value = checkDni(dni)
         _emailError.value = checkEmail(email)
         _nameError.value = checkName(name)
@@ -76,18 +80,18 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             photo = photoUri.data
-                            val trainer = Trainer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
+                            val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
                             manageTrainerAdminUseCase.createTrainer(trainer)
                         }
                         else -> {
                             photo = "DEFAULT_IMAGE"
-                            val trainer = Trainer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
+                            val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
                             manageTrainerAdminUseCase.createTrainer(trainer)
                         }
                     }
                 }else{
                     photo = "DEFAULT_IMAGE"
-                    val trainer = Trainer(birthday = parseStringToDate(birthday)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
+                    val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
                     manageTrainerAdminUseCase.createTrainer(trainer)
                 }
                 _createdTrainer.value = true
@@ -95,6 +99,14 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
                 _createdTrainer.value = false
             }
         }
+    }
+
+    fun setDate(time: Long) {
+        val pattern = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+        pickerDate.value = Date(time)
+        val date = simpleDateFormat.format(pickerDate.value)
+        birthday.value = date
     }
 
 }

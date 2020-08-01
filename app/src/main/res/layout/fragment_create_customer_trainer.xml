@@ -170,6 +170,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/form_user_birthday_input"
+                    android:focusable="false"
                     android:nextFocusRight="@+id/form_height_input_user"
                     android:singleLine="true"
                     android:text="@={viewModel.birthday}" />

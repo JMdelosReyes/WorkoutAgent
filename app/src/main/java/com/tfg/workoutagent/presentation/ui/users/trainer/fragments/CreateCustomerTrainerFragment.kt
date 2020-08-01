@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.base.BaseFragment
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
@@ -22,6 +23,11 @@ import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.CreateCustomerTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.CreateCustomerTrainerViewModelFactory
 import kotlinx.android.synthetic.main.fragment_create_customer_trainer.*
+import kotlinx.android.synthetic.main.fragment_create_customer_trainer.customer_birthday_input_edit
+import kotlinx.android.synthetic.main.fragment_create_customer_trainer.edit_profile_customer_button_select_image_customer
+import kotlinx.android.synthetic.main.fragment_create_customer_trainer.image_selected
+import kotlinx.android.synthetic.main.fragment_edit_delete_customer_trainer.*
+import java.util.*
 
 
 class CreateCustomerTrainerFragment : BaseFragment() {
@@ -61,6 +67,7 @@ class CreateCustomerTrainerFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         observeData()
         observeErrors()
+        setupButtons()
         image_selected.visibility = View.GONE
         edit_profile_customer_button_select_image_customer.setOnClickListener {
             val intent = Intent()
@@ -74,6 +81,18 @@ class CreateCustomerTrainerFragment : BaseFragment() {
                viewModel.genre = "M"
             }else if(checkedId == radioF.id){
                 viewModel.genre = "F"
+            }
+        }
+    }
+
+    private fun setupButtons() {
+        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setSelection(viewModel.pickerDate.value!!.time)
+        val picker: MaterialDatePicker<*> = builder.build()
+        customer_birthday_input_edit.setOnClickListener {
+            picker.show(requireActivity().supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                viewModel.setDate(it as Long)
             }
         }
     }

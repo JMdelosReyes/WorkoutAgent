@@ -10,6 +10,8 @@ import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EditProfileCustomerViewModel(private val manageProfileUseCase: ManageProfileUseCase) : ViewModel() {
 
@@ -77,9 +79,19 @@ class EditProfileCustomerViewModel(private val manageProfileUseCase: ManageProfi
         }
     }
 
+    val pickerDate = MutableLiveData<Date>()
+
+    fun setDate(time: Long) {
+        val pattern = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+        pickerDate.value = Date(time)
+        val date = simpleDateFormat.format(pickerDate.value)
+        birthday.value = date
+    }
+
     private fun loadData(customer : Resource.Success<Customer>){
         id.postValue(customer.data.id)
-        birthday.postValue(parseDateToFriendlyDate(customer.data.birthday))
+        birthday.postValue(parseDateToFriendlyDateBar(customer.data.birthday))
         dni.postValue(customer.data.dni)
         email.postValue(customer.data.email)
         name.postValue(customer.data.name)
@@ -126,19 +138,19 @@ class EditProfileCustomerViewModel(private val manageProfileUseCase: ManageProfi
                         is Resource.Success -> {
                             //Modificated image
                             photo.value = photoUri.data
-                            val customer = Customer(id = id.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val customer = Customer(id = id.value!!, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageProfileUseCase.editProfileCustomer(customer)
                             _customerEdited.value = true
                         }
                         else -> {
                             photo.value = ""
-                            val customer = Customer(id = id.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val customer = Customer(id = id.value!!, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageProfileUseCase.editProfileCustomer(customer)
                             _customerEdited.value = true
                         }
                     }
                 }else{
-                    val customer = Customer(id = id.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                    val customer = Customer(id = id.value!!, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                     manageProfileUseCase.editProfileCustomer(customer)
                     _customerEdited.value = true
                 }

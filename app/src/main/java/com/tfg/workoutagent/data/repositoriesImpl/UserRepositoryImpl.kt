@@ -214,14 +214,17 @@ class UserRepositoryImpl: UserRepository {
             .whereEqualTo("customer", customerToBeDeleted)
             .get().await()
         for (document in resultData){
-            FirebaseFirestore.getInstance().collection("routines").document(document.id).update("customer", null)
+            FirebaseFirestore.getInstance().collection("routines").document(document.id).delete().await()
         }
         val searchUser = FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("role","TRAINER")
-            .whereArrayContains("customers", customerToBeDeleted).get().await().documents[0].id
+            .whereArrayContains("customers", customerToBeDeleted).get().await()
 
-        FirebaseFirestore.getInstance().collection("users").document(searchUser).update("customers", FieldValue.arrayRemove(customerToBeDeleted)).await()
+        if(!searchUser.documents.isEmpty()){
+            FirebaseFirestore.getInstance().collection("users").document(searchUser.documents[0].id).update("customers", FieldValue.arrayRemove(customerToBeDeleted)).await()
+        }
+
         FirebaseFirestore.getInstance().collection("users").document(id).delete().await()
         return Resource.Success(true)
     }
