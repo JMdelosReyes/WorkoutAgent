@@ -64,6 +64,7 @@ class TodayActivitiesCustomerListAdapter(
         holder.recyclerView.apply {
             layoutManager = childLayoutManager
             adapter = EditWeightsRepetitionsRoutineActivityCustomerListAdapter(context,
+                activity,
                 sets,
                 actionListeners
             )

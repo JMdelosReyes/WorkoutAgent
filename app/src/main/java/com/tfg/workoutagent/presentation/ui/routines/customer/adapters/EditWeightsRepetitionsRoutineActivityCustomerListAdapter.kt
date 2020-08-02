@@ -7,11 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.ActivitySet
+import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.customer.fragments.TodayActivitiesCustomerFragment
 import kotlinx.android.synthetic.main.item_row_set_edit.view.*
 
 class EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
     private val context: Context,
+    private val activity : RoutineActivity,
     private val listActivitySets: MutableList<ActivitySet>,
     private val actionListeners: TodayActivitiesCustomerFragment.ActionListeners
 
@@ -54,14 +56,15 @@ class EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
             itemView.repetitions_activity_input_edit.setText(activitySet.repetitions.toString())
             itemView.weights_activity_input_edit.setText(activitySet.weight.toString())
             itemView.delete_set_button_edit.setOnClickListener{
-                actionListeners.deleteClickListener(adapterPosition)
+                actionListeners.deleteClickListener(adapterPosition, activity)
                 removeActivitySetListener(adapterPosition)
             }
             itemView.finished_set_button_edit.setOnFocusChangeListener { v, hasFocus ->
                 if(!hasFocus){
                     val errorValidation = actionListeners.finishedClickListener(adapterPosition,
                         itemView.repetitions_activity_input_edit.text.toString().toIntOrNull(),
-                        itemView.weights_activity_input_edit.toString().toDoubleOrNull()
+                        itemView.weights_activity_input_edit.toString().toDoubleOrNull(),
+                        activity
                     )
                     if(errorValidation != "") {
                         itemView.activity_set_error_message_edit.text = errorValidation
