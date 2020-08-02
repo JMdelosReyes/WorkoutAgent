@@ -63,6 +63,7 @@ class CreateGoalCustomerViewModel(private val manageGoalUseCase: ManageGoalUseCa
             }catch (e: Exception){
                 _goalCreated.value = false
             }
+            _goalCreated.value = null
         }
     }
 

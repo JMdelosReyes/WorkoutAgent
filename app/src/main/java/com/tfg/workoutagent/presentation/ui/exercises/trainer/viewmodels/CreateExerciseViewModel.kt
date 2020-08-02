@@ -87,8 +87,8 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
 
     private fun checkTitle() {
         title.let {
-            if (it.length < 4 || it.length > 30) {
-                _titleError.value = "The title must be between 4 and 30 characters"
+            if (it.length < 4 || it.length > 100) {
+                _titleError.value = "The title must be between 4 and 100 characters"
                 return
             }
             _titleError.value = ""
@@ -97,8 +97,8 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
 
     private fun checkDescription() {
         description.let {
-            if (it.length < 10 || it.length > 100) {
-                _descriptionError.value = "The description must be between 10 and 100 characters"
+            if (it.length < 10 || it.length > 1000) {
+                _descriptionError.value = "The description must be between 10 and 1000 characters"
                 return
             }
             _descriptionError.value = ""

@@ -210,7 +210,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
             when(it){
                 true -> {
                     //TODO: hideProgress()
-                    findNavController().navigate(EditDeleteCustomerTrainerFragmentDirections.actionEditDeleteCustomerTrainerFragmentToDisplayCustomer(customerId, "UPDATED"))
+                    findNavController().navigate(EditDeleteCustomerTrainerFragmentDirections.actionEditDeleteCustomerTrainerFragmentToDisplayCustomer(customerId, viewModel.name.value!! + " " + viewModel.surname.value!!))
                 }
                 false -> {
                     //TODO: hideProgress()

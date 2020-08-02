@@ -171,6 +171,18 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
         )
     }
 
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        when (navController.currentDestination?.id) {
+            R.id.navigation_activity_trainer -> finish()
+            R.id.navigation_exercises_trainer -> finish()
+            R.id.navigation_routine_trainer -> finish()
+            R.id.navigation_users_trainer -> finish()
+            R.id.navigation_profile_trainer -> finish()
+            else -> super.onBackPressed()
+        }
+    }
+
     companion object {
         fun getLaunchIntent(from: Context) =
             Intent(from, TrainerActivity::class.java).apply {

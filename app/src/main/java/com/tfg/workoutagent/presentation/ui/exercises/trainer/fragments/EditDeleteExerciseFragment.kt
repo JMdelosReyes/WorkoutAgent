@@ -32,9 +32,10 @@ import kotlinx.android.synthetic.main.fragment_edit_delete_exercise.*
  * A simple [Fragment] subclass.
  */
 class EditDeleteExerciseFragment : Fragment() {
-    companion object{
+    companion object {
         private val PICK_MULTI_IMAGE_CODE = 10001
     }
+
     private val viewModel by lazy {
         ViewModelProvider(
             this, EditDeleteExerciseViewModelFactory(
@@ -48,7 +49,7 @@ class EditDeleteExerciseFragment : Fragment() {
     // private val exerciseTitle by lazy { EditDeleteExerciseFragmentArgs.fromBundle(arguments!!).exerciseTitle }
 
     private lateinit var binding: FragmentEditDeleteExerciseBinding
-    private var selectedPhotosUri : MutableList<Uri?> = mutableListOf()
+    private var selectedPhotosUri: MutableList<Uri?> = mutableListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,8 +71,8 @@ class EditDeleteExerciseFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == PICK_MULTI_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null){
-            if(data.clipData != null){
+        if (requestCode == PICK_MULTI_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null) {
+            if (data.clipData != null) {
                 selectedPhotosUri.clear()
                 if ((ll_photos as LinearLayout).childCount > 0) (ll_photos as LinearLayout).removeAllViews()
                 for (index in 0 until data.clipData!!.itemCount) run {
@@ -101,7 +102,7 @@ class EditDeleteExerciseFragment : Fragment() {
                         builder.show()
                     }
                 }
-            } else if(data.data != null){
+            } else if (data.data != null) {
                 selectedPhotosUri.clear()
                 if ((ll_photos as LinearLayout).childCount > 0) (ll_photos as LinearLayout).removeAllViews()
                 selectedPhotosUri.add(data.data)
@@ -137,7 +138,7 @@ class EditDeleteExerciseFragment : Fragment() {
         setupUI()
     }
 
-    fun setupUI(){
+    fun setupUI() {
         upload_multiple_images_edit_exercise.setOnClickListener {
             val intent = Intent()
             intent.type = "image/*"
@@ -166,8 +167,8 @@ class EditDeleteExerciseFragment : Fragment() {
         }
     }
 
-    private fun setPhotos(photos : MutableList<String>){
-        for (photo in photos){
+    private fun setPhotos(photos: MutableList<String>) {
+        for (photo in photos) {
             val image = ImageView(this.context)
             image.id = Math.random().toInt()
             Glide.with(this).asBitmap().load(photo).into(image)
@@ -191,91 +192,107 @@ class EditDeleteExerciseFragment : Fragment() {
         }
     }
 
-    private fun setTags(tags : MutableList<String>){
-        if(tags.contains("Arms")) ll_arms.setBackgroundColor(Color.GREEN) else ll_arms.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Legs")) ll_legs.setBackgroundColor(Color.GREEN) else ll_legs.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Back")) ll_back.setBackgroundColor(Color.GREEN) else ll_back.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Chest")) ll_chest.setBackgroundColor(Color.GREEN) else ll_chest.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Shoulder")) ll_shoulder.setBackgroundColor(Color.GREEN) else ll_shoulder.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Gluteus")) ll_gluteus.setBackgroundColor(Color.GREEN) else ll_gluteus.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Abs")) ll_abs.setBackgroundColor(Color.GREEN) else ll_abs.setBackgroundColor(Color.WHITE)
-        if(tags.contains("Cardio")) ll_cardio.setBackgroundColor(Color.GREEN) else ll_cardio.setBackgroundColor(Color.WHITE)
-        button_ll_arms.setOnClickListener {
+    private fun setTags(tags: MutableList<String>) {
+        if (tags.contains("Arms")) ll_arms.setBackgroundColor(Color.GREEN) else ll_arms.setBackgroundColor(
+            Color.WHITE
+        )
+        if (tags.contains("Legs")) ll_legs.setBackgroundColor(Color.GREEN) else ll_legs.setBackgroundColor(
+            Color.WHITE
+        )
+        if (tags.contains("Back")) ll_back.setBackgroundColor(Color.GREEN) else ll_back.setBackgroundColor(
+            Color.WHITE
+        )
+        if (tags.contains("Chest")) ll_chest.setBackgroundColor(Color.GREEN) else ll_chest.setBackgroundColor(
+            Color.WHITE
+        )
+        if (tags.contains("Shoulder")) ll_shoulder.setBackgroundColor(Color.GREEN) else ll_shoulder.setBackgroundColor(
+            Color.WHITE
+        )
+        if (tags.contains("Gluteus")) ll_gluteus.setBackgroundColor(Color.GREEN) else ll_gluteus.setBackgroundColor(
+            Color.WHITE
+        )
+        if (tags.contains("Abs")) ll_abs.setBackgroundColor(Color.GREEN) else ll_abs.setBackgroundColor(
+            Color.WHITE
+        )
+        if (tags.contains("Cardio")) ll_cardio.setBackgroundColor(Color.GREEN) else ll_cardio.setBackgroundColor(
+            Color.WHITE
+        )
+        ll_arms.setOnClickListener {
             val index = tags.indexOf("Arms")
-            if(index == -1){
+            if (index == -1) {
                 viewModel.addTag("Arms")
                 ll_arms.setBackgroundColor(Color.GREEN)
-            }else{
+            } else {
                 viewModel.removeTag(index)
                 ll_arms.setBackgroundColor(Color.WHITE)
             }
         }
-        button_ll_legs.setOnClickListener {
+        ll_legs.setOnClickListener {
             val index = tags.indexOf("Legs")
-            if(index == -1){
+            if (index == -1) {
                 viewModel.addTag("Legs")
                 ll_legs.setBackgroundColor(Color.GREEN)
-            }else{
+            } else {
                 viewModel.removeTag(index)
                 ll_legs.setBackgroundColor(Color.WHITE)
             }
         }
-        button_ll_back.setOnClickListener {
+        ll_back.setOnClickListener {
             val index = tags.indexOf("Back")
-            if(index == -1){
+            if (index == -1) {
                 viewModel.addTag("Back")
                 ll_back.setBackgroundColor(Color.GREEN)
-            }else{
+            } else {
                 viewModel.removeTag(index)
                 ll_back.setBackgroundColor(Color.WHITE)
             }
         }
-        button_ll_chest.setOnClickListener {
+        ll_chest.setOnClickListener {
             val index = tags.indexOf("Chest")
-            if(index == -1){
+            if (index == -1) {
                 viewModel.addTag("Chest")
                 ll_chest.setBackgroundColor(Color.GREEN)
-            }else{
+            } else {
                 viewModel.removeTag(index)
                 ll_chest.setBackgroundColor(Color.WHITE)
             }
         }
-        button_ll_shoulder.setOnClickListener {
+        ll_shoulder.setOnClickListener {
             val index = tags.indexOf("Shoulder")
-            if(index == -1){
+            if (index == -1) {
                 viewModel.addTag("Shoulder")
                 ll_shoulder.setBackgroundColor(Color.GREEN)
-            }else{
+            } else {
                 viewModel.removeTag(index)
                 ll_shoulder.setBackgroundColor(Color.WHITE)
             }
         }
-        button_ll_gluteus.setOnClickListener {
+        ll_gluteus.setOnClickListener {
             val index = tags.indexOf("Gluteus")
-            if(index == -1){
+            if (index == -1) {
                 viewModel.addTag("Gluteus")
                 ll_gluteus.setBackgroundColor(Color.GREEN)
-            }else{
+            } else {
                 viewModel.removeTag(index)
                 ll_gluteus.setBackgroundColor(Color.WHITE)
             }
         }
-        button_ll_abs.setOnClickListener {
+        ll_abs.setOnClickListener {
             val index = tags.indexOf("Abs")
-            if(index == -1){
+            if (index == -1) {
                 viewModel.addTag("Abs")
                 ll_abs.setBackgroundColor(Color.GREEN)
-            }else{
+            } else {
                 viewModel.removeTag(index)
                 ll_abs.setBackgroundColor(Color.WHITE)
             }
         }
-        button_ll_cardio.setOnClickListener {
+        ll_cardio.setOnClickListener {
             val index = tags.indexOf("Cardio")
-            if(index == -1){
+            if (index == -1) {
                 viewModel.addTag("Cardio")
                 ll_cardio.setBackgroundColor(Color.GREEN)
-            }else{
+            } else {
                 viewModel.removeTag(index)
                 ll_cardio.setBackgroundColor(Color.WHITE)
             }
@@ -285,6 +302,21 @@ class EditDeleteExerciseFragment : Fragment() {
 
 
     private fun observeData() {
+        viewModel.tagsError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it != "") {
+                    binding.editExerciseTagsErrorMessage.text = it
+                    binding.editExerciseTagsErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.editExerciseTagsErrorMessage.text = ""
+                    binding.editExerciseTagsErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.editExerciseTagsErrorMessage.text = ""
+                binding.editExerciseTagsErrorMessage.visibility = View.GONE
+            }
+        })
+
         viewModel.getExercise.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {

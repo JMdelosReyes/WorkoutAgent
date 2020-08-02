@@ -85,8 +85,8 @@ class EditDeleteExerciseViewModel(
 
     private fun checkTitle() {
         title.value?.let {
-            if (it.length < 4 || it.length > 30) {
-                _titleError.value = "The title must be between 4 and 30 characters"
+            if (it.length < 4 || it.length > 100) {
+                _titleError.value = "The title must be between 4 and 100 characters"
                 return
             }
             _titleError.value = ""
@@ -95,8 +95,8 @@ class EditDeleteExerciseViewModel(
 
     private fun checkDescription() {
         description.value?.let {
-            if (it.length < 10 || it.length > 100) {
-                _descriptionError.value = "The description must be between 10 and 100 characters"
+            if (it.length < 10 || it.length > 1000) {
+                _descriptionError.value = "The description must be between 10 and 1000 characters"
                 return
             }
             _descriptionError.value = ""
@@ -132,6 +132,8 @@ class EditDeleteExerciseViewModel(
                             _exerciseSaved.value = true
                         }
                     }
+                }else{
+                    Log.i("Prueba", "Borramos la foto")
                 }
             } catch (e: Exception) {
                 _exerciseSaved.value = false
