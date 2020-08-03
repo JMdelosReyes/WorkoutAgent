@@ -1,45 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.routines.trainer.fragments.RoutineTrainerFragment">
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_view_container_routine"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="@+id/recyclerViewRoutine">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            app:tabMode="fixed">
 
-            <include layout="@layout/item_row_load" />
-            <include layout="@layout/item_row_load" />
-            <include layout="@layout/item_row_load" />
-            <include layout="@layout/item_row_load" />
-            <include layout="@layout/item_row_load" />
-            <include layout="@layout/item_row_load" />
-            <include layout="@layout/item_row_load" />
-            <include layout="@layout/item_row_load" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_general"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Templates" />
 
-        </LinearLayout>
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_assigned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Assigned" />
 
+        </com.google.android.material.tabs.TabLayout>
 
-    </com.facebook.shimmer.ShimmerFrameLayout>
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer_view_container_routine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tab_layout"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@+id/recyclerViewRoutine">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewRoutine"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewRoutine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tab_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </RelativeLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_button_routine"

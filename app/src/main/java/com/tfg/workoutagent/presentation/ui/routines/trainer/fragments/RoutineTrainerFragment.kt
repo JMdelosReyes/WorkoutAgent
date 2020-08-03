@@ -1,16 +1,16 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-
+import com.google.android.material.tabs.TabLayout
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.domain.routineUseCases.ListRoutinesUseCaseImpl
@@ -51,8 +51,6 @@ class RoutineTrainerFragment : Fragment() {
     }
 
     private fun observeData() {
-        //si es en un fragmento ponemos viewLifecycleowner como primer parametro
-
         viewModel.routineList.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is Resource.Loading -> {
@@ -61,7 +59,7 @@ class RoutineTrainerFragment : Fragment() {
                 is Resource.Success -> {
                     shimmer_view_container_routine.visibility = View.GONE
                     shimmer_view_container_routine.stopShimmer()
-                    adapter.setListData(result.data)
+                    adapter.setListData(this.viewModel.getGeneralRoutines())
                     adapter.notifyDataSetChanged()
                 }
                 is Resource.Failure -> {
@@ -85,6 +83,28 @@ class RoutineTrainerFragment : Fragment() {
                 )
             )
         }
+
+        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // nothing
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // nothing
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    if (it.position == 0) {
+                        adapter.setListData(viewModel.getGeneralRoutines())
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        adapter.setListData(viewModel.getAssignedRoutines())
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        })
     }
 }
 
