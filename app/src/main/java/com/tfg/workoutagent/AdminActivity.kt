@@ -64,6 +64,11 @@ class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener 
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
+                R.id.termsConditionsFragment2 -> {
+                    supportActionBar?.title = "Terms and Conditions"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
             }
         }
     }

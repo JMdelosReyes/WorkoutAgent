@@ -3,7 +3,6 @@ package com.tfg.workoutagent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -11,7 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.tfg.workoutagent.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_bottom_navigation_customer.*
-
 
 const val PROFILE_CUSTOMER_FRAGMENT = "MyProfileCustomer"
 
@@ -68,6 +66,11 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                 R.id.displayNutritionCustomerFragment -> {
                     supportActionBar?.title = "Nutrition"
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                }
+                R.id.termsConditionsFragment -> {
+                    supportActionBar?.title = "Terms and Conditions"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
             }
         }

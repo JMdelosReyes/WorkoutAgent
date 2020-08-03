@@ -26,7 +26,11 @@
             app:destination="@id/displayNutritionCustomerFragment" />
         <action
             android:id="@+id/action_navigation_profile_customer_to_termsConditionsFragment"
-            app:destination="@id/termsConditionsFragment" />
+            app:destination="@id/termsConditionsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_navigation_profile_customer_to_listGoalCustomerFragment"
             app:destination="@id/listGoalCustomerFragment"
@@ -81,7 +85,7 @@
     </fragment>
     <fragment
         android:id="@+id/termsConditionsFragment"
-        android:name="com.tfg.workoutagent.presentation.ui.gdpr.TermsConditionsFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.gdpr.fragments.TermsConditionsFragment"
         android:label="fragment_terms_and_conditions"
         tools:layout="@layout/fragment_terms_and_conditions" />
     <fragment
