@@ -105,8 +105,8 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
                 R.id.displayExercise -> {
-                    supportActionBar?.title =
-                        arguments!!.get("exercise_title").toString()
+                    // supportActionBar?.title = arguments!!.get("exercise_title").toString()
+                    supportActionBar?.title = "Exercise"
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
@@ -127,7 +127,8 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
 
                 }
                 R.id.listGoalCustomerTrainerFragment -> {
-                    supportActionBar?.title = "Goals of ${arguments!!.get("customerName").toString()}"
+                    supportActionBar?.title =
+                        "Goals of ${arguments!!.get("customerName").toString()}"
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
