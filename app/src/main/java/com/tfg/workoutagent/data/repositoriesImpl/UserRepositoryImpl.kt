@@ -294,6 +294,23 @@ class UserRepositoryImpl: UserRepository {
         return Resource.Success(trainer)
     }
 
+    override suspend fun getLoggedUserAdmin(): Resource<Administrator> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await().documents[0]
+        val admin = Administrator(id = resultData.id,
+            name = resultData.getString("name")!!,
+            surname = resultData.getString("surname")!!,
+            email = resultData.getString("email")!!,
+            dni = resultData.getString("dni")!!,
+            phone = resultData.getString("phone")!!,
+            photo = resultData.getString("photo")!!,
+            birthday = resultData.getDate("birthday")!!
+        )
+        return Resource.Success(admin)
+    }
+
     override suspend fun getTrainersAdmin(): Resource<MutableList<Trainer>> {
         val resultData = FirebaseFirestore.getInstance()
             .collection("users")

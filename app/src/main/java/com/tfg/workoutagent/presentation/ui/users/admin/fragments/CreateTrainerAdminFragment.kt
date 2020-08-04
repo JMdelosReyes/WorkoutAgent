@@ -129,10 +129,10 @@ class CreateTrainerAdminFragment : BaseFragment() {
                 if (it != "") it else null
         })
 
-        viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
+        /*viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
             binding.trainerBirthdayInputEdit.error =
                 if (it != "") it else null
-        })
+        })*/
 
         viewModel.emailError.observe(viewLifecycleOwner, Observer {
             binding.trainerEmailInputEdit.error =
@@ -147,6 +147,20 @@ class CreateTrainerAdminFragment : BaseFragment() {
         viewModel.phoneError.observe(viewLifecycleOwner, Observer {
             binding.trainerPhoneInputEdit.error =
                 if (it != "") it else null
+        })
+        viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it != "") {
+                    binding.birthdayErrorMessage.text = it
+                    binding.birthdayErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.birthdayErrorMessage.text = ""
+                    binding.birthdayErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.birthdayErrorMessage.text = ""
+                binding.birthdayErrorMessage.visibility = View.GONE
+            }
         })
     }
 
