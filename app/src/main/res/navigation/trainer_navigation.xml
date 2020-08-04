@@ -102,7 +102,18 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_navigation_profile_trainer_to_termsConditionsFragment3"
-            app:destination="@id/termsConditionsFragment3" />
+            app:destination="@id/termsConditionsFragment3"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_profile_trainer_to_faqsFragment"
+            app:destination="@id/faqsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/displayExercise"
@@ -403,7 +414,7 @@
     </fragment>
     <fragment
         android:id="@+id/termsConditionsFragment3"
-        android:name="com.tfg.workoutagent.presentation.ui.gdpr.TermsConditionsFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.gdpr.fragments.TermsConditionsFragment"
         android:label="TermsConditionsFragment" />
     <fragment
         android:id="@+id/listGoalCustomerTrainerFragment"
@@ -420,5 +431,9 @@
             android:name="customerName"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/faqsFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.gdpr.fragments.FaqsFragment"
+        android:label="FaqsFragment" />
 
 </navigation>

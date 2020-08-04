@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/circleImageViewTrainer_displayProfile">
+        app:layout_constraintTop_toBottomOf="@+id/circleImageViewAdmin_displayProfile">
 
         <LinearLayout
             android:id="@+id/ll_details_user"
