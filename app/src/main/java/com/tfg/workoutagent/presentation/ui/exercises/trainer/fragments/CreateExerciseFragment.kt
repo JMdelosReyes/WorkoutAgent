@@ -109,6 +109,7 @@ class CreateExerciseFragment : BaseFragment() {
         if (requestCode == PICK_MULTI_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null) {
             if (data.clipData != null) {
                 selectedPhotosUri.clear()
+                viewModel.clearPhotos()
                 if ((ll_photos as LinearLayout).childCount > 0) (ll_photos as LinearLayout).removeAllViews()
                 for (index in 0 until data.clipData!!.itemCount) run {
                     val photoUri: Uri = data.clipData!!.getItemAt(index).uri
@@ -126,6 +127,7 @@ class CreateExerciseFragment : BaseFragment() {
 
                         builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
                             selectedPhotosUri.remove(photoUri)
+                            viewModel.removePhoto(photoUri)
                             ll_photos.removeView(it)
                             dialog.dismiss()
                         }
@@ -137,8 +139,12 @@ class CreateExerciseFragment : BaseFragment() {
                         builder.show()
                     }
                 }
+                selectedPhotosUri.forEach{ uri ->
+                    viewModel.photosUris.add(uri!!)
+                }
             } else if (data.data != null) {
                 selectedPhotosUri.clear()
+                viewModel.clearPhotos()
                 if ((ll_photos as LinearLayout).childCount > 0) (ll_photos as LinearLayout).removeAllViews()
                 selectedPhotosUri.add(data.data)
                 viewModel.dataPhoto = data
@@ -152,7 +158,9 @@ class CreateExerciseFragment : BaseFragment() {
                     builder.setMessage(getString(R.string.alert_message_delete))
 
                     builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
+                        viewModel.removePhoto(selectedPhotosUri[0]!!)
                         selectedPhotosUri.remove(data.data)
+                        viewModel.dataPhoto = null
                         ll_photos.removeView(it)
                         dialog.dismiss()
                     }
@@ -163,6 +171,7 @@ class CreateExerciseFragment : BaseFragment() {
                     builder.create()
                     builder.show()
                 }
+                viewModel.addPhoto(selectedPhotosUri[0]!!)
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels
 
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,7 +33,7 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
     val tagsError: LiveData<String>
         get() = _tagsError
     var dataPhoto : Intent? = null
-
+    val photosUris = mutableListOf<Uri>()
     private val _photosError =  MutableLiveData("")
     val photosError: LiveData<String>
         get() = _photosError
@@ -51,6 +52,9 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
 
     fun addTag(string: String) = tags.add(string)
     fun removeTag(index: Int) = tags.removeAt(index)
+    fun addPhoto(uri: Uri) = photosUris.add(uri)
+    fun removePhoto(uri: Uri) = photosUris.removeAt(photosUris.indexOf(uri))
+    fun clearPhotos() = photosUris.clear()
 
     private fun createExercise() {
         viewModelScope.launch {
@@ -119,8 +123,13 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
         if(dataPhoto == null){
             _photosError.value = "At least an image is required"
             return
+        }else{
+            if(photosUris.isEmpty()){
+                _photosError.value = "At least an image is required"
+                return
+            }
+            _photosError.value = ""
         }
-        _photosError.value = ""
     }
 
 }
