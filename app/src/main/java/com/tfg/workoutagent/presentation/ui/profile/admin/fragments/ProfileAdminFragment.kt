@@ -1,16 +1,22 @@
 package com.tfg.workoutagent.presentation.ui.profile.admin.fragments
 
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -18,18 +24,25 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.AdminActivity
 import com.tfg.workoutagent.PROFILE_ADMIN_FRAGMENT
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
+import com.tfg.workoutagent.domain.profileUseCases.DisplayProfileUserUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivity
 import com.tfg.workoutagent.presentation.ui.login.activities.PREFERENCE_FILE_KEY
 import com.tfg.workoutagent.presentation.ui.profile.admin.viewModels.ProfileAdminViewModel
-import com.tfg.workoutagent.presentation.ui.profile.customer.fragments.ProfileCustomerFragmentDirections
+import com.tfg.workoutagent.presentation.ui.profile.admin.viewModels.ProfileAdminViewModelFactory
+import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_admin_profile.*
+import kotlinx.android.synthetic.main.fragment_admin_profile.circleImageViewAdmin_displayProfile
+import kotlinx.android.synthetic.main.fragment_trainer_profile.*
 
 class ProfileAdminFragment : Fragment() {
 
     private lateinit var profileAdminViewModel: ProfileAdminViewModel
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var viewModel: ProfileAdminViewModel
     private var darkMode : Boolean = false
 
     override fun onCreateView(
@@ -37,18 +50,26 @@ class ProfileAdminFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        profileAdminViewModel =
-            ViewModelProvider(this@ProfileAdminFragment).get(ProfileAdminViewModel::class.java)
+        /*profileAdminViewModel =
+            ViewModelProvider(this@ProfileAdminFragment).get(ProfileAdminViewModel::class.java)*/
         darkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_NO -> false
             else -> true
         }
+        viewModel = ViewModelProvider(
+            this, ProfileAdminViewModelFactory(
+                DisplayProfileUserUseCaseImpl(
+                    UserRepositoryImpl()
+                )
+            )
+        ).get(ProfileAdminViewModel::class.java)
         return inflater.inflate(R.layout.fragment_admin_profile, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+        observeData()
     }
 
     private fun setupUI(){
@@ -96,5 +117,22 @@ class ProfileAdminFragment : Fragment() {
         FirebaseAuth.getInstance().signOut()
         mGoogleSignInClient.revokeAccess()
         startActivity(GoogleSignInActivity.getLaunchIntent(this.context!!))
+    }
+
+    private fun observeData() {
+        viewModel.getProfileAdmin.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Success -> {
+                    Glide.with(this).load(it.data.photo).into(circleImageViewAdmin_displayProfile)
+                    display_admin_email_displayProfile.text = it.data.email
+                    display_admin_phone_displayProfile.text = it.data.phone
+                    display_admin_birthday_displayProfile.text =
+                        parseDateToFriendlyDate(it.data.birthday)
+                    display_trainer_dni_displayProfile.text = it.data.dni
+                }
+                is Resource.Failure -> {
+                }
+            }
+        })
     }
 }

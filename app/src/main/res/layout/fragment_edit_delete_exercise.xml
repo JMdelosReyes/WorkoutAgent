@@ -24,6 +24,7 @@
             android:orientation="vertical"
             android:padding="24dp"
             android:paddingTop="16dp">
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/exercise_title_input"
                 android:layout_width="match_parent"
@@ -40,11 +41,13 @@
                     android:text="@={viewModel.title}" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
             <LinearLayout
                 android:id="@+id/ll_multiple_desc"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/exercise_description_input"
                     android:layout_width="match_parent"
@@ -61,193 +64,225 @@
                         android:text="@={viewModel.description}" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="4dp">
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:id="@+id/ll_arms"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/button_ll_arms"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#F6F1F1"
+                        android:clickable="false"
                         android:src="@drawable/ic_arms_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Arms"
-                        android:shadowColor="#F6F1F1" />
+                        android:clickable="false"
+                        android:shadowColor="#F6F1F1"
+                        android:text="Arms" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/button_ll_back"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#F6F1F1"
+                        android:clickable="false"
                         android:src="@drawable/ic_back_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Back"
-                        android:shadowColor="#F6F1F1" />
+                        android:clickable="false"
+                        android:shadowColor="#F6F1F1"
+                        android:text="Back" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_shoulder"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/button_ll_shoulder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#F6F1F1"
+                        android:clickable="false"
                         android:src="@drawable/ic_shoulder_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Shoulder"
-                        android:shadowColor="#F6F1F1" />
+                        android:clickable="false"
+                        android:shadowColor="#F6F1F1"
+                        android:text="Shoulder" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_legs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/button_ll_legs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#F6F1F1"
+                        android:clickable="false"
                         android:src="@drawable/ic_legs_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Legs"
-                        android:shadowColor="#F6F1F1" />
+                        android:clickable="false"
+                        android:shadowColor="#F6F1F1"
+                        android:text="Legs" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginStart="4dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginStart="4dp">
+                android:orientation="horizontal">
+
                 <LinearLayout
                     android:id="@+id/ll_abs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/button_ll_abs"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#F6F1F1"
+                        android:clickable="false"
                         android:src="@drawable/ic_abs_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Abs"
-                        android:shadowColor="#F6F1F1" />
+                        android:clickable="false"
+                        android:shadowColor="#F6F1F1"
+                        android:text="Abs" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_cardio"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/button_ll_cardio"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#F6F1F1"
+                        android:clickable="false"
                         android:src="@drawable/ic_cardio_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Cardio"
-                        android:shadowColor="#F6F1F1" />
+                        android:clickable="false"
+                        android:shadowColor="#F6F1F1"
+                        android:text="Cardio" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_gluteus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/button_ll_gluteus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:backgroundTint="#F6F1F1"
+                        android:clickable="false"
                         android:src="@drawable/ic_gluteus_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Gluteus"
-                        android:shadowColor="#F6F1F1" />
+                        android:clickable="false"
+                        android:shadowColor="#F6F1F1"
+                        android:text="Gluteus" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/ll_chest"
                     android:layout_width="60dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginStart="8dp">
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/button_ll_chest"
                         android:layout_width="match_parent"
                         android:layout_height="60dp"
                         android:backgroundTint="#F6F1F1"
+                        android:clickable="false"
                         android:src="@drawable/ic_chest_40dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:text="Chest"
-                        android:shadowColor="#F6F1F1" />
+                        android:clickable="false"
+                        android:shadowColor="#F6F1F1"
+                        android:text="Chest" />
+
                 </LinearLayout>
+
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/edit_exercise_tags_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/add_activity_set_error_message"
+                android:textColor="@color/design_default_color_error"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/upload_multiple_images_edit_exercise"
@@ -256,9 +291,15 @@
                 android:layout_marginTop="16dp"
                 android:backgroundTint="#2979FF"
                 android:drawableLeft="@drawable/ic_multiple_photo_48dp"
-                android:text="Select multiple images"
+                android:text="Select images"
                 android:textSize="26sp" />
-
+            <TextView
+                android:id="@+id/edit_exercise_photo_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/design_default_color_error"
+                android:visibility="gone" />
             <Button
                 android:id="@+id/update_exercise_button"
                 android:layout_width="match_parent"
@@ -289,12 +330,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/customer_birthday_input"
                 app:layout_constraintVertical_bias="0.0" />
+
             <LinearLayout
                 android:id="@+id/ll_photos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-            </LinearLayout>
+                android:orientation="vertical"></LinearLayout>
 
 
         </LinearLayout>

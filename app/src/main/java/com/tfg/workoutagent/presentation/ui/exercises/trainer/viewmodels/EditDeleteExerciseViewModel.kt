@@ -34,6 +34,7 @@ class EditDeleteExerciseViewModel(
         get() = _tagsError
 
     var photos = MutableLiveData<MutableList<String>>()
+    var photosList = mutableListOf<String>()
     private val _photosError = MutableLiveData("")
     val photosError: LiveData<String>
         get() = _photosError
@@ -41,6 +42,7 @@ class EditDeleteExerciseViewModel(
 
     fun addTag(string: String) = tagsList.add(string)
     fun removeTag(index: Int) = tagsList.removeAt(index)
+    fun removePhoto(index: Int) = photosList.removeAt(index)
 
     val getExercise = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
@@ -67,6 +69,8 @@ class EditDeleteExerciseViewModel(
         title.postValue(exercise.data.title)
         description.postValue((exercise.data.description))
         tagsList = exercise.data.tags
+        photosList = exercise.data.photos
+        photos.postValue(exercise.data.photos)
     }
 
     fun onSave() {
@@ -80,13 +84,14 @@ class EditDeleteExerciseViewModel(
         checkTitle()
         checkDescription()
         checkTags()
-        return _titleError.value == "" && _descriptionError.value == "" && _tagsError.value == ""
+        checkPhotos()
+        return _titleError.value == "" && _descriptionError.value == "" && _tagsError.value == "" && _photosError.value == ""
     }
 
     private fun checkTitle() {
         title.value?.let {
-            if (it.length < 4 || it.length > 30) {
-                _titleError.value = "The title must be between 4 and 30 characters"
+            if (it.length < 4 || it.length > 100) {
+                _titleError.value = "The title must be between 4 and 100 characters"
                 return
             }
             _titleError.value = ""
@@ -95,8 +100,8 @@ class EditDeleteExerciseViewModel(
 
     private fun checkDescription() {
         description.value?.let {
-            if (it.length < 10 || it.length > 100) {
-                _descriptionError.value = "The description must be between 10 and 100 characters"
+            if (it.length < 10 || it.length > 1000) {
+                _descriptionError.value = "The description must be between 10 and 1000 characters"
                 return
             }
             _descriptionError.value = ""
@@ -110,6 +115,16 @@ class EditDeleteExerciseViewModel(
                 return
             }
             _tagsError.value = ""
+        }
+    }
+
+    private fun checkPhotos(){
+        photos.value?.let {
+            if(it.isEmpty() && dataPhoto == null){
+                _photosError.value = "At least an image is required"
+                return
+            }
+            _photosError.value = ""
         }
     }
 
@@ -132,6 +147,17 @@ class EditDeleteExerciseViewModel(
                             _exerciseSaved.value = true
                         }
                     }
+                }else{
+                    manageExerciseUseCase.editExercise(
+                        Exercise(
+                            id = exerciseId,
+                            title = title.value!!,
+                            description = description.value!!,
+                            tags = tags.value!!,
+                            photos = mutableListOf()
+                        )
+                    )
+                    _exerciseSaved.value = true
                 }
             } catch (e: Exception) {
                 _exerciseSaved.value = false

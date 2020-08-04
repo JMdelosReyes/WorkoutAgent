@@ -154,6 +154,20 @@ class CreateCustomerTrainerFragment : BaseFragment() {
                 if (it != "") it else null
         })
 
+        viewModel.genreError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it != "") {
+                    binding.selectSexErrorMessage.text = it
+                    binding.selectSexErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.selectSexErrorMessage.text = ""
+                    binding.selectSexErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.selectSexErrorMessage.text = ""
+                binding.selectSexErrorMessage.visibility = View.GONE
+            }
+        })
     }
     private fun observeData(){
 
