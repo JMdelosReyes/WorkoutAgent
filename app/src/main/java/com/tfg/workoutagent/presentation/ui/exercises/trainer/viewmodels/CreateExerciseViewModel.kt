@@ -32,7 +32,7 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
     val tagsError: LiveData<String>
         get() = _tagsError
     var dataPhoto : Intent? = null
-    private val photos = MutableLiveData("")
+
     private val _photosError =  MutableLiveData("")
     val photosError: LiveData<String>
         get() = _photosError
@@ -82,7 +82,8 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
         checkTitle()
         checkDescription()
         checkTags()
-        return _titleError.value == "" && _descriptionError.value == "" && _tagsError.value == ""
+        checkPhotos()
+        return _titleError.value == "" && _descriptionError.value == "" && _tagsError.value == "" && _photosError.value == ""
     }
 
     private fun checkTitle() {
@@ -114,4 +115,12 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
             _tagsError.value = ""
         }
     }
+    private fun checkPhotos(){
+        if(dataPhoto == null){
+            _photosError.value = "At least an image is required"
+            return
+        }
+        _photosError.value = ""
+    }
+
 }

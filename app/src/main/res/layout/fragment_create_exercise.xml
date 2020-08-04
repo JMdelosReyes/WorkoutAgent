@@ -293,7 +293,14 @@
                 android:drawableLeft="@drawable/ic_multiple_photo_48dp"
                 android:text="Select images"
                 android:textSize="26sp" />
-
+            <TextView
+                android:id="@+id/add_exercise_photo_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="@string/add_activity_set_error_message"
+                android:textColor="@color/design_default_color_error"
+                android:visibility="gone" />
             <Button
                 android:id="@+id/create_exercise_button"
                 android:layout_width="match_parent"

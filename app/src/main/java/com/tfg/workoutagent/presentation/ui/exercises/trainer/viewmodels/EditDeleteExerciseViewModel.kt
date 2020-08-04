@@ -34,6 +34,7 @@ class EditDeleteExerciseViewModel(
         get() = _tagsError
 
     var photos = MutableLiveData<MutableList<String>>()
+    var photosList = mutableListOf<String>()
     private val _photosError = MutableLiveData("")
     val photosError: LiveData<String>
         get() = _photosError
@@ -41,6 +42,7 @@ class EditDeleteExerciseViewModel(
 
     fun addTag(string: String) = tagsList.add(string)
     fun removeTag(index: Int) = tagsList.removeAt(index)
+    fun removePhoto(index: Int) = photosList.removeAt(index)
 
     val getExercise = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
@@ -67,6 +69,8 @@ class EditDeleteExerciseViewModel(
         title.postValue(exercise.data.title)
         description.postValue((exercise.data.description))
         tagsList = exercise.data.tags
+        photosList = exercise.data.photos
+        photos.postValue(exercise.data.photos)
     }
 
     fun onSave() {
@@ -80,7 +84,8 @@ class EditDeleteExerciseViewModel(
         checkTitle()
         checkDescription()
         checkTags()
-        return _titleError.value == "" && _descriptionError.value == "" && _tagsError.value == ""
+        checkPhotos()
+        return _titleError.value == "" && _descriptionError.value == "" && _tagsError.value == "" && _photosError.value == ""
     }
 
     private fun checkTitle() {
@@ -113,6 +118,16 @@ class EditDeleteExerciseViewModel(
         }
     }
 
+    private fun checkPhotos(){
+        photos.value?.let {
+            if(it.isEmpty() && dataPhoto == null){
+                _photosError.value = "At least an image is required"
+                return
+            }
+            _photosError.value = ""
+        }
+    }
+
     private fun editExercise() {
         viewModelScope.launch {
             try {
@@ -133,7 +148,16 @@ class EditDeleteExerciseViewModel(
                         }
                     }
                 }else{
-                    Log.i("Prueba", "Borramos la foto")
+                    manageExerciseUseCase.editExercise(
+                        Exercise(
+                            id = exerciseId,
+                            title = title.value!!,
+                            description = description.value!!,
+                            tags = tags.value!!,
+                            photos = mutableListOf()
+                        )
+                    )
+                    _exerciseSaved.value = true
                 }
             } catch (e: Exception) {
                 _exerciseSaved.value = false
