@@ -72,6 +72,11 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
+                R.id.faqsFragment3 -> {
+                    supportActionBar?.title = "FAQS"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
             }
         }
     }

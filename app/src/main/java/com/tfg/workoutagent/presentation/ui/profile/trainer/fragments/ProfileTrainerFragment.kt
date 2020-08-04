@@ -35,7 +35,6 @@ import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_trainer_profile.*
 
-
 class ProfileTrainerFragment : Fragment() {
 
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
@@ -90,6 +89,10 @@ class ProfileTrainerFragment : Fragment() {
             dialogView.button_terms.setOnClickListener {
                 alertDialog.dismiss()
                 findNavController().navigate(ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToTermsConditionsFragment3())
+            }
+            dialogView.button_qa.setOnClickListener {
+                alertDialog.dismiss()
+                findNavController().navigate(ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToFaqsFragment())
             }
             alertDialog.show()
         }

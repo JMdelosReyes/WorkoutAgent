@@ -49,3 +49,7 @@ fun getAllTerms(context: Context): MutableList<Question> {
         )
     )
 }
+
+fun getAllFaqs(): MutableList<Question> {
+    return mutableListOf(Question("¿Qué hora es?", "Las 8:32"))
+}

@@ -136,6 +136,11 @@ class TrainerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
+                R.id.faqsFragment -> {
+                    supportActionBar?.title = "FAQS"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
             }
         }
     }

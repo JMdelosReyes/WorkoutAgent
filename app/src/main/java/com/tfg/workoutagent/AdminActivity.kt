@@ -69,6 +69,11 @@ class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener 
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
+                R.id.faqsFragment2 -> {
+                    supportActionBar?.title = "FAQS"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
             }
         }
     }
