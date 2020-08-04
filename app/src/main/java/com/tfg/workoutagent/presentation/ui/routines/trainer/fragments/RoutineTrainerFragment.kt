@@ -32,6 +32,30 @@ class RoutineTrainerFragment : Fragment() {
         ).get(ListRoutineTrainerViewModel::class.java)
     }
 
+    private val fabActions = object {
+        var currentMode = 0 // 0: Add routine, 1: Assign routine
+
+        fun addRoutine() {
+            findNavController().navigate(
+                RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToCreateRoutineFragment(
+                    clearData = 1
+                )
+            )
+        }
+
+        fun assignRoutine() {
+            Toast.makeText(requireContext(), "AAAAAAA", Toast.LENGTH_SHORT).show()
+        }
+
+        fun doAction() {
+            if (this.currentMode == 0) {
+                this.addRoutine()
+            } else {
+                this.assignRoutine()
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,6 +67,7 @@ class RoutineTrainerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupButtons()
+        setupTabs()
 
         adapter = RoutineListAdapter(this.requireContext())
         recyclerViewRoutine.layoutManager = LinearLayoutManager(this.requireContext())
@@ -77,13 +102,11 @@ class RoutineTrainerFragment : Fragment() {
 
     private fun setupButtons() {
         fab_button_routine.setOnClickListener {
-            findNavController().navigate(
-                RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToCreateRoutineFragment(
-                    clearData = 1
-                )
-            )
+            fabActions.doAction()
         }
+    }
 
+    private fun setupTabs() {
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 // nothing
@@ -96,9 +119,11 @@ class RoutineTrainerFragment : Fragment() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 tab?.let {
                     if (it.position == 0) {
+                        fabActions.currentMode = 0
                         adapter.setListData(viewModel.getGeneralRoutines())
                         adapter.notifyDataSetChanged()
                     } else {
+                        fabActions.currentMode = 1
                         adapter.setListData(viewModel.getAssignedRoutines())
                         adapter.notifyDataSetChanged()
                     }
