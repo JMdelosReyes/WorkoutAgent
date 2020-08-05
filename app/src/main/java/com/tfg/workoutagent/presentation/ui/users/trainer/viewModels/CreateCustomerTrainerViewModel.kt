@@ -114,7 +114,6 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
                         }
                     }
                 }else{
-                    Log.i("uploadImage", "null")
                     photo = "DEFAULT_IMAGE"
                     val customer = Customer(birthday = parseStringToDateBar(birthday.value)!!, dni = dni, email = email, genre = genre, name = name, surname = surname, photo = photo, phone = phone, height = height)
                     val weight = Weight(weight = initialWeight)
@@ -145,8 +144,10 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
 
     private fun checkGender(){
         genre.let {
-            if(genre != "Male" || genre != "Female"){
+            if(genre != "M" && genre != "F"){
                 _genreError.value = "You should select one genre"
+            }else{
+                _genreError.value = ""
             }
         }
     }
