@@ -11,14 +11,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentAssignRoutineBinding
 import com.tfg.workoutagent.domain.routineUseCases.AssignRoutinesUseCaseImpl
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.CustomerListAdapter
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.RoutineAssignListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.AssignRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.AssignRoutineViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import kotlinx.android.synthetic.main.fragment_assign_routine.*
 
 class AssignRoutineFragment : DialogFragment() {
 
@@ -33,6 +37,10 @@ class AssignRoutineFragment : DialogFragment() {
             )
         ).get(AssignRoutineViewModel::class.java)
     }
+
+    private lateinit var customerListAdapter: CustomerListAdapter
+
+    private lateinit var routineAssignListAdapter: RoutineAssignListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +73,8 @@ class AssignRoutineFragment : DialogFragment() {
     override fun onStart() {
         super.onStart()
         setupDialogWindow()
+        setupCustomerListRecycler()
+        setupRoutineAssignListRecycler()
         observeData()
     }
 
@@ -105,7 +115,23 @@ class AssignRoutineFragment : DialogFragment() {
                         Log.i("ROUTINES", "LOADING")
                     }
                     is Resource.Success -> {
-                        Log.i("ROUTINES", "SUCCESS")
+                        this.routineAssignListAdapter.setListData(it.data)
+                    }
+                    is Resource.Failure -> {
+                        Log.i("ROUTINES", "FAILURE")
+                    }
+                }
+            }
+        })
+
+        this.viewModel.customers.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.i("ROUTINES", "LOADING")
+                    }
+                    is Resource.Success -> {
+                        this.customerListAdapter.setListData(it.data)
                     }
                     is Resource.Failure -> {
                         Log.i("ROUTINES", "FAILURE")
@@ -115,5 +141,20 @@ class AssignRoutineFragment : DialogFragment() {
         })
 
         this.viewModel.loadRoutines()
+        this.viewModel.loadCustomers()
+    }
+
+    private fun setupCustomerListRecycler() {
+        this.customerListAdapter = CustomerListAdapter(requireContext(), {})
+        recyclerView_customers.layoutManager =
+            LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerView_customers.adapter = this.customerListAdapter
+    }
+
+    private fun setupRoutineAssignListRecycler() {
+        this.routineAssignListAdapter = RoutineAssignListAdapter(requireContext(), {})
+        recyclerView_routines.layoutManager =
+            LinearLayoutManager(this.requireContext())
+        recyclerView_routines.adapter = this.routineAssignListAdapter
     }
 }

@@ -1,6 +1,5 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,17 +17,17 @@ class AssignRoutineViewModel(private val assignRoutinesUseCase: AssignRoutinesUs
 
     val routines: MutableLiveData<Resource<MutableList<Routine>>> = MutableLiveData()
 
-    /*fun loadCustomers() = viewModelScope.launch(Dispatchers.IO) {
+    fun loadCustomers() = viewModelScope.launch(Dispatchers.IO) {
         try {
-            customers.value = Resource.Loading()
-            val customerList = assignRoutineUseCase.getCustomers()
+            customers.postValue(Resource.Loading())
+            val customerList = assignRoutinesUseCase.getCustomers()
             if (customerList is Resource.Success) {
-                customers.value = customerList
+                customers.postValue(customerList)
             }
         } catch (e: Exception) {
-            customers.value = Resource.Failure(e)
+            customers.postValue(Resource.Failure(e))
         }
-    }*/
+    }
 
     fun loadRoutines() = viewModelScope.launch(Dispatchers.IO) {
         try {
