@@ -1,28 +1,50 @@
 package com.tfg.workoutagent.vo
 
-import android.app.AlertDialog
 import android.content.Context
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 fun createAlertDialog(
     context: Context,
     title: String,
     message: String,
     positiveAction: () -> Unit,
-    negativeAction: () -> Unit
+    negativeAction: () -> Unit,
+    positiveText: String = "Yes",
+    negativeText: String = "No"
 ) {
-    val builder = AlertDialog.Builder(context)
-    builder.setTitle(title)
-    builder.setMessage(message)
+    MaterialAlertDialogBuilder(context)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(positiveText) { dialog, _ ->
+            positiveAction()
+            dialog.dismiss()
+        }
+        .setNegativeButton(negativeText) { dialog, _ ->
+            negativeAction()
+            dialog.dismiss()
+        }
+        .show()
+}
 
-    builder.setPositiveButton("Yes") { dialog, _ ->
-        positiveAction()
-        dialog.dismiss()
-    }
-
-    builder.setNeutralButton("No") { dialog, _ ->
-        negativeAction()
-        dialog.dismiss()
-    }
-    builder.create()
-    builder.show()
+fun createAlertDialog(
+    context: Context,
+    title: String,
+    message: String,
+    positiveAction: () -> Unit,
+    negativeAction: () -> Unit,
+    positiveText: Int,
+    negativeText: Int
+) {
+    MaterialAlertDialogBuilder(context)
+        .setTitle(title)
+        .setMessage(message)
+        .setPositiveButton(context.resources.getString(positiveText)) { dialog, _ ->
+            positiveAction()
+            dialog.dismiss()
+        }
+        .setNegativeButton(context.resources.getString(negativeText)) { dialog, _ ->
+            negativeAction()
+            dialog.dismiss()
+        }
+        .show()
 }
