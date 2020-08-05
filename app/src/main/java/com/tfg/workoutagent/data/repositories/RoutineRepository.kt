@@ -10,6 +10,8 @@ interface RoutineRepository {
 
     suspend fun getOwnRoutines(): Resource<MutableList<Routine>>
 
+    suspend fun getTemplateRoutines(): Resource<MutableList<Routine>>
+
     suspend fun getRoutine(id: String): Resource<Routine>
 
     suspend fun getActivityTimeline(): Resource<MutableList<TimelineActivity>>
@@ -20,7 +22,7 @@ interface RoutineRepository {
 
     suspend fun deleteRoutine(id: String): Resource<Boolean>
 
-    suspend fun getAssignedRoutine() : Resource<Routine>
+    suspend fun getAssignedRoutine(): Resource<Routine>
 
-    suspend fun getTodayActivities() : Resource<MutableList<RoutineActivity>>
+    suspend fun getTodayActivities(): Resource<MutableList<RoutineActivity>>
 }

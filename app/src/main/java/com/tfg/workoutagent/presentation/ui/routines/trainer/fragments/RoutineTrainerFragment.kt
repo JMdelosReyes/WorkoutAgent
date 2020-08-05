@@ -44,7 +44,7 @@ class RoutineTrainerFragment : Fragment() {
         }
 
         fun assignRoutine() {
-            Toast.makeText(requireContext(), "AAAAAAA", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToAssignRoutineFragment())
         }
 
         fun doAction() {

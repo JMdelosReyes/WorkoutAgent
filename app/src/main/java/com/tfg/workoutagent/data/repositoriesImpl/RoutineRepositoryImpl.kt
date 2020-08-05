@@ -3,14 +3,12 @@ package com.tfg.workoutagent.data.repositoriesImpl
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.tfg.workoutagent.data.repositories.RoutineRepository
 import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class RoutineRepositoryImpl : RoutineRepository {
 
@@ -449,5 +447,31 @@ class RoutineRepositoryImpl : RoutineRepository {
 
     override suspend fun getTodayActivities(): Resource<MutableList<RoutineActivity>> {
         return Resource.Success(mutableListOf())
+    }
+
+    override suspend fun getTemplateRoutines(): Resource<MutableList<Routine>> {
+        val trainerDB = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await()
+
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("routines")
+            .whereEqualTo("trainer", trainerDB.documents[0].reference)
+            .whereEqualTo("customer", null)
+            .get().await()
+
+        val routines = mutableListOf<Routine>()
+
+        for (document in resultData) {
+            routines.add(
+                Routine(
+                    id = document.id,
+                    title = document.data["title"] as String
+                )
+            )
+        }
+
+        return Resource.Success(routines)
     }
 }
