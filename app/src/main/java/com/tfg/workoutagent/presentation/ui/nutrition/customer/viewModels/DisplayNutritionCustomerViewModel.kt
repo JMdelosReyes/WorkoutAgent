@@ -84,9 +84,9 @@ class DisplayNutritionCustomerViewModel(private val displayProfileUserUseCase: D
                     calories.value =(kcal.roundToInt().toString())
                 }
             }
-        proteins.value=((weights.value!![0].weight * 1.9).roundToInt().toString())
-        fats.value=((weights.value!![0].weight * 0.8).roundToInt().toString())
-        carbohydrates.value=((calories.value!!.toDouble() * 0.2).roundToInt().toString())
+        proteins.value=((weights.value!![0].weight * 1.9).roundToInt().toString() + " g.")
+        fats.value=((weights.value!![0].weight * 0.8).roundToInt().toString() + " g.")
+        carbohydrates.value=((calories.value!!.toDouble() * 0.2).roundToInt().toString() + " g.")
 
 
     }
