@@ -9,6 +9,7 @@ import com.tfg.workoutagent.data.repositories.RoutineRepository
 import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
+import java.lang.Exception
 
 class RoutineRepositoryImpl : RoutineRepository {
 
@@ -91,6 +92,8 @@ class RoutineRepositoryImpl : RoutineRepository {
                                                             actividadesValues[activityAtributo].toString()
                                                         "repetitions" -> routineActivity.repetitions =
                                                             actividadesValues[activityAtributo] as MutableList<Int>
+                                                        "repetitionsCustomer" -> routineActivity.repetitionsCustomer =
+                                                            actividadesValues[activityAtributo] as MutableList<Int>
                                                         "sets" -> {
                                                             routineActivity.sets =
                                                                 (actividadesValues[activityAtributo] as Long).toInt()
@@ -98,6 +101,8 @@ class RoutineRepositoryImpl : RoutineRepository {
                                                         "type" -> routineActivity.type =
                                                             actividadesValues[activityAtributo].toString()
                                                         "weightsPerRepetition" -> routineActivity.weightsPerRepetition =
+                                                            actividadesValues[activityAtributo] as MutableList<Double>
+                                                        "weightsPerRepetitionCustomer" -> routineActivity.weightsPerRepetitionCustomer =
                                                             actividadesValues[activityAtributo] as MutableList<Double>
 
                                                     }
@@ -235,6 +240,8 @@ class RoutineRepositoryImpl : RoutineRepository {
                                                         activity[activityAttribute].toString()
                                                     "repetitions" -> routineActivity.repetitions =
                                                         activity[activityAttribute] as MutableList<Int>
+                                                    "repetitionsCustomer" -> routineActivity.repetitionsCustomer =
+                                                        activity[activityAttribute] as MutableList<Int>
                                                     "sets" -> {
                                                         routineActivity.sets =
                                                             (activity[activityAttribute] as Long).toInt()
@@ -243,7 +250,9 @@ class RoutineRepositoryImpl : RoutineRepository {
                                                         activity[activityAttribute].toString()
                                                     "weightsPerRepetition" -> routineActivity.weightsPerRepetition =
                                                         activity[activityAttribute] as MutableList<Double>
-
+                                                    "weightsPerRepetitionCustomer" -> routineActivity.weightsPerRepetitionCustomer =
+                                                        activity[activityAttribute] as MutableList<Double>
+                                                    "completed" -> routineActivity.completed = activity[activityAttribute] as Boolean
                                                 }
                                             }
                                         }
@@ -473,5 +482,24 @@ class RoutineRepositoryImpl : RoutineRepository {
         }
 
         return Resource.Success(routines)
+    }
+
+    override suspend fun updateDay(updatedDay: Day): Resource<Boolean> {
+        val assignedRoutine = this.getAssignedRoutine()
+        if(assignedRoutine is Resource.Success){
+            val routine = assignedRoutine.data
+            var index = 0
+            for (day in routine.days){
+                if(!day.completed) {
+                    routine.days[index] = updatedDay
+                    break
+                }
+                index++
+            }
+            val res = this.editRoutine(routine)
+            return if(res is Resource.Success) Resource.Success(true) else res
+        }
+
+        return Resource.Failure(Exception("ERROR"))
     }
 }

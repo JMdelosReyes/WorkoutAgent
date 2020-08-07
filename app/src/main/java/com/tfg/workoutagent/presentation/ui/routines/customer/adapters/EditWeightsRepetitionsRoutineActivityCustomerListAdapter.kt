@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.ActivitySet
-import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.customer.fragments.TodayActivitiesCustomerFragment
 import kotlinx.android.synthetic.main.item_row_set_edit.view.*
 
 class EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
     private val context: Context,
-    private val activity : RoutineActivity,
+    private val activityPos: Int,
     private val listActivitySets: MutableList<ActivitySet>,
     private val actionListeners: TodayActivitiesCustomerFragment.ActionListeners
 
@@ -42,10 +41,6 @@ class EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
         holder.bindView(rowSet)
     }
 
-    fun finishedActivitySetListener(position: Int){
-        this.notifyItemChanged(position)
-    }
-
     fun removeActivitySetListener(position:Int){
         this.dataList.removeAt(position)
         this.notifyItemRemoved(position)
@@ -56,25 +51,27 @@ class EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
             itemView.repetitions_activity_input_edit.setText(activitySet.repetitions.toString())
             itemView.weights_activity_input_edit.setText(activitySet.weight.toString())
             itemView.delete_set_button_edit.setOnClickListener{
-                actionListeners.deleteClickListener(adapterPosition, activity)
+                actionListeners.deleteClickListener(activityPos, adapterPosition)
+                actionListeners.updateElement(activityPos)
                 removeActivitySetListener(adapterPosition)
             }
-            itemView.finished_set_button_edit.setOnFocusChangeListener { v, hasFocus ->
-                if(!hasFocus){
-                    val errorValidation = actionListeners.finishedClickListener(adapterPosition,
-                        itemView.repetitions_activity_input_edit.text.toString().toIntOrNull(),
-                        itemView.weights_activity_input_edit.toString().toDoubleOrNull(),
-                        activity
-                    )
-                    if(errorValidation != "") {
-                        itemView.activity_set_error_message_edit.text = errorValidation
-                        itemView.activity_set_error_message_edit.visibility = View.VISIBLE
-                    }else{
-                        itemView.activity_set_error_message_edit.text = errorValidation
-                        itemView.activity_set_error_message_edit.visibility = View.GONE
-                        finishedActivitySetListener(adapterPosition)
-                    }
+            itemView.finished_set_button_edit.setOnClickListener { v ->
+                val errorValidation = actionListeners.finishedClickListener(activityPos,
+                    adapterPosition,
+                    itemView.repetitions_activity_input_edit.text.toString().toIntOrNull(),
+                    itemView.weights_activity_input_edit.text.toString().toDoubleOrNull()
+                )
+                if(errorValidation != "") {
+                    itemView.activity_set_error_message_edit.text = errorValidation
+                    itemView.activity_set_error_message_edit.visibility = View.VISIBLE
+                }else{
+                    itemView.activity_set_error_message_edit.text = errorValidation
+                    itemView.activity_set_error_message_edit.visibility = View.GONE
+                    itemView.finished_set_button_edit.visibility = View.INVISIBLE
+                    itemView.delete_set_button_edit.visibility = View.INVISIBLE
+                    actionListeners.updateElement(activityPos)
                 }
+
             }
         }
     }

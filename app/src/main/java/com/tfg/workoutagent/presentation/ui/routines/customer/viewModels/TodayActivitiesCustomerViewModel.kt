@@ -45,18 +45,35 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
         }
     }
 
-    private var oldActivities = mutableListOf<RoutineActivity>()
-    fun getOldActivities() : MutableList<RoutineActivity>{
-        val res : MutableList<RoutineActivity> = mutableListOf()
-        res.addAll(this.oldActivities)
-        return res
-    }
-
     private var newTodayActivities = mutableListOf<TodayActivity>()
 
     private fun loadValues(routine: Resource.Success<Routine>) {
-        oldActivities = routine.data.days[0].activities
-        val activities =  routine.data.days[0].activities
+        var activities = mutableListOf<RoutineActivity>()
+        for (day in routine.data.days){
+            if(day.completed) continue
+            activities = day.activities
+            day.activities.forEach { routineActivity ->
+                val repetitions = mutableListOf<Int>()
+                val weights = mutableListOf<Double>()
+                if(routineActivity.repetitionsCustomer.isEmpty()){
+                    routineActivity.repetitions.forEach { it -> repetitions.add(it.toInt())}
+                    routineActivity.weightsPerRepetition.forEach { it -> weights.add(it.toDouble())}
+                    routineActivity.repetitionsCustomer.clear()
+                    routineActivity.weightsPerRepetitionCustomer.clear()
+                    routineActivity.repetitionsCustomer.addAll(repetitions)
+                    routineActivity.weightsPerRepetitionCustomer.addAll(weights)
+                }else{
+                    routineActivity.repetitionsCustomer.forEach { it -> repetitions.add(it.toInt())}
+                    routineActivity.weightsPerRepetitionCustomer.forEach { it -> weights.add(it.toDouble())}
+                    routineActivity.repetitionsCustomer.clear()
+                    routineActivity.weightsPerRepetitionCustomer.clear()
+                    routineActivity.repetitionsCustomer.addAll(repetitions)
+                    routineActivity.weightsPerRepetitionCustomer.addAll(weights)
+                }
+            }
+            _executedDay.postValue(day)
+            break
+        }
         val todayActivities = mutableListOf<TodayActivity>()
         for (activity in activities){
             val sets = TodayActivity.parseSets(activity.repetitions, activity.weightsPerRepetition)
@@ -65,42 +82,64 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
         newTodayActivities = todayActivities
     }
 
-    private fun getOldPosActivity(activity: RoutineActivity) : Int = this.oldActivities.indexOf(activity)
-
-    fun updateSetActivityToday(positionSet: Int, repetition: Int, weight: Double, activity: RoutineActivity) : String{
-        val posActivity = getOldPosActivity(activity)
+    fun updateSetActivityToday(activityPos: Int, setPosition: Int, repetition:Int?, weight: Double?) : String {
         if(checkSet(repetition, weight)){
-            this.newTodayActivities[posActivity].sets[positionSet].weight = weight
-            this.newTodayActivities[posActivity].sets[positionSet].repetitions = repetition
+            val newActivitySet = this.newTodayActivities[activityPos].sets[setPosition]
+            newActivitySet.weight = weight!!
+            newActivitySet.repetitions = repetition!!
+            this.newTodayActivities[activityPos].sets[activityPos] = newActivitySet
+            this._executedDay.value?.activities?.get(activityPos)?.repetitionsCustomer?.set(setPosition, repetition)
+            this._executedDay.value?.activities?.get(activityPos)?.weightsPerRepetitionCustomer?.set(setPosition, weight)
+            updateDay(_executedDay.value!!)
             return ""
         }
-        return "Error"
+        return "Check that the weight and repetitions entered are valid"
     }
 
     private fun checkSet(repetitions: Int?, weight: Double?): Boolean {
         return repetitions != null && repetitions>0 && weight != null && weight >= 0.0
     }
 
-    fun removeSetActivity(activity: RoutineActivity, positionSet: Int){
+    fun removeSetActivity(activityPos: Int, positionSet: Int){
+        /*
         val posActivity = getOldPosActivity(activity)
         this.oldActivities[posActivity].repetitions.removeAt(positionSet)
         this.oldActivities[posActivity].weightsPerRepetition.removeAt(positionSet)
+        this.oldActivities[posActivity].sets--
         this.newTodayActivities[posActivity].sets.removeAt(positionSet)
+
+         */
     }
 
-    fun completedActivity(activity: RoutineActivity, position:Int){
-        val posActivity = getOldPosActivity(activity)
-        val todayActivity = this.newTodayActivities[posActivity]
+    fun completedActivity(position:Int){
+        val todayActivity = this.newTodayActivities[position]
         val todayRepetitions = mutableListOf<Int>()
         val todayWeights = mutableListOf<Double>()
         for (set in todayActivity.sets){
             todayRepetitions.add(set.repetitions)
             todayWeights.add(set.weight)
         }
-        this.oldActivities[posActivity].repetitions.clear()
-        this.oldActivities[posActivity].weightsPerRepetition.clear()
-        this.oldActivities[posActivity].repetitions.addAll(todayRepetitions)
-        this.oldActivities[posActivity].weightsPerRepetition.addAll(todayWeights)
+        val activity = this._executedDay.value?.activities?.get(position)!!
+        activity.repetitionsCustomer.addAll(todayRepetitions)
+        activity.weightsPerRepetitionCustomer.addAll(todayWeights)
+        activity.sets = activity.weightsPerRepetitionCustomer.size
+        activity.completed = true
+        this._executedDay.value?.activities?.set(position, activity)
+        updateDay(_executedDay.value!!)
+    }
+
+    private fun updateDay(day: Day){
+        viewModelScope.launch {
+            try {
+                manageRoutineCustomerUseCase.updateDay(
+                    day
+                )
+                _dayLoaded.value = true
+            } catch (e: Exception) {
+                _dayLoaded.value = false
+            }
+            _dayLoaded.value = null
+        }
     }
 
     data class TodayActivity(var activity: RoutineActivity, var sets : MutableList<ActivitySet>){
@@ -111,32 +150,5 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
         }
         constructor(activity: RoutineActivity, repetitions: MutableList<Int>, weights: MutableList<Double>) : this(activity, parseSets(repetitions, weights))
     }
-
-    /*
-        fun onCompleteActivity(position: Int, activity: RoutineActivity){
-            this.newActivities[position] = activity
-        }
-
-        private var newSets = mutableListOf<ActivitySet>()
-        fun getNewSets() : MutableList<ActivitySet>{
-            val res : MutableList<ActivitySet> = mutableListOf()
-            res.addAll(this.newSets)
-            return res
-        }
-
-
-        fun removeSet(position: Int, activity: RoutineActivity) {
-            this.newTodayActivities.
-            this.newSets.removeAt(position)
-        }
-
-        fun updateSet(position: Int, activitySet: ActivitySet, activity: RoutineActivity) : String {
-            if(checkSet(activitySet.repetitions, activitySet.weight)){
-                this.newSets[position] = activitySet
-                return ""
-            }
-            return "Error"
-        }
-    */
 
 }

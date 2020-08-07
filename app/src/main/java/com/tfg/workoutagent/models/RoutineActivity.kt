@@ -8,9 +8,11 @@ data class RoutineActivity(
     var exercise: Exercise = Exercise(),
     var note : String = "DEFAULT_NOTE",
     var repetitions :MutableList<Int> = mutableListOf(),
+    var repetitionsCustomer :MutableList<Int> = mutableListOf(),
     var sets : Int = 0,
     var type : String = "DEFAULT_TYPE",
     var weightsPerRepetition :MutableList<Double> = mutableListOf(),
-    var isCompleted : Boolean = false
+    var weightsPerRepetitionCustomer :MutableList<Double> = mutableListOf(),
+    var completed : Boolean = false
                     ) {
 }

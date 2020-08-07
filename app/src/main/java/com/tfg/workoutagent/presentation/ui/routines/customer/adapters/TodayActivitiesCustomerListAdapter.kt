@@ -1,12 +1,12 @@
 package com.tfg.workoutagent.presentation.ui.routines.customer.adapters
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
+import android.view.ViewManager
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.item_row_rotuine_activity_today.view.*
 
 class TodayActivitiesCustomerListAdapter(
     private val context: Context,
-    private val completedClickListener: (position: Int, activity: RoutineActivity) -> Unit,
+    private val completedClickListener: (position: Int) -> Unit,
     private val actionListeners: TodayActivitiesCustomerFragment.ActionListeners
 ) : RecyclerView.Adapter<TodayActivitiesCustomerListAdapter.TodayActivitiesCustomerListViewHolder>(), BaseAdapterInterface {
 
@@ -42,33 +42,34 @@ class TodayActivitiesCustomerListAdapter(
 
     override fun getItemCount(): Int = dataRoutineActivityList.size
 
-    fun removeElement(position: Int) {
-        this.dataRoutineActivityList.removeAt(position)
-        this.notifyItemRemoved(position)
-    }
+
 
     override fun onBindViewHolder(holder: TodayActivitiesCustomerListViewHolder, position: Int) {
         val activity : RoutineActivity = dataRoutineActivityList[position]
-        holder.itemView.setOnClickListener {
-            if(it.ll_invisible_content.isVisible){
-                it.ll_invisible_content.visibility = View.GONE
-            }else{
-                it.ll_invisible_content.visibility = View.VISIBLE
+        if(!activity.completed){
+            holder.itemView.setOnClickListener {
+                if(it.ll_invisible_content.isVisible){
+                    it.ll_invisible_content.visibility = View.GONE
+                }else{
+                    it.ll_invisible_content.visibility = View.VISIBLE
+                }
             }
-        }
-        val childLayoutManager = LinearLayoutManager(holder.itemView.context)
-        val sets = mutableListOf<ActivitySet>()
-        for ( i in 0 until(activity.sets.toInt())){
-            sets.add(ActivitySet(activity.repetitions[i], activity.weightsPerRepetition[i]))
-        }
-        holder.recyclerView.apply {
-            layoutManager = childLayoutManager
-            adapter = EditWeightsRepetitionsRoutineActivityCustomerListAdapter(context,
-                activity,
-                sets,
-                actionListeners
-            )
-            setRecycledViewPool(viewPool)
+            val childLayoutManager = LinearLayoutManager(holder.itemView.context)
+            val sets = mutableListOf<ActivitySet>()
+            for ( i in 0 until(activity.sets)){
+                sets.add(ActivitySet(activity.repetitionsCustomer[i], activity.weightsPerRepetitionCustomer[i]))
+            }
+            holder.recyclerView.apply {
+                layoutManager = childLayoutManager
+                adapter = EditWeightsRepetitionsRoutineActivityCustomerListAdapter(context,
+                    holder.adapterPosition,
+                    sets,
+                    actionListeners
+                )
+                setRecycledViewPool(viewPool)
+            }
+        }else{
+            holder.itemView.card_today.setBackgroundResource(R.drawable.item_border_set_completed)
         }
         holder.bindView(activity)
     }
@@ -81,65 +82,83 @@ class TodayActivitiesCustomerListAdapter(
             itemView.name_activity_today.text = routineActivity.name
             itemView.note_activity_today.text = routineActivity.note
             Glide.with(context).load(routineActivity.exercise.photos[0]).into(itemView.civ_activity_today)
-            routineActivity.repetitions.forEachIndexed { index, valor ->
-                val repetitionView = TextView(context).apply {
-                    val params: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                    this.layoutParams = params
-                    this.typeface = Typeface.DEFAULT_BOLD
-                    this.text = valor.toString()
-                }
-                val weightView = TextView(context).apply {
-                    val params: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT
-                    )
-                    this.layoutParams = params
-                    this.typeface = Typeface.DEFAULT_BOLD
-                    var weight = routineActivity.weightsPerRepetition[index].toString()
-                    if (weight.split(".")[1] == "0") {
-                        weight = weight.split(".")[0]
-                    }
-                    this.text = weight
-                }
-                val relativeLayout = RelativeLayout(context).apply {
-                    val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
-                    params.marginStart = 20
-                    this.layoutParams = params
-
-                    val relativeParamsRepetition: RelativeLayout.LayoutParams =
-                        RelativeLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            RelativeLayout.LayoutParams.WRAP_CONTENT
+            itemView.ll_repetitions_weights.removeAllViews()
+            if(routineActivity.repetitionsCustomer.isNotEmpty()){
+                routineActivity.repetitionsCustomer.forEachIndexed { index, valor ->
+                    val repetitionView = TextView(context).apply {
+                        val params: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
                         )
-                    relativeParamsRepetition.apply {
-                        this.addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        this.layoutParams = params
+                        this.typeface = Typeface.DEFAULT_BOLD
+                        this.text = valor.toString()
                     }
-
-                    val relativeParamsWeight: RelativeLayout.LayoutParams =
-                        RelativeLayout.LayoutParams(
-                            RelativeLayout.LayoutParams.WRAP_CONTENT,
-                            RelativeLayout.LayoutParams.WRAP_CONTENT
+                    val weightView = TextView(context).apply {
+                        val params: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
                         )
-                    relativeParamsWeight.apply {
-                        this.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-                        this.addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        this.layoutParams = params
+                        this.typeface = Typeface.DEFAULT_BOLD
+                        var weight = routineActivity.weightsPerRepetitionCustomer[index].toString()
+                        if (weight.split(".")[1] == "0") {
+                            weight = weight.split(".")[0]
+                        }
+                        this.text = weight
                     }
+                    val relativeLayout = RelativeLayout(context).apply {
+                        val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        params.marginStart = 20
+                        this.layoutParams = params
 
-                    this.addView(repetitionView, relativeParamsRepetition)
-                    this.addView(weightView, relativeParamsWeight)
+                        val relativeParamsRepetition: RelativeLayout.LayoutParams =
+                            RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT
+                            )
+                        relativeParamsRepetition.apply {
+                            this.addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        }
+
+                        val relativeParamsWeight: RelativeLayout.LayoutParams =
+                            RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT
+                            )
+                        relativeParamsWeight.apply {
+                            this.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                            this.addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        }
+
+                        this.addView(repetitionView, relativeParamsRepetition)
+                        this.addView(weightView, relativeParamsWeight)
+                    }
+                    itemView.ll_repetitions_weights.addView(relativeLayout)
                 }
-                itemView.ll_repetitions_weights.addView(relativeLayout)
             }
             itemView.button_finish_activity.setOnClickListener {
-                completedClickListener(adapterPosition, routineActivity)
-                itemView.card_today.setBackgroundResource(R.drawable.item_border_set_completed)
-                itemView.ll_invisible_content.visibility = View.GONE
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle("Finish this exercise")
+                builder.setMessage("Once you finish this exercise, you cannot modify it. Are you sure?")
+
+                builder.setPositiveButton("Yes") { dialog, _ ->
+                    completedClickListener(adapterPosition)
+                    itemView.card_today.setBackgroundResource(R.drawable.item_border_set_completed)
+                    itemView.ll_invisible_content.visibility = View.GONE
+                    val view = itemView.button_finish_activity
+                    (view.parent as ViewManager).removeView(view)
+                    dialog.dismiss()
+                    notifyItemChanged(adapterPosition)
+                }
+                builder.setNeutralButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                builder.create()
+                builder.show()
             }
 
         }
