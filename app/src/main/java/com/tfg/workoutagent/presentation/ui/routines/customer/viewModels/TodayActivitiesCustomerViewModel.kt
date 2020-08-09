@@ -22,6 +22,11 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
     fun dayLoaded() {
         _dayLoaded.value = null
     }
+
+    private val _finishedDay = MutableLiveData<Boolean?> (null)
+    val finishedDay: LiveData<Boolean?>
+        get() = _finishedDay
+
     //Valores ejecutados
     private val _executedDay = MutableLiveData<Day>(null)
     val executedDay: LiveData<Day>
@@ -53,22 +58,20 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
             if(day.completed) continue
             activities = day.activities
             day.activities.forEach { routineActivity ->
-                val repetitions = mutableListOf<Int>()
-                val weights = mutableListOf<Double>()
                 if(routineActivity.repetitionsCustomer.isEmpty()){
-                    routineActivity.repetitions.forEach { it -> repetitions.add(it.toInt())}
-                    routineActivity.weightsPerRepetition.forEach { it -> weights.add(it.toDouble())}
-                    routineActivity.repetitionsCustomer.clear()
-                    routineActivity.weightsPerRepetitionCustomer.clear()
-                    routineActivity.repetitionsCustomer.addAll(repetitions)
-                    routineActivity.weightsPerRepetitionCustomer.addAll(weights)
+                    if(!routineActivity.completed){
+                        routineActivity.repetitions.forEach { it ->  routineActivity.repetitionsCustomer.add(it.toInt())}
+                        routineActivity.weightsPerRepetition.forEach { it -> routineActivity.weightsPerRepetitionCustomer.add(it.toDouble())}
+                    }
                 }else{
-                    routineActivity.repetitionsCustomer.forEach { it -> repetitions.add(it.toInt())}
-                    routineActivity.weightsPerRepetitionCustomer.forEach { it -> weights.add(it.toDouble())}
+                    val repetsCus = mutableListOf<Int>()
+                    val weightsCus = mutableListOf<Double>()
+                    routineActivity.repetitionsCustomer.forEach { it ->  repetsCus.add(it.toInt())}
                     routineActivity.repetitionsCustomer.clear()
+                    routineActivity.repetitionsCustomer.addAll(repetsCus)
+                    routineActivity.weightsPerRepetitionCustomer.forEach { it -> weightsCus.add(it.toDouble())}
                     routineActivity.weightsPerRepetitionCustomer.clear()
-                    routineActivity.repetitionsCustomer.addAll(repetitions)
-                    routineActivity.weightsPerRepetitionCustomer.addAll(weights)
+                    routineActivity.weightsPerRepetitionCustomer.addAll(weightsCus)
                 }
             }
             _executedDay.postValue(day)
@@ -87,9 +90,11 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
             val newActivitySet = this.newTodayActivities[activityPos].sets[setPosition]
             newActivitySet.weight = weight!!
             newActivitySet.repetitions = repetition!!
-            this.newTodayActivities[activityPos].sets[activityPos] = newActivitySet
-            this._executedDay.value?.activities?.get(activityPos)?.repetitionsCustomer?.set(setPosition, repetition)
-            this._executedDay.value?.activities?.get(activityPos)?.weightsPerRepetitionCustomer?.set(setPosition, weight)
+            this.newTodayActivities[activityPos].sets[setPosition] = newActivitySet
+            this._executedDay.value?.activities?.get(activityPos)?.repetitionsCustomer?.removeAt(setPosition)
+            this._executedDay.value?.activities?.get(activityPos)?.repetitionsCustomer?.add(setPosition, repetition)
+            this._executedDay.value?.activities?.get(activityPos)?.weightsPerRepetitionCustomer?.removeAt(setPosition)
+            this._executedDay.value?.activities?.get(activityPos)?.weightsPerRepetitionCustomer?.add(setPosition, weight)
             updateDay(_executedDay.value!!)
             return ""
         }
@@ -101,32 +106,28 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
     }
 
     fun removeSetActivity(activityPos: Int, positionSet: Int){
-        /*
-        val posActivity = getOldPosActivity(activity)
-        this.oldActivities[posActivity].repetitions.removeAt(positionSet)
-        this.oldActivities[posActivity].weightsPerRepetition.removeAt(positionSet)
-        this.oldActivities[posActivity].sets--
-        this.newTodayActivities[posActivity].sets.removeAt(positionSet)
-
-         */
+        this.newTodayActivities[activityPos].sets.removeAt(positionSet)
+        this._executedDay.value?.activities?.get(activityPos)?.repetitionsCustomer?.removeAt(positionSet)
+        this._executedDay.value?.activities?.get(activityPos)?.weightsPerRepetitionCustomer?.removeAt(positionSet)
+        updateDay(_executedDay.value!!)
     }
 
     fun completedActivity(position:Int){
-        val todayActivity = this.newTodayActivities[position]
-        val todayRepetitions = mutableListOf<Int>()
-        val todayWeights = mutableListOf<Double>()
-        for (set in todayActivity.sets){
-            todayRepetitions.add(set.repetitions)
-            todayWeights.add(set.weight)
-        }
-        val activity = this._executedDay.value?.activities?.get(position)!!
-        activity.repetitionsCustomer.addAll(todayRepetitions)
-        activity.weightsPerRepetitionCustomer.addAll(todayWeights)
-        activity.sets = activity.weightsPerRepetitionCustomer.size
-        activity.completed = true
-        this._executedDay.value?.activities?.set(position, activity)
+        this._executedDay.value?.activities?.get(position)?.completed = true
         updateDay(_executedDay.value!!)
     }
+    fun finishDay(){
+        this._executedDay.value?.activities?.forEach {
+            it.completed = true
+            if(it.repetitionsCustomer.isEmpty()){
+                it.repetitionsCustomer.addAll(it.repetitions)
+                it.weightsPerRepetitionCustomer.addAll(it.weightsPerRepetition)
+            }
+        }
+        this._executedDay.value?.completed = true
+        finishDay(_executedDay.value!!)
+    }
+
 
     private fun updateDay(day: Day){
         viewModelScope.launch {
@@ -136,9 +137,24 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
                 )
                 _dayLoaded.value = true
             } catch (e: Exception) {
+                Log.i("updateDay", e.toString())
                 _dayLoaded.value = false
             }
             _dayLoaded.value = null
+        }
+    }
+    private fun finishDay(day: Day){
+        viewModelScope.launch {
+            try {
+                manageRoutineCustomerUseCase.updateDay(
+                    day
+                )
+                _finishedDay.value = true
+            } catch (e: Exception) {
+                Log.i("finishDay", e.toString())
+                _finishedDay.value = false
+            }
+            _finishedDay.value = null
         }
     }
 

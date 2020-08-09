@@ -8,7 +8,11 @@
         android:id="@+id/navigation_today_customer"
         android:name="com.tfg.workoutagent.presentation.ui.routines.customer.fragments.TodayActivitiesCustomerFragment"
         android:label="activity_customer_fragment"
-        tools:layout="@layout/fragment_today_activities_customer" />
+        tools:layout="@layout/fragment_today_activities_customer" >
+        <action
+            android:id="@+id/action_navigation_today_customer_self"
+            app:destination="@id/navigation_today_customer" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_profile_customer"
         android:name="com.tfg.workoutagent.presentation.ui.profile.customer.fragments.ProfileCustomerFragment"

@@ -1,5 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.routines.customer.adapters
 
+import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -51,9 +52,19 @@ class EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
             itemView.repetitions_activity_input_edit.setText(activitySet.repetitions.toString())
             itemView.weights_activity_input_edit.setText(activitySet.weight.toString())
             itemView.delete_set_button_edit.setOnClickListener{
-                actionListeners.deleteClickListener(activityPos, adapterPosition)
-                actionListeners.updateElement(activityPos)
-                removeActivitySetListener(adapterPosition)
+                val builder = AlertDialog.Builder(context)
+                builder.setTitle("Delete this set")
+                builder.setMessage("If you don't complete this set, you won't fulfill the training expected by your trainer. Are you sure?")
+
+                builder.setPositiveButton("Yes") { dialog, _ ->
+                    actionListeners.deleteClickListener(activityPos, adapterPosition)
+                    removeActivitySetListener(adapterPosition)
+                }
+                builder.setNeutralButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                builder.create()
+                builder.show()
             }
             itemView.finished_set_button_edit.setOnClickListener { v ->
                 val errorValidation = actionListeners.finishedClickListener(activityPos,
@@ -67,9 +78,7 @@ class EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
                 }else{
                     itemView.activity_set_error_message_edit.text = errorValidation
                     itemView.activity_set_error_message_edit.visibility = View.GONE
-                    itemView.finished_set_button_edit.visibility = View.INVISIBLE
-                    itemView.delete_set_button_edit.visibility = View.INVISIBLE
-                    actionListeners.updateElement(activityPos)
+                    itemView.setBackgroundResource(R.drawable.item_border_set_completed)
                 }
 
             }

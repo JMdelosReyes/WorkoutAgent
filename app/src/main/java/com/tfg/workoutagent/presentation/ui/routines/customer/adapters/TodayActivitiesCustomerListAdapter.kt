@@ -43,7 +43,6 @@ class TodayActivitiesCustomerListAdapter(
     override fun getItemCount(): Int = dataRoutineActivityList.size
 
 
-
     override fun onBindViewHolder(holder: TodayActivitiesCustomerListViewHolder, position: Int) {
         val activity : RoutineActivity = dataRoutineActivityList[position]
         if(!activity.completed){
@@ -56,7 +55,7 @@ class TodayActivitiesCustomerListAdapter(
             }
             val childLayoutManager = LinearLayoutManager(holder.itemView.context)
             val sets = mutableListOf<ActivitySet>()
-            for ( i in 0 until(activity.sets)){
+            for ( i in 0 until(activity.repetitionsCustomer.size)){
                 sets.add(ActivitySet(activity.repetitionsCustomer[i], activity.weightsPerRepetitionCustomer[i]))
             }
             holder.recyclerView.apply {
@@ -68,6 +67,8 @@ class TodayActivitiesCustomerListAdapter(
                 )
                 setRecycledViewPool(viewPool)
             }
+        }else if(activity.completed && activity.repetitionsCustomer.size==0){
+            holder.itemView.card_today.setBackgroundResource(R.drawable.item_border_no_sets)
         }else{
             holder.itemView.card_today.setBackgroundResource(R.drawable.item_border_set_completed)
         }
@@ -79,11 +80,9 @@ class TodayActivitiesCustomerListAdapter(
         val recyclerView : RecyclerView = itemView.rcv_sets_today_activity
         fun bindView(routineActivity: RoutineActivity) {
             this.routineActivity = routineActivity
-            itemView.name_activity_today.text = routineActivity.name
-            itemView.note_activity_today.text = routineActivity.note
-            Glide.with(context).load(routineActivity.exercise.photos[0]).into(itemView.civ_activity_today)
             itemView.ll_repetitions_weights.removeAllViews()
-            if(routineActivity.repetitionsCustomer.isNotEmpty()){
+            if(this.routineActivity.completed){
+                itemView.name_activity_today.text = routineActivity.name + " (Finished)"
                 routineActivity.repetitionsCustomer.forEachIndexed { index, valor ->
                     val repetitionView = TextView(context).apply {
                         val params: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
@@ -139,7 +138,66 @@ class TodayActivitiesCustomerListAdapter(
                     }
                     itemView.ll_repetitions_weights.addView(relativeLayout)
                 }
+            }else{
+                itemView.name_activity_today.text = routineActivity.name + " (Estimated)"
+                routineActivity.repetitions.forEachIndexed { index, valor ->
+                    val repetitionView = TextView(context).apply {
+                        val params: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+                        this.layoutParams = params
+                        this.typeface = Typeface.DEFAULT_BOLD
+                        this.text = valor.toString()
+                    }
+                    val weightView = TextView(context).apply {
+                        val params: ViewGroup.LayoutParams = ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        )
+                        this.layoutParams = params
+                        this.typeface = Typeface.DEFAULT_BOLD
+                        var weight = routineActivity.weightsPerRepetition[index].toString()
+                        if (weight.split(".")[1] == "0") {
+                            weight = weight.split(".")[0]
+                        }
+                        this.text = weight
+                    }
+                    val relativeLayout = RelativeLayout(context).apply {
+                        val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.MATCH_PARENT
+                        )
+                        params.marginStart = 20
+                        this.layoutParams = params
+
+                        val relativeParamsRepetition: RelativeLayout.LayoutParams =
+                            RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT
+                            )
+                        relativeParamsRepetition.apply {
+                            this.addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        }
+
+                        val relativeParamsWeight: RelativeLayout.LayoutParams =
+                            RelativeLayout.LayoutParams(
+                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                                RelativeLayout.LayoutParams.WRAP_CONTENT
+                            )
+                        relativeParamsWeight.apply {
+                            this.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+                            this.addRule(RelativeLayout.CENTER_HORIZONTAL)
+                        }
+
+                        this.addView(repetitionView, relativeParamsRepetition)
+                        this.addView(weightView, relativeParamsWeight)
+                    }
+                    itemView.ll_repetitions_weights.addView(relativeLayout)
+                }
             }
+            itemView.note_activity_today.text = routineActivity.note
+            Glide.with(context).load(routineActivity.exercise.photos[0]).into(itemView.civ_activity_today)
             itemView.button_finish_activity.setOnClickListener {
                 val builder = AlertDialog.Builder(context)
                 builder.setTitle("Finish this exercise")
