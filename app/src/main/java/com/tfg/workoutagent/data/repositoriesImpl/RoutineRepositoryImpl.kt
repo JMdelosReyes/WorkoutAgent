@@ -5,12 +5,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.Query
 import com.tfg.workoutagent.data.repositories.RoutineRepository
 import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class RoutineRepositoryImpl : RoutineRepository {
 
@@ -35,6 +39,7 @@ class RoutineRepositoryImpl : RoutineRepository {
             routine.id = document.id
             routine.startDate = document.getTimestamp("startDate")!!.toDate()
             routine.title = document.getString("title")!!
+            routine.current = document.getBoolean("current") ?: false
 
             val days = document.get("days")
 
@@ -253,7 +258,8 @@ class RoutineRepositoryImpl : RoutineRepository {
                                                         activity[activityAttribute] as MutableList<Double>
                                                     "weightsPerRepetitionCustomer" -> routineActivity.weightsPerRepetitionCustomer =
                                                         activity[activityAttribute] as MutableList<Double>
-                                                    "completed" -> routineActivity.completed = activity[activityAttribute] as Boolean
+                                                    "completed" -> routineActivity.completed =
+                                                        activity[activityAttribute] as Boolean
                                                 }
                                             }
                                         }
@@ -488,20 +494,57 @@ class RoutineRepositoryImpl : RoutineRepository {
 
     override suspend fun updateDay(updatedDay: Day): Resource<Boolean> {
         val assignedRoutine = this.getAssignedRoutine()
-        if(assignedRoutine is Resource.Success){
+        if (assignedRoutine is Resource.Success) {
             val routine = assignedRoutine.data
             var index = 0
-            for (day in routine.days){
-                if(!day.completed) {
+            for (day in routine.days) {
+                if (!day.completed) {
                     routine.days[index] = updatedDay
                     break
                 }
                 index++
             }
             val res = this.editRoutine(routine)
-            return if(res is Resource.Success) Resource.Success(true) else res
+            return if (res is Resource.Success) Resource.Success(true) else res
         }
 
         return Resource.Failure(Exception("ERROR"))
+    }
+
+    override suspend fun assignRoutine(
+        customer: Customer,
+        routineId: String,
+        startDate: Date
+    ): Resource<Boolean> {
+        val routine = (this.getRoutine(routineId) as Resource.Success).data
+        val customerDB = FirebaseFirestore.getInstance()
+            .collection("users").document(customer.id)
+            .get().await()
+        val trainerDB = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await()
+
+        val data = hashMapOf(
+            "title" to routine.title,
+            "startDate" to routine.startDate,
+            "customer" to customerDB.reference,
+            "trainer" to trainerDB.documents[0].reference,
+            "days" to routine.days,
+            "current" to true
+        )
+
+        val asd = FirebaseFirestore.getInstance().collection("routines")
+            .whereEqualTo("customer", customerDB.reference)
+            .whereEqualTo("current", true)
+            .get().await()
+
+        if (!asd.isEmpty) {
+            FirebaseFirestore.getInstance().collection("routines").document(asd.documents[0].id)
+                .set(hashMapOf("current" to false), SetOptions.merge()).await()
+        }
+
+        FirebaseFirestore.getInstance().collection("routines").add(data).await()
+        return Resource.Success(true)
     }
 }

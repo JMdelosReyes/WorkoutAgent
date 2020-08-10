@@ -8,6 +8,7 @@ data class Routine(
     var title: String = "DEFAULT_TITLE",
     var trainer: Trainer = Trainer(),
     var customer: Customer? = null,
-    var days: MutableList<Day> = mutableListOf()
+    var days: MutableList<Day> = mutableListOf(),
+    var current: Boolean = false
 ) {
 }

@@ -6,12 +6,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
@@ -23,6 +25,7 @@ import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.AssignRo
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.AssignRoutineViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_assign_routine.*
+import java.util.*
 
 class AssignRoutineFragment : DialogFragment() {
 
@@ -75,7 +78,12 @@ class AssignRoutineFragment : DialogFragment() {
         setupDialogWindow()
         setupCustomerListRecycler()
         setupRoutineAssignListRecycler()
+        setupCustomerSearchView()
+        setupRoutineSearchView()
+        setupPicker()
         observeData()
+        observeErrors()
+        observeDialogState()
     }
 
     private fun setupDialogWindow() {
@@ -97,7 +105,7 @@ class AssignRoutineFragment : DialogFragment() {
         this.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_assign_routine -> {
-                    dismiss()
+                    this.viewModel.onAssignRoutine()
                 }
                 else -> {
                     dismiss()
@@ -145,16 +153,152 @@ class AssignRoutineFragment : DialogFragment() {
     }
 
     private fun setupCustomerListRecycler() {
-        this.customerListAdapter = CustomerListAdapter(requireContext(), {})
+        this.customerListAdapter =
+            CustomerListAdapter(requireContext()) clickListener@{ customer, _ ->
+                if (this.viewModel.getSelectedCustomer() == customer) {
+                    this.viewModel.updateSelectedCustomer(null)
+                    this.customerListAdapter.setSelectedCustomer(null)
+                } else {
+                    this.viewModel.updateSelectedCustomer(customer)
+                    this.customerListAdapter.setSelectedCustomer(customer)
+                }
+            }
         recyclerView_customers.layoutManager =
             LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView_customers.adapter = this.customerListAdapter
     }
 
     private fun setupRoutineAssignListRecycler() {
-        this.routineAssignListAdapter = RoutineAssignListAdapter(requireContext(), {})
+        this.routineAssignListAdapter =
+            RoutineAssignListAdapter(requireContext()) clickListener@{ routine, view ->
+                if (this.viewModel.getSelectedRoutine() == routine) {
+                    this.viewModel.updateSelectedRoutine(null)
+                    this.routineAssignListAdapter.setSelectedRoutine(null)
+                } else {
+                    this.viewModel.updateSelectedRoutine(routine)
+                    this.routineAssignListAdapter.setSelectedRoutine(routine)
+                }
+            }
         recyclerView_routines.layoutManager =
             LinearLayoutManager(this.requireContext())
         recyclerView_routines.adapter = this.routineAssignListAdapter
+    }
+
+    private fun setupCustomerSearchView() {
+        search_view_customer.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val lowerText = query?.toLowerCase(Locale.ROOT)
+                viewModel.filterCustomers(lowerText)
+                if (!viewModel.getFilteredCustomers().contains(viewModel.getSelectedCustomer())) {
+                    viewModel.updateSelectedCustomer(null)
+                }
+                customerListAdapter.setListData(viewModel.getFilteredCustomers())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val lowerText = newText?.toLowerCase(Locale.ROOT)
+                viewModel.filterCustomers(lowerText)
+                if (!viewModel.getFilteredCustomers().contains(viewModel.getSelectedCustomer())) {
+                    viewModel.updateSelectedCustomer(null)
+                }
+                customerListAdapter.setListData(viewModel.getFilteredCustomers())
+                return true
+            }
+        })
+    }
+
+    private fun setupRoutineSearchView() {
+        search_view_routine.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                val lowerText = query?.toLowerCase(Locale.ROOT)
+                viewModel.filterRoutines(lowerText)
+                if (!viewModel.getFilteredRoutines().contains(viewModel.getSelectedRoutine())) {
+                    viewModel.updateSelectedRoutine(null)
+                }
+                routineAssignListAdapter.setListData(viewModel.getFilteredRoutines())
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                val lowerText = newText?.toLowerCase(Locale.ROOT)
+                viewModel.filterRoutines(lowerText)
+                if (!viewModel.getFilteredRoutines().contains(viewModel.getSelectedRoutine())) {
+                    viewModel.updateSelectedRoutine(null)
+                }
+                routineAssignListAdapter.setListData(viewModel.getFilteredRoutines())
+                return true
+            }
+        })
+    }
+
+    private fun setupPicker() {
+        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setSelection(viewModel.pickerDate.value!!.time)
+        val picker: MaterialDatePicker<*> = builder.build()
+        assign_routine_startDate_input_edit.setOnClickListener {
+            picker.show(requireActivity().supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                viewModel.setDate(it as Long)
+            }
+        }
+    }
+
+    private fun observeErrors() {
+        viewModel.customerError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it != "") {
+                    binding.assignRoutineCustomerErrorMessage.text = it
+                    binding.assignRoutineCustomerErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.assignRoutineCustomerErrorMessage.text = ""
+                    binding.assignRoutineCustomerErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.assignRoutineCustomerErrorMessage.text = ""
+                binding.assignRoutineCustomerErrorMessage.visibility = View.GONE
+            }
+        })
+
+        viewModel.routineError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it != "") {
+                    binding.assignRoutineRoutineErrorMessage.text = it
+                    binding.assignRoutineRoutineErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.assignRoutineRoutineErrorMessage.text = ""
+                    binding.assignRoutineRoutineErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.assignRoutineRoutineErrorMessage.text = ""
+                binding.assignRoutineRoutineErrorMessage.visibility = View.GONE
+            }
+        })
+
+        viewModel.startDateError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it != "") {
+                    binding.assignRoutineStartDateErrorMessage.text = it
+                    binding.assignRoutineStartDateErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.assignRoutineStartDateErrorMessage.text = ""
+                    binding.assignRoutineStartDateErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.assignRoutineStartDateErrorMessage.text = ""
+                binding.assignRoutineStartDateErrorMessage.visibility = View.GONE
+            }
+        })
+    }
+
+    private fun observeDialogState() {
+        viewModel.closeAssignDialog.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it) {
+                    dismiss()
+                    viewModel.assignDialogClosed()
+                }
+            }
+        })
     }
 }

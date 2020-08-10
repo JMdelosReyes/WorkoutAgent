@@ -47,11 +47,32 @@
                 android:padding="24dp"
                 android:paddingTop="16dp">
 
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_view_customer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp" />
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_customers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/assign_routine_customer_error_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/add_activity_set_error_message"
+                    android:textColor="@color/design_default_color_error"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_view_routine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_routines"
@@ -59,6 +80,40 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     app:layout_constraintEnd_toEndOf="parent" />
+
+                <TextView
+                    android:id="@+id/assign_routine_routine_error_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/add_activity_set_error_message"
+                    android:textColor="@color/design_default_color_error"
+                    android:visibility="gone" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/assign_routine_startDate_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="@string/form_routine_startDate_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/assign_routine_startDate_input_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:inputType="text"
+                        android:text="@={viewModel.startDate}" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/assign_routine_start_date_error_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/design_default_color_error"
+                    android:visibility="gone" />
 
             </LinearLayout>
 

@@ -91,8 +91,10 @@ class EditRoutineFragment : Fragment() {
         recyclerView_Routine_edit_Day.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerView_Routine_edit_Day.adapter = adapter
 
-        this.viewModel.updateRoutineId(this.routineId)
-        this.viewModel.loadRoutine()
+        if (this.viewModel.getRoutineId() != this.routineId) {
+            this.viewModel.updateRoutineId(this.routineId)
+            this.viewModel.loadRoutine()
+        }
 
         observeData()
         observeErrors()

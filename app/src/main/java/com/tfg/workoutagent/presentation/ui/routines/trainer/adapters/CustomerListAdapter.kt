@@ -2,6 +2,7 @@ package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,14 +14,25 @@ import com.tfg.workoutagent.base.BaseAdapterInterface
 import com.tfg.workoutagent.models.Customer
 import kotlinx.android.synthetic.main.item_customer_assign_routine.view.*
 
-class CustomerListAdapter(private val context: Context, private val clickListener: () -> Unit) :
+class CustomerListAdapter(
+    private val context: Context,
+    private val clickListener: (customer: Customer, view: View) -> Unit
+) :
     RecyclerView.Adapter<CustomerListAdapter.CustomerListViewHolder>(),
     BaseAdapterInterface {
 
     private var dataList = mutableListOf<Customer>()
     fun setListData(data: MutableList<Customer>) {
-        dataList = data
+        this.dataList = data
+        if (!this.dataList.contains(this.selectedCustomer)) {
+            this.setSelectedCustomer(null)
+        }
         notifyDataSetChanged()
+    }
+
+    private var selectedCustomer: Customer? = null
+    fun setSelectedCustomer(customer: Customer?) {
+        this.selectedCustomer = customer
     }
 
     override fun onCreateViewHolder(
@@ -51,6 +63,12 @@ class CustomerListAdapter(private val context: Context, private val clickListene
             itemView.customer_assign_routine_name.text =
                 this.customer.name + "\n" + this.customer.surname
             this.loadImage()
+            this.loadBackGround()
+
+            itemView.setOnClickListener {
+                clickListener(this.customer, itemView)
+                notifyDataSetChanged()
+            }
         }
 
         private fun loadImage() {
@@ -61,6 +79,26 @@ class CustomerListAdapter(private val context: Context, private val clickListene
                 Glide.with(context).load(this.customer.photo)
                     .error(R.drawable.ic_person_black_60dp)
                     .into(itemView.customer_assign_routine_photo)
+            }
+        }
+
+        private fun loadBackGround() {
+            if (selectedCustomer == null) {
+                if (isDarkMode(context)) {
+                    this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                } else {
+                    this.itemView.setBackgroundColor(Color.WHITE)
+                }
+            } else {
+                if (selectedCustomer?.id == customer.id) {
+                    this.itemView.setBackgroundResource(R.drawable.item_border_primary_color)
+                } else {
+                    if (isDarkMode(context)) {
+                        this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                    } else {
+                        this.itemView.setBackgroundColor(Color.WHITE)
+                    }
+                }
             }
         }
     }

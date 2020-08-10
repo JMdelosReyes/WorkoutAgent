@@ -1,11 +1,9 @@
 package com.tfg.workoutagent.data.repositories
 
 
-import com.tfg.workoutagent.models.Day
-import com.tfg.workoutagent.models.Routine
-import com.tfg.workoutagent.models.RoutineActivity
-import com.tfg.workoutagent.models.TimelineActivity
+import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.vo.Resource
+import java.util.*
 
 interface RoutineRepository {
 
@@ -28,4 +26,10 @@ interface RoutineRepository {
     suspend fun getTodayActivities(): Resource<MutableList<RoutineActivity>>
 
     suspend fun updateDay(day: Day): Resource<Boolean>
+
+    suspend fun assignRoutine(
+        customer: Customer,
+        routineId: String,
+        startDate: Date
+    ): Resource<Boolean>
 }

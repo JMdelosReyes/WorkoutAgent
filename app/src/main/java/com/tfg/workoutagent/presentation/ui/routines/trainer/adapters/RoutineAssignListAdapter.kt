@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +13,23 @@ import kotlinx.android.synthetic.main.item_routine_assign_routine.view.*
 
 class RoutineAssignListAdapter(
     private val context: Context,
-    private val clickListener: () -> Unit
+    private val clickListener: (routine: Routine, view: View) -> Unit
 ) :
     RecyclerView.Adapter<RoutineAssignListAdapter.RoutineAssignListViewHolder>(),
     BaseAdapterInterface {
 
     private var dataList = mutableListOf<Routine>()
     fun setListData(data: MutableList<Routine>) {
-        dataList = data
+        this.dataList = data
+        if (!this.dataList.contains(this.selectedRoutine)) {
+            this.setSelectedRoutine(null)
+        }
         notifyDataSetChanged()
+    }
+
+    private var selectedRoutine: Routine? = null
+    fun setSelectedRoutine(routine: Routine?) {
+        this.selectedRoutine = routine
     }
 
     override fun onCreateViewHolder(
@@ -48,6 +57,32 @@ class RoutineAssignListAdapter(
         fun bindView(routine: Routine) {
             this.routine = routine
             itemView.routine_assign_routine_title.text = this.routine.title
+            this.loadBackGround()
+
+            itemView.setOnClickListener {
+                clickListener(this.routine, itemView)
+                notifyDataSetChanged()
+            }
+        }
+
+        private fun loadBackGround() {
+            if (selectedRoutine == null) {
+                if (isDarkMode(context)) {
+                    this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                } else {
+                    this.itemView.setBackgroundColor(Color.WHITE)
+                }
+            } else {
+                if (selectedRoutine?.id == routine.id) {
+                    this.itemView.setBackgroundResource(R.drawable.item_border_primary_color)
+                } else {
+                    if (isDarkMode(context)) {
+                        this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                    } else {
+                        this.itemView.setBackgroundColor(Color.WHITE)
+                    }
+                }
+            }
         }
     }
 }

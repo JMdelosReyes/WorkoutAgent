@@ -58,6 +58,8 @@ class EditRoutineViewModel(
         this.routineId = routineId
     }
 
+    fun getRoutineId() = this.routineId
+
     fun loadRoutine() = viewModelScope.launch(Dispatchers.IO) {
         try {
             val routineVal = manageRoutineUseCase.getRoutine(routineId)
