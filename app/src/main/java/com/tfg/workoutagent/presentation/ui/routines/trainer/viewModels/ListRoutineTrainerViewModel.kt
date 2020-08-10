@@ -30,10 +30,10 @@ class ListRoutineTrainerViewModel(listRoutineUseCase: ListRoutinesUseCase) : Vie
         generalRoutines = mutableListOf()
         assignedRoutines = mutableListOf()
         routineList.forEach {
-            if (it.customer != null && it.current) {
-                assignedRoutines.add(it)
-            } else {
+            if (it.customer == null) {
                 generalRoutines.add(it)
+            } else if (it.current) {
+                assignedRoutines.add(it)
             }
         }
     }
