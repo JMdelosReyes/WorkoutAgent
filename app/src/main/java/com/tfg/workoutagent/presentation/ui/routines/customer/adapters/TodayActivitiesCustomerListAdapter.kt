@@ -196,6 +196,8 @@ class TodayActivitiesCustomerListAdapter(
                     itemView.ll_repetitions_weights.addView(relativeLayout)
                 }
             }
+
+            itemView.description_activity_today.text = routineActivity.exercise.description
             itemView.note_activity_today.text = routineActivity.note
             Glide.with(context).load(routineActivity.exercise.photos[0]).into(itemView.civ_activity_today)
             itemView.button_finish_activity.setOnClickListener {
@@ -207,8 +209,6 @@ class TodayActivitiesCustomerListAdapter(
                     completedClickListener(adapterPosition)
                     itemView.card_today.setBackgroundResource(R.drawable.item_border_set_completed)
                     itemView.ll_invisible_content.visibility = View.GONE
-                    val view = itemView.button_finish_activity
-                    (view.parent as ViewManager).removeView(view)
                     dialog.dismiss()
                     notifyItemChanged(adapterPosition)
                 }

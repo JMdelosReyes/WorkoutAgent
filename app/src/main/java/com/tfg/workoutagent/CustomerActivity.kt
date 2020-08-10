@@ -37,7 +37,7 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.navigation_today_customer -> {
-                    supportActionBar?.title = "My activity"
+                    supportActionBar?.title = "Today"
                     supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 }
                 R.id.navigation_routine_customer -> {

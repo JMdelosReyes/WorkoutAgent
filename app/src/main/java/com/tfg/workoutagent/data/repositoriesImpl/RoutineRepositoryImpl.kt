@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.tfg.workoutagent.data.repositories.RoutineRepository
 import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.vo.Resource
@@ -443,6 +444,7 @@ class RoutineRepositoryImpl : RoutineRepository {
         val routine = FirebaseFirestore.getInstance()
             .collection("routines")
             .whereEqualTo("customer", customerRef)
+            .orderBy("startDate", Query.Direction.DESCENDING)
             .limit(1)
             .get().await()
         return if (routine.documents.isEmpty()) {

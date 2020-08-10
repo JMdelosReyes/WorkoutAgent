@@ -15,7 +15,6 @@ import com.tfg.workoutagent.R
 import com.tfg.workoutagent.base.BaseFragment
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineCustomerUseCaseImpl
-import com.tfg.workoutagent.models.ActivitySet
 import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.customer.adapters.TodayActivitiesCustomerListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.TodayActivitiesCustomerViewModel
@@ -99,10 +98,9 @@ class TodayActivitiesCustomerFragment : BaseFragment() {
                             activities = day.activities
                             break
                         }
-                        Log.i("day", day.toString())
                     }
                     if(activities.size==0){
-                        //TODO: Mensaje tipo "You don't have any goals yet"
+                        message_no_routine.text = "Right now, you do not have any planned activity to perform. Contact your trainer to continue your training."
                     }else{
                         finish_this_day_button.visibility = View.VISIBLE
                     }
