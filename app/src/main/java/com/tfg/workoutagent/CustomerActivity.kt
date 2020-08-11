@@ -77,6 +77,11 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
+                R.id.displayChartFragment -> {
+                    supportActionBar?.title = "Charts and Statistics"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
             }
         }
     }

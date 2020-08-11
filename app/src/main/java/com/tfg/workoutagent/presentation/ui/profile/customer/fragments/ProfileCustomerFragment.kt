@@ -82,6 +82,11 @@ class ProfileCustomerFragment : Fragment() {
                 ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToListGoalCustomerFragment()
             )
         }
+        charts.setOnClickListener {
+            findNavController().navigate(
+                ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToDisplayChartFragment()
+            )
+        }
         settings_image_profile_customer.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(context!!)
             dialogBuilder.setTitle("Settings")

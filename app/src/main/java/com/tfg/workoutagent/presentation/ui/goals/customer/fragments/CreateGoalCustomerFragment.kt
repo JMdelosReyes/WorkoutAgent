@@ -85,13 +85,19 @@ class CreateGoalCustomerFragment : Fragment() {
             binding.goalDescriptionInputEdit.error =
                 if (it != "") it else null
         })
-        viewModel.startDateError.observe(viewLifecycleOwner, Observer {
-            binding.goalStartDateInputEdit.error =
-                if (it != "") it else null
-        })
-        viewModel.endDateError.observe(viewLifecycleOwner, Observer {
-            binding.goalEndDateInputEdit.error =
-                if (it != "") it else null
+        viewModel.dateError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it != "") {
+                    binding.dateErrorMessage.text = it
+                    binding.dateErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.dateErrorMessage.text = ""
+                    binding.dateErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.dateErrorMessage.text = ""
+                binding.dateErrorMessage.visibility = View.GONE
+            }
         })
         viewModel.goalCreated.observe(viewLifecycleOwner, Observer {
             it?.let {

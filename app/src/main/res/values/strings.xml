@@ -256,4 +256,6 @@
     <string name="category_name">Category name</string>
     <string name="exercise_name">Exercise name</string>
     <string name="you_must_select_a_genre">You must select a genre</string>
+    <string name="goals">Goals</string>
+    <string name="charts">Charts</string>
 </resources>
