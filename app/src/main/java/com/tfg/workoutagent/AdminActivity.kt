@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_bottom_navigation_admin.*
 
 const val PROFILE_ADMIN_FRAGMENT = "MyProfileAdmin"
 
-class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
+class AdminActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +102,15 @@ class AdminActivity :  BaseActivity(), AppBarConfiguration.OnNavigateUpListener 
             android.R.anim.fade_in,
             android.R.anim.fade_out
         )
+    }
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        when (navController.currentDestination?.id) {
+            R.id.navigation_admin_users -> finish()
+            R.id.navigation_admin_profile -> finish()
+            else -> super.onBackPressed()
+        }
     }
 
     companion object {
