@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
@@ -30,6 +31,7 @@ import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_customer_profile.*
+import kotlinx.android.synthetic.main.weight_dialog.view.*
 
 class ProfileCustomerFragment : Fragment() {
 
@@ -87,6 +89,11 @@ class ProfileCustomerFragment : Fragment() {
                 ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToDisplayChartFragment()
             )
         }
+
+        display_customer_button_add_weight.setOnClickListener {
+            this.showWeightDialog()
+        }
+
         settings_image_profile_customer.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(context!!)
             dialogBuilder.setTitle("Settings")
@@ -157,5 +164,39 @@ class ProfileCustomerFragment : Fragment() {
         FirebaseAuth.getInstance().signOut()
         mGoogleSignInClient.revokeAccess()
         startActivity(GoogleSignInActivity.getLaunchIntent(this.context!!))
+    }
+
+    private fun showWeightDialog() {
+        val builder = AlertDialog.Builder(requireContext(), R.style.WeightDialog)
+        val dialogView = this.layoutInflater.inflate(R.layout.weight_dialog, null)
+        builder.setView(dialogView)
+        val alertDialog = builder.create()
+
+        dialogView.add_weight_cancel.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+        dialogView.add_weight_save.setOnClickListener {
+            val weight = dialogView.add_weight_input_edit
+            if (weight.text == null || weight.text!!.isEmpty()) {
+                dialogView.add_weight_input_edit.error = "Weight cannot be empty"
+            } else {
+                dialogView.add_weight_input_edit.error = null
+                weight.text.toString().toDoubleOrNull()?.let {
+                    this.viewModel.weightAdded.observe(viewLifecycleOwner, Observer { res ->
+                        res?.let {
+                            if (res) {
+                                this.viewModel.weightAdded()
+                                alertDialog.dismiss()
+                            }
+                        }
+                    })
+                    this.viewModel.addWeight(it)
+
+                }
+            }
+        }
+
+        alertDialog.show()
     }
 }

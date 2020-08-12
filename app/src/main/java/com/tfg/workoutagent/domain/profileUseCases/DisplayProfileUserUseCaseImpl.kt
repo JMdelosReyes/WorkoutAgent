@@ -11,5 +11,6 @@ class DisplayProfileUserUseCaseImpl(private val repo : UserRepository) :
     DisplayProfileUserUseCase {
     override suspend fun getLoggedUserTrainer(): Resource<Trainer> = repo.getLoggedUserTrainer()
     override suspend fun getLoggedUserCustomer(): Resource<Customer> = repo.getLoggedUserCustomer()
+    override suspend fun addWeight(weight: Double): Resource<Boolean> = repo.addWeight(weight)
     override suspend fun getLoggedUserAdmin(): Resource<Administrator> = repo.getLoggedUserAdmin()
 }

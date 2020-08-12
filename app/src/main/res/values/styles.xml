@@ -22,4 +22,9 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
+    <style name="WeightDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="windowMinWidthMajor">0dp</item>
+        <item name="windowMinWidthMinor">0dp</item>
+    </style>
+
 </resources>

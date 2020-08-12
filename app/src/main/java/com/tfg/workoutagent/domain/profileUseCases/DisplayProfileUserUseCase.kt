@@ -10,4 +10,5 @@ interface DisplayProfileUserUseCase {
     suspend fun getLoggedUserAdmin() : Resource<Administrator>
     //suspend fun getOwnUserAdmin() : Resource<Administrator>
     suspend fun getLoggedUserCustomer() : Resource<Customer>
+    suspend fun addWeight(weight: Double): Resource<Boolean>
 }
