@@ -13,10 +13,8 @@ class ProfileAdminViewModel(displayProfileUserUseCase: DisplayProfileUserUseCase
         try {
             val admin = displayProfileUserUseCase.getLoggedUserAdmin()
             emit(admin)
-        }catch (e: Exception){
+        } catch (e: Exception) {
             emit(Resource.Failure(e))
         }
     }
-
-
 }
