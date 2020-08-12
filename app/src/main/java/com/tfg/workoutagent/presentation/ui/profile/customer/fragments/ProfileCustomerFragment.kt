@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
@@ -39,6 +38,8 @@ class ProfileCustomerFragment : Fragment() {
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private var darkMode: Boolean = false
 
+    private lateinit var weightDialog: AlertDialog
+
     private val viewModel by lazy {
         ViewModelProvider(
             this, ProfileCustomerViewModelFactory(
@@ -64,6 +65,7 @@ class ProfileCustomerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+        setupWeightDialog()
         observeData()
     }
 
@@ -167,13 +169,32 @@ class ProfileCustomerFragment : Fragment() {
     }
 
     private fun showWeightDialog() {
+        this.weightDialog.show()
+    }
+
+    private fun observeDataDialog(dialogView: View) {
+        this.viewModel.weightAdded.observe(viewLifecycleOwner, Observer { res ->
+            res?.let {
+                if (res) {
+                    this.viewModel.weightAdded()
+                    dialogView.add_weight_input_edit.text = null
+                    this.weightDialog.dismiss()
+                }
+            }
+        })
+    }
+
+    private fun setupWeightDialog() {
         val builder = AlertDialog.Builder(requireContext(), R.style.WeightDialog)
         val dialogView = this.layoutInflater.inflate(R.layout.weight_dialog, null)
         builder.setView(dialogView)
-        val alertDialog = builder.create()
+        this.weightDialog = builder.create()
+
+        observeDataDialog(dialogView)
 
         dialogView.add_weight_cancel.setOnClickListener {
-            alertDialog.dismiss()
+            dialogView.add_weight_input_edit.text = null
+            this.weightDialog.dismiss()
         }
 
         dialogView.add_weight_save.setOnClickListener {
@@ -183,20 +204,9 @@ class ProfileCustomerFragment : Fragment() {
             } else {
                 dialogView.add_weight_input_edit.error = null
                 weight.text.toString().toDoubleOrNull()?.let {
-                    this.viewModel.weightAdded.observe(viewLifecycleOwner, Observer { res ->
-                        res?.let {
-                            if (res) {
-                                this.viewModel.weightAdded()
-                                alertDialog.dismiss()
-                            }
-                        }
-                    })
                     this.viewModel.addWeight(it)
-
                 }
             }
         }
-
-        alertDialog.show()
     }
 }
