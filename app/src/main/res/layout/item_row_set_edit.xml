@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="16dp"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="6dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/delete_set_button_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                app:fabSize="mini"
+                app:srcCompat="@android:drawable/ic_delete" />
+
+            <TextView
+                android:id="@+id/repetitions_activity_icon_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="24dp"
+                android:layout_toEndOf="@id/delete_set_button_edit"
+                android:drawableStart="@drawable/ic_repetitions_black_24dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/repetitions_activity_input_edit"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_toEndOf="@id/repetitions_activity_icon_edit"
+                android:inputType="number" />
+
+            <TextView
+                android:id="@+id/weights_activity_icon_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="28dp"
+                android:layout_toEndOf="@id/repetitions_activity_input_edit"
+                android:drawableStart="@drawable/ic_weights_black_24dp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/weights_activity_input_edit"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="48dp"
+                android:layout_toEndOf="@id/weights_activity_icon_edit"
+                android:inputType="numberDecimal" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/finished_set_button_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="4dp"
+                app:fabSize="mini"
+                app:srcCompat="@drawable/ic_done_black_24dp" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/activity_set_error_message_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/add_activity_set_error_message"
+        android:textColor="@color/design_default_color_error"
+        android:visibility="gone" />
+
+</LinearLayout>

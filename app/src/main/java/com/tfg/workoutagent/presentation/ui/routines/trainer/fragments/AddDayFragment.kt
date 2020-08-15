@@ -10,9 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
@@ -22,8 +20,8 @@ import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.add_day_fragment.*
-
 
 class AddDayFragment : Fragment() {
 
@@ -62,16 +60,25 @@ class AddDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ActivityListAdapter(this.requireContext()) { routineActivity: RoutineActivity ->
+        adapter = ActivityListAdapter(this.requireContext(), { routineActivity: RoutineActivity ->
             viewModel.onEditActivity(routineActivity)
             findNavController().navigate(AddDayFragmentDirections.actionAddDayFragmentToEditActivityFragment())
-        }
+        }, { routineActivity: RoutineActivity ->
+            createAlertDialog(
+                requireContext(),
+                "Delete day",
+                "Are you sure you want to delete this day?",
+                {
+                    viewModel.removeActivity(routineActivity)
+                },
+                {})
+        })
 
         recycler_add_day_activities.layoutManager = LinearLayoutManager(this.requireContext())
         recycler_add_day_activities.adapter = adapter
 
-        val itemTouchHelper = setUpItemTouchHelper()
-        itemTouchHelper.attachToRecyclerView(recycler_add_day_activities)
+        // val itemTouchHelper = setUpItemTouchHelper()
+        // itemTouchHelper.attachToRecyclerView(recycler_add_day_activities)
 
         // TODO
         viewModel.adapter = adapter
@@ -82,7 +89,7 @@ class AddDayFragment : Fragment() {
         setupButtons()
     }
 
-    private fun setUpItemTouchHelper(): ItemTouchHelper {
+    /*private fun setUpItemTouchHelper(): ItemTouchHelper {
         val simpleItemTouchCallback = object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
             override fun onMove(
@@ -101,7 +108,7 @@ class AddDayFragment : Fragment() {
         }
 
         return ItemTouchHelper(simpleItemTouchCallback)
-    }
+    }*/
 
     private fun onBackPressed() {
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(
@@ -166,12 +173,12 @@ class AddDayFragment : Fragment() {
             findNavController().navigate(AddDayFragmentDirections.actionAddDayFragmentToAddActivityFragment2())
         }
 
-        cancel_create_day_button.setOnClickListener {
+        /*cancel_create_day_button.setOnClickListener {
             findNavController().navigate(
                 AddDayFragmentDirections.actionAddDayFragmentToCreateRoutine(
                     clearData = 2
                 )
             )
-        }
+        }*/
     }
 }

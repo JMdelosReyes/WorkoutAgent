@@ -1,6 +1,5 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -74,6 +73,11 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         get() = _noteError
 
     val selectedExercise = MutableLiveData<Exercise>()
+
+    // Error para el nuevo selector
+    private val _exerciseError = MutableLiveData("")
+    val exerciseError: LiveData<String>
+        get() = _exerciseError
 
     private val _routineCreated = MutableLiveData<Boolean?>(null)
     val routineCreated: LiveData<Boolean?>
@@ -250,10 +254,19 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     private fun checkActivityData(): Boolean {
         // checkActivitySets()
         checkNewActivitySets()
+        checkNewExercise()
         // checkActivityRepetitions()
         // checkActivityWeights()
         checkActivityNote()
-        return _setsError.value == "" && _repetitionsError.value == "" && _weightsError.value == "" && _noteError.value == ""
+        return _setsError.value == "" && _noteError.value == "" && _exerciseError.value == ""
+    }
+
+    private fun checkNewExercise() {
+        if (this.newSelectedExercise == null) {
+            _exerciseError.value = "You have to select an exercise"
+            return
+        }
+        _exerciseError.value = ""
     }
 
     private fun checkActivityNote() {
@@ -331,6 +344,11 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
                 _setsError.value = "Sets cannot be empty"
                 return
             }
+
+            if (!it.all { s -> s.isValid }) {
+                _setsError.value = "There's an invalid set"
+                return
+            }
             _setsError.value = ""
         }
     }
@@ -386,6 +404,7 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         _dayNameError.value = ""
         activities.value = mutableListOf()
         _activitiesError.value = ""
+        clearActivityData()
     }
 
     fun clearActivityData() {
@@ -399,6 +418,8 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         note.value = ""
         _noteError.value = ""
         resetSelectedCategories()
+        _exerciseError.value = ""
+        newSelectedExercise = null
     }
 
     fun removeActivity(activity: RoutineActivity) {
@@ -458,6 +479,9 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     }
 
     fun onEditActivity(routineActivity: RoutineActivity) {
+        this.newSets =
+            this.formatSets(routineActivity.repetitions, routineActivity.weightsPerRepetition)
+        this.newSelectedExercise = routineActivity.exercise
         this._editingActivity.value = routineActivity
         this.editingActivityPosition = this.activities.value?.indexOf(routineActivity)
         this.sets.value = routineActivity.sets.toString()
@@ -465,6 +489,17 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
         this.weights.value = doubleListToString(routineActivity.weightsPerRepetition)
         this.note.value = routineActivity.note
         this.selectedExercise.value = routineActivity.exercise
+    }
+
+    private fun formatSets(
+        repetitions: MutableList<Int>,
+        weightsPerRepetition: MutableList<Double>
+    ): MutableList<ActivitySet> {
+        val setsTemp = mutableListOf<ActivitySet>()
+        repetitions.forEachIndexed() { index, rep ->
+            setsTemp.add(ActivitySet(rep, weightsPerRepetition[index]))
+        }
+        return setsTemp
     }
 
     fun onSaveEditActivity() {
@@ -478,17 +513,15 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     }
 
     private fun replaceActivity() {
+        val newRepetitions = this.newSets.map { s -> s.repetitions } as MutableList<Int>
+        val newWeights = this.newSets.map { s -> s.weight } as MutableList<Double>
         val activity = RoutineActivity(
-            name = selectedExercise.value?.title!!,
-            sets = sets.value!!.toInt(),
-            repetitions = repetitions.value!!.split(",").map { x ->
-                x.trim().toInt()
-            } as MutableList<Int>,
-            weightsPerRepetition = weights.value!!.split(",").map { x ->
-                x.trim().toDouble()
-            } as MutableList<Double>,
-            exercise = selectedExercise.value!!,
-            note = note.value!!
+            name = newSelectedExercise!!.title,
+            sets = this.newSets.size,
+            repetitions = newRepetitions,
+            weightsPerRepetition = newWeights,
+            exercise = newSelectedExercise!!,
+            note = (if (note.value != null) note.value else "")!!
         )
 
         activities.value!![this.editingActivityPosition!!] = activity
@@ -522,12 +555,25 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
 
     private var newSets = mutableListOf<ActivitySet>()
 
+    fun getNewSets(): MutableList<ActivitySet> {
+        val res: MutableList<ActivitySet> = mutableListOf()
+        res.addAll(this.newSets)
+        return res
+    }
+
     fun checkSet(repetitions: Int?, weight: Double?): Boolean {
         return repetitions != null && weight != null
     }
 
     fun updateSet(activitySet: ActivitySet, position: Int) {
         this.newSets[position] = activitySet
+        this.checkNewActivitySets()
+    }
+
+    fun updateSet(isValid: Boolean, position: Int) {
+        this.newSets[position] =
+            ActivitySet(this.newSets[position].repetitions, this.newSets[position].weight, isValid)
+        this.checkNewActivitySets()
     }
 
     fun addSet(repetitions: Int?, weight: Double?): String {
@@ -567,6 +613,9 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
     fun getNewSelectedExercise() = this.newSelectedExercise
 
     fun updateNewSelectedExercise(exercise: Exercise?) {
+        if (exercise != null) {
+            _exerciseError.value = ""
+        }
         this.newSelectedExercise = exercise
     }
 

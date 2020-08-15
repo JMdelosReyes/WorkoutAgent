@@ -1,7 +1,9 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.app.Dialog
+import android.content.res.Configuration
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -75,9 +77,21 @@ class AddActivityFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val darkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> false
+            else -> true
+        }
+        if (darkMode) {
+            nsv_add_activity.setBackgroundResource(R.drawable.item_no_border_dark)
+            rl_add_activity_plus.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            activity_note_input.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            activity_note_input_edit.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            repetitions_add_activity_input.setTextColor(Color.WHITE)
+            weights_add_activity_input.setTextColor(Color.WHITE)
+            activity_note_input_edit.setTextColor(Color.WHITE)
+        }
         setupSetListRecycler()
-        setupCategoryListRecycler()
+        setupCategoryListRecycler(darkMode)
         setupExerciseListRecycler()
         setupToolbar()
         // setupSpinnerAdapter()
@@ -147,6 +161,21 @@ class AddActivityFragment : DialogFragment() {
             binding.activityNoteInputEdit.error =
                 if (it != "") it else null
         })
+
+        viewModel.exerciseError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it != "") {
+                    binding.addExerciseSetErrorMessage.text = it
+                    binding.addExerciseSetErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.addExerciseSetErrorMessage.text = ""
+                    binding.addExerciseSetErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.addExerciseSetErrorMessage.text = ""
+                binding.addExerciseSetErrorMessage.visibility = View.GONE
+            }
+        })
     }
 
     private fun setupDialogWindow() {
@@ -161,15 +190,15 @@ class AddActivityFragment : DialogFragment() {
 
     private fun setupToolbar() {
         toolbar.setNavigationOnClickListener {
-            viewModel.clearActivityData()
+            this.viewModel.clearActivityData()
             dismiss()
         }
-        toolbar.title = "Some Title"
+        toolbar.title = "Add activity"
         toolbar.inflateMenu(R.menu.add_day_activity_dialog_menu)
         toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.action_save_day_activity -> {
-                    viewModel.onSaveActivity()
+                    this.viewModel.onSaveActivity()
                 }
                 else -> {
                     dismiss()
@@ -218,30 +247,38 @@ class AddActivityFragment : DialogFragment() {
             updateListener@{ repetitions, weight, position ->
                 val validSet = this.viewModel.checkSet(repetitions, weight)
                 if (validSet) {
-                    this.viewModel.updateSet(ActivitySet(repetitions!!, weight!!), position)
+                    this.viewModel.updateSet(ActivitySet(repetitions!!, weight!!, true), position)
                     return@updateListener ""
                 }
-                return@updateListener "Error"
+                this.viewModel.updateSet(false, position)
+                return@updateListener "Invalid value"
             })
         recyclerView_activity_sets.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerView_activity_sets.adapter = setListAdapter
     }
 
-    private fun setupCategoryListRecycler() {
+    private fun setupCategoryListRecycler(darkMode: Boolean) {
         this.categoryListAdapter =
             CategoryListAdapter(this.requireContext()) { categoryName, categoryPosition, view ->
                 val currentCategories = this.viewModel.getSelectedCategories()
                 if (currentCategories.map { c -> c.name }.contains(categoryName)) {
                     this.viewModel.removeSelectedCategory(categoryName, categoryPosition)
-                    view.setBackgroundColor(Color.WHITE)
+                    if (darkMode) {
+                        view.setBackgroundResource(R.drawable.item_border_dark)
+                    } else {
+                        view.setBackgroundColor(Color.WHITE)
+                    }
                 } else {
                     this.viewModel.addSelectedCategory(categoryName, categoryPosition)
-                    view.setBackgroundColor(Color.GREEN)
+                    view.setBackgroundResource(R.drawable.item_border_primary_color)
                 }
 
                 val exercises = this.viewModel.updateAvailableExercises()
+                if (!exercises.contains(this.viewModel.getNewSelectedExercise())) {
+                    this.viewModel.updateNewSelectedExercise(null)
+                    this.exerciseListAdapter.setSelectedExercise(null)
+                }
                 this.exerciseListAdapter.setListData(exercises)
-                this.exerciseListAdapter.notifyDataSetChanged()
             }
 
         recyclerView_activity_categories.layoutManager =
@@ -252,21 +289,18 @@ class AddActivityFragment : DialogFragment() {
 
     private fun setupExerciseListRecycler() {
         this.exerciseListAdapter =
-            ExerciseListAdapter(this.requireContext()) updateExercise@{ exercise, view ->
+            ExerciseListAdapter(this.requireContext()) updateExercise@{ exercise, _ ->
                 val selectedExercise = this.viewModel.getNewSelectedExercise()
                 if (selectedExercise == null) {
                     this.viewModel.updateNewSelectedExercise(exercise)
                     this.exerciseListAdapter.setSelectedExercise(exercise)
-                    // view.setBackgroundColor(Color.GREEN)
                 } else {
                     if (selectedExercise.id == exercise.id) {
                         this.viewModel.updateNewSelectedExercise(null)
                         this.exerciseListAdapter.setSelectedExercise(null)
-                        // view.setBackgroundColor(Color.WHITE)
                     } else {
                         this.viewModel.updateNewSelectedExercise(exercise)
                         this.exerciseListAdapter.setSelectedExercise(exercise)
-                        // view.setBackgroundColor(Color.GREEN)
                     }
                 }
             }
@@ -278,7 +312,6 @@ class AddActivityFragment : DialogFragment() {
             it?.let {
                 val exercises = this.viewModel.updateAvailableExercises()
                 this.exerciseListAdapter.setListData(exercises)
-                this.exerciseListAdapter.notifyDataSetChanged()
             }
         })
 

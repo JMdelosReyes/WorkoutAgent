@@ -31,7 +31,8 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_edit_activity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/display_pdf_profile_trainer_appbar">
@@ -45,47 +46,106 @@
                 android:padding="24dp"
                 android:paddingTop="16dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_set_input"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_activity_sets"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="@string/add_activity_sets_hint">
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_set_input_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={viewModel.sets}" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_repetitions_input"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/add_set_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="@string/add_activity_repetitions_hint">
+                    android:layout_margin="8dp"
+                    android:padding="16dp"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="2dp">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_repetitions_input_edit"
+                    <RelativeLayout
+                        android:id="@+id/rl_edit_activity_plus"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={viewModel.repetitions}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_weights_input"
-                    android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/repetitions_edit_activity_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="12dp"
+                            android:drawableStart="@drawable/ic_repetitions_black_24dp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/repetitions_edit_activity_input"
+                            android:layout_width="48dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="16dp"
+                            android:layout_toEndOf="@id/repetitions_edit_activity_icon"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/weights_edit_activity_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="24dp"
+                            android:layout_toEndOf="@id/repetitions_edit_activity_input"
+                            android:drawableStart="@drawable/ic_weights_black_24dp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/weights_edit_activity_input"
+                            android:layout_width="48dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="16dp"
+                            android:layout_toEndOf="@id/weights_edit_activity_icon"
+                            android:inputType="numberDecimal" />
+
+                        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                            android:id="@+id/add_set_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="4dp"
+                            app:fabSize="mini"
+                            app:srcCompat="@android:drawable/ic_input_add" />
+
+                    </RelativeLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    android:id="@+id/edit_activity_set_error_message"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="@string/add_activity_weights_hint">
+                    android:layout_marginStart="8dp"
+                    android:text="@string/add_activity_set_error_message"
+                    android:textColor="@color/design_default_color_error"
+                    android:visibility="gone" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_weights_input_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={viewModel.weights}" />
-                </com.google.android.material.textfield.TextInputLayout>
+                <TextView
+                    android:id="@+id/edit_exercise_set_error_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/add_activity_set_error_message"
+                    android:textColor="@color/design_default_color_error"
+                    android:visibility="gone" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_activity_categories"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_activity_exercises"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="48dp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/activity_note_input"
@@ -101,14 +161,9 @@
                         android:text="@={viewModel.note}" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <Spinner
-                    android:id="@+id/activity_exercise_spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
             </LinearLayout>
 
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
     </RelativeLayout>
 

@@ -23,6 +23,7 @@ import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ActivityListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.fragment_edit_day.*
 
 /**
@@ -61,15 +62,24 @@ class EditDayFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ActivityListAdapter(this.requireContext()) { routineActivity: RoutineActivity ->
+        adapter = ActivityListAdapter(this.requireContext(), { routineActivity: RoutineActivity ->
             viewModel.onEditActivity(routineActivity)
             findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToEditActivityFragment())
-        }
+        }, { routineActivity: RoutineActivity ->
+            createAlertDialog(
+                requireContext(),
+                "Delete day",
+                "Are you sure you want to delete this day?",
+                {
+                    viewModel.removeActivity(routineActivity)
+                },
+                {})
+        })
         recycler_edit_day_activities.layoutManager = LinearLayoutManager(this.requireContext())
         recycler_edit_day_activities.adapter = adapter
 
-        val itemTouchHelper = setUpItemTouchHelper()
-        itemTouchHelper.attachToRecyclerView(recycler_edit_day_activities)
+        // val itemTouchHelper = setUpItemTouchHelper()
+        // itemTouchHelper.attachToRecyclerView(recycler_edit_day_activities)
 
         // TODO
         viewModel.adapter = adapter
@@ -80,7 +90,7 @@ class EditDayFragment : Fragment() {
         setupButtons()
     }
 
-    private fun setUpItemTouchHelper(): ItemTouchHelper {
+    /*private fun setUpItemTouchHelper(): ItemTouchHelper {
         val simpleItemTouchCallback = object :
             ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT) {
             override fun onMove(
@@ -99,7 +109,7 @@ class EditDayFragment : Fragment() {
         }
 
         return ItemTouchHelper(simpleItemTouchCallback)
-    }
+    }*/
 
     private fun observeErrors() {
         viewModel.dayNameError.observe(viewLifecycleOwner, Observer {

@@ -37,6 +37,9 @@ class CreateGoalCustomerViewModel(private val manageGoalUseCase: ManageGoalUseCa
         get() = _endDateError
 
     // TODO Define error
+    fun goalCreated(){
+        _goalCreated.value = null
+    }
 
     private val _goalCreated = MutableLiveData<Boolean?>(null)
     val goalCreated: LiveData<Boolean?>

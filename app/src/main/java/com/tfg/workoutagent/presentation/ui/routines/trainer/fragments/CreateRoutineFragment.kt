@@ -1,7 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +16,10 @@ import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.databinding.CreateRoutineFragmentBinding
 import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
-import com.tfg.workoutagent.models.Day
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.CreateRoutineViewModelFactory
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.create_routine_fragment.*
 
 class CreateRoutineFragment : Fragment() {
@@ -72,8 +71,15 @@ class CreateRoutineFragment : Fragment() {
                 viewModel.onEditDay(it)
                 findNavController().navigate(CreateRoutineFragmentDirections.actionCreateRoutineToEditDayFragment())
             }, {
-                viewModel.onDeleteDay(it)
-                adapter.notifyDataSetChanged()
+                createAlertDialog(
+                    requireContext(),
+                    "Delete day",
+                    "Are you sure you want to delete this day?",
+                    {
+                        viewModel.onDeleteDay(it)
+                        adapter.notifyDataSetChanged()
+                    },
+                    {})
             })
         recyclerViewRoutineNewDay.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerViewRoutineNewDay.adapter = adapter

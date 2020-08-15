@@ -256,4 +256,7 @@
     <string name="category_name">Category name</string>
     <string name="exercise_name">Exercise name</string>
     <string name="you_must_select_a_genre">You must select a genre</string>
+    <string name="today">Today</string>
+    <string name="completed">Completed</string>
+    <string name="assign_routine">Assign</string>
 </resources>

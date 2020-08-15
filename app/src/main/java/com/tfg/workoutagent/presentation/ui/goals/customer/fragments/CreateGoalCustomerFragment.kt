@@ -98,6 +98,7 @@ class CreateGoalCustomerFragment : Fragment() {
                 when (it) {
                     true -> {
                         Toast.makeText(context, "Goal created successfully", Toast.LENGTH_SHORT).show()
+                        this.viewModel.goalCreated()
                         findNavController().navigate(CreateGoalCustomerFragmentDirections.actionCreateGoalCustomerFragmentToListGoalCustomerFragment())
                     }
                     false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)

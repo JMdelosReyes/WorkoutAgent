@@ -106,7 +106,7 @@ class GoogleSignInActivity : BaseActivity() {
                 viewModel.fechtRole.observe(this, Observer { result ->
                     when(result){
                         is Resource.Loading -> {
-                           //showProgress()
+                            //showProgress()
                         }
                         is Resource.Success -> {
                             //hideProgress()

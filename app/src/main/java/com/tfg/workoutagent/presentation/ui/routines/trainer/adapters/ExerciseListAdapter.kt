@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.base.BaseAdapterInterface
 import com.tfg.workoutagent.models.Exercise
 import kotlinx.android.synthetic.main.item_row_exercise_activity.view.*
 
@@ -15,7 +16,7 @@ class ExerciseListAdapter(
     private val context: Context,
     private val clickListener: (exercise: Exercise, view: View) -> Unit
 ) :
-    RecyclerView.Adapter<ExerciseListAdapter.ExerciseListViewHolder>() {
+    RecyclerView.Adapter<ExerciseListAdapter.ExerciseListViewHolder>(), BaseAdapterInterface {
 
     private var dataList = mutableListOf<Exercise>()
 
@@ -23,6 +24,7 @@ class ExerciseListAdapter(
 
     fun setListData(data: MutableList<Exercise>) {
         this.dataList = data
+        this.notifyDataSetChanged()
     }
 
     fun setSelectedExercise(exercise: Exercise?) {
@@ -64,23 +66,28 @@ class ExerciseListAdapter(
 
             itemView.setOnClickListener {
                 clickListener(exercise, itemView)
-                updateColor()
                 notifyDataSetChanged()
             }
         }
 
         private fun updateColor() {
             if (selectedExercise == null) {
-                this.itemView.setBackgroundColor(Color.WHITE)
-            } else {
-                if (selectedExercise?.id == exercise.id) {
-                    itemView.setBackgroundColor(Color.GREEN)
+                if (isDarkMode(context)) {
+                    this.itemView.setBackgroundResource(R.drawable.item_border_dark)
                 } else {
                     this.itemView.setBackgroundColor(Color.WHITE)
                 }
+            } else {
+                if (selectedExercise?.id == exercise.id) {
+                    this.itemView.setBackgroundResource(R.drawable.item_border_primary_color)
+                } else {
+                    if (isDarkMode(context)) {
+                        this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                    } else {
+                        this.itemView.setBackgroundColor(Color.WHITE)
+                    }
+                }
             }
         }
-
     }
-
 }

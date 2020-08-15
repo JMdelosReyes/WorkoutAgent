@@ -67,9 +67,10 @@ class CreateExerciseFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val darkMode = super.getDarkMode()
         observeData()
-        setupUI()
-        setupButtonTags()
+        setupUI(darkMode)
+        setupButtonTags(darkMode)
     }
 
     private fun setupUI() {

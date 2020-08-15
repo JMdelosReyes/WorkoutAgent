@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.base.BaseAdapterInterface
 import com.tfg.workoutagent.models.Category
 import kotlinx.android.synthetic.main.item_category.view.*
 
@@ -14,7 +15,7 @@ class CategoryListAdapter(
     private val context: Context,
     private val clickListener: (categoryName: String, categoryPosition: Int, view: View) -> Unit
 ) :
-    RecyclerView.Adapter<CategoryListAdapter.CategoryListViewHolder>() {
+    RecyclerView.Adapter<CategoryListAdapter.CategoryListViewHolder>(), BaseAdapterInterface {
 
     private var dataList = mutableListOf<Category>()
     fun setListData(data: MutableList<Category>) {
@@ -48,7 +49,12 @@ class CategoryListAdapter(
         fun bindView(category: Category) {
             this.category = category
 
-            itemView.setBackgroundColor(Color.WHITE)
+            if (isDarkMode(context)) {
+                this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+            } else {
+                this.itemView.setBackgroundColor(Color.WHITE)
+            }
+
             itemView.category_name.text = this.category.name
             itemView.category_button.setImageResource(this.category.icon)
 
