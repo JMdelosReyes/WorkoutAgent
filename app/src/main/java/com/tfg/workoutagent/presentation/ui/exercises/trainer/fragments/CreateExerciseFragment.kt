@@ -69,8 +69,8 @@ class CreateExerciseFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         val darkMode = super.getDarkMode()
         observeData()
-        setupUI(darkMode)
-        setupButtonTags(darkMode)
+        setupUI()
+        setupButtonTags()
     }
 
     private fun setupUI() {
@@ -85,23 +85,23 @@ class CreateExerciseFragment : BaseFragment() {
             )
         }
         if(getDarkMode()){
-            ll_arms.setBackgroundResource(R.drawable.goal_item_border_dark)
-            ll_legs.setBackgroundResource(R.drawable.goal_item_border_dark)
-            ll_back.setBackgroundResource(R.drawable.goal_item_border_dark)
-            ll_chest.setBackgroundResource(R.drawable.goal_item_border_dark)
-            ll_shoulder.setBackgroundResource(R.drawable.goal_item_border_dark)
-            ll_gluteus.setBackgroundResource(R.drawable.goal_item_border_dark)
-            ll_abs.setBackgroundResource(R.drawable.goal_item_border_dark)
-            ll_cardio.setBackgroundResource(R.drawable.goal_item_border_dark)
+            ll_arms.setBackgroundResource(R.drawable.item_border_dark)
+            ll_legs.setBackgroundResource(R.drawable.item_border_dark)
+            ll_back.setBackgroundResource(R.drawable.item_border_dark)
+            ll_chest.setBackgroundResource(R.drawable.item_border_dark)
+            ll_shoulder.setBackgroundResource(R.drawable.item_border_dark)
+            ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
+            ll_abs.setBackgroundResource(R.drawable.item_border_dark)
+            ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
         }else{
-            ll_arms.setBackgroundResource(R.drawable.goal_item_border)
-            ll_legs.setBackgroundResource(R.drawable.goal_item_border)
-            ll_back.setBackgroundResource(R.drawable.goal_item_border)
-            ll_chest.setBackgroundResource(R.drawable.goal_item_border)
-            ll_shoulder.setBackgroundResource(R.drawable.goal_item_border)
-            ll_gluteus.setBackgroundResource(R.drawable.goal_item_border)
-            ll_abs.setBackgroundResource(R.drawable.goal_item_border)
-            ll_cardio.setBackgroundResource(R.drawable.goal_item_border)
+            ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
+            ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
+            ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
+            ll_chest.setBackgroundResource(R.drawable.item_white_dark_border)
+            ll_shoulder.setBackgroundResource(R.drawable.item_white_dark_border)
+            ll_gluteus.setBackgroundResource(R.drawable.item_white_dark_border)
+            ll_abs.setBackgroundResource(R.drawable.item_white_dark_border)
+            ll_cardio.setBackgroundResource(R.drawable.item_white_dark_border)
         }
     }
 
@@ -186,9 +186,9 @@ class CreateExerciseFragment : BaseFragment() {
             } else {
                 viewModel.removeTag(index)
                 if(getDarkMode()){
-                    ll_arms.setBackgroundResource(R.drawable.goal_item_border_dark)
+                    ll_arms.setBackgroundResource(R.drawable.item_border_dark)
                 }else{
-                    ll_arms.setBackgroundResource(R.drawable.goal_item_border)
+                    ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
         }
@@ -200,9 +200,9 @@ class CreateExerciseFragment : BaseFragment() {
             } else {
                 viewModel.removeTag(index)
                 if(getDarkMode()){
-                    ll_legs.setBackgroundResource(R.drawable.goal_item_border_dark)
+                    ll_legs.setBackgroundResource(R.drawable.item_border_dark)
                 }else{
-                    ll_legs.setBackgroundResource(R.drawable.goal_item_border)
+                    ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
         }
@@ -214,9 +214,9 @@ class CreateExerciseFragment : BaseFragment() {
             } else {
                 viewModel.removeTag(index)
                 if(getDarkMode()){
-                    ll_back.setBackgroundResource(R.drawable.goal_item_border_dark)
+                    ll_back.setBackgroundResource(R.drawable.item_border_dark)
                 }else{
-                    ll_back.setBackgroundResource(R.drawable.goal_item_border)
+                    ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
         }
@@ -228,9 +228,9 @@ class CreateExerciseFragment : BaseFragment() {
             } else {
                 viewModel.removeTag(index)
                 if(getDarkMode()){
-                    ll_chest.setBackgroundResource(R.drawable.goal_item_border_dark)
+                    ll_chest.setBackgroundResource(R.drawable.item_border_dark)
                 }else{
-                    ll_chest.setBackgroundResource(R.drawable.goal_item_border)
+                    ll_chest.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
         }
@@ -242,9 +242,9 @@ class CreateExerciseFragment : BaseFragment() {
             } else {
                 viewModel.removeTag(index)
                 if(getDarkMode()){
-                    ll_shoulder.setBackgroundResource(R.drawable.goal_item_border_dark)
+                    ll_shoulder.setBackgroundResource(R.drawable.item_border_dark)
                 }else{
-                    ll_shoulder.setBackgroundResource(R.drawable.goal_item_border)
+                    ll_shoulder.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
         }
@@ -256,9 +256,9 @@ class CreateExerciseFragment : BaseFragment() {
             } else {
                 viewModel.removeTag(index)
                 if(getDarkMode()){
-                    ll_gluteus.setBackgroundResource(R.drawable.goal_item_border_dark)
+                    ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
                 }else{
-                    ll_gluteus.setBackgroundResource(R.drawable.goal_item_border)
+                    ll_gluteus.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
         }
@@ -270,9 +270,9 @@ class CreateExerciseFragment : BaseFragment() {
             } else {
                 viewModel.removeTag(index)
                 if(getDarkMode()){
-                    ll_abs.setBackgroundResource(R.drawable.goal_item_border_dark)
+                    ll_abs.setBackgroundResource(R.drawable.item_border_dark)
                 }else{
-                    ll_abs.setBackgroundResource(R.drawable.goal_item_border)
+                    ll_abs.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
         }
@@ -284,9 +284,9 @@ class CreateExerciseFragment : BaseFragment() {
             } else {
                 viewModel.removeTag(index)
                 if(getDarkMode()){
-                    ll_cardio.setBackgroundResource(R.drawable.goal_item_border_dark)
+                    ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
                 }else{
-                    ll_cardio.setBackgroundResource(R.drawable.goal_item_border)
+                    ll_cardio.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
         }

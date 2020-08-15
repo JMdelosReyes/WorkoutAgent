@@ -115,7 +115,7 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
     override fun onBackPressed() {
         val navController = findNavController(R.id.nav_host_fragment)
         when (navController.currentDestination?.id) {
-            R.id.navigation_day_customer -> finish()
+            R.id.navigation_today_customer -> finish()
             R.id.navigation_routine_customer -> finish()
             R.id.navigation_profile_customer -> finish()
             else -> super.onBackPressed()
