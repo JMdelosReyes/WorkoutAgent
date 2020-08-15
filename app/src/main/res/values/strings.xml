@@ -259,4 +259,6 @@
     <string name="today">Today</string>
     <string name="completed">Completed</string>
     <string name="assign_routine">Assign</string>
+    <string name="goals">Goals</string>
+    <string name="charts">Charts</string>
 </resources>

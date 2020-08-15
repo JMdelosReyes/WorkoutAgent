@@ -26,15 +26,12 @@ class CreateGoalCustomerViewModel(private val manageGoalUseCase: ManageGoalUseCa
 
     val pickerStartDate = MutableLiveData<Date>()
     val startDate = MutableLiveData("")
-    private val _startDateError = MutableLiveData("")
-    val startDateError: LiveData<String>
-        get() = _startDateError
+    private val _dateError = MutableLiveData("")
+    val dateError: LiveData<String>
+        get() = _dateError
 
     val pickerEndDate = MutableLiveData<Date>()
     val endDate = MutableLiveData("")
-    private val _endDateError = MutableLiveData("")
-    val endDateError: LiveData<String>
-        get() = _endDateError
 
     // TODO Define error
     fun goalCreated(){
@@ -74,7 +71,7 @@ class CreateGoalCustomerViewModel(private val manageGoalUseCase: ManageGoalUseCa
         checkAim()
         checkDescription()
         checkDates()
-        return _aimError.value == "" && _descriptionError.value == "" && _startDateError.value == "" && _endDateError.value == ""
+        return _aimError.value == "" && _descriptionError.value == "" && _dateError.value == ""
     }
 
     private fun checkAim(){
@@ -99,43 +96,26 @@ class CreateGoalCustomerViewModel(private val manageGoalUseCase: ManageGoalUseCa
 
     private fun checkDates(){
         val currentTime = Calendar.getInstance().time
-        startDate.let {
-            if(!(it.value == null || it.value == "")){
-                val date = parseStringToDateBar(it.value!!)!!
-                if(date < currentTime){
-                    _startDateError.value = "Start date should be after today."
-                    return
-                }
-                else{
-                    _startDateError.value = ""
-                }
-            }else{
-                _startDateError.value = "Start date should not be null"
+        if((!(startDate.value == null || startDate.value == "")) && (!(endDate.value == null || endDate.value == ""))){
+            val dateStart = parseStringToDateBar(startDate.value!!)!!
+            val dateEnd = parseStringToDateBar(endDate.value!!)!!
+            if((dateStart < currentTime) || (dateEnd < currentTime)){
+                _dateError.value = "Dates should be after today."
                 return
-            }
-        }
-        endDate.let {
-            if(!(it.value == null || it.value == "")){
-                val date = parseStringToDateBar(it.value!!)!!
-                if(date < currentTime){
-                    _endDateError.value = "Deadline should be after today."
+            }else if(startDate.value != null){
+                if(dateStart > dateEnd){
+                    _dateError.value = "Deadline should be after start date."
                     return
                 }else{
-                    if(startDate.value != null){
-                        val startDate = parseStringToDateBar(startDate.value!!)!!
-                        if(startDate > date){
-                            _endDateError.value = "Deadline should be after start date."
-                            return
-                        }else{
-                            _endDateError.value = ""
-                        }
-                    }
+                    _dateError.value = ""
                 }
-            }else{
-                _endDateError.value = "Deadline should not be null"
-                return
             }
-
+            else{
+                _dateError.value = ""
+            }
+        }else{
+            _dateError.value = "Dates should not be null"
+            return
         }
     }
 

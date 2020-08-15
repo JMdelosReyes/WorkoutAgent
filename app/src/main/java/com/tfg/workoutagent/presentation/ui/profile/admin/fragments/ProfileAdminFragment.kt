@@ -1,16 +1,12 @@
 package com.tfg.workoutagent.presentation.ui.profile.admin.fragments
 
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
 import android.content.res.Configuration
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -34,36 +30,32 @@ import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_admin_profile.*
-import kotlinx.android.synthetic.main.fragment_admin_profile.circleImageViewAdmin_displayProfile
-import kotlinx.android.synthetic.main.fragment_trainer_profile.*
 
 class ProfileAdminFragment : Fragment() {
 
-    private lateinit var profileAdminViewModel: ProfileAdminViewModel
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var viewModel: ProfileAdminViewModel
-    private var darkMode : Boolean = false
+    private var darkMode: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /*profileAdminViewModel =
-            ViewModelProvider(this@ProfileAdminFragment).get(ProfileAdminViewModel::class.java)*/
+        val root = inflater.inflate(R.layout.fragment_admin_profile, container, false)
         darkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_NO -> false
             else -> true
         }
         viewModel = ViewModelProvider(
-            this, ProfileAdminViewModelFactory(
+            this.requireActivity(), ProfileAdminViewModelFactory(
                 DisplayProfileUserUseCaseImpl(
                     UserRepositoryImpl()
                 )
             )
         ).get(ProfileAdminViewModel::class.java)
-        return inflater.inflate(R.layout.fragment_admin_profile, container, false)
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -133,7 +125,7 @@ class ProfileAdminFragment : Fragment() {
                     display_admin_phone_displayProfile.text = it.data.phone
                     display_admin_birthday_displayProfile.text =
                         parseDateToFriendlyDate(it.data.birthday)
-                    display_trainer_dni_displayProfile.text = it.data.dni
+                    display_admin_dni_displayProfile.text = it.data.dni
                 }
                 is Resource.Failure -> {
                 }

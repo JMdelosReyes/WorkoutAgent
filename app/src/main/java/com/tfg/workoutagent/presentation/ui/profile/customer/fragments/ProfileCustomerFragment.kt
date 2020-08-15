@@ -30,12 +30,15 @@ import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_customer_profile.*
+import kotlinx.android.synthetic.main.weight_dialog.view.*
 
 class ProfileCustomerFragment : Fragment() {
 
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private var darkMode: Boolean = false
+
+    private lateinit var weightDialog: AlertDialog
 
     private val viewModel by lazy {
         ViewModelProvider(
@@ -62,6 +65,7 @@ class ProfileCustomerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+        setupWeightDialog()
         observeData()
     }
 
@@ -82,6 +86,16 @@ class ProfileCustomerFragment : Fragment() {
                 ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToListGoalCustomerFragment()
             )
         }
+        charts.setOnClickListener {
+            findNavController().navigate(
+                ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToDisplayChartFragment()
+            )
+        }
+
+        display_customer_button_add_weight.setOnClickListener {
+            this.showWeightDialog()
+        }
+
         settings_image_profile_customer.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(context!!)
             dialogBuilder.setTitle("Settings")
@@ -152,5 +166,47 @@ class ProfileCustomerFragment : Fragment() {
         FirebaseAuth.getInstance().signOut()
         mGoogleSignInClient.revokeAccess()
         startActivity(GoogleSignInActivity.getLaunchIntent(this.context!!))
+    }
+
+    private fun showWeightDialog() {
+        this.weightDialog.show()
+    }
+
+    private fun observeDataDialog(dialogView: View) {
+        this.viewModel.weightAdded.observe(viewLifecycleOwner, Observer { res ->
+            res?.let {
+                if (res) {
+                    this.viewModel.weightAdded()
+                    dialogView.add_weight_input_edit.text = null
+                    this.weightDialog.dismiss()
+                }
+            }
+        })
+    }
+
+    private fun setupWeightDialog() {
+        val builder = AlertDialog.Builder(requireContext(), R.style.WeightDialog)
+        val dialogView = this.layoutInflater.inflate(R.layout.weight_dialog, null)
+        builder.setView(dialogView)
+        this.weightDialog = builder.create()
+
+        observeDataDialog(dialogView)
+
+        dialogView.add_weight_cancel.setOnClickListener {
+            dialogView.add_weight_input_edit.text = null
+            this.weightDialog.dismiss()
+        }
+
+        dialogView.add_weight_save.setOnClickListener {
+            val weight = dialogView.add_weight_input_edit
+            if (weight.text == null || weight.text!!.isEmpty()) {
+                dialogView.add_weight_input_edit.error = "Weight cannot be empty"
+            } else {
+                dialogView.add_weight_input_edit.error = null
+                weight.text.toString().toDoubleOrNull()?.let {
+                    this.viewModel.addWeight(it)
+                }
+            }
+        }
     }
 }

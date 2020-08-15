@@ -5,6 +5,11 @@
     <color name="colorAccent">#D81B60</color>
     <color name="WhiteColor">#fff</color>
     <color name="placeHolder_bg">#dddddd</color>
+    <color name="chartBlue">#17A1EA</color>
+    <color name="chartGreen">#0CC560</color>
+    <color name="chartYellow">#FADB60</color>
+    <color name="chartOrange">#F09946</color>
+
     <color name="grey_darkMode">#5E5E5E</color>
     <color name="black_darkMode">#3d3d3d</color>
 </resources>

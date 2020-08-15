@@ -77,6 +77,11 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
+                R.id.displayChartFragment -> {
+                    supportActionBar?.title = "Charts and Statistics"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
             }
         }
     }
@@ -105,6 +110,16 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
             android.R.anim.fade_in,
             android.R.anim.fade_out
         )
+    }
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        when (navController.currentDestination?.id) {
+            R.id.navigation_day_customer -> finish()
+            R.id.navigation_routine_customer -> finish()
+            R.id.navigation_profile_customer -> finish()
+            else -> super.onBackPressed()
+        }
     }
 
     companion object {

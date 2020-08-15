@@ -31,4 +31,5 @@ interface UserRepository {
     suspend fun getOwnCustomers(): Resource<MutableList<Customer>>
     suspend fun updateProfileTrainer(trainer: Trainer) : Resource<Boolean>
     suspend fun deleteLoggedTrainer() : Resource<Boolean>
+    suspend fun addWeight(weight: Double): Resource<Boolean>
 }
