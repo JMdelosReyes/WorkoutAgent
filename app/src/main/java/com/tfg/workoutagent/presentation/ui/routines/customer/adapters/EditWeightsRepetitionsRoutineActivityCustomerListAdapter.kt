@@ -14,17 +14,16 @@ import kotlinx.android.synthetic.main.item_row_set_edit.view.*
 class EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
     private val context: Context,
     private val activityPos: Int,
-    private val listActivitySets: MutableList<ActivitySet>,
     private val actionListeners: TodayActivitiesCustomerFragment.ActionListeners
 
 ) : RecyclerView.Adapter<EditWeightsRepetitionsRoutineActivityCustomerListAdapter.EditWeightsRepetitionsRoutineActivityCustomerViewHolder>() {
 
 
-    private var dataList = listActivitySets
+    private var dataList = mutableListOf<ActivitySet>()
     fun setListData(data: MutableList<ActivitySet>) {
         dataList = data
     }
-    override fun getItemCount(): Int = listActivitySets.size
+    override fun getItemCount(): Int = dataList.size
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -38,7 +37,7 @@ class EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
         holder: EditWeightsRepetitionsRoutineActivityCustomerListAdapter.EditWeightsRepetitionsRoutineActivityCustomerViewHolder,
         position: Int
     ) {
-        val rowSet : ActivitySet = listActivitySets[position]
+        val rowSet : ActivitySet = dataList[position]
         holder.bindView(rowSet)
     }
 
