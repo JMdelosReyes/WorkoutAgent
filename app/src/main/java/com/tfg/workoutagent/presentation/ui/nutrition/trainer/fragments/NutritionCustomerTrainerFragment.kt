@@ -70,9 +70,9 @@ class NutritionCustomerTrainerFragment : Fragment() {
         }
         radioGrp_gainlose.setOnCheckedChangeListener { group, checkedId ->
             if(checkedId == radioHipercaloric.id){
-                viewModel.selectedFormulaType.value = "Hypocaloric"
-            }else if(checkedId == radioHypocaloric.id){
                 viewModel.selectedFormulaType.value = "Hipercaloric"
+            }else if(checkedId == radioHypocaloric.id){
+                viewModel.selectedFormulaType.value = "Hypocaloric"
             }
         }
     }
@@ -82,6 +82,11 @@ class NutritionCustomerTrainerFragment : Fragment() {
             it?.let {
                 if(it is Resource.Success){
                     viewModel.loadData(it)
+                    if(it.data.formulaType == "Hypocaloric"){
+                        radioHypocaloric.isChecked = true
+                    }else{
+                        radioHipercaloric.isChecked = true
+                    }
                 }
             }
         })
