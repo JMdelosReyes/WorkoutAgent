@@ -42,7 +42,7 @@ class EditDeleteExerciseViewModel(
 
     fun addTag(string: String) = tagsList.add(string)
     fun removeTag(index: Int) = tagsList.removeAt(index)
-    fun removePhoto(index: Int) = photosList.removeAt(index)
+    fun removePhoto(index: String) = photosList.removeAt(photosList.indexOf(index))
 
     val getExercise = liveData(Dispatchers.IO) {
         emit(Resource.Loading())
@@ -154,7 +154,7 @@ class EditDeleteExerciseViewModel(
                             title = title.value!!,
                             description = description.value!!,
                             tags = tags.value!!,
-                            photos = mutableListOf()
+                            photos = photosList
                         )
                     )
                     _exerciseSaved.value = true

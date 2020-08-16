@@ -181,11 +181,12 @@ class EditDeleteExerciseFragment : BaseFragment() {
                 builder.setMessage(getString(R.string.alert_message_delete))
                 builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
                     ll_photos.removeView(it)
-                    viewModel.removePhoto(index)
+                    viewModel.removePhoto(photo)
                     dialog.dismiss()
                 }
 
                 builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
+                    Log.i("photo", photo)
                     dialog.dismiss()
                 }
                 builder.create()
@@ -418,7 +419,6 @@ class EditDeleteExerciseFragment : BaseFragment() {
         viewModel.exerciseDeleted.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> {
-                    Toast.makeText(context, "Exercise deleted", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(EditDeleteExerciseFragmentDirections.actionEditDeleteExerciseFragmentToNavigationExercisesTrainer())
                 }
                 false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
@@ -429,7 +429,6 @@ class EditDeleteExerciseFragment : BaseFragment() {
         viewModel.exerciseSaved.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> {
-                    Toast.makeText(context, "Exercise updated", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(
                         EditDeleteExerciseFragmentDirections.actionEditDeleteExerciseFragmentToDisplayExercise(
                             exerciseId, viewModel.title.value!!
