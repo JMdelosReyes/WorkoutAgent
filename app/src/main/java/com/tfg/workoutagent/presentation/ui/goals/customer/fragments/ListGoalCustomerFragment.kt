@@ -78,6 +78,17 @@ class ListGoalCustomerFragment : Fragment() {
                     initiated = true
                 }
 
+                override fun getMovementFlags(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+                ): Int {
+                    if(viewModel.listGoalsLoaded[viewHolder.adapterPosition].isAchieved){
+                        return ItemTouchHelper.Callback.makeMovementFlags(0, 0)
+                    }else{
+                        return ItemTouchHelper.Callback.makeMovementFlags(0, ItemTouchHelper.LEFT)
+                    }
+                }
+
                 // not important, we don't want drag & drop
                 override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                     return false
@@ -91,8 +102,8 @@ class ListGoalCustomerFragment : Fragment() {
                     builder.setMessage(getString(R.string.alert_message_delete))
 
                     builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                        adapterGoals.dataGoalsList.removeAt(viewHolder.adapterPosition)
                         viewModel.removeGoal(viewHolder.adapterPosition)
+                        adapterGoals.notifyItemRemoved(viewHolder.layoutPosition)
                         dialog.dismiss()
                     }
 
@@ -103,15 +114,7 @@ class ListGoalCustomerFragment : Fragment() {
                     builder.show()
                 }
 
-                override fun onChildDraw(
-                    c: Canvas,
-                    recyclerView: RecyclerView,
-                    viewHolder: RecyclerView.ViewHolder,
-                    dX: Float,
-                    dY: Float,
-                    actionState: Int,
-                    isCurrentlyActive: Boolean
-                ) {
+                override fun onChildDraw(c: Canvas, recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, dX: Float, dY: Float, actionState: Int, isCurrentlyActive: Boolean) {
                     val itemView = viewHolder.itemView
 
                     // not sure why, but this method get's called for viewholder that are already swiped away
@@ -169,16 +172,25 @@ class ListGoalCustomerFragment : Fragment() {
                     initiated = true
                 }
 
+                override fun getMovementFlags(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder
+                ): Int {
+                    if(viewModel.listGoalsLoaded[viewHolder.adapterPosition].isAchieved){
+                        return ItemTouchHelper.Callback.makeMovementFlags(0, 0)
+                    }else{
+                        return ItemTouchHelper.Callback.makeMovementFlags(0, ItemTouchHelper.RIGHT)
+                    }
+                }
+
                 // not important, we don't want drag & drop
                 override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
                     return false
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
-                    val swipedPosition = viewHolder.adapterPosition
-                    val adapter: GoalsCustomerListAdapter = recyclerView_goals_customer.adapter as GoalsCustomerListAdapter
-                    adapterGoals.notifyItemChanged(viewHolder.adapterPosition)
                     viewModel.finishGoal(viewHolder.adapterPosition)
+                    adapterGoals.notifyItemChanged(viewHolder.layoutPosition)
                 }
 
                 override fun onChildDraw(
@@ -287,8 +299,6 @@ class ListGoalCustomerFragment : Fragment() {
         viewModel.goalDeleted.observe(viewLifecycleOwner, Observer {
             when(it){
                 true -> {
-                    adapterGoals.notifyDataSetChanged()
-                    //findNavController().navigate(ListGoalCustomerFragmentDirections.actionListGoalCustomerFragmentSelf2())
                 }
                 false -> {
                     Log.i("observeData goalDeleted", "Something went wrong")
@@ -298,8 +308,6 @@ class ListGoalCustomerFragment : Fragment() {
         viewModel.goalFinished.observe(viewLifecycleOwner, Observer {
             when(it){
                 true -> {
-                    adapterGoals.notifyDataSetChanged()
-                    findNavController().navigate(ListGoalCustomerFragmentDirections.actionListGoalCustomerFragmentSelf2())
                 }
                 false -> {
                     Log.i("observeData goalFinishe", "Something went wrong")
