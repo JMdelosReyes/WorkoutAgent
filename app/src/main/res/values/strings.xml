@@ -261,4 +261,5 @@
     <string name="assign_routine">Assign</string>
     <string name="goals">Goals</string>
     <string name="charts">Charts</string>
+    <string name="close">Close</string>
 </resources>
