@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Goal
+import kotlinx.android.synthetic.main.fragment_list_goals_customer.*
 import kotlinx.android.synthetic.main.item_row_goal.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -72,6 +74,7 @@ class GoalsCustomerListAdapter (private val context: Context, private val darkMo
                 val date: String = simpleDateFormat.format(goal.startDate)
                 itemView.row_goal_deadline.text = "This goal will start at $date"
             }
+
             /*
             itemView.setOnClickListener {
                 itemView.findNavController().navigate(UserListFragmentDirections.actionNavigationAdminUsersToDisplayCustomerAdminFragment(customerId = customer.id, customerName = customer.name + " " + customer.surname))
