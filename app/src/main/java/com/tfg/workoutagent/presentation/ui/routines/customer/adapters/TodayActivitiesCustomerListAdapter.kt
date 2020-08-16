@@ -17,6 +17,7 @@ import com.tfg.workoutagent.base.BaseAdapterInterface
 import com.tfg.workoutagent.models.ActivitySet
 import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.presentation.ui.routines.customer.fragments.TodayActivitiesCustomerFragment
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.item_row_rotuine_activity_today.view.*
 
 class TodayActivitiesCustomerListAdapter(
@@ -208,9 +209,11 @@ class TodayActivitiesCustomerListAdapter(
                     itemView.ll_repetitions_weights.addView(relativeLayout)
                 }
             }
-
-            itemView.description_activity_today.text = routineActivity.exercise.description
-            itemView.note_activity_today.text = routineActivity.note
+            itemView.description_activity_today.setOnClickListener { createAlertDialog(context, "Exercise description", routineActivity.exercise.description) }
+            if(routineActivity.note != "" && routineActivity.note != "DEFAULT_NOTE"){
+                itemView.note_activity_today.visibility = View.VISIBLE
+                itemView.note_activity_today.setOnClickListener { createAlertDialog(context, "Activity note", routineActivity.note) }
+            }
             Glide.with(context).load(routineActivity.exercise.photos[0])
                 .into(itemView.civ_activity_today)
             itemView.button_finish_activity.setOnClickListener {
