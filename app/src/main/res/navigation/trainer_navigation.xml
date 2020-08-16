@@ -105,7 +105,18 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_navigation_profile_trainer_to_termsConditionsFragment3"
-            app:destination="@id/termsConditionsFragment3" />
+            app:destination="@id/termsConditionsFragment3"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_profile_trainer_to_faqsFragment"
+            app:destination="@id/faqsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/displayExercise"
@@ -291,7 +302,9 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/displayCustomer"
+            app:popUpToInclusive="true" />
     </fragment>
     <dialog
         android:id="@+id/addActivityFragment"
@@ -412,7 +425,9 @@
             app:enterAnim="@anim/slide_in_left"
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:popExitAnim="@anim/slide_out_left"
+            app:popUpTo="@id/displayCustomer"
+            app:popUpToInclusive="true" />
         <argument
             android:name="customerId"
             app:argType="string" />
@@ -431,7 +446,7 @@
     </fragment>
     <fragment
         android:id="@+id/termsConditionsFragment3"
-        android:name="com.tfg.workoutagent.presentation.ui.gdpr.TermsConditionsFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.gdpr.fragments.TermsConditionsFragment"
         android:label="TermsConditionsFragment" />
     <fragment
         android:id="@+id/listGoalCustomerTrainerFragment"
@@ -453,5 +468,9 @@
         android:name="com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.AssignRoutineFragment"
         android:label="fragment_assign_routine"
         tools:layout="@layout/fragment_assign_routine" />
+    <fragment
+        android:id="@+id/faqsFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.gdpr.fragments.FaqsFragment"
+        android:label="FaqsFragment" />
 
 </navigation>

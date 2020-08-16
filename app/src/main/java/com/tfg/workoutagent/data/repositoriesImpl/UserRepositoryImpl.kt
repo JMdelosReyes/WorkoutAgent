@@ -4,18 +4,18 @@ import android.util.Log
 import android.content.Intent
 import android.net.Uri
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirestoreRegistrar
+import com.google.firebase.firestore.*
 //import com.google.firebase.storage.FirebaseStorage
 import com.tfg.workoutagent.data.repositories.UserRepository
 import com.tfg.workoutagent.models.Administrator
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Trainer
+import com.tfg.workoutagent.models.Weight
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
 import java.lang.Exception
+import java.util.*
+import kotlin.collections.HashMap
 
 class UserRepositoryImpl: UserRepository {
     override suspend fun getTrainerByCustomerId(customerId: String): Resource<Trainer> {
@@ -214,14 +214,17 @@ class UserRepositoryImpl: UserRepository {
             .whereEqualTo("customer", customerToBeDeleted)
             .get().await()
         for (document in resultData){
-            FirebaseFirestore.getInstance().collection("routines").document(document.id).update("customer", null)
+            FirebaseFirestore.getInstance().collection("routines").document(document.id).delete().await()
         }
         val searchUser = FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("role","TRAINER")
-            .whereArrayContains("customers", customerToBeDeleted).get().await().documents[0].id
+            .whereArrayContains("customers", customerToBeDeleted).get().await()
 
-        FirebaseFirestore.getInstance().collection("users").document(searchUser).update("customers", FieldValue.arrayRemove(customerToBeDeleted)).await()
+        if(!searchUser.documents.isEmpty()){
+            FirebaseFirestore.getInstance().collection("users").document(searchUser.documents[0].id).update("customers", FieldValue.arrayRemove(customerToBeDeleted)).await()
+        }
+
         FirebaseFirestore.getInstance().collection("users").document(id).delete().await()
         return Resource.Success(true)
     }
@@ -289,6 +292,23 @@ class UserRepositoryImpl: UserRepository {
             academicTitle = resultData.getString("academicTitle")!!
         )
         return Resource.Success(trainer)
+    }
+
+    override suspend fun getLoggedUserAdmin(): Resource<Administrator> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await().documents[0]
+        val admin = Administrator(id = resultData.id,
+            name = resultData.getString("name")!!,
+            surname = resultData.getString("surname")!!,
+            email = resultData.getString("email")!!,
+            dni = resultData.getString("dni")!!,
+            phone = resultData.getString("phone")!!,
+            photo = resultData.getString("photo")!!,
+            birthday = resultData.getDate("birthday")!!
+        )
+        return Resource.Success(admin)
     }
 
     override suspend fun getTrainersAdmin(): Resource<MutableList<Trainer>> {
@@ -459,4 +479,20 @@ class UserRepositoryImpl: UserRepository {
         return Resource.Success(true)
     }
 
+    override suspend fun addWeight(weight: Double): Resource<Boolean> {
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await()
+        val customer = resultData.documents[0].toObject(Customer::class.java)!!
+        customer.id = resultData.documents[0].id
+
+        val weights = customer.weights
+        weights.add(Weight(Date(), weight))
+
+        FirebaseFirestore.getInstance().collection("users").document(customer.id)
+            .set(hashMapOf("weights" to weights), SetOptions.merge()).await()
+
+        return Resource.Success(true)
+    }
 }

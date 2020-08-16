@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels
 
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -32,7 +33,7 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
     val tagsError: LiveData<String>
         get() = _tagsError
     var dataPhoto : Intent? = null
-    private val photos = MutableLiveData("")
+    val photosUris = mutableListOf<Uri>()
     private val _photosError =  MutableLiveData("")
     val photosError: LiveData<String>
         get() = _photosError
@@ -51,6 +52,9 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
 
     fun addTag(string: String) = tags.add(string)
     fun removeTag(index: Int) = tags.removeAt(index)
+    fun addPhoto(uri: Uri) = photosUris.add(uri)
+    fun removePhoto(uri: Uri) = photosUris.removeAt(photosUris.indexOf(uri))
+    fun clearPhotos() = photosUris.clear()
 
     private fun createExercise() {
         viewModelScope.launch {
@@ -82,13 +86,14 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
         checkTitle()
         checkDescription()
         checkTags()
-        return _titleError.value == "" && _descriptionError.value == "" && _tagsError.value == ""
+        checkPhotos()
+        return _titleError.value == "" && _descriptionError.value == "" && _tagsError.value == "" && _photosError.value == ""
     }
 
     private fun checkTitle() {
         title.let {
-            if (it.length < 4 || it.length > 30) {
-                _titleError.value = "The title must be between 4 and 30 characters"
+            if (it.length < 4 || it.length > 100) {
+                _titleError.value = "The title must be between 4 and 100 characters"
                 return
             }
             _titleError.value = ""
@@ -97,8 +102,8 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
 
     private fun checkDescription() {
         description.let {
-            if (it.length < 10 || it.length > 100) {
-                _descriptionError.value = "The description must be between 10 and 100 characters"
+            if (it.length < 10 || it.length > 1000) {
+                _descriptionError.value = "The description must be between 10 and 1000 characters"
                 return
             }
             _descriptionError.value = ""
@@ -114,4 +119,17 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
             _tagsError.value = ""
         }
     }
+    private fun checkPhotos(){
+        if(dataPhoto == null){
+            _photosError.value = "At least an image is required"
+            return
+        }else{
+            if(photosUris.isEmpty()){
+                _photosError.value = "At least an image is required"
+                return
+            }
+            _photosError.value = ""
+        }
+    }
+
 }

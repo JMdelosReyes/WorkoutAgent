@@ -6,7 +6,6 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewManager
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -24,16 +23,20 @@ class TodayActivitiesCustomerListAdapter(
     private val context: Context,
     private val completedClickListener: (position: Int) -> Unit,
     private val actionListeners: TodayActivitiesCustomerFragment.ActionListeners
-) : RecyclerView.Adapter<TodayActivitiesCustomerListAdapter.TodayActivitiesCustomerListViewHolder>(), BaseAdapterInterface {
+) : RecyclerView.Adapter<TodayActivitiesCustomerListAdapter.TodayActivitiesCustomerListViewHolder>(),
+    BaseAdapterInterface {
 
     var dataRoutineActivityList = mutableListOf<RoutineActivity>()
     private val viewPool = RecyclerView.RecycledViewPool()
 
-    fun setDataList(data: MutableList<RoutineActivity>){
+    fun setDataList(data: MutableList<RoutineActivity>) {
         dataRoutineActivityList = data
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodayActivitiesCustomerListViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): TodayActivitiesCustomerListViewHolder {
         val view =
             LayoutInflater.from(context)
                 .inflate(R.layout.item_row_rotuine_activity_today, parent, false)
@@ -44,44 +47,53 @@ class TodayActivitiesCustomerListAdapter(
 
 
     override fun onBindViewHolder(holder: TodayActivitiesCustomerListViewHolder, position: Int) {
-        val activity : RoutineActivity = dataRoutineActivityList[position]
-        if(!activity.completed){
+        val activity: RoutineActivity = dataRoutineActivityList[position]
+        if (!activity.completed) {
             holder.itemView.setOnClickListener {
-                if(it.ll_invisible_content.isVisible){
+                if (it.ll_invisible_content.isVisible) {
                     it.ll_invisible_content.visibility = View.GONE
-                }else{
+                } else {
                     it.ll_invisible_content.visibility = View.VISIBLE
                 }
             }
-            val childLayoutManager = LinearLayoutManager(holder.itemView.context)
-            val sets = mutableListOf<ActivitySet>()
-            for ( i in 0 until(activity.repetitionsCustomer.size)){
-                sets.add(ActivitySet(activity.repetitionsCustomer[i], activity.weightsPerRepetitionCustomer[i]))
-            }
-            holder.recyclerView.apply {
-                layoutManager = childLayoutManager
-                adapter = EditWeightsRepetitionsRoutineActivityCustomerListAdapter(context,
-                    holder.adapterPosition,
-                    sets,
-                    actionListeners
-                )
-                setRecycledViewPool(viewPool)
-            }
-        }else if(activity.completed && activity.repetitionsCustomer.size==0){
+
+
+        } else if (activity.completed && activity.repetitionsCustomer.size == 0) {
             holder.itemView.card_today.setBackgroundResource(R.drawable.item_border_no_sets)
-        }else{
+        } else {
             holder.itemView.card_today.setBackgroundResource(R.drawable.item_border_set_completed)
         }
         holder.bindView(activity)
     }
 
-    inner class TodayActivitiesCustomerListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class TodayActivitiesCustomerListViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
         lateinit var routineActivity: RoutineActivity
-        val recyclerView : RecyclerView = itemView.rcv_sets_today_activity
         fun bindView(routineActivity: RoutineActivity) {
             this.routineActivity = routineActivity
+
+            val sets = mutableListOf<ActivitySet>()
+            for (i in 0 until (routineActivity.repetitionsCustomer.size)) {
+                sets.add(
+                    ActivitySet(
+                        routineActivity.repetitionsCustomer[i],
+                        routineActivity.weightsPerRepetitionCustomer[i]
+                    )
+                )
+            }
+
+            val setsAdapter = EditWeightsRepetitionsRoutineActivityCustomerListAdapter(
+                context,
+                adapterPosition,
+                actionListeners
+            )
+
+            itemView.rcv_sets_today_activity.layoutManager = LinearLayoutManager(context)
+            itemView.rcv_sets_today_activity.adapter = setsAdapter
+            setsAdapter.setListData(sets)
+
             itemView.ll_repetitions_weights.removeAllViews()
-            if(this.routineActivity.completed){
+            if (this.routineActivity.completed) {
                 itemView.name_activity_today.text = routineActivity.name + " (Finished)"
                 routineActivity.repetitionsCustomer.forEachIndexed { index, valor ->
                     val repetitionView = TextView(context).apply {
@@ -138,7 +150,7 @@ class TodayActivitiesCustomerListAdapter(
                     }
                     itemView.ll_repetitions_weights.addView(relativeLayout)
                 }
-            }else{
+            } else {
                 itemView.name_activity_today.text = routineActivity.name + " (Estimated)"
                 routineActivity.repetitions.forEachIndexed { index, valor ->
                     val repetitionView = TextView(context).apply {
@@ -199,7 +211,8 @@ class TodayActivitiesCustomerListAdapter(
 
             itemView.description_activity_today.text = routineActivity.exercise.description
             itemView.note_activity_today.text = routineActivity.note
-            Glide.with(context).load(routineActivity.exercise.photos[0]).into(itemView.civ_activity_today)
+            Glide.with(context).load(routineActivity.exercise.photos[0])
+                .into(itemView.civ_activity_today)
             itemView.button_finish_activity.setOnClickListener {
                 val builder = AlertDialog.Builder(context)
                 builder.setTitle("Finish this exercise")

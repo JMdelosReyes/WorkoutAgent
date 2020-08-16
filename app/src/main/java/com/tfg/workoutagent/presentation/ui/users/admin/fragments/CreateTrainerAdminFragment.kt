@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
 
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.base.BaseFragment
@@ -21,7 +23,10 @@ import com.tfg.workoutagent.databinding.FragmentCreateTrainerAdminBinding
 import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.CreateTrainerAdminViewModel
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.CreateTrainerAdminViewModelFactory
+import kotlinx.android.synthetic.main.create_routine_fragment.*
 import kotlinx.android.synthetic.main.fragment_create_trainer_admin.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CreateTrainerAdminFragment : BaseFragment() {
 
@@ -73,6 +78,7 @@ class CreateTrainerAdminFragment : BaseFragment() {
         observeData()
         observeErrors()
         setupUI()
+        setupButtons()
     }
 
     private fun setupUI(){
@@ -83,6 +89,18 @@ class CreateTrainerAdminFragment : BaseFragment() {
             //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             intent.action = Intent.ACTION_GET_CONTENT
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
+        }
+    }
+
+    private fun setupButtons() {
+        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setSelection(viewModel.pickerDate.value!!.time.toLong())
+        val picker: MaterialDatePicker<*> = builder.build()
+        trainer_birthday_input_edit.setOnClickListener {
+            picker.show(requireActivity().supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                viewModel.setDate(it as Long)
+            }
         }
     }
 
@@ -111,10 +129,10 @@ class CreateTrainerAdminFragment : BaseFragment() {
                 if (it != "") it else null
         })
 
-        viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
+        /*viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
             binding.trainerBirthdayInputEdit.error =
                 if (it != "") it else null
-        })
+        })*/
 
         viewModel.emailError.observe(viewLifecycleOwner, Observer {
             binding.trainerEmailInputEdit.error =
@@ -130,6 +148,21 @@ class CreateTrainerAdminFragment : BaseFragment() {
             binding.trainerPhoneInputEdit.error =
                 if (it != "") it else null
         })
+        viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                if (it != "") {
+                    binding.birthdayErrorMessage.text = it
+                    binding.birthdayErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.birthdayErrorMessage.text = ""
+                    binding.birthdayErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.birthdayErrorMessage.text = ""
+                binding.birthdayErrorMessage.visibility = View.GONE
+            }
+        })
     }
+
 
 }

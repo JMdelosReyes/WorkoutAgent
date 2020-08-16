@@ -8,20 +8,23 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/google_button"
-        android:layout_width="0dp"
+        android:layout_width="2in"
+        android:layout_marginLeft="0.5in"
+        android:layout_marginRight="0.5in"
         android:layout_height="wrap_content"
         android:padding="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo_title"
         app:layout_constraintVertical_bias="0.501" />
 
     <ImageView
         android:id="@+id/logo_image"
-        android:layout_width="wrap_content"
+        android:layout_width="1.4in"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="0.5in"
+        android:layout_marginRight="0.5in"
         android:layout_marginTop="33dp"
         android:contentDescription="@string/logo_image"
         app:layout_constraintStart_toStartOf="parent"

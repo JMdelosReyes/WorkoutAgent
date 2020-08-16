@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -18,40 +20,51 @@ import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.AdminActivity
 import com.tfg.workoutagent.PROFILE_ADMIN_FRAGMENT
 import com.tfg.workoutagent.R
+import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
+import com.tfg.workoutagent.domain.profileUseCases.DisplayProfileUserUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivity
 import com.tfg.workoutagent.presentation.ui.login.activities.PREFERENCE_FILE_KEY
 import com.tfg.workoutagent.presentation.ui.profile.admin.viewModels.ProfileAdminViewModel
-import com.tfg.workoutagent.presentation.ui.profile.customer.fragments.ProfileCustomerFragmentDirections
+import com.tfg.workoutagent.presentation.ui.profile.admin.viewModels.ProfileAdminViewModelFactory
+import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_admin_profile.*
 
 class ProfileAdminFragment : Fragment() {
 
-    private lateinit var profileAdminViewModel: ProfileAdminViewModel
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    private var darkMode : Boolean = false
+    private lateinit var viewModel: ProfileAdminViewModel
+    private var darkMode: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        profileAdminViewModel =
-            ViewModelProvider(this@ProfileAdminFragment).get(ProfileAdminViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_admin_profile, container, false)
         darkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_NO -> false
             else -> true
         }
-        return inflater.inflate(R.layout.fragment_admin_profile, container, false)
+        viewModel = ViewModelProvider(
+            this.requireActivity(), ProfileAdminViewModelFactory(
+                DisplayProfileUserUseCaseImpl(
+                    UserRepositoryImpl()
+                )
+            )
+        ).get(ProfileAdminViewModel::class.java)
+        return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+        observeData()
     }
 
-    private fun setupUI(){
+    private fun setupUI() {
         sign_out_button_admin.setOnClickListener { signOut2() }
         settings_image_profile_admin.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(context!!)
@@ -66,18 +79,23 @@ class ProfileAdminFragment : Fragment() {
                 alertDialog.dismiss()
                 findNavController().navigate(ProfileAdminFragmentDirections.actionNavigationAdminProfileToTermsConditionsFragment2())
             }
+            dialogView.button_qa.setOnClickListener {
+                alertDialog.dismiss()
+                findNavController().navigate(ProfileAdminFragmentDirections.actionNavigationAdminProfileToFaqsFragment2())
+            }
             alertDialog.show()
         }
     }
 
-    private fun changeMode(){
+    private fun changeMode() {
         if (darkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
-        val sharedPreferences = activity?.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
-        with(sharedPreferences?.edit()){
+        val sharedPreferences =
+            activity?.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
+        with(sharedPreferences?.edit()) {
             this!!.putBoolean("darkMode_sp", !darkMode)
             this.commit()
         }
@@ -96,5 +114,22 @@ class ProfileAdminFragment : Fragment() {
         FirebaseAuth.getInstance().signOut()
         mGoogleSignInClient.revokeAccess()
         startActivity(GoogleSignInActivity.getLaunchIntent(this.context!!))
+    }
+
+    private fun observeData() {
+        viewModel.getProfileAdmin.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Success -> {
+                    Glide.with(this).load(it.data.photo).into(circleImageViewAdmin_displayProfile)
+                    display_admin_email_displayProfile.text = it.data.email
+                    display_admin_phone_displayProfile.text = it.data.phone
+                    display_admin_birthday_displayProfile.text =
+                        parseDateToFriendlyDate(it.data.birthday)
+                    display_admin_dni_displayProfile.text = it.data.dni
+                }
+                is Resource.Failure -> {
+                }
+            }
+        })
     }
 }

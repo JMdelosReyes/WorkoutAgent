@@ -27,7 +27,9 @@ interface UserRepository {
     suspend fun deleteTrainer(id: String) : Resource<Boolean>
     suspend fun getTrainersAdmin() : Resource<MutableList<Trainer>>
     suspend fun getLoggedUserTrainer() : Resource<Trainer>
+    suspend fun getLoggedUserAdmin() : Resource<Administrator>
     suspend fun getOwnCustomers(): Resource<MutableList<Customer>>
     suspend fun updateProfileTrainer(trainer: Trainer) : Resource<Boolean>
     suspend fun deleteLoggedTrainer() : Resource<Boolean>
+    suspend fun addWeight(weight: Double): Resource<Boolean>
 }

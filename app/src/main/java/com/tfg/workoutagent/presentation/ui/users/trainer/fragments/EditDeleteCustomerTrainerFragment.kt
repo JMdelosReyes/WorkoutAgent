@@ -16,6 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
 
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
@@ -26,6 +27,10 @@ import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.EditDeleteC
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_edit_delete_customer_trainer.*
+import kotlinx.android.synthetic.main.fragment_edit_delete_customer_trainer.delete_customer_button
+import kotlinx.android.synthetic.main.fragment_edit_delete_customer_trainer.edit_profile_customer_button_select_image_customer
+import kotlinx.android.synthetic.main.fragment_edit_profile_customer.*
+import java.util.*
 
 class EditDeleteCustomerTrainerFragment : Fragment() {
     companion object{
@@ -88,6 +93,19 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
         }
     }
 
+    private fun setupButtons(it: Date) {
+        viewModel.pickerDate.value = it
+        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setSelection(viewModel.pickerDate.value!!.time.toLong())
+        val picker: MaterialDatePicker<*> = builder.build()
+        customer_birthday_input_edit.setOnClickListener {
+            picker.show(requireActivity().supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                viewModel.setDate(it as Long)
+            }
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == PICK_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null){
@@ -147,6 +165,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     //TODO: hideProgress()
+                    setupButtons(it.data.birthday)
                     if(it.data.photo != "" && it.data.photo != "DEFAULT_IMAGE"){
                         edit_profile_customer_button_select_image_customer.visibility = View.GONE
                         image_selected.visibility = View.VISIBLE
@@ -191,7 +210,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
             when(it){
                 true -> {
                     //TODO: hideProgress()
-                    findNavController().navigate(EditDeleteCustomerTrainerFragmentDirections.actionEditDeleteCustomerTrainerFragmentToDisplayCustomer(customerId, "UPDATED"))
+                    findNavController().navigate(EditDeleteCustomerTrainerFragmentDirections.actionEditDeleteCustomerTrainerFragmentToDisplayCustomer(customerId, viewModel.name.value!! + " " + viewModel.surname.value!!))
                 }
                 false -> {
                     //TODO: hideProgress()

@@ -11,7 +11,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.tfg.workoutagent.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_bottom_navigation_customer.*
 
-
 const val PROFILE_CUSTOMER_FRAGMENT = "MyProfileCustomer"
 
 class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListener {
@@ -50,19 +49,38 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                 }
                 R.id.listGoalCustomerFragment -> {
                     supportActionBar?.title = "My goals"
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
                 R.id.createGoalCustomerFragment -> {
                     supportActionBar?.title = "Create a goal"
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
                 R.id.editProfileCustomerFragment -> {
                     supportActionBar?.title = "Edit my profile"
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
                 }
                 R.id.deleteProfileSendEmailCustomerFragment -> {
                     supportActionBar?.title = "Deleting my account"
-                    supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                }
+                R.id.displayNutritionCustomerFragment -> {
+                    supportActionBar?.title = "Nutrition"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                }
+                R.id.termsConditionsFragment -> {
+                    supportActionBar?.title = "Terms and Conditions"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.faqsFragment3 -> {
+                    supportActionBar?.title = "FAQS"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.displayChartFragment -> {
+                    supportActionBar?.title = "Charts and Statistics"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
                 }
             }
         }
@@ -92,6 +110,16 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
             android.R.anim.fade_in,
             android.R.anim.fade_out
         )
+    }
+
+    override fun onBackPressed() {
+        val navController = findNavController(R.id.nav_host_fragment)
+        when (navController.currentDestination?.id) {
+            R.id.navigation_today_customer -> finish()
+            R.id.navigation_routine_customer -> finish()
+            R.id.navigation_profile_customer -> finish()
+            else -> super.onBackPressed()
+        }
     }
 
     companion object {

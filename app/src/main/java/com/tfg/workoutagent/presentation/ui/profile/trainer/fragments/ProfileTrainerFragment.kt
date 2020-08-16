@@ -35,13 +35,12 @@ import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_trainer_profile.*
 
-
 class ProfileTrainerFragment : Fragment() {
 
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
-    private lateinit var viewModel : ProfileTrainerViewModel
-    private var darkMode : Boolean = false
+    private lateinit var viewModel: ProfileTrainerViewModel
+    private var darkMode: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +53,8 @@ class ProfileTrainerFragment : Fragment() {
             else -> true
         }
         viewModel = ViewModelProvider(
-            this, ProfileTrainerViewModelFactory(darkMode,
+            this, ProfileTrainerViewModelFactory(
+                darkMode,
                 DisplayProfileUserUseCaseImpl(
                     UserRepositoryImpl()
                 )
@@ -71,8 +71,12 @@ class ProfileTrainerFragment : Fragment() {
 
     private fun setupUI() {
         sign_out_button.setOnClickListener { signOut2() }
-        display_trainer_button_edit.setOnClickListener { findNavController().navigate(ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToEditProfileTrainerFragment()) }
-        display_trainer_button_evolution.setOnClickListener {  }
+        display_trainer_button_edit.setOnClickListener {
+            findNavController().navigate(
+                ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToEditProfileTrainerFragment()
+            )
+        }
+        display_trainer_button_evolution.setOnClickListener { }
         settings_image_profile_trainer.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(context!!)
             dialogBuilder.setTitle("Settings")
@@ -86,18 +90,23 @@ class ProfileTrainerFragment : Fragment() {
                 alertDialog.dismiss()
                 findNavController().navigate(ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToTermsConditionsFragment3())
             }
+            dialogView.button_qa.setOnClickListener {
+                alertDialog.dismiss()
+                findNavController().navigate(ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToFaqsFragment())
+            }
             alertDialog.show()
         }
     }
 
-    private fun changeMode(){
+    private fun changeMode() {
         if (darkMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
-        val sharedPreferences = activity?.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
-        with(sharedPreferences?.edit()){
+        val sharedPreferences =
+            activity?.getSharedPreferences(PREFERENCE_FILE_KEY, Context.MODE_PRIVATE)
+        with(sharedPreferences?.edit()) {
             this!!.putBoolean("darkMode_sp", !darkMode)
             this.commit()
         }
@@ -107,17 +116,18 @@ class ProfileTrainerFragment : Fragment() {
         )
     }
 
-    private fun observeData(){
+    private fun observeData() {
         viewModel.getProfileTrainer.observe(viewLifecycleOwner, Observer {
-            when(it){
+            when (it) {
                 is Resource.Success -> {
                     Glide.with(this).load(it.data.photo).into(circleImageViewTrainer_displayProfile)
                     display_trainer_name_displayProfile.text = it.data.name + " " + it.data.surname
                     display_trainer_email_displayProfile.text = it.data.email
                     display_trainer_phone_displayProfile.text = it.data.phone
-                    display_trainer_birthday_displayProfile.text = parseDateToFriendlyDate(it.data.birthday)
+                    display_trainer_birthday_displayProfile.text =
+                        parseDateToFriendlyDate(it.data.birthday)
                     display_trainer_dni_displayProfile.text = it.data.dni
-                    display_trainer_button_curriculum.setOnClickListener {_ ->
+                    display_trainer_button_curriculum.setOnClickListener { _ ->
                         val intent = Intent(Intent.ACTION_VIEW)
                         intent.setDataAndType(Uri.parse(it.data.academicTitle), "application/pdf")
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -125,7 +135,11 @@ class ProfileTrainerFragment : Fragment() {
                         try {
                             startActivity(newIntent)
                         } catch (e: ActivityNotFoundException) {
-                            Toast.makeText(this.context, "Please, install a PDF reader to visualize the CV", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this.context,
+                                "Please, install a PDF reader to visualize the CV",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }

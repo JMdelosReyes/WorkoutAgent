@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 
 import android.widget.Toast
@@ -44,7 +45,7 @@ class ExerciseTrainerFragment : Fragment() {
     //Código necesario para usar el filtro
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true);
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -52,7 +53,8 @@ class ExerciseTrainerFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
         inflater?.inflate(R.menu.search_menu, menu)
-        val searchView = SearchView((context as TrainerActivity).supportActionBar?.themedContext ?: context)
+        val searchView =
+            SearchView((context as TrainerActivity).supportActionBar?.themedContext ?: context)
         menu.findItem(R.id.search).apply {
             setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
             actionView = searchView
@@ -61,23 +63,26 @@ class ExerciseTrainerFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 val lowerText = query.toLowerCase()
-                if(lowerText == ""){
+                if (lowerText == "") {
                     viewModel.filteredExerciseList = completeExerciseList
                     adapter.setListData(viewModel.filteredExerciseList)
                     adapter.notifyDataSetChanged()
-                }else{
+                } else {
                     var list = mutableListOf<Exercise>()
                     var alreadyAdded = false
-                    for(exercise in completeExerciseList){
-                        for(tag in exercise.tags){
-                            if(tag.toLowerCase().contains(lowerText)){
+                    for (exercise in completeExerciseList) {
+                        for (tag in exercise.tags) {
+                            if (tag.toLowerCase().contains(lowerText)) {
                                 list.add(exercise)
                                 alreadyAdded = true
                                 break
                             }
                         }
-                        if(!alreadyAdded){
-                            if(exercise.title.toLowerCase().contains(lowerText) || exercise.description.toLowerCase().contains(lowerText)){
+                        if (!alreadyAdded) {
+                            if (exercise.title.toLowerCase()
+                                    .contains(lowerText) || exercise.description.toLowerCase()
+                                    .contains(lowerText)
+                            ) {
                                 list.add(exercise)
                             }
                         }
@@ -92,23 +97,26 @@ class ExerciseTrainerFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 val lowerText = newText.toLowerCase()
-                if(lowerText == ""){
+                if (lowerText == "") {
                     viewModel.filteredExerciseList = completeExerciseList
                     adapter.setListData(viewModel.filteredExerciseList)
                     adapter.notifyDataSetChanged()
-                }else{
+                } else {
                     var list = mutableListOf<Exercise>()
                     var alreadyAdded = false
-                    for(exercise in completeExerciseList){
-                        for(tag in exercise.tags){
-                            if(tag.toLowerCase().contains(lowerText)){
+                    for (exercise in completeExerciseList) {
+                        for (tag in exercise.tags) {
+                            if (tag.toLowerCase().contains(lowerText)) {
                                 list.add(exercise)
                                 alreadyAdded = true
                                 break
                             }
                         }
-                        if(!alreadyAdded){
-                            if(exercise.title.toLowerCase().contains(lowerText) || exercise.description.toLowerCase().contains(lowerText)){
+                        if (!alreadyAdded) {
+                            if (exercise.title.toLowerCase()
+                                    .contains(lowerText) || exercise.description.toLowerCase()
+                                    .contains(lowerText)
+                            ) {
                                 list.add(exercise)
                             }
                         }
@@ -133,11 +141,10 @@ class ExerciseTrainerFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView.adapter = adapter
         observeData()
+        this.viewModel.reloadExercises()
     }
 
     private fun observeData() {
-        //si es en un fragmento ponemos viewLifecycleowner como primer parametro
-
         viewModel.exerciseList.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 is Resource.Loading -> {
