@@ -90,6 +90,10 @@ class DisplayCustomerTrainerFragment : Fragment() {
             ))
         }
 
+        display_customer_button_routines.setOnClickListener {
+            findNavController().navigate(DisplayCustomerTrainerFragmentDirections.actionDisplayCustomerToListHistoricRoutinesFragment(customerId, customerName))
+        }
+
         display_customer_button_charts.setOnClickListener {
             findNavController().navigate(DisplayCustomerTrainerFragmentDirections.actionDisplayCustomerToDisplayCustomerChartFragment(customerId))
         }

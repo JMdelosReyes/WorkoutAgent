@@ -18,6 +18,25 @@ import kotlin.collections.HashMap
 
 class RoutineRepositoryImpl : RoutineRepository {
 
+    override suspend fun getRoutinesByCustomerId(customerId: String): Resource<MutableList<Routine>> {
+        val customer = FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(customerId)
+            .get().await().reference
+        val routines = mutableListOf<Routine>()
+        val routinesIds = FirebaseFirestore.getInstance()
+            .collection("routines")
+            .whereEqualTo("customer", customer)
+            .get().await()
+        for (routineDoc in routinesIds.documents){
+            val routine = this.getRoutine(routineDoc.id)
+            if(routine is Resource.Success){
+                routines.add(routine.data)
+            }
+        }
+        return Resource.Success(routines)
+    }
+
     override suspend fun getOwnRoutines(): Resource<MutableList<Routine>> {
 
         val trainerDB = FirebaseFirestore.getInstance()
@@ -176,7 +195,7 @@ class RoutineRepositoryImpl : RoutineRepository {
     }
 
     override suspend fun getRoutine(id: String): Resource<Routine> {
-
+        Log.i("getRoutine", "ENTRA")
         val resultData =
             FirebaseFirestore.getInstance().collection("routines").document(id).get().await()
 
@@ -305,6 +324,7 @@ class RoutineRepositoryImpl : RoutineRepository {
             trainer.dni = trainerDoc.getString("dni")!!
             routine.trainer = trainer
         }
+        Log.i("getRoutine", routine.toString())
         return Resource.Success(routine)
     }
 

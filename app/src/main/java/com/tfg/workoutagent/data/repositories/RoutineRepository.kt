@@ -32,4 +32,6 @@ interface RoutineRepository {
         routineId: String,
         startDate: Date
     ): Resource<Boolean>
+
+    suspend fun getRoutinesByCustomerId(customerId : String) : Resource<MutableList<Routine>>
 }
