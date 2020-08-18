@@ -139,8 +139,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:drawableLeft="@drawable/ic_statistics_48dp"
-            android:text="@string/evolution_text_display_user"
+            android:drawableLeft="@drawable/ic_trophy_white_48dp"
+            android:text="@string/goals"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.505"
@@ -148,16 +148,16 @@
             app:layout_constraintTop_toBottomOf="@+id/card_view" />
 
         <Button
-            android:id="@+id/display_customer_button_routines"
+            android:id="@+id/display_customer_button_charts"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_workout_48dp"
-            android:text="@string/routines"
+            android:drawableLeft="@drawable/ic_statistics_48dp"
+            android:text="@string/charts"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/display_customer_button_evolution" />
+            app:layout_constraintTop_toBottomOf="@+id/card_view" />
 
         <Button
             android:id="@+id/display_customer_button_nutrition"

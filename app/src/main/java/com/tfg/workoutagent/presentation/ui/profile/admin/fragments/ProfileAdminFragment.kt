@@ -126,6 +126,7 @@ class ProfileAdminFragment : Fragment() {
                     display_admin_birthday_displayProfile.text =
                         parseDateToFriendlyDate(it.data.birthday)
                     display_admin_dni_displayProfile.text = it.data.dni
+                    display_admin_name_displayProfile.text = it.data.name
                 }
                 is Resource.Failure -> {
                 }

@@ -12,8 +12,12 @@ import com.tfg.workoutagent.vo.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EditDeleteTrainerAdminViewModel(private val id: String, private val manageTrainerAdminUseCase: ManageTrainerAdminUseCase) : ViewModel() {
+
+    val pickerDate = MutableLiveData<Date>()
 
     var birthday = MutableLiveData("")
     private val _birthdayError = MutableLiveData("")
@@ -74,7 +78,7 @@ class EditDeleteTrainerAdminViewModel(private val id: String, private val manage
 
 
     private fun loadData(trainer : Resource.Success<Trainer>) {
-        birthday.postValue(parseDateToFriendlyDate(trainer.data.birthday))
+        birthday.postValue(parseDateToFriendlyDateBar(trainer.data.birthday))
         dni.postValue(trainer.data.dni)
         email.postValue(trainer.data.email)
         name.postValue(trainer.data.name)
@@ -89,7 +93,7 @@ class EditDeleteTrainerAdminViewModel(private val id: String, private val manage
     }
 
     private fun checkData():Boolean{
-        _dniError.value = checkDni(dni.value)
+        _dniError.value = checkDni(dni.value?.toUpperCase())
         _birthdayError.value =checkBirthday(birthday.value)
         _emailError.value =checkEmail(email.value)
         _nameError.value =checkName(name.value)
@@ -108,21 +112,21 @@ class EditDeleteTrainerAdminViewModel(private val id: String, private val manage
                         is Resource.Success -> {
                             //Modificated image
                             photo.value = photoUri.data
-                            val trainer = Trainer(id = id,birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val trainer = Trainer(id = id,birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageTrainerAdminUseCase.updateTrainer(trainer)
                             _trainerUpdated.value = true
                         }
                         else -> {
                             //Bad upload image
                             photo.value = ""
-                            val trainer = Trainer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val trainer = Trainer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageTrainerAdminUseCase.updateTrainer(trainer)
                             _trainerUpdated.value = true
                         }
                     }
                 }else{
                     //Non modification image
-                    val trainer = Trainer(id = id, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, phone = phone.value!!)
+                    val trainer = Trainer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, phone = phone.value!!)
                     manageTrainerAdminUseCase.updateTrainer(trainer)
                     _trainerUpdated.value = true
                 }
@@ -142,5 +146,13 @@ class EditDeleteTrainerAdminViewModel(private val id: String, private val manage
                 _trainerDeleted.value = false
             }
         }
+    }
+
+    fun setDate(time: Long) {
+        val pattern = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+        pickerDate.value = Date(time)
+        val date = simpleDateFormat.format(pickerDate.value)
+        birthday.value = date
     }
 }

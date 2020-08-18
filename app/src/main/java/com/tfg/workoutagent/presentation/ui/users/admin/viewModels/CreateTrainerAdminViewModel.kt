@@ -63,7 +63,7 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
 
     private fun checkData(): Boolean {
         _birthdayError.value = checkBirthday(birthday.value)
-        _dniError.value = checkDni(dni)
+        _dniError.value = checkDni(dni.toUpperCase())
         _emailError.value = checkEmail(email)
         _nameError.value = checkName(name)
         _surnameError.value = checkSurname(surname)
@@ -80,18 +80,18 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             photo = photoUri.data
-                            val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
+                            val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni.toUpperCase(), email = email, name = name, surname = surname, photo = photo, phone = phone)
                             manageTrainerAdminUseCase.createTrainer(trainer)
                         }
                         else -> {
                             photo = "DEFAULT_IMAGE"
-                            val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
+                            val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni.toUpperCase(), email = email, name = name, surname = surname, photo = photo, phone = phone)
                             manageTrainerAdminUseCase.createTrainer(trainer)
                         }
                     }
                 }else{
                     photo = "DEFAULT_IMAGE"
-                    val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni, email = email, name = name, surname = surname, photo = photo, phone = phone)
+                    val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni.toUpperCase(), email = email, name = name, surname = surname, photo = photo, phone = phone)
                     manageTrainerAdminUseCase.createTrainer(trainer)
                 }
                 _createdTrainer.value = true

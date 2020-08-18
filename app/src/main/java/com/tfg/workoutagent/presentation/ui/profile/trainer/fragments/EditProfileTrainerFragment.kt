@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.firebase.auth.FirebaseAuth
 
 import com.tfg.workoutagent.R
@@ -32,6 +33,7 @@ import com.tfg.workoutagent.vo.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_edit_delete_trainer_admin.*
 import kotlinx.android.synthetic.main.fragment_edit_profile_trainer.*
 import kotlinx.android.synthetic.main.fragment_edit_profile_trainer.delete_trainer_button_admin
+import java.util.*
 
 class EditProfileTrainerFragment : Fragment() {
 
@@ -121,6 +123,20 @@ class EditProfileTrainerFragment : Fragment() {
         }
 
     }
+
+    private fun setupPicker(it: Date) {
+        viewModel.pickerDate.value = it
+        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setSelection(viewModel.pickerDate.value!!.time)
+        val picker: MaterialDatePicker<*> = builder.build()
+        trainer_birthday_input_edit_profile.setOnClickListener {
+            picker.show(requireActivity().supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                viewModel.setDate(it as Long)
+            }
+        }
+    }
+
     private fun observeData(){
         viewModel.getTrainer.observe(viewLifecycleOwner, Observer {
             when(it){
@@ -129,6 +145,7 @@ class EditProfileTrainerFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     //TODO: hideProgress()
+                    setupPicker(it.data.birthday)
                     trainerId = it.data.id
                     trainerName = it.data.name +" "+ it.data.surname
                     if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
@@ -198,8 +215,18 @@ class EditProfileTrainerFragment : Fragment() {
         })
 
         viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
-            binding.trainerBirthdayInputProfile.error =
-                if (it != "") it else null
+            it?.let {
+                if (it != "") {
+                    binding.birthdayErrorMessage.text = it
+                    binding.birthdayErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.birthdayErrorMessage.text = ""
+                    binding.birthdayErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.birthdayErrorMessage.text = ""
+                binding.birthdayErrorMessage.visibility = View.GONE
+            }
         })
 
         viewModel.emailError.observe(viewLifecycleOwner, Observer {
