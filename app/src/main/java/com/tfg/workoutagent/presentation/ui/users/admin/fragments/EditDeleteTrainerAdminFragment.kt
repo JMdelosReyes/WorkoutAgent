@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentEditDeleteTrainerAdminBinding
@@ -22,8 +23,11 @@ import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModel
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.utils.parseStringToDateBar
 import com.tfg.workoutagent.vo.utils.sendNotification
+import kotlinx.android.synthetic.main.fragment_create_trainer_admin.*
 import kotlinx.android.synthetic.main.fragment_edit_delete_trainer_admin.*
+import java.util.*
 import javax.mail.*
 import javax.mail.internet.InternetAddress
 import javax.mail.internet.MimeMessage
@@ -78,6 +82,21 @@ class EditDeleteTrainerAdminFragment : Fragment() {
         setupUI()
         observeData()
         observeErrors()
+
+
+
+    }
+    private fun setupPicker(it: Date) {
+        viewModel.pickerDate.value = it
+        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+            .setSelection(viewModel.pickerDate.value!!.time)
+        val picker: MaterialDatePicker<*> = builder.build()
+        trainer_birthday_input_edit_admin.setOnClickListener {
+            picker.show(requireActivity().supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                viewModel.setDate(it as Long)
+            }
+        }
     }
 
     private fun setupUI(){
@@ -116,6 +135,7 @@ class EditDeleteTrainerAdminFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     //TODO: hideProgress()
+                    setupPicker(it.data.birthday)
                     if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
                         edit_profile_trainer_select_image_button.visibility = View.GONE
                         image_selected_edit_trainer_admin.visibility = View.VISIBLE
@@ -160,8 +180,18 @@ class EditDeleteTrainerAdminFragment : Fragment() {
 
     private fun observeErrors(){
         viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
-            binding.trainerBirthdayInputEditAdmin.error =
-                if (it != "") it else null
+            it?.let {
+                if (it != "") {
+                    binding.birthdayErrorMessage.text = it
+                    binding.birthdayErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.birthdayErrorMessage.text = ""
+                    binding.birthdayErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.birthdayErrorMessage.text = ""
+                binding.birthdayErrorMessage.visibility = View.GONE
+            }
         })
 
         viewModel.emailError.observe(viewLifecycleOwner, Observer {

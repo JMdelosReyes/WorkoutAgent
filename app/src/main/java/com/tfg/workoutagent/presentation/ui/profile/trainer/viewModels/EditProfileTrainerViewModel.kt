@@ -13,8 +13,13 @@ import com.tfg.workoutagent.vo.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfileUseCase) : ViewModel() {
+
+    val pickerDate = MutableLiveData<Date>()
+
     var birthday = MutableLiveData("")
     private val _birthdayError = MutableLiveData("")
     val birthdayError: LiveData<String>
@@ -99,7 +104,7 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
     }
 
     private fun checkData():Boolean{
-        _dniError.value = checkDni(dni.value)
+        _dniError.value = checkDni(dni.value?.toUpperCase())
         _birthdayError.value = checkBirthday(birthday.value)
         _emailError.value = checkEmail(email.value)
         _nameError.value = checkName(name.value)
@@ -120,14 +125,14 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
                                 when(val pdfUri = upl.uploadPDF(dataPDF!!)){
                                     is Resource.Success -> {
                                         academicTitle.value = pdfUri.data
-                                        val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                                        val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
                                         manageProfileUseCase.editProfileTrainer(trainer)
                                         _trainerUpdated.value = true
                                     }
                                 }
                             }else{
                                 academicTitle.value = ""
-                                val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                                val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
                                 manageProfileUseCase.editProfileTrainer(trainer)
                                 _trainerUpdated.value = true
                             }
@@ -140,14 +145,14 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
                             is Resource.Success -> {
                                 //Modificated pdf
                                 academicTitle.value = pdfUri.data
-                                val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                                val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
                                 manageProfileUseCase.editProfileTrainer(trainer)
                                 _trainerUpdated.value = true
                             }
                             else -> {
                                 //Bad upload pdf
                                 academicTitle.value = ""
-                                val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                                val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
                                 manageProfileUseCase.editProfileTrainer(trainer)
                                 _trainerUpdated.value = true
                             }
@@ -156,7 +161,7 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
                         //Non modification image - Non modification PDF
                         photo.value = ""
                         academicTitle.value = ""
-                        val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
+                        val trainer = Trainer(id = idTrainer.value!!, birthday = parseStringToDate(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!, academicTitle = academicTitle.value!!)
                         manageProfileUseCase.editProfileTrainer(trainer)
                         _trainerUpdated.value = true
                     }
@@ -178,5 +183,13 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
                 _trainerDeleted.value = false
             }
         }
+    }
+
+    fun setDate(time: Long) {
+        val pattern = "dd/MM/yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern)
+        pickerDate.value = Date(time)
+        val date = simpleDateFormat.format(pickerDate.value)
+        birthday.value = date
     }
 }

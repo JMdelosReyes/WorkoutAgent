@@ -126,8 +126,18 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
 
     private fun observeErrors(){
         viewModel.birthdayError.observe(viewLifecycleOwner, Observer {
-            binding.customerBirthdayInputEdit.error =
-                if (it != "") it else null
+            it?.let {
+                if (it != "") {
+                    binding.birthdayErrorMessage.text = it
+                    binding.birthdayErrorMessage.visibility = View.VISIBLE
+                } else {
+                    binding.birthdayErrorMessage.text = ""
+                    binding.birthdayErrorMessage.visibility = View.GONE
+                }
+            } ?: run {
+                binding.birthdayErrorMessage.text = ""
+                binding.birthdayErrorMessage.visibility = View.GONE
+            }
         })
 
         viewModel.emailError.observe(viewLifecycleOwner, Observer {

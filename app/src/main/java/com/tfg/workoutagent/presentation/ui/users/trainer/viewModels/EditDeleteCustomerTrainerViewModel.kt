@@ -91,7 +91,7 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
 
     private fun checkData(): Boolean {
         _birthdayError.value = checkBirthday(birthday.value)
-        _dniError.value = checkDni(dni.value)
+        _dniError.value = checkDni(dni.value?.toUpperCase())
         checkEmail()
         checkName()
         checkSurname()
@@ -107,19 +107,19 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             photo.value  = photoUri.data
-                            val customer = Customer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!.trim(), surname = surname.value!!.trim(), photo = photo.value!!, phone = phone.value!!)
+                            val customer = Customer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!.trim(), surname = surname.value!!.trim(), photo = photo.value!!, phone = phone.value!!)
                             manageCustomerTrainerUseCase.updateCustomer(customer)
                             _customerEdited.value = true
                         }
                         else -> {
                             photo.value = "DEFAULT_IMAGE"
-                            val customer = Customer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!.trim(), surname = surname.value!!.trim(), photo = photo.value!!, phone = phone.value!!)
+                            val customer = Customer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!.trim(), surname = surname.value!!.trim(), photo = photo.value!!, phone = phone.value!!)
                             manageCustomerTrainerUseCase.updateCustomer(customer)
                             _customerEdited.value = true
                         }
                     }
                 }else{
-                    val customer = Customer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!.trim(), surname = surname.value!!.trim(), photo = photo.value!!, phone = phone.value!!)
+                    val customer = Customer(id = id, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!.trim(), surname = surname.value!!.trim(), photo = photo.value!!, phone = phone.value!!)
                     manageCustomerTrainerUseCase.updateCustomer(customer)
                     _customerEdited.value = true
                 }

@@ -177,6 +177,18 @@
                     android:text="@={viewModel.birthday}" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/birthday_error_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="8dp"
+                android:textColor="@color/design_default_color_error"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/update_customer_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
             <Button
                 android:id="@+id/update_customer_button"
                 android:layout_width="0dp"

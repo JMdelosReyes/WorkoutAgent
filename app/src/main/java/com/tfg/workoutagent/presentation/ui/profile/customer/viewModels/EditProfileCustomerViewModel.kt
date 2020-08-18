@@ -120,7 +120,7 @@ class EditProfileCustomerViewModel(private val manageProfileUseCase: ManageProfi
 
     private fun checkData(): Boolean {
         _birthdayError.value = checkBirthday(birthday.value)
-        _dniError.value = checkDni(dni.value)
+        _dniError.value = checkDni(dni.value?.toUpperCase())
         _emailError.value = checkEmail(email.value)
         _nameError.value = checkName(name.value)
         _surnameError.value = checkSurname(surname.value)
@@ -138,19 +138,19 @@ class EditProfileCustomerViewModel(private val manageProfileUseCase: ManageProfi
                         is Resource.Success -> {
                             //Modificated image
                             photo.value = photoUri.data
-                            val customer = Customer(id = id.value!!, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val customer = Customer(id = id.value!!, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageProfileUseCase.editProfileCustomer(customer)
                             _customerEdited.value = true
                         }
                         else -> {
                             photo.value = ""
-                            val customer = Customer(id = id.value!!, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                            val customer = Customer(id = id.value!!, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                             manageProfileUseCase.editProfileCustomer(customer)
                             _customerEdited.value = true
                         }
                     }
                 }else{
-                    val customer = Customer(id = id.value!!, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!, email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
+                    val customer = Customer(id = id.value!!, birthday = parseStringToDateBar(birthday.value!!)!!, dni = dni.value!!.toUpperCase(), email = email.value!!, name = name.value!!, surname = surname.value!!, photo = photo.value!!, phone = phone.value!!)
                     manageProfileUseCase.editProfileCustomer(customer)
                     _customerEdited.value = true
                 }

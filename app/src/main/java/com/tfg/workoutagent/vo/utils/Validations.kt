@@ -1,5 +1,7 @@
 package com.tfg.workoutagent.vo.utils
 
+import java.util.*
+
 
 fun checkBirthday(birthday: String?): String {
     var error = ""
@@ -16,6 +18,37 @@ fun checkBirthday(birthday: String?): String {
         birthday.let {
             if (date == null) error = "Birthday cannot be null" else error =
                 getAgeWithErrorBar(it!!)
+        }
+    }
+
+    return error
+}
+
+fun checkDateIsBeforeToday(birthday: String?): String {
+    var error = ""
+    if(birthday != null && birthday.contains("-")){
+        val date = parseStringToDate(birthday)
+
+        birthday.let {
+            if (date == null){
+                error = "Date cannot be null"
+            } else{
+                if(date.before( Date())){
+                    error = "Date cannot be before today"
+                }
+            }
+        }
+    }else{
+        val date = parseStringToDateBar(birthday)
+
+        birthday.let {
+            if (date == null){
+                error = "Date cannot be null"
+            } else{
+                if(date.before( Date())){
+                    error = "Date cannot be before today"
+                }
+            }
         }
     }
 

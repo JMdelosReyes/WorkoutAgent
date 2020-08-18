@@ -47,7 +47,7 @@ fun getAgeWithError(it : String) : String {
         years++
     }
     if(years < 18){
-        error = "The age of new user must be over 18 years old"
+        error = "The age of users must be over 18 years old"
     }
     return error
 }
@@ -64,7 +64,7 @@ fun getAgeWithErrorBar(it : String) : String {
         years++
     }
     if(years < 18){
-        error = "The age of new user must be over 18 years old"
+        error = "The age of users must be over 18 years old"
     }
     return error
 }
