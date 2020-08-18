@@ -323,46 +323,50 @@ class RoutineRepositoryImpl : RoutineRepository {
         val finishedActivities = mutableListOf<TimelineActivity>()
 
         for (document in resultData) {
-            val timelineActivity = TimelineActivity()
-            val customerRef = document.get("customer")
-            val days = document.get("days")
-            var dayList = mutableListOf<Day>()
-            if (days is ArrayList<*>) {
-                for (dayKey in days) {
-                    var day = Day()
-                    if (dayKey is HashMap<*, *>) {
-                        val dayAttributes = dayKey.keys
-                        for (attribute in dayAttributes) {
-                            when (attribute.toString()) {
-                                "completed" -> day.completed = dayKey[attribute] as Boolean
-                                "workingDay" -> {
-                                    val time = dayKey[attribute]
-                                    if (time is com.google.firebase.Timestamp) {
-                                        day.workingDay = time.toDate()
+            val isCurrent = document.get("current")
+            if(isCurrent != null && isCurrent as Boolean){
+                val timelineActivity = TimelineActivity()
+                val customerRef = document.get("customer")
+                val days = document.get("days")
+                var dayList = mutableListOf<Day>()
+                if (days is ArrayList<*>) {
+                    for (dayKey in days) {
+                        var day = Day()
+                        if (dayKey is HashMap<*, *>) {
+                            val dayAttributes = dayKey.keys
+                            for (attribute in dayAttributes) {
+                                when (attribute.toString()) {
+                                    "completed" -> day.completed = dayKey[attribute] as Boolean
+                                    "workingDay" -> {
+                                        val time = dayKey[attribute]
+                                        if (time is com.google.firebase.Timestamp) {
+                                            day.workingDay = time.toDate()
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
-                    Log.i("Probemos esta wea", "$day")
-                    if (day.completed) {
-                        dayList.add(day)
+                        Log.i("Probemos esta wea", "$day")
+                        if (day.completed) {
+                            dayList.add(day)
+                        }
                     }
                 }
-            }
-            dayList.sortBy { day -> day.workingDay }
-            if (dayList.isNotEmpty() && customerRef != null) {
-                timelineActivity.finishDate = dayList[dayList.size - 1].workingDay
+                dayList.sortBy { day -> day.workingDay }
+                if (dayList.isNotEmpty() && customerRef != null) {
+                    timelineActivity.finishDate = dayList[dayList.size - 1].workingDay
 
-                if (customerRef is DocumentReference) {
-                    val customerDoc = customerRef.get().await()
-                    timelineActivity.customerId = customerDoc.id
-                    timelineActivity.customerPhoto = customerDoc.getString("photo")!!
-                    timelineActivity.customerName =
-                        customerDoc.getString("name")!! + " " + customerDoc.getString("surname")!!
+                    if (customerRef is DocumentReference) {
+                        val customerDoc = customerRef.get().await()
+                        timelineActivity.customerId = customerDoc.id
+                        timelineActivity.customerPhoto = customerDoc.getString("photo")!!
+                        timelineActivity.customerName =
+                            customerDoc.getString("name")!! + " " + customerDoc.getString("surname")!!
+                    }
+                    finishedActivities.add(timelineActivity)
                 }
-                finishedActivities.add(timelineActivity)
             }
+
         }
         return Resource.Success(finishedActivities)
     }

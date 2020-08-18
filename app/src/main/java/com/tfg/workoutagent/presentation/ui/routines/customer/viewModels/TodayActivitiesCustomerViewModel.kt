@@ -10,6 +10,7 @@ import com.tfg.workoutagent.models.RoutineActivity
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase: ManageRoutineCustomerUseCase) : ViewModel() {
 
@@ -125,6 +126,7 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
             }
         }
         this._executedDay.value?.completed = true
+        this._executedDay.value?.workingDay = Date(System.currentTimeMillis())
         finishDay(_executedDay.value!!)
     }
 
