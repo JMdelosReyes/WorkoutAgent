@@ -275,6 +275,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_displayCustomer_to_listHistoricRoutinesFragment"
+            app:destination="@id/listHistoricRoutinesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createCustomerTrainerFragment"
@@ -486,6 +493,79 @@
         <argument
             android:name="customerId"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/listHistoricRoutinesFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.common.fragments.ListHistoricRoutinesFragment"
+        android:label="fragment_list_historic_routines"
+        tools:layout="@layout/fragment_list_historic_routines" >
+        <argument
+            android:name="customerId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_listHistoricRoutinesFragment_to_listHistoricDaysFragment"
+            app:destination="@id/listHistoricDaysFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_listHistoricRoutinesFragment_to_displayCustomer"
+            app:destination="@id/displayCustomer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="customerName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/listHistoricDaysFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.common.fragments.ListHistoricDaysFragment"
+        android:label="fragment_list_historic_days"
+        tools:layout="@layout/fragment_list_historic_days" >
+        <argument
+            android:name="routineId"
+            app:argType="string" />
+        <argument
+            android:name="routineTitle"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_listHistoricDaysFragment_to_listHistoricActivitiesFragment"
+            app:destination="@id/listHistoricActivitiesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_listHistoricDaysFragment_to_listHistoricRoutinesFragment"
+            app:destination="@id/listHistoricRoutinesFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/listHistoricActivitiesFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.common.fragments.ListHistoricActivitiesFragment"
+        android:label="ListHistoricActivitiesFragment" >
+        <argument
+            android:name="routineId"
+            app:argType="string" />
+        <argument
+            android:name="numDay"
+            app:argType="integer" />
+        <argument
+            android:name="nameDay"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_listHistoricActivitiesFragment_to_listHistoricDaysFragment"
+            app:destination="@id/listHistoricDaysFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
 
 </navigation>
