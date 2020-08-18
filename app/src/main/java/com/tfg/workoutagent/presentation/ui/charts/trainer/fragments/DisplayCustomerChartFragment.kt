@@ -1,4 +1,4 @@
-package com.tfg.workoutagent.presentation.ui.charts.customer.fragments
+package com.tfg.workoutagent.presentation.ui.charts.trainer.fragments
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -18,12 +18,13 @@ import com.tfg.workoutagent.R
 import com.tfg.workoutagent.base.BaseFragment
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
 import com.tfg.workoutagent.domain.profileUseCases.DisplayProfileUserUseCaseImpl
+import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCaseImpl
 import com.tfg.workoutagent.models.Customer
-import com.tfg.workoutagent.presentation.ui.charts.customer.viewmodels.DisplayChartsViewModel
-import com.tfg.workoutagent.presentation.ui.charts.customer.viewmodels.DisplayChartsViewModelFactory
+import com.tfg.workoutagent.presentation.ui.charts.trainer.viewmodels.DisplayCustomerChartsViewModel
 import com.tfg.workoutagent.presentation.ui.charts.trainer.viewmodels.DisplayCustomerChartsViewModelFactory
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.ProfileCustomerViewModel
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.ProfileCustomerViewModelFactory
+import com.tfg.workoutagent.presentation.ui.users.admin.fragments.DisplayCustomerAdminFragmentArgs
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.utils.getAge
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
@@ -32,23 +33,18 @@ import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-class DisplayChartFragment : BaseFragment() {
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this, DisplayChartsViewModelFactory(
-                DisplayProfileUserUseCaseImpl(
-                    UserRepositoryImpl()
-                )
-            )
-        ).get(DisplayChartsViewModel::class.java)
-    }
+class DisplayCustomerChartFragment : BaseFragment() {
+
+    private val customerId by lazy { DisplayCustomerChartFragmentArgs.fromBundle(arguments!!).customerId}
+    private val viewModel by lazy { ViewModelProvider(this, DisplayCustomerChartsViewModelFactory(customerId, ManageCustomerTrainerUseCaseImpl(UserRepositoryImpl()))).get(DisplayCustomerChartsViewModel::class.java)}
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_charts, container, false)
+        return inflater.inflate(R.layout.fragment_customer_charts, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -117,10 +113,10 @@ class DisplayChartFragment : BaseFragment() {
         val age = getAge(parseDateToFriendlyDate(customer.birthday)!!)
         val currentWeight = customer.weights[customer.weights.size-1].weight
         val idealWeight = customer.height - 100 + ((age/10) * 0.9).roundToInt()
-        ideal_weight.text = "Your perfect weight is $idealWeight kg"
+        ideal_weight.text = "The perfect weight is $idealWeight kg"
         val height = customer.height.toDouble()/100
         val imc =  String.format("%.2f", (currentWeight/(height.pow(2))))
-        current_imc.text = "Your BMI is $imc"
+        current_imc.text = "The BMI is $imc"
 
 
     }

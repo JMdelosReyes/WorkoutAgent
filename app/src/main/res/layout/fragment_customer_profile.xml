@@ -140,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:drawableLeft="@drawable/ic_trophy_not_accomplished_48dp"
+            android:drawableLeft="@drawable/ic_trophy_white_48dp"
             android:text="@string/goals"
             android:textSize="32sp"
             app:layout_constraintEnd_toEndOf="parent"

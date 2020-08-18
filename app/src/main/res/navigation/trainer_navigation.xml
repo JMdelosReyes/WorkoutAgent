@@ -268,6 +268,13 @@
         <action
             android:id="@+id/action_displayCustomer_to_listGoalCustomerTrainerFragment"
             app:destination="@id/listGoalCustomerTrainerFragment" />
+        <action
+            android:id="@+id/action_displayCustomer_to_displayCustomerChartFragment"
+            app:destination="@id/displayCustomerChartFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createCustomerTrainerFragment"
@@ -472,5 +479,13 @@
         android:id="@+id/faqsFragment"
         android:name="com.tfg.workoutagent.presentation.ui.gdpr.fragments.FaqsFragment"
         android:label="FaqsFragment" />
+    <fragment
+        android:id="@+id/displayCustomerChartFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.charts.trainer.fragments.DisplayCustomerChartFragment"
+        android:label="DisplayCustomerChartFragment" >
+        <argument
+            android:name="customerId"
+            app:argType="string" />
+    </fragment>
 
 </navigation>
