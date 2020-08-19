@@ -54,6 +54,14 @@ class RoutineTrainerFragment : Fragment() {
                 this.assignRoutine()
             }
         }
+
+        fun changeIcon() {
+            if (currentMode == 0) {
+                fab_button_routine.setImageResource(android.R.drawable.ic_input_add)
+            } else {
+                fab_button_routine.setImageResource(R.drawable.ic_delegate_32dp)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -84,8 +92,14 @@ class RoutineTrainerFragment : Fragment() {
                 is Resource.Success -> {
                     shimmer_view_container_routine.visibility = View.GONE
                     shimmer_view_container_routine.stopShimmer()
-                    adapter.setListData(this.viewModel.getGeneralRoutines())
-                    adapter.notifyDataSetChanged()
+
+                    if (this.fabActions.currentMode == 0) {
+                        adapter.setListData(this.viewModel.getGeneralRoutines())
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        adapter.setListData(this.viewModel.getAssignedRoutines())
+                        adapter.notifyDataSetChanged()
+                    }
                 }
                 is Resource.Failure -> {
                     shimmer_view_container_routine.visibility = View.GONE
@@ -107,9 +121,20 @@ class RoutineTrainerFragment : Fragment() {
     }
 
     private fun setupTabs() {
+        tab_layout.getTabAt(this.fabActions.currentMode)?.select()
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                // nothing
+                tab?.let {
+                    if (it.position == 0) {
+                        fabActions.currentMode = 0
+                        adapter.setListData(viewModel.getGeneralRoutines())
+                        adapter.notifyDataSetChanged()
+                    } else {
+                        fabActions.currentMode = 1
+                        adapter.setListData(viewModel.getAssignedRoutines())
+                        adapter.notifyDataSetChanged()
+                    }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -120,10 +145,12 @@ class RoutineTrainerFragment : Fragment() {
                 tab?.let {
                     if (it.position == 0) {
                         fabActions.currentMode = 0
+                        fabActions.changeIcon()
                         adapter.setListData(viewModel.getGeneralRoutines())
                         adapter.notifyDataSetChanged()
                     } else {
                         fabActions.currentMode = 1
+                        fabActions.changeIcon()
                         adapter.setListData(viewModel.getAssignedRoutines())
                         adapter.notifyDataSetChanged()
                     }

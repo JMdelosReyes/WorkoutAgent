@@ -1,8 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.ExerciseRepositoryImpl
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
@@ -22,10 +19,8 @@ import com.tfg.workoutagent.domain.routineUseCases.ManageRoutineUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.DayListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.EditRoutineViewModelFactory
-import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.fragment_edit_routine.*
-import java.util.*
 
 class EditRoutineFragment : Fragment() {
 
@@ -42,6 +37,7 @@ class EditRoutineFragment : Fragment() {
     }
     private lateinit var binding: FragmentEditRoutineBindingImpl
     private lateinit var adapter: DayListAdapter
+    private var firstEdit = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,7 +87,8 @@ class EditRoutineFragment : Fragment() {
         recyclerView_Routine_edit_Day.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerView_Routine_edit_Day.adapter = adapter
 
-        if (this.viewModel.getRoutineId() != this.routineId) {
+        if (this.firstEdit || this.viewModel.getRoutineId() != this.routineId) {
+            this.firstEdit = false
             this.viewModel.updateRoutineId(this.routineId)
             this.viewModel.loadRoutine()
         }
@@ -108,10 +105,10 @@ class EditRoutineFragment : Fragment() {
                 if (it != "") it else null
         })
 
-        viewModel.startDateError.observe(viewLifecycleOwner, Observer {
+        /*viewModel.startDateError.observe(viewLifecycleOwner, Observer {
             binding.routineStartDateInputEdit.error =
                 if (it != "") it else null
-        })
+        })*/
 
         viewModel.daysError.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -136,7 +133,7 @@ class EditRoutineFragment : Fragment() {
         viewModel.routineDeleted.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> {
-                    Toast.makeText(context, "Routine deleted", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "Routine deleted", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(EditRoutineFragmentDirections.actionEditRoutineFragmentToNavigationRoutineTrainer())
                 }
                 false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
@@ -147,7 +144,7 @@ class EditRoutineFragment : Fragment() {
         viewModel.routineSaved.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> {
-                    Toast.makeText(context, "Routine updated", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "Routine updated", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(EditRoutineFragmentDirections.actionEditRoutineFragmentToNavigationRoutineTrainer())
                 }
                 false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
@@ -172,8 +169,7 @@ class EditRoutineFragment : Fragment() {
     }
 
     private fun setupButtons() {
-        // TODO Hay que cambiar el valor que entra
-        val builder: MaterialDatePicker.Builder<*> =
+        /*val builder: MaterialDatePicker.Builder<*> =
             MaterialDatePicker.Builder.datePicker().setSelection(Date().time)
         val currentTimeInMillis = Calendar.getInstance().timeInMillis
         // builder.setSelection()
@@ -183,7 +179,7 @@ class EditRoutineFragment : Fragment() {
             picker.addOnPositiveButtonClickListener {
                 viewModel.setDate(it as Long)
             }
-        }
+        }*/
 
         delete_routine_button.setOnClickListener {
             createAlertDialog(

@@ -1,7 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.users.admin.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -10,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.tabs.TabLayout
 import com.tfg.workoutagent.AdminActivity
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
@@ -36,6 +36,36 @@ class UserListFragment : Fragment() {
             )
         ).get(UserListViewModel::class.java)
     }
+
+    private val tabActions = object {
+        var currentMode = 0 // 0: Trainer list, 1: Customer list
+
+        fun changeMode(mode: Int) {
+            this.currentMode = mode
+            loadUsers()
+        }
+
+        fun loadUsers() {
+            if (this.currentMode == 0) {
+                showTrainers()
+            } else {
+                showCustomers()
+            }
+        }
+
+        private fun showTrainers() {
+            recyclerView_customer_admin.visibility = View.GONE
+            recyclerView_trainer_admin.visibility = View.VISIBLE
+            fab_add_trainer.visibility = View.VISIBLE
+        }
+
+        private fun showCustomers() {
+            recyclerView_trainer_admin.visibility = View.GONE
+            recyclerView_customer_admin.visibility = View.VISIBLE
+            fab_add_trainer.visibility = View.GONE
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,6 +78,7 @@ class UserListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupUI()
+        setupTabs()
 
         adapterCustomer = CustomerAdminListAdapter(this.context!!)
         adapterTrainer = TrainerAdminListAdapter(this.context!!)
@@ -74,6 +105,8 @@ class UserListFragment : Fragment() {
                     completeCustomerList = it.data
                     adapterCustomer.setListData(viewModel.filteredCustomerList)
                     adapterCustomer.notifyDataSetChanged()
+
+                    tabActions.loadUsers()
                 }
                 is Resource.Failure -> {
                     sfl_rv_customer_admin.visibility = View.GONE
@@ -98,6 +131,8 @@ class UserListFragment : Fragment() {
                     completeTrainerList = it.data
                     adapterTrainer.setListData(viewModel.filteredTrainerList)
                     adapterTrainer.notifyDataSetChanged()
+
+                    tabActions.loadUsers()
                 }
                 is Resource.Failure -> {
                     sfl_rv_customer_admin.visibility = View.GONE
@@ -197,6 +232,35 @@ class UserListFragment : Fragment() {
                     adapterTrainer.notifyDataSetChanged()
                 }
                 return true
+            }
+        })
+    }
+
+    private fun setupTabs() {
+        tab_layout.getTabAt(this.tabActions.currentMode)?.select()
+        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    if (it.position == 0) {
+                        tabActions.changeMode(0)
+                    } else {
+                        tabActions.changeMode(1)
+                    }
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // nothing
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    if (it.position == 0) {
+                        tabActions.changeMode(0)
+                    } else {
+                        tabActions.changeMode(1)
+                    }
+                }
             }
         })
     }

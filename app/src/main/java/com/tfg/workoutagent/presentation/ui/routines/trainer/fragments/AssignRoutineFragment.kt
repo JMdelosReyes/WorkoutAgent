@@ -1,6 +1,8 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
 import android.app.Dialog
+import android.content.res.Configuration
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -70,6 +72,18 @@ class AssignRoutineFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val darkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_NO -> false
+            else -> true
+        }
+        if (darkMode) {
+            rl_assign_routine.setBackgroundResource(R.drawable.item_no_border_dark)
+            assign_routine_startDate_input.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            assign_routine_startDate_input_edit.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            assign_routine_startDate_input_edit.setTextColor(Color.WHITE)
+        }
+
         setupToolbar()
     }
 

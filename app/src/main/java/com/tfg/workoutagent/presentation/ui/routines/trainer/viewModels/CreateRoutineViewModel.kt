@@ -122,9 +122,9 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
 
     private fun checkData(): Boolean {
         checkTitle()
-        checkStartDate()
+        // checkStartDate()
         checkDays()
-        return _titleError.value == "" && _startDateError.value == "" && _daysError.value == ""
+        return _titleError.value == "" && _daysError.value == ""
     }
 
     private fun checkDays() {
@@ -180,7 +180,6 @@ class CreateRoutineViewModel(private val manageRoutineUseCase: ManageRoutineUseC
                         title = title.value.toString(),
                         startDate = Date(),
                         days = days.value!!
-
                     )
                 )
                 _routineCreated.value = true
