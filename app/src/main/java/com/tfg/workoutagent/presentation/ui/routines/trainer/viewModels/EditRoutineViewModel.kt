@@ -52,6 +52,8 @@ class EditRoutineViewModel(
 
     var customerAssigned: Customer? = null
 
+    var firstEdit = true
+
     fun routineLoaded() {
         _routineLoaded.value = null
     }

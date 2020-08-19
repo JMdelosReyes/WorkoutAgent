@@ -37,7 +37,6 @@ class EditRoutineFragment : Fragment() {
     }
     private lateinit var binding: FragmentEditRoutineBindingImpl
     private lateinit var adapter: DayListAdapter
-    private var firstEdit = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,8 +86,8 @@ class EditRoutineFragment : Fragment() {
         recyclerView_Routine_edit_Day.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerView_Routine_edit_Day.adapter = adapter
 
-        if (this.firstEdit || this.viewModel.getRoutineId() != this.routineId) {
-            this.firstEdit = false
+        if (this.viewModel.firstEdit || this.viewModel.getRoutineId() != this.routineId) {
+            this.viewModel.firstEdit = false
             this.viewModel.updateRoutineId(this.routineId)
             this.viewModel.loadRoutine()
         }

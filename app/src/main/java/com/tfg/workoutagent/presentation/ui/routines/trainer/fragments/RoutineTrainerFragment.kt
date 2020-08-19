@@ -122,6 +122,7 @@ class RoutineTrainerFragment : Fragment() {
 
     private fun setupTabs() {
         tab_layout.getTabAt(this.fabActions.currentMode)?.select()
+        fabActions.changeIcon()
         tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) {
                 tab?.let {
