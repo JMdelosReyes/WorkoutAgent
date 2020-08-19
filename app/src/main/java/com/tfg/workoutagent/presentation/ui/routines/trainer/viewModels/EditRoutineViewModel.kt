@@ -206,9 +206,9 @@ class EditRoutineViewModel(
 
     private fun checkData(): Boolean {
         checkTitle()
-        checkStartDate()
+        // checkStartDate()
         checkDays()
-        return _titleError.value == "" && _startDateError.value == "" && _daysError.value == ""
+        return _titleError.value == "" && _daysError.value == ""
     }
 
     private fun checkDays() {
@@ -257,7 +257,6 @@ class EditRoutineViewModel(
                         title = title.value.toString(),
                         days = days.value!!,
                         customer = null
-
                     )
                 )
                 _routineSaved.value = true

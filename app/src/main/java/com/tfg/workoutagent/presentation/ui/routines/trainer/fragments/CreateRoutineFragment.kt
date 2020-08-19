@@ -96,10 +96,10 @@ class CreateRoutineFragment : Fragment() {
                 if (it != "") it else null
         })
 
-        viewModel.startDateError.observe(viewLifecycleOwner, Observer {
+        /*viewModel.startDateError.observe(viewLifecycleOwner, Observer {
             binding.routineStartDateInputEdit.error =
                 if (it != "") it else null
-        })
+        })*/
 
         viewModel.daysError.observe(viewLifecycleOwner, Observer {
             it?.let {
@@ -113,7 +113,7 @@ class CreateRoutineFragment : Fragment() {
     }
 
     private fun setupButtons() {
-        val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
+        /*val builder: MaterialDatePicker.Builder<*> = MaterialDatePicker.Builder.datePicker()
             .setSelection(viewModel.pickerDate.value!!.time.toLong())
         //builder.setSelection()
         val picker: MaterialDatePicker<*> = builder.build()
@@ -122,7 +122,7 @@ class CreateRoutineFragment : Fragment() {
             picker.addOnPositiveButtonClickListener {
                 viewModel.setDate(it as Long)
             }
-        }
+        }*/
     }
 
 
