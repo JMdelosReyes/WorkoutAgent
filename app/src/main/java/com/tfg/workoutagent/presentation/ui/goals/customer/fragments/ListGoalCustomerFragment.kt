@@ -20,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.GoalRepositoryImpl
 import com.tfg.workoutagent.domain.goalUseCases.ListGoalCustomerUseCaseImpl
@@ -97,7 +98,7 @@ class ListGoalCustomerFragment : Fragment() {
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                     val swipedPosition = viewHolder.adapterPosition
                     val adapter: GoalsCustomerListAdapter = recyclerView_goals_customer.adapter as GoalsCustomerListAdapter
-                    val builder = AlertDialog.Builder(context!!)
+                    val builder = MaterialAlertDialogBuilder(context!!)
                     builder.setTitle("Delete this goal")
                     builder.setMessage(getString(R.string.alert_message_delete))
 
@@ -108,6 +109,7 @@ class ListGoalCustomerFragment : Fragment() {
                     }
 
                     builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
+                        adapterGoals.notifyItemChanged(viewHolder.adapterPosition)
                         dialog.dismiss()
                     }
                     builder.create()
@@ -190,7 +192,7 @@ class ListGoalCustomerFragment : Fragment() {
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, swipeDir: Int) {
                     viewModel.finishGoal(viewHolder.adapterPosition)
-                    adapterGoals.notifyItemChanged(viewHolder.layoutPosition)
+                    adapterGoals.updateElement(viewHolder.adapterPosition)
                 }
 
                 override fun onChildDraw(
