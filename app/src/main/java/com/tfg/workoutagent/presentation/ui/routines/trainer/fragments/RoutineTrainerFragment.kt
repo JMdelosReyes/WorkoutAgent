@@ -54,6 +54,14 @@ class RoutineTrainerFragment : Fragment() {
                 this.assignRoutine()
             }
         }
+
+        fun changeIcon() {
+            if (currentMode == 0) {
+                fab_button_routine.setImageResource(android.R.drawable.ic_input_add)
+            } else {
+                fab_button_routine.setImageResource(R.drawable.ic_delegate_32dp)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -137,10 +145,12 @@ class RoutineTrainerFragment : Fragment() {
                 tab?.let {
                     if (it.position == 0) {
                         fabActions.currentMode = 0
+                        fabActions.changeIcon()
                         adapter.setListData(viewModel.getGeneralRoutines())
                         adapter.notifyDataSetChanged()
                     } else {
                         fabActions.currentMode = 1
+                        fabActions.changeIcon()
                         adapter.setListData(viewModel.getAssignedRoutines())
                         adapter.notifyDataSetChanged()
                     }

@@ -133,7 +133,7 @@ class EditRoutineFragment : Fragment() {
         viewModel.routineDeleted.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> {
-                    Toast.makeText(context, "Routine deleted", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "Routine deleted", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(EditRoutineFragmentDirections.actionEditRoutineFragmentToNavigationRoutineTrainer())
                 }
                 false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
@@ -144,7 +144,7 @@ class EditRoutineFragment : Fragment() {
         viewModel.routineSaved.observe(viewLifecycleOwner, Observer {
             when (it) {
                 true -> {
-                    Toast.makeText(context, "Routine updated", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "Routine updated", Toast.LENGTH_SHORT).show()
                     findNavController().navigate(EditRoutineFragmentDirections.actionEditRoutineFragmentToNavigationRoutineTrainer())
                 }
                 false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
