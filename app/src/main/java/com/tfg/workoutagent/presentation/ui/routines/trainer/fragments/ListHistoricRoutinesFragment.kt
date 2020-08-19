@@ -1,6 +1,5 @@
-package com.tfg.workoutagent.presentation.ui.routines.common.fragments
+package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,23 +13,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.domain.routineUseCases.HistoricRoutinesUseCaseImpl
-import com.tfg.workoutagent.presentation.ui.routines.common.adapters.ListHistoricRoutinesAdapter
-import com.tfg.workoutagent.presentation.ui.routines.common.viewModels.ListHistoricRoutinesViewModel
-import com.tfg.workoutagent.presentation.ui.routines.common.viewModels.ListHistoricRoutinesViewModelFactory
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ListHistoricRoutinesAdapter
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListHistoricRoutinesViewModel
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListHistoricRoutinesViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_list_historic_routines.*
-import kotlinx.android.synthetic.main.fragment_my_routine_customer.*
 
 class ListHistoricRoutinesFragment : Fragment() {
 
     private lateinit var adapter : ListHistoricRoutinesAdapter
-    private val customerId by lazy { ListHistoricRoutinesFragmentArgs.fromBundle(requireArguments()).customerId}
+    private val customerId by lazy { ListHistoricRoutinesFragmentArgs.fromBundle(
+        requireArguments()
+    ).customerId}
 
     private val viewModel by lazy {
         ViewModelProvider(
-        this, ListHistoricRoutinesViewModelFactory(
-            customerId, HistoricRoutinesUseCaseImpl(RoutineRepositoryImpl())
-        )
+        this,
+            ListHistoricRoutinesViewModelFactory(
+                customerId, HistoricRoutinesUseCaseImpl(RoutineRepositoryImpl())
+            )
     ).get(ListHistoricRoutinesViewModel::class.java)
     }
 
@@ -45,7 +46,10 @@ class ListHistoricRoutinesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
 
-        adapter = ListHistoricRoutinesAdapter(this.requireContext())
+        adapter =
+            ListHistoricRoutinesAdapter(
+                this.requireContext()
+            )
         rcv_historic_routines.layoutManager = LinearLayoutManager(this.requireContext())
         rcv_historic_routines.adapter = adapter
         observeData()

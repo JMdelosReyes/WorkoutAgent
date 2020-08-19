@@ -37,7 +37,6 @@ class ProfileCustomerFragment : Fragment() {
     lateinit var mGoogleSignInOptions: GoogleSignInOptions
     lateinit var mGoogleSignInClient: GoogleSignInClient
     private var darkMode: Boolean = false
-
     private lateinit var weightDialog: AlertDialog
 
     private val viewModel by lazy {
@@ -123,6 +122,11 @@ class ProfileCustomerFragment : Fragment() {
                 is Resource.Success -> {
                     Glide.with(this).load(it.data.photo)
                         .into(circleImageViewCustomer_displayProfile)
+                    display_customer_button_routines.setOnClickListener { _ ->
+                        findNavController().navigate(
+                            ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToListHistoricRoutinesCustomerFragment(it.data.id, it.data.name)
+                        )
+                    }
                     display_customer_name_displayProfile.text = it.data.name + " " + it.data.surname
                     display_customer_email_displayProfile.text = it.data.email
                     display_customer_phone_displayProfile.text = it.data.phone

@@ -27,7 +27,11 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_navigation_profile_customer_to_displayNutritionCustomerFragment"
-            app:destination="@id/displayNutritionCustomerFragment" />
+            app:destination="@id/displayNutritionCustomerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_navigation_profile_customer_to_termsConditionsFragment"
             app:destination="@id/termsConditionsFragment"
@@ -52,6 +56,13 @@
         <action
             android:id="@+id/action_navigation_profile_customer_to_displayChartFragment"
             app:destination="@id/displayChartFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_navigation_profile_customer_to_listHistoricRoutinesCustomerFragment"
+            app:destination="@id/listHistoricRoutinesCustomerFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -163,5 +174,76 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/listHistoricRoutinesCustomerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.customer.fragments.ListHistoricRoutinesCustomerFragment"
+        android:label="ListHistoricRoutinesCustomerFragment" >
+        <action
+            android:id="@+id/action_listHistoricRoutinesCustomerFragment_to_listHistoricDaysCustomerFragment"
+            app:destination="@id/listHistoricDaysCustomerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_listHistoricRoutinesCustomerFragment_to_navigation_profile_customer"
+            app:destination="@id/navigation_profile_customer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="customerId"
+            app:argType="string" />
+        <argument
+            android:name="customerName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/listHistoricDaysCustomerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.customer.fragments.ListHistoricDaysCustomerFragment"
+        android:label="ListHistoricDaysCustomerFragment" >
+        <action
+            android:id="@+id/action_listHistoricDaysCustomerFragment_to_listHistoricRoutinesCustomerFragment"
+            app:destination="@id/listHistoricRoutinesCustomerFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_listHistoricDaysCustomerFragment_to_listHistoricActivitiesCustomerFragment"
+            app:destination="@id/listHistoricActivitiesCustomerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+        <argument
+            android:name="routineId"
+            app:argType="string" />
+        <argument
+            android:name="routineTitle"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/listHistoricActivitiesCustomerFragment"
+        android:name="com.tfg.workoutagent.presentation.ui.routines.customer.fragments.ListHistoricActivitiesCustomerFragment"
+        android:label="ListHistoricActivitiesCustomerFragment" >
+        <action
+            android:id="@+id/action_listHistoricActivitiesCustomerFragment_to_listHistoricDaysCustomerFragment"
+            app:destination="@id/listHistoricDaysCustomerFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <argument
+            android:name="nameDay"
+            app:argType="string" />
+        <argument
+            android:name="numDay"
+            app:argType="integer" />
+        <argument
+            android:name="routineId"
+            app:argType="string" />
     </fragment>
 </navigation>
