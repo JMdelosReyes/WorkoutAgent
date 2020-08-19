@@ -1,4 +1,4 @@
-package com.tfg.workoutagent.presentation.ui.routines.common.adapters
+package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,9 +8,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Day
-import com.tfg.workoutagent.models.Routine
-import com.tfg.workoutagent.presentation.ui.routines.common.fragments.ListHistoricDaysFragmentDirections
-import kotlinx.android.synthetic.main.item_row_routine.view.*
+import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.ListHistoricDaysFragmentDirections
 import kotlinx.android.synthetic.main.item_row_routine_day_customer.view.*
 
 class ListHistoricDaysAdapter(private val routineId: String, private val context: Context) : RecyclerView.Adapter<ListHistoricDaysAdapter.ListHistoricRoutinesViewHolder>(){
@@ -40,7 +38,7 @@ class ListHistoricDaysAdapter(private val routineId: String, private val context
             itemView.row_routine_day_name_customer.text = day.name
             itemView.add_event_day_calendar.visibility = View.GONE
             itemView.setOnClickListener {
-                itemView.findNavController().navigate(ListHistoricDaysFragmentDirections.actionListHistoricDaysFragmentToListHistoricActivitiesFragment(routineId, position, day.name))
+                itemView.findNavController().navigate(ListHistoricDaysFragmentDirections.actionListHistoricDaysFragmentToListHistoricActivitiesFragment( position, day.name, routineId))
             }
         }
     }

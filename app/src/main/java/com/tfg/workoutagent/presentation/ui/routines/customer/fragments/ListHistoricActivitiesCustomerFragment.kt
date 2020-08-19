@@ -1,6 +1,5 @@
-package com.tfg.workoutagent.presentation.ui.routines.common.fragments
+package com.tfg.workoutagent.presentation.ui.routines.customer.fragments
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,28 +13,38 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.domain.routineUseCases.HistoricRoutinesUseCaseImpl
-import com.tfg.workoutagent.presentation.ui.routines.common.adapters.ListHistoricActivitiesAdapter
-import com.tfg.workoutagent.presentation.ui.routines.common.viewModels.ListHistoricActivitiesViewModel
-import com.tfg.workoutagent.presentation.ui.routines.common.viewModels.ListHistoricActivitiesViewModelFactory
+import com.tfg.workoutagent.presentation.ui.routines.customer.fragments.ListHistoricActivitiesCustomerFragmentArgs
+import com.tfg.workoutagent.presentation.ui.routines.customer.adapters.ListHistoricActivitiesCustomerAdapter
+import com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.ListHistoricActivitiesCustomerViewModel
+import com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.ListHistoricActivitiesCustomerViewModelFactory
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ListHistoricActivitiesAdapter
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListHistoricActivitiesViewModel
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListHistoricActivitiesViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_list_historic_activities.*
 
-class ListHistoricActivitiesFragment : Fragment() {
+class ListHistoricActivitiesCustomerFragment : Fragment() {
 
-    private val routineId by lazy { ListHistoricActivitiesFragmentArgs.fromBundle(requireArguments()).routineId}
-    private val numDay by lazy { ListHistoricActivitiesFragmentArgs.fromBundle(requireArguments()).numDay}
-    private val nameDay by lazy { ListHistoricActivitiesFragmentArgs.fromBundle(requireArguments()).nameDay}
+    private val routineId by lazy { ListHistoricActivitiesCustomerFragmentArgs.fromBundle(
+        requireArguments()
+    ).routineId}
+    private val numDay by lazy { ListHistoricActivitiesCustomerFragmentArgs.fromBundle(
+        requireArguments()
+    ).numDay}
+    private val nameDay by lazy { ListHistoricActivitiesCustomerFragmentArgs.fromBundle(
+        requireArguments()
+    ).nameDay}
 
-    private lateinit var adapter : ListHistoricActivitiesAdapter
+    private lateinit var adapter : ListHistoricActivitiesCustomerAdapter
 
     private val viewModel by lazy { ViewModelProvider(
         this,
-        ListHistoricActivitiesViewModelFactory(
+        ListHistoricActivitiesCustomerViewModelFactory(
             routineId,
             numDay,
             HistoricRoutinesUseCaseImpl(RoutineRepositoryImpl())
         )
-    ).get(ListHistoricActivitiesViewModel::class.java) }
+    ).get(ListHistoricActivitiesCustomerViewModel::class.java) }
 
 
     override fun onCreateView(
@@ -47,7 +56,10 @@ class ListHistoricActivitiesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = ListHistoricActivitiesAdapter(requireContext())
+        adapter =
+            ListHistoricActivitiesCustomerAdapter(
+                requireContext()
+            )
         rcv_historic_activities.layoutManager =  LinearLayoutManager(this.requireContext())
         rcv_historic_activities.adapter = adapter
         observeData()

@@ -1,4 +1,4 @@
-package com.tfg.workoutagent.presentation.ui.routines.common.adapters
+package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.content.Context
 import android.graphics.Typeface

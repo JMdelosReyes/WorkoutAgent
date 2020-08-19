@@ -1,4 +1,4 @@
-package com.tfg.workoutagent.presentation.ui.routines.common.viewModels
+package com.tfg.workoutagent.presentation.ui.routines.customer.viewModels
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -7,9 +7,8 @@ import com.tfg.workoutagent.domain.routineUseCases.HistoricRoutinesUseCase
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.Dispatchers
 
-class ListHistoricDaysViewModel(private val routineId: String, listHistoricRoutinesUseCase: HistoricRoutinesUseCase) : ViewModel() {
+class ListHistoricDaysCustomerViewModel(private val routineId: String, listHistoricRoutinesUseCase: HistoricRoutinesUseCase) : ViewModel() {
     val daysList = liveData(Dispatchers.IO) {
-        Log.i("ListHistoricDaysVM", "daysList")
         emit(Resource.Loading())
         try {
             val daysResource = listHistoricRoutinesUseCase.getHistoricRoutineById(routineId)

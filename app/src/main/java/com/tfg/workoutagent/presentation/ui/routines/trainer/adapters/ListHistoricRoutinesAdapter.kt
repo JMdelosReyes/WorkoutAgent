@@ -1,4 +1,4 @@
-package com.tfg.workoutagent.presentation.ui.routines.common.adapters
+package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.models.Routine
-import com.tfg.workoutagent.presentation.ui.routines.common.fragments.ListHistoricRoutinesFragmentDirections
+import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.ListHistoricRoutinesFragmentDirections
 import kotlinx.android.synthetic.main.item_row_routine.view.*
 
 class ListHistoricRoutinesAdapter(private val context: Context) : RecyclerView.Adapter<ListHistoricRoutinesAdapter.ListHistoricRoutinesViewHolder>(){

@@ -33,7 +33,7 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
 
     private fun setupToolbar(navController: NavController) {
         setSupportActionBar(findViewById(R.id.main_toolbar))
-        navController.addOnDestinationChangedListener { _, destination, _ ->
+        navController.addOnDestinationChangedListener { _, destination, arguments ->
             when (destination.id) {
                 R.id.navigation_today_customer -> {
                     supportActionBar?.title = "Today"
@@ -79,6 +79,21 @@ class CustomerActivity : BaseActivity(), AppBarConfiguration.OnNavigateUpListene
                 }
                 R.id.displayChartFragment -> {
                     supportActionBar?.title = "Charts and Statistics"
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.listHistoricRoutinesCustomerFragment -> {
+                    supportActionBar?.title = "Routines of " + arguments!!.get("customerName").toString()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.listHistoricDaysCustomerFragment -> {
+                    supportActionBar?.title = "Days of " + arguments!!.get("routineTitle").toString()
+                    supportActionBar?.setDisplayHomeAsUpEnabled(true)
+                    supportActionBar?.setDisplayShowHomeEnabled(true)
+                }
+                R.id.listHistoricActivitiesCustomerFragment -> {
+                    supportActionBar?.title = "Activities of " + arguments!!.get("nameDay").toString()
                     supportActionBar?.setDisplayHomeAsUpEnabled(true)
                     supportActionBar?.setDisplayShowHomeEnabled(true)
                 }

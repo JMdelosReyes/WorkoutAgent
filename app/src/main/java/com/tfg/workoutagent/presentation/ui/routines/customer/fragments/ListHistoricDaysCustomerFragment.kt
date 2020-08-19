@@ -1,6 +1,5 @@
-package com.tfg.workoutagent.presentation.ui.routines.common.fragments
+package com.tfg.workoutagent.presentation.ui.routines.customer.fragments
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,24 +13,30 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.domain.routineUseCases.HistoricRoutinesUseCaseImpl
-import com.tfg.workoutagent.presentation.ui.routines.common.adapters.ListHistoricDaysAdapter
-import com.tfg.workoutagent.presentation.ui.routines.common.viewModels.ListHistoricDaysViewModel
-import com.tfg.workoutagent.presentation.ui.routines.common.viewModels.ListHistoricDaysViewModelFactory
+import com.tfg.workoutagent.presentation.ui.routines.customer.fragments.ListHistoricDaysCustomerFragmentArgs
+import com.tfg.workoutagent.presentation.ui.routines.customer.adapters.ListHistoricDaysCustomerAdapter
+import com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.ListHistoricDaysCustomerViewModel
+import com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.ListHistoricDaysCustomerViewModelFactory
+import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ListHistoricDaysAdapter
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListHistoricDaysViewModel
+import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListHistoricDaysViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_list_historic_days.*
 
-class ListHistoricDaysFragment : Fragment() {
+class ListHistoricDaysCustomerFragment : Fragment() {
 
-    private lateinit var adapter : ListHistoricDaysAdapter
-    private val routineId by lazy { ListHistoricDaysFragmentArgs.fromBundle(requireArguments()).routineId}
+    private lateinit var adapter : ListHistoricDaysCustomerAdapter
+    private val routineId by lazy { ListHistoricDaysCustomerFragmentArgs.fromBundle(
+        requireArguments()
+    ).routineId}
 
     private val viewModel by lazy { ViewModelProvider(
         this,
-        ListHistoricDaysViewModelFactory(
+        ListHistoricDaysCustomerViewModelFactory(
             routineId,
             HistoricRoutinesUseCaseImpl(RoutineRepositoryImpl())
         )
-    ).get(ListHistoricDaysViewModel::class.java) }
+    ).get(ListHistoricDaysCustomerViewModel::class.java) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +48,11 @@ class ListHistoricDaysFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeData()
-        adapter = ListHistoricDaysAdapter(routineId, this.requireContext())
+        adapter =
+            ListHistoricDaysCustomerAdapter(
+                routineId,
+                this.requireContext()
+            )
         rcv_historic_days.layoutManager = LinearLayoutManager(this.requireContext())
         rcv_historic_days.adapter = adapter
     }
