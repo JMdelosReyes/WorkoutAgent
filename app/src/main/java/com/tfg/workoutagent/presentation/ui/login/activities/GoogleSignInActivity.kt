@@ -17,14 +17,12 @@ import com.google.android.gms.common.SignInButton.COLOR_DARK
 import com.google.android.gms.common.SignInButton.COLOR_LIGHT
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.google.auto.value.AutoAnnotation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
-import com.tfg.workoutagent.*
 import com.tfg.workoutagent.AdminActivity
 import com.tfg.workoutagent.CustomerActivity
+import com.tfg.workoutagent.R
 import com.tfg.workoutagent.TrainerActivity
 import com.tfg.workoutagent.base.BaseActivity
 import com.tfg.workoutagent.data.repositoriesImpl.LoginRepositoryImpl
@@ -89,8 +87,8 @@ class GoogleSignInActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_SIGN_IN) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
+                val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
                 val account = task.getResult(ApiException::class.java)
                 firebaseAuthWithGoogle(account!!)
             } catch (e: ApiException) {
@@ -192,91 +190,92 @@ class GoogleSignInActivity : BaseActivity() {
     }
     override fun onStart() {
         super.onStart()
-        val user = FirebaseAuth.getInstance().currentUser
-        if (user != null) {
-            viewModel.fechtRole.observe(this, Observer { result ->
-                when(result){
-                    is Resource.Loading -> {
-                        //showProgress()
-                    }
-                    is Resource.Success -> {
-
-                        val role = result.data
-                        //hideProgress()
-                        viewModel.fetchToken.observe(this, Observer { r ->
-                            when(r){
-                                is Resource.Loading -> {
-                                    //showProgress()
+        try {
+            val user = FirebaseAuth.getInstance().currentUser
+            if (user != null) {
+                viewModel.fechtRole.observe(this, Observer { result ->
+                    when(result){
+                        is Resource.Loading -> {
+                            //showProgress()
+                        }
+                        is Resource.Success -> {
+                            val role = result.data
+                            //hideProgress()
+                            viewModel.fetchToken.observe(this, Observer { r ->
+                                when(r){
+                                    is Resource.Loading -> {
+                                        //showProgress()
+                                    }
+                                    is Resource.Success -> {
+                                        //hideProgress()
+                                    }
+                                    is Resource.Failure -> {
+                                        //hideProgress()
+                                        Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                    }
                                 }
-                                is Resource.Success -> {
-                                    //hideProgress()
+                            })
+                            when(role){
+                                "TRAINER" -> {
+                                    viewModel.loggedTrainer.observe(this, Observer { r1 ->
+                                        when(r1){
+                                            is Resource.Loading -> {
+                                                //showProgress()
+                                            }
+                                            is Resource.Success -> {
+                                                val myId = r1.data.id
+                                                FirebaseMessaging.getInstance().subscribeToTopic("/topics/trainer_$myId")
+                                                Log.i("Prueba", "SUCCESS")
+                                                startActivity(TrainerActivity.getLaunchIntent(this))
+                                                finish()
+                                            }
+                                            is Resource.Failure -> {
+                                                Log.i("Cannot get trainer", "trainer does not exist")
+                                                startActivity(TrainerActivity.getLaunchIntent(this))
+                                                finish()
+                                            }
+                                        }
+                                    })
                                 }
-                                is Resource.Failure -> {
-                                    //hideProgress()
-                                    Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                "CUSTOMER" -> {
+                                    viewModel.trainer.observe(this, Observer { r1 ->
+                                        when(r1){
+                                            is Resource.Loading -> {
+                                                //showProgress()
+                                            }
+                                            is Resource.Success -> {
+                                                val trainerId = r1.data.id
+                                                FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
+                                                Log.i("Prueba", "SUCCESS")
+                                                startActivity(CustomerActivity.getLaunchIntent(this))
+                                                finish()
+                                            }
+                                            is Resource.Failure -> {
+                                                Log.i("Cannot get trainer", "trainer does not exist")
+                                                startActivity(CustomerActivity.getLaunchIntent(this))
+                                                finish()
+                                            }
+                                        }
+                                    })
                                 }
+                                "ADMIN" -> {
+                                    FirebaseMessaging.getInstance().subscribeToTopic("/topics/admin")
+                                    startActivity(AdminActivity.getLaunchIntent(this))
+                                    finish()
+                                }
+                                "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
                             }
-                        })
-                         when(role){
-                             "TRAINER" -> {
-                                 viewModel.loggedTrainer.observe(this, Observer { r1 ->
-                                     when(r1){
-                                         is Resource.Loading -> {
-                                             //showProgress()
-                                         }
-                                         is Resource.Success -> {
-                                             val myId = r1.data.id
-                                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/trainer_$myId")
-                                             Log.i("Prueba", "SUCCESS")
-                                             startActivity(TrainerActivity.getLaunchIntent(this))
-                                             finish()
-                                         }
-                                         is Resource.Failure -> {
-                                             Log.i("Cannot get trainer", "trainer does not exist")
-                                             startActivity(TrainerActivity.getLaunchIntent(this))
-                                             finish()
-                                         }
-                                     }
-                                 })
-                             }
-                             "CUSTOMER" -> {
-                                 viewModel.trainer.observe(this, Observer { r1 ->
-                                     when(r1){
-                                         is Resource.Loading -> {
-                                             //showProgress()
-                                         }
-                                         is Resource.Success -> {
-                                             val trainerId = r1.data.id
-                                             FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
-                                             Log.i("Prueba", "SUCCESS")
-                                             startActivity(CustomerActivity.getLaunchIntent(this))
-                                             finish()
-                                         }
-                                         is Resource.Failure -> {
-                                             Log.i("Cannot get trainer", "trainer does not exist")
-                                             startActivity(CustomerActivity.getLaunchIntent(this))
-                                             finish()
-                                         }
-                                     }
-                                 })
-                             }
-                             "ADMIN" -> {
-                                 FirebaseMessaging.getInstance().subscribeToTopic("/topics/admin")
-                                 startActivity(AdminActivity.getLaunchIntent(this))
-                                 finish()
-                             }
-                             "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
-                         }
+                        }
+                        is Resource.Failure -> {
+                            //hideProgress()
+                            Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
+                            finish()
+                        }
                     }
-                    is Resource.Failure -> {
-                        //hideProgress()
-                        Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
-                        finish()
-                    }
-                }
-            })
-
-
+                })
+            }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
         }
     }
     companion object {
