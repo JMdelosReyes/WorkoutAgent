@@ -5,76 +5,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.ui.users.admin.fragments.UserListFragment">
-    <androidx.core.widget.NestedScrollView
-        android:fillViewport="true"
-        android:layout_width="fill_parent"
+
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <LinearLayout
+
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabMode="fixed">
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_trainers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trainers" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tab_customers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Customers" />
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/sfl_rv_customer_admin"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
+            android:layout_below="@+id/tab_layout"
             android:orientation="vertical">
-            <com.facebook.shimmer.ShimmerFrameLayout
-                android:id="@+id/sfl_rv_customer_admin"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <include layout="@layout/item_row_load" />
-                    <include layout="@layout/item_row_load" />
-                    <include layout="@layout/item_row_load" />
-                    <include layout="@layout/item_row_load" />
-                    <include layout="@layout/item_row_load" />
-                    <include layout="@layout/item_row_load" />
-                    <include layout="@layout/item_row_load" />
-                    <include layout="@layout/item_row_load" />
-                    <include layout="@layout/item_row_load" />
-                    <include layout="@layout/item_row_load" />
-                </LinearLayout>
-            </com.facebook.shimmer.ShimmerFrameLayout>
-
-            <TextView
-                android:id="@+id/customer_text_list_admin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="CUSTOMERS"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_customer_admin"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/customer_text_list_admin" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/trainer_text_list_admin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TRAINERS"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerView_customer_admin" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView_trainer_admin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/trainer_text_list_admin" />
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+                <include layout="@layout/item_row_load" />
+
+            </LinearLayout>
+
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_customer_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tab_layout"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView_trainer_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tab_layout" />
+
+    </RelativeLayout>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_trainer"
         android:layout_width="wrap_content"
