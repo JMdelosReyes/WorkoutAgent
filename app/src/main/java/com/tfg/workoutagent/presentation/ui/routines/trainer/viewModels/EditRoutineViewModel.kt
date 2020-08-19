@@ -50,6 +50,8 @@ class EditRoutineViewModel(
     val addDay: LiveData<Boolean?>
         get() = _addDay
 
+    var customerAssigned: Customer? = null
+
     fun routineLoaded() {
         _routineLoaded.value = null
     }
@@ -64,6 +66,7 @@ class EditRoutineViewModel(
         try {
             val routineVal = manageRoutineUseCase.getRoutine(routineId)
             if (routineVal is Resource.Success) {
+                customerAssigned = routineVal.data.customer
                 loadData(routineVal)
                 _routineLoaded.value = true
             }
@@ -256,7 +259,7 @@ class EditRoutineViewModel(
                         id = routineId,
                         title = title.value.toString(),
                         days = days.value!!,
-                        customer = null
+                        customer = customerAssigned
                     )
                 )
                 _routineSaved.value = true
