@@ -205,12 +205,12 @@ class EditProfileTrainerFragment : Fragment() {
     }
     private fun observeErrors(){
         viewModel.surnameError.observe(viewLifecycleOwner, Observer {
-            binding.trainerSurnameInputProfile.error =
+            binding.trainerSurnameEditProfile.error =
                 if (it != "") it else null
         })
 
         viewModel.nameError.observe(viewLifecycleOwner, Observer {
-            binding.trainerNameInputProfile.error =
+            binding.trainerNameEditProfile.error =
                 if (it != "") it else null
         })
 
@@ -230,17 +230,17 @@ class EditProfileTrainerFragment : Fragment() {
         })
 
         viewModel.emailError.observe(viewLifecycleOwner, Observer {
-            binding.trainerEmailInputProfile.error =
+            binding.trainerEmailEditProfile.error =
                 if (it != "") it else null
         })
 
         viewModel.dniError.observe(viewLifecycleOwner, Observer {
-            binding.trainerDniInputProfile.error =
+            binding.trainerDniInputEditProfile.error =
                 if (it != "") it else null
         })
 
         viewModel.phoneError.observe(viewLifecycleOwner, Observer {
-            binding.trainerPhoneInputProfile.error =
+            binding.trainerPhoneEditProfile.error =
                 if (it != "") it else null
         })
     }

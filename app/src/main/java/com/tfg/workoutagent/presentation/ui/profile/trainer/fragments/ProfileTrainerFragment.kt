@@ -76,7 +76,7 @@ class ProfileTrainerFragment : Fragment() {
                 ProfileTrainerFragmentDirections.actionNavigationProfileTrainerToEditProfileTrainerFragment()
             )
         }
-        display_trainer_button_evolution.setOnClickListener { }
+
         settings_image_profile_trainer.setOnClickListener {
             val dialogBuilder = AlertDialog.Builder(context!!)
             dialogBuilder.setTitle("Settings")

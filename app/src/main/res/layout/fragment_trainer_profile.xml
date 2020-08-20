@@ -122,20 +122,13 @@
             app:layout_constraintVertical_bias="0.234">
 
             <Button
+                android:layout_marginTop="8dp"
                 android:id="@+id/display_trainer_button_curriculum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_resume_48dp"
                 android:text="Curriculum"
                 android:textSize="30sp" />
-
-            <Button
-                android:id="@+id/display_trainer_button_evolution"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_statistics_48dp"
-                android:text="Statistics"
-                android:textSize="32sp" />
 
             <Button
                 android:id="@+id/display_trainer_button_edit"

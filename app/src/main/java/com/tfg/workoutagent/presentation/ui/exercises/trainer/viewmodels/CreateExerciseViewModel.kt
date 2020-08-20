@@ -102,8 +102,8 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
 
     private fun checkDescription() {
         description.let {
-            if (it.length < 10 || it.length > 1000) {
-                _descriptionError.value = "The description must be between 10 and 1000 characters"
+            if (it.length < 10 || it.length > 20000) {
+                _descriptionError.value = "The description must be between 10 and 20000 characters"
                 return
             }
             _descriptionError.value = ""

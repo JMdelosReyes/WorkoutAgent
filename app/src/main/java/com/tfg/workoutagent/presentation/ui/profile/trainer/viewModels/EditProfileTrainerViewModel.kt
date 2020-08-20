@@ -109,6 +109,7 @@ class EditProfileTrainerViewModel(private val manageProfileUseCase: ManageProfil
         _emailError.value = checkEmail(email.value)
         _nameError.value = checkName(name.value)
         _surnameError.value = checkSurname(surname.value)
+        _phoneError.value = checkPhone(phone.value)
         return _dniError.value=="" && _birthdayError.value=="" && _emailError.value=="" && _nameError.value=="" && _surnameError.value==""
     }
 

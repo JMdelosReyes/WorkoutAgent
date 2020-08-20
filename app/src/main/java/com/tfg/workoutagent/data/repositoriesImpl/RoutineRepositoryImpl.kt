@@ -195,7 +195,6 @@ class RoutineRepositoryImpl : RoutineRepository {
     }
 
     override suspend fun getRoutine(id: String): Resource<Routine> {
-        Log.i("getRoutine", "ENTRA")
         val resultData =
             FirebaseFirestore.getInstance().collection("routines").document(id).get().await()
 
@@ -205,7 +204,9 @@ class RoutineRepositoryImpl : RoutineRepository {
         routine.id = resultData.id
         routine.startDate = resultData.getTimestamp("startDate")!!.toDate()
         routine.title = resultData.getString("title")!!
-
+        if(resultData.getBoolean("current") != null){
+            routine.current = resultData.getBoolean("current")!!
+        }
         val days = resultData.get("days")
         if (days is ArrayList<*>) {
             //iteramos por cada día
@@ -439,6 +440,7 @@ class RoutineRepositoryImpl : RoutineRepository {
                 .get().await()
 
             data = hashMapOf(
+                "current" to routine.current,
                 "title" to routine.title,
                 "startDate" to routine.startDate,
                 "customer" to customerDB.reference,
@@ -447,6 +449,7 @@ class RoutineRepositoryImpl : RoutineRepository {
             )
         } else {
             data = hashMapOf(
+                "current" to routine.current,
                 "title" to routine.title,
                 "startDate" to routine.startDate,
                 "customer" to null,
@@ -474,7 +477,7 @@ class RoutineRepositoryImpl : RoutineRepository {
         val routine = FirebaseFirestore.getInstance()
             .collection("routines")
             .whereEqualTo("customer", customerRef)
-            .orderBy("startDate", Query.Direction.DESCENDING)
+            .whereEqualTo("current", true)
             .limit(1)
             .get().await()
         return if (routine.documents.isEmpty()) {
@@ -528,8 +531,22 @@ class RoutineRepositoryImpl : RoutineRepository {
                 }
                 index++
             }
-            val res = this.editRoutine(routine)
-            return if (res is Resource.Success) Resource.Success(true) else res
+            val trainerDB  = FirebaseFirestore.getInstance()
+                .collection("users").document(routine.trainer!!.id)
+                .get().await().reference
+            val customerDB = FirebaseFirestore.getInstance()
+                .collection("users").document(routine.customer!!.id)
+                .get().await().reference
+            val data = hashMapOf(
+                "current" to routine.current,
+                "title" to routine.title,
+                "startDate" to routine.startDate,
+                "customer" to customerDB,
+                "trainer" to trainerDB,
+                "days" to routine.days
+            )
+            FirebaseFirestore.getInstance().collection("routines").document(routine.id).update(data).await()
+            return Resource.Success(true)
         }
 
         return Resource.Failure(Exception("ERROR"))
