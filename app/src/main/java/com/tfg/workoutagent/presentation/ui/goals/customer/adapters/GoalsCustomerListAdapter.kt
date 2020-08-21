@@ -29,6 +29,11 @@ class GoalsCustomerListAdapter(private val context: Context, private val darkMod
         this.notifyItemChanged(position)
     }
 
+    fun removeElement(position: Int) {
+        this.dataGoalsList.removeAt(position)
+        this.notifyItemRemoved(position)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GoalsCustomerListViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_row_goal, parent, false)
         return GoalsCustomerListViewHolder(view)
