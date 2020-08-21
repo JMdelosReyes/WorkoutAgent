@@ -63,7 +63,6 @@ class EditProfileCustomerFragment : Fragment() {
         observeErrors()
     }
     private fun setupUI(){
-        edit_profile_customer_button_select_image_customer.visibility = View.GONE
         delete_customer_button.setOnClickListener {  val builder = AlertDialog.Builder(this.context)
             builder.setTitle(getString(R.string.alert_title_delete_profile))
             builder.setMessage(getString(R.string.alert_message_delete))
@@ -121,11 +120,18 @@ class EditProfileCustomerFragment : Fragment() {
                     //TODO: hideProgress()
                     setupButtons(it.data.birthday)
                     customerId = it.data.id
-                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
+                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE" || it.data.photo != "DEFAULT_PHOTO"){
                         edit_profile_customer_button_select_image_customer.visibility = View.GONE
                         edit_profile_customer_image_selected.visibility = View.VISIBLE
                         Glide.with(this).load(it.data.photo).into(edit_profile_customer_image_selected)
                         edit_profile_customer_image_selected.setOnClickListener {
+                            val intent = Intent()
+                            intent.type = "image/*"
+                            intent.action = Intent.ACTION_GET_CONTENT
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
+                        }
+                    }else{
+                        edit_profile_customer_button_select_image_customer.setOnClickListener {
                             val intent = Intent()
                             intent.type = "image/*"
                             intent.action = Intent.ACTION_GET_CONTENT

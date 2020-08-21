@@ -148,11 +148,18 @@ class EditProfileTrainerFragment : Fragment() {
                     setupPicker(it.data.birthday)
                     trainerId = it.data.id
                     trainerName = it.data.name +" "+ it.data.surname
-                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
+                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE" || it.data.photo != "DEFAULT_PHOTO"){
                         edit_profile_trainer_button_select_image.visibility = View.GONE
                         image_selected_edit_profile_trainer.visibility = View.VISIBLE
                         Glide.with(this).load(it.data.photo).into(image_selected_edit_profile_trainer)
                         image_selected_edit_profile_trainer.setOnClickListener {
+                            val intent = Intent()
+                            intent.type = "image/*"
+                            intent.action = Intent.ACTION_GET_CONTENT
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
+                        }
+                    }else{
+                        edit_profile_trainer_button_select_image.setOnClickListener {
                             val intent = Intent()
                             intent.type = "image/*"
                             intent.action = Intent.ACTION_GET_CONTENT
