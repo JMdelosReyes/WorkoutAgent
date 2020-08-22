@@ -153,11 +153,15 @@ class GoogleSignInActivity : BaseActivity() {
                                                 //showProgress()
                                             }
                                             is Resource.Success -> {
-                                                val trainerId = r1.data.id
-                                                FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
-                                                Log.i("Prueba", "SUCCESS")
-                                                startActivity(CustomerActivity.getLaunchIntent(this))
-                                                finish()
+                                                if(r1.data.id == "DEFAULT_ID"){
+                                                    startActivity(CustomerActivity.getLaunchIntent(this))
+                                                    finish()
+                                                }else{
+                                                    val trainerId = r1.data.id
+                                                    FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
+                                                    startActivity(CustomerActivity.getLaunchIntent(this))
+                                                    finish()
+                                                }
                                             }
                                             is Resource.Failure -> {
                                                 Log.i("Cannot get trainer", "trainer does not exist")

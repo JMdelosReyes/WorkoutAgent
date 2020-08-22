@@ -531,9 +531,12 @@ class RoutineRepositoryImpl : RoutineRepository {
                 }
                 index++
             }
-            val trainerDB  = FirebaseFirestore.getInstance()
-                .collection("users").document(routine.trainer!!.id)
-                .get().await().reference
+            var trainerDB : DocumentReference? = null
+            if(routine.trainer.id != "DEFAULT_ID"){
+                trainerDB  = FirebaseFirestore.getInstance()
+                    .collection("users").document(routine.trainer!!.id)
+                    .get().await().reference
+            }
             val customerDB = FirebaseFirestore.getInstance()
                 .collection("users").document(routine.customer!!.id)
                 .get().await().reference
