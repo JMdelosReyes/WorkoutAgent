@@ -139,6 +139,21 @@
                     android:textColor="@color/design_default_color_error"
                     android:visibility="gone" />
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_note_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:hint="@string/add_activity_note_hint"
+                    app:startIconDrawable="@drawable/ic_description_24dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_note_input_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.note}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <TextView
                     android:id="@+id/add_exercise_set_error_message"
                     android:layout_width="wrap_content"
@@ -201,21 +216,6 @@
                         android:layout_height="wrap_content"
                         android:text="@={viewModel.weights}" />
                 </com.google.android.material.textfield.TextInputLayout>-->
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_note_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="@string/add_activity_note_hint"
-                    app:startIconDrawable="@drawable/ic_description_24dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_note_input_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={viewModel.note}" />
-                </com.google.android.material.textfield.TextInputLayout>
 
                 <!--<Spinner
                     android:id="@+id/activity_exercise_spinner"
