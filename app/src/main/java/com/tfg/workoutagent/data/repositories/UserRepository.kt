@@ -10,7 +10,7 @@ interface UserRepository {
     suspend fun updateProfileAdmin(admin : Administrator)  : Resource<Boolean>
     suspend fun deleteCustomerAdmin(id : String) : Resource<Boolean>
     suspend fun getCustomersAdmin() : Resource<MutableList<Customer>>
-
+    suspend fun getUsersMails() : Resource<MutableList<String>>
     suspend fun getCustomer(id: String) : Resource<Customer>
     suspend fun createCustomer(customer: Customer) : Resource<Boolean>
     suspend fun updateCustomer(customer: Customer) : Resource<Boolean>

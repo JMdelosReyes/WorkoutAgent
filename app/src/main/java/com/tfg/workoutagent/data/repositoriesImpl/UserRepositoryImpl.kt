@@ -495,4 +495,21 @@ class UserRepositoryImpl: UserRepository {
 
         return Resource.Success(true)
     }
+
+    override suspend fun getUsersMails(): Resource<MutableList<String>> {
+        var res: MutableList<String> = mutableListOf()
+
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .get().await()
+
+        for (document in resultData){
+            val mail  = document.get("email")
+            if(mail is String){
+                res.add(mail)
+            }
+
+        }
+        return Resource.Success(res)
+    }
 }

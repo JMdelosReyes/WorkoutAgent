@@ -9,6 +9,7 @@ import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCase
 import com.tfg.workoutagent.models.Customer
 import com.tfg.workoutagent.models.Weight
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.utils.checkExistingMail
 import com.tfg.workoutagent.vo.utils.getAgeWithError
 import com.tfg.workoutagent.vo.utils.parseStringToDate
 import com.tfg.workoutagent.vo.utils.parseStringToDateBar
@@ -131,6 +132,17 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         _birthdayError.value = com.tfg.workoutagent.vo.utils.checkBirthday(birthday.value)
         _dniError.value = com.tfg.workoutagent.vo.utils.checkDni(dni.toUpperCase())
         checkEmail()
+        if(_emailError.value.equals("")){
+            viewModelScope.launch {
+                try{
+                    if(checkExistingMail(email)){
+                        _emailError.value = "This mail is already used"
+                    }
+                }catch (e: Exception) {
+                    _emailError.value = "Try with other email"
+                }
+            }
+        }
         checkName()
         checkSurname()
         checkGender()
