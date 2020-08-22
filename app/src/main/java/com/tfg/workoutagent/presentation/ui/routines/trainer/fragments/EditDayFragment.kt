@@ -173,14 +173,5 @@ class EditDayFragment : Fragment() {
         add_day_activity_button.setOnClickListener {
             findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToAddActivityFragment())
         }
-
-        cancel_create_day_button.setOnClickListener {
-            viewModel.onCancelEditDay()
-            findNavController().navigate(
-                EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
-                    clearData = 2
-                )
-            )
-        }
     }
 }
