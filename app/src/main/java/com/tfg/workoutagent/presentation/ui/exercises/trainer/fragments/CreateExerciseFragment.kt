@@ -25,6 +25,7 @@ import com.tfg.workoutagent.databinding.FragmentCreateExerciseBinding
 import com.tfg.workoutagent.domain.exerciseUseCases.ManageExerciseUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.CreateExerciseViewModel
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.CreateExerciseViewModelFactory
+import com.tfg.workoutagent.vo.LoadingDialog
 import kotlinx.android.synthetic.main.fragment_create_exercise.*
 
 
@@ -46,7 +47,11 @@ class CreateExerciseFragment : BaseFragment() {
     }
 
     private lateinit var binding: FragmentCreateExerciseBinding
+
     private var selectedPhotosUri: MutableList<Uri?> = mutableListOf()
+
+    private val loadingDialog by lazy { LoadingDialog(this.activity!!) }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -84,7 +89,7 @@ class CreateExerciseFragment : BaseFragment() {
                 PICK_MULTI_IMAGE_CODE
             )
         }
-        if(getDarkMode()){
+        if (getDarkMode()) {
             ll_arms.setBackgroundResource(R.drawable.item_border_dark)
             ll_legs.setBackgroundResource(R.drawable.item_border_dark)
             ll_back.setBackgroundResource(R.drawable.item_border_dark)
@@ -93,7 +98,7 @@ class CreateExerciseFragment : BaseFragment() {
             ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
             ll_abs.setBackgroundResource(R.drawable.item_border_dark)
             ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
-        }else{
+        } else {
             ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
             ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
             ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
@@ -140,7 +145,7 @@ class CreateExerciseFragment : BaseFragment() {
                         builder.show()
                     }
                 }
-                selectedPhotosUri.forEach{ uri ->
+                selectedPhotosUri.forEach { uri ->
                     viewModel.photosUris.add(uri!!)
                 }
             } else if (data.data != null) {
@@ -185,9 +190,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_arms.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_arms.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -199,9 +204,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_legs.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_legs.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -213,9 +218,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_back.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_back.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -227,9 +232,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_chest.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_chest.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_chest.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -241,9 +246,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_shoulder.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_shoulder.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_shoulder.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -255,9 +260,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_gluteus.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_gluteus.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -269,9 +274,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_abs.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_abs.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_abs.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -283,9 +288,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_cardio.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_cardio.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -341,6 +346,21 @@ class CreateExerciseFragment : BaseFragment() {
                     }
                     false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
                         .show()
+                }
+            }
+        })
+
+        viewModel.showLoading.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                when (it) {
+                    true -> {
+                        this.loadingDialog.loadDialog()
+                        this.viewModel.loadingShowed()
+                    }
+                    false -> {
+                        this.loadingDialog.dismissDialog()
+                        this.viewModel.loadingShowed()
+                    }
                 }
             }
         })
