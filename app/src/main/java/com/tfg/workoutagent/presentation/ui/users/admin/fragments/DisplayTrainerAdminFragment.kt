@@ -57,7 +57,7 @@ class DisplayTrainerAdminFragment : Fragment() {
                     display_trainer_email_admin.text = it.data.email
                     display_trainer_dni_admin.text = it.data.dni
                     display_trainer_phone_admin.text = it.data.phone
-                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE"){
+                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE" || it.data.photo == "DEFAULT_PHOTO"){
                         Glide.with(this).load(R.drawable.ic_person_black_60dp).into(circleImageViewTrainer_admin)
                     }else{
                         Glide.with(this).load(it.data.photo).into(circleImageViewTrainer_admin)

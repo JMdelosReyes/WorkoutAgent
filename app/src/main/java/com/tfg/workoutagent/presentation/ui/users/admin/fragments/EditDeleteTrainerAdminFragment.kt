@@ -136,7 +136,7 @@ class EditDeleteTrainerAdminFragment : Fragment() {
                 is Resource.Success -> {
                     //TODO: hideProgress()
                     setupPicker(it.data.birthday)
-                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
+                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE" || it.data.photo != "DEFAULT_PHOTO"){
                         edit_profile_trainer_select_image_button.visibility = View.GONE
                         image_selected_edit_trainer_admin.visibility = View.VISIBLE
                         Glide.with(this).load(it.data.photo).into(image_selected_edit_trainer_admin)

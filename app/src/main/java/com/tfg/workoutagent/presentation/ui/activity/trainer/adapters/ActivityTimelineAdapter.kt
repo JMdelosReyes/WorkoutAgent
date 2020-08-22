@@ -43,9 +43,13 @@ class ActivityTimelineAdapter(private val context: Context) :
 
     inner class ActivityTimelineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(timelineActivity: TimelineActivity) {
-
-            Glide.with(context).load(timelineActivity.customerPhoto)
-                .into(itemView.circleImageView_activity_timeline)
+            if(timelineActivity.customerPhoto == "" || timelineActivity.customerPhoto == "DEFAULT_IMAGE" || timelineActivity.customerPhoto == "DEFAULT_PHOTO"){
+                Glide.with(context).load(R.drawable.ic_person_black_60dp)
+                    .into(itemView.circleImageView_activity_timeline)
+            }else{
+                Glide.with(context).load(timelineActivity.customerPhoto)
+                    .into(itemView.circleImageView_activity_timeline)
+            }
             itemView.row_customer_name_timeline.text = timelineActivity.customerName
 
 

@@ -120,7 +120,7 @@ class ProfileCustomerFragment : Fragment() {
         viewModel.getProfileCustomer.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Success -> {
-                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE"){
+                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE" || it.data.photo == "DEFAULT_PHOTO"){
                         Glide.with(this).load(R.drawable.ic_person_black_60dp).into(circleImageViewCustomer_displayProfile)
                     }else{
                         Glide.with(this).load(it.data.photo).into(circleImageViewCustomer_displayProfile)

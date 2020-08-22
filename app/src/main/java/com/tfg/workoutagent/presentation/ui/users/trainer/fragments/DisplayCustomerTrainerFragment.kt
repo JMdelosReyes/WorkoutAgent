@@ -68,7 +68,7 @@ class DisplayCustomerTrainerFragment : Fragment() {
                     display_customer_height.text = it.data.height.toString() + " cm"
                     display_customer_weight.text = it.data.weights[it.data.weights.lastIndex].weight.toString() + " kg"
 
-                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE"){
+                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE" || it.data.photo == "DEFAULT_PHOTO"){
                         Glide.with(this).load(R.drawable.ic_person_black_60dp).into(circleImageViewCustomer)
                     }else{
                         Glide.with(this).load(it.data.photo).into(circleImageViewCustomer)

@@ -72,7 +72,7 @@ class CustomerListAdapter(
         }
 
         private fun loadImage() {
-            if (this.customer.photo == "DEFAULT_IMAGE") {
+            if (this.customer.photo == "DEFAULT_IMAGE" ||  this.customer.photo == "DEFAULT_PHOTO") {
                 Glide.with(context).load(R.drawable.ic_person_black_60dp)
                     .into(itemView.customer_assign_routine_photo)
             } else {

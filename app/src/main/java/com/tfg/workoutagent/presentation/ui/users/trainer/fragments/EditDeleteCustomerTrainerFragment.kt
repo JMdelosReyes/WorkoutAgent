@@ -176,7 +176,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
                 is Resource.Success -> {
                     //TODO: hideProgress()
                     setupButtons(it.data.birthday)
-                    if(it.data.photo != "" && it.data.photo != "DEFAULT_IMAGE"){
+                    if(it.data.photo != "" && it.data.photo != "DEFAULT_IMAGE" && it.data.photo != "DEFAULT_PHOTO"){
                         edit_profile_customer_button_select_image_customer.visibility = View.GONE
                         image_selected.visibility = View.VISIBLE
                         Glide.with(this).load(it.data.photo).into(image_selected)
