@@ -64,7 +64,18 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
     private fun checkData(): Boolean {
         _birthdayError.value = checkBirthday(birthday.value)
         _dniError.value = checkDni(dni.toUpperCase())
-        _emailError.value = checkEmail(email)
+        _emailError.value = checkEmail(email.trim())
+        if(_emailError.value.equals("")){
+            viewModelScope.launch {
+                try{
+                    if(checkExistingMail(email)){
+                        _emailError.value = "This mail is already used"
+                    }
+                }catch (e: Exception) {
+                    _emailError.value = "Try with other email"
+                }
+            }
+        }
         _nameError.value = checkName(name)
         _surnameError.value = checkSurname(surname)
         _photoError.value = checkPhoto(photo)

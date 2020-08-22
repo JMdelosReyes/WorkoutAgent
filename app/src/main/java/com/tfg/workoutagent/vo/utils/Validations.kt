@@ -1,5 +1,9 @@
 package com.tfg.workoutagent.vo.utils
 
+import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
+import com.tfg.workoutagent.domain.userUseCases.ManageUsersUseCase
+import com.tfg.workoutagent.domain.userUseCases.ManageUsersUseCaseImpl
+import com.tfg.workoutagent.vo.Resource
 import java.util.*
 
 
@@ -129,3 +133,20 @@ fun checkHeight(height: Int?): String {
     }
     return error
 }
+
+suspend fun checkExistingMail(mail: String): Boolean {
+    var res = false
+    var mailList = emptyList<String>()
+    val useCase = ManageUsersUseCaseImpl(UserRepositoryImpl())
+    when(val response = useCase.getUsersMails()) {
+        is Resource.Success -> {
+           mailList = response.data
+        }
+    }
+    if(mailList.contains(mail)){
+        res = true
+    }
+
+    return res
+}
+
