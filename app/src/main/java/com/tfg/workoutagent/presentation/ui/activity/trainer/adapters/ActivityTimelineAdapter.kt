@@ -55,24 +55,24 @@ class ActivityTimelineAdapter(private val context: Context) :
 
             val minutesAgo = System.currentTimeMillis()/60000 - timelineActivity.finishDate.time/60000
             if(minutesAgo < 1){
-                itemView.row_finishDate_message.text = "A few seconds ago"
+                itemView.row_finishDate_message.text = "Completed his day a few seconds ago"
             }else if (minutesAgo < 60){
-                itemView.row_finishDate_message.text = "$minutesAgo minutes ago"
+                itemView.row_finishDate_message.text = "Completed his day $minutesAgo minutes ago"
             }else if(minutesAgo < 60*24){
                 var hours = minutesAgo/60
                 hours = truncate(hours.toDouble()).toLong()
-                itemView.row_finishDate_message.text = "$hours hours ago"
+                itemView.row_finishDate_message.text = "Completed his day $hours hours ago"
             }else if(minutesAgo < 60*24*7){
                 var days = minutesAgo/(60*24)
                 days = truncate(days.toDouble()).toLong()
                 if(days.toInt() == 1){
-                    itemView.row_finishDate_message.text = "yesterday"
+                    itemView.row_finishDate_message.text = "Completed his day yesterday"
                 }else{
-                    itemView.row_finishDate_message.text = "$days days ago"
+                    itemView.row_finishDate_message.text = "Completed his day $days days ago"
                 }
 
             }else{
-                itemView.row_finishDate_message.text = "A long time ago"
+                itemView.row_finishDate_message.text = "Completed his day a long time ago"
             }
             itemView.setOnClickListener {
                 itemView.findNavController().navigate(

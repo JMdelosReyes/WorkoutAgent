@@ -376,6 +376,7 @@ class RoutineRepositoryImpl : RoutineRepository {
             }
 
         }
+        finishedActivities.sortByDescending { timelineActivity -> timelineActivity.finishDate }
         return Resource.Success(finishedActivities)
     }
 

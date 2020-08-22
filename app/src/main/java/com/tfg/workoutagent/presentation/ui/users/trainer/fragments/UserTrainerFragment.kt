@@ -9,6 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.tfg.workoutagent.R
@@ -50,6 +51,13 @@ class UserTrainerFragment : Fragment() {
         adapter = CustomerListAdapter(this.context!!)
         recyclerView_customer_trainer.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_customer_trainer.adapter = adapter
+        recyclerView_customer_trainer.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+
         observeData()
     }
 
