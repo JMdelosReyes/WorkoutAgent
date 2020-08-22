@@ -3,18 +3,13 @@ package com.tfg.workoutagent.data.repositoriesImpl
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.Query
 import com.tfg.workoutagent.data.repositories.RoutineRepository
 import com.tfg.workoutagent.models.*
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
-import java.lang.Exception
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class RoutineRepositoryImpl : RoutineRepository {
 
@@ -28,9 +23,9 @@ class RoutineRepositoryImpl : RoutineRepository {
             .collection("routines")
             .whereEqualTo("customer", customer)
             .get().await()
-        for (routineDoc in routinesIds.documents){
+        for (routineDoc in routinesIds.documents) {
             val routine = this.getRoutine(routineDoc.id)
-            if(routine is Resource.Success){
+            if (routine is Resource.Success) {
                 routines.add(routine.data)
             }
         }
@@ -38,7 +33,6 @@ class RoutineRepositoryImpl : RoutineRepository {
     }
 
     override suspend fun getOwnRoutines(): Resource<MutableList<Routine>> {
-
         val trainerDB = FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
@@ -49,146 +43,139 @@ class RoutineRepositoryImpl : RoutineRepository {
             .whereEqualTo("trainer", trainerDB.documents[0].reference)
             .get().await()
 
-
         val routines = mutableListOf<Routine>()
         for (document in resultData) {
-            val customerRef = document.get("customer")
-            val trainerRef = document.get("trainer")
-            var routine = Routine()
-            routine.id = document.id
-            routine.startDate = document.getTimestamp("startDate")!!.toDate()
-            routine.title = document.getString("title")!!
-            routine.current = document.getBoolean("current") ?: false
+            try {
+                val customerRef = document.get("customer")
+                val trainerRef = document.get("trainer")
+                val routine = Routine()
+                routine.id = document.id
+                routine.startDate = document.getTimestamp("startDate")!!.toDate()
+                routine.title = document.getString("title")!!
+                routine.current = document.getBoolean("current") ?: false
 
-            val days = document.get("days")
+                val days = document.get("days")
 
-            if (days is HashMap<*, *>) {
-                Log.i("Day", "${days.keys}")
-                //iteramos por cada día
-                for (dayKey in days.keys) {
-                    var day = Day()
-                    day.name = dayKey.toString()
-                    var dia = days[dayKey]
-                    if (dia is HashMap<*, *>) {
-                        val diaAtributos = dia.keys
-                        for (atributo in diaAtributos) {
-                            when (atributo.toString()) {
-                                "completed" -> day.completed = dia[atributo] as Boolean
-                                "workingDay" -> {
-                                    val tiempo = dia[atributo]
-                                    if (tiempo is com.google.firebase.Timestamp) {
-                                        day.workingDay = tiempo.toDate()
+                if (days is HashMap<*, *>) {
+                    //iteramos por cada día
+                    for (dayKey in days.keys) {
+                        val day = Day()
+                        day.name = dayKey.toString()
+                        val dia = days[dayKey]
+                        if (dia is HashMap<*, *>) {
+                            val diaAtributos = dia.keys
+                            for (atributo in diaAtributos) {
+                                when (atributo.toString()) {
+                                    "completed" -> day.completed = dia[atributo] as Boolean
+                                    "workingDay" -> {
+                                        val tiempo = dia[atributo]
+                                        if (tiempo is com.google.firebase.Timestamp) {
+                                            day.workingDay = tiempo.toDate()
+                                        }
                                     }
-                                }
-                                "activities" -> {
-                                    val actividades = dia[atributo]
+                                    "activities" -> {
+                                        val actividades = dia[atributo]
 
-                                    if (actividades is HashMap<*, *>) {
-                                        for (actividad in actividades.keys) {
-                                            var routineActivity = RoutineActivity()
-                                            routineActivity.name = actividad.toString()
-                                            val actividadesValues = actividades[actividad]
+                                        if (actividades is HashMap<*, *>) {
+                                            for (actividad in actividades.keys) {
+                                                val routineActivity = RoutineActivity()
+                                                routineActivity.name = actividad.toString()
+                                                val actividadesValues = actividades[actividad]
 
-                                            if (actividadesValues is HashMap<*, *>) {
-                                                for (activityAtributo in actividadesValues.keys) {
-                                                    when (activityAtributo.toString()) {
-                                                        "exercise" -> {
-                                                            val docRefAct =
-                                                                actividadesValues[activityAtributo]
-                                                            if (docRefAct is DocumentReference) {
-                                                                val exerciseDoc =
-                                                                    docRefAct.get().await()
-                                                                var exerciseAct = Exercise()
-                                                                exerciseAct.id = exerciseDoc.id
-                                                                exerciseAct.title =
-                                                                    exerciseDoc.getString("title")!!
-                                                                exerciseAct.description =
-                                                                    exerciseDoc.getString("description")!!
-                                                                exerciseAct.photos =
-                                                                    (exerciseDoc.get("photos") as MutableList<String>?)!!
-                                                                exerciseAct.tags =
-                                                                    (exerciseDoc.get("tags") as MutableList<String>?)!!
+                                                if (actividadesValues is HashMap<*, *>) {
+                                                    for (activityAtributo in actividadesValues.keys) {
+                                                        when (activityAtributo.toString()) {
+                                                            "exercise" -> {
+                                                                val docRefAct =
+                                                                    actividadesValues[activityAtributo]
+                                                                if (docRefAct is DocumentReference) {
+                                                                    val exerciseDoc =
+                                                                        docRefAct.get().await()
+                                                                    val exerciseAct = Exercise()
+                                                                    exerciseAct.id = exerciseDoc.id
+                                                                    exerciseAct.title =
+                                                                        exerciseDoc.getString("title")!!
+                                                                    exerciseAct.description =
+                                                                        exerciseDoc.getString("description")!!
+                                                                    exerciseAct.photos =
+                                                                        (exerciseDoc.get("photos") as MutableList<String>?)!!
+                                                                    exerciseAct.tags =
+                                                                        (exerciseDoc.get("tags") as MutableList<String>?)!!
 
-                                                                routineActivity.exercise =
-                                                                    exerciseAct
+                                                                    routineActivity.exercise =
+                                                                        exerciseAct
+                                                                }
                                                             }
-                                                        }
-                                                        "note" -> routineActivity.note =
-                                                            actividadesValues[activityAtributo].toString()
-                                                        "repetitions" -> routineActivity.repetitions =
-                                                            actividadesValues[activityAtributo] as MutableList<Int>
-                                                        "repetitionsCustomer" -> routineActivity.repetitionsCustomer =
-                                                            actividadesValues[activityAtributo] as MutableList<Int>
-                                                        "sets" -> {
-                                                            routineActivity.sets =
-                                                                (actividadesValues[activityAtributo] as Long).toInt()
-                                                        }
-                                                        "type" -> routineActivity.type =
-                                                            actividadesValues[activityAtributo].toString()
-                                                        "weightsPerRepetition" -> routineActivity.weightsPerRepetition =
-                                                            actividadesValues[activityAtributo] as MutableList<Double>
-                                                        "weightsPerRepetitionCustomer" -> routineActivity.weightsPerRepetitionCustomer =
-                                                            actividadesValues[activityAtributo] as MutableList<Double>
+                                                            "note" -> routineActivity.note =
+                                                                actividadesValues[activityAtributo].toString()
+                                                            "repetitions" -> routineActivity.repetitions =
+                                                                actividadesValues[activityAtributo] as MutableList<Int>
+                                                            "repetitionsCustomer" -> routineActivity.repetitionsCustomer =
+                                                                actividadesValues[activityAtributo] as MutableList<Int>
+                                                            "sets" -> {
+                                                                routineActivity.sets =
+                                                                    (actividadesValues[activityAtributo] as Long).toInt()
+                                                            }
+                                                            "type" -> routineActivity.type =
+                                                                actividadesValues[activityAtributo].toString()
+                                                            "weightsPerRepetition" -> routineActivity.weightsPerRepetition =
+                                                                actividadesValues[activityAtributo] as MutableList<Double>
+                                                            "weightsPerRepetitionCustomer" -> routineActivity.weightsPerRepetitionCustomer =
+                                                                actividadesValues[activityAtributo] as MutableList<Double>
 
+                                                        }
                                                     }
                                                 }
+                                                day.activities.add(routineActivity)
                                             }
-                                            day.activities.add(routineActivity)
-                                        }
 
+                                        }
                                     }
                                 }
                             }
-
-
                         }
+                        routine.days.add(day)
                     }
-                    //Log.i("Dia a añadir", "$day")
-                    routine.days.add(day)
                 }
-            }
 
-            if (customerRef is DocumentReference) {
-                val customerDoc = customerRef.get().await()
+                if (customerRef is DocumentReference) {
+                    val customerDoc = customerRef.get().await()
 
-                val customer = Customer()
-                customer.id = customerDoc.id
-                customer.name = customerDoc.getString("name")!!
-                customer.surname = customerDoc.getString("surname")!!
-                customer.photo = customerDoc.getString("photo")!!
-                customer.phone = customerDoc.getString("phone")!!
-                customer.birthday = customerDoc.getTimestamp("birthday")!!.toDate()
-                customer.email = customerDoc.getString("email")!!
-                customer.dni = customerDoc.getString("dni")!!
-                routine.customer = customer
-                Log.i("Customer", "$customer")
-            }
-            if (trainerRef is DocumentReference) {
-                val trainerDoc = trainerRef.get().await()
-                val trainer = Trainer()
-                trainer.id = trainerDoc.id
-                trainer.name = trainerDoc.getString("name")!!
-                trainer.surname = trainerDoc.getString("surname")!!
-                trainer.photo = trainerDoc.getString("photo")!!
-                trainer.phone = trainerDoc.getString("phone")!!
-                trainer.email = trainerDoc.getString("email")!!
-                //val academicTitle:String = trainerDoc.get("academicTitle") as String
-                /*if(academicTitle is HashMap<*,*>){
+                    val customer = Customer()
+                    customer.id = customerDoc.id
+                    customer.name = customerDoc.getString("name")!!
+                    customer.surname = customerDoc.getString("surname")!!
+                    customer.photo = customerDoc.getString("photo")!!
+                    customer.phone = customerDoc.getString("phone")!!
+                    customer.birthday = customerDoc.getTimestamp("birthday")!!.toDate()
+                    customer.email = customerDoc.getString("email")!!
+                    customer.dni = customerDoc.getString("dni")!!
+                    routine.customer = customer
+                }
+                if (trainerRef is DocumentReference) {
+                    val trainerDoc = trainerRef.get().await()
+                    val trainer = Trainer()
+                    trainer.id = trainerDoc.id
+                    trainer.name = trainerDoc.getString("name")!!
+                    trainer.surname = trainerDoc.getString("surname")!!
+                    trainer.photo = trainerDoc.getString("photo")!!
+                    trainer.phone = trainerDoc.getString("phone")!!
+                    trainer.email = trainerDoc.getString("email")!!
+                    //val academicTitle:String = trainerDoc.get("academicTitle") as String
+                    /*if(academicTitle is HashMap<*,*>){
                     //No me siento orgulloso de esto
                     trainer.academicTitle = academicTitle["academicTitle"] as String
                 }*/
-                trainer.birthday = trainerDoc.getTimestamp("birthday")!!.toDate()
-                trainer.dni = trainerDoc.getString("dni")!!
-                //trainer.customers = (trainerDoc.get("customers") as MutableList<Customer>?)!!
-                routine.trainer = trainer
-            }
-            Log.i("Dia a añadir", "$routine")
-            routines.add(routine)
-            //Log.i("RoutineList", routines.toString())
+                    trainer.birthday = trainerDoc.getTimestamp("birthday")!!.toDate()
+                    trainer.dni = trainerDoc.getString("dni")!!
+                    //trainer.customers = (trainerDoc.get("customers") as MutableList<Customer>?)!!
+                    routine.trainer = trainer
+                }
 
-            //trainer.id = document.id
-            //Log.i("UserRepository", "${trainer.id} ${trainer.academicTitle} ${trainer.birthday} ${trainer.customers} ${trainer.dni}" +
-            //        "${trainer.email} ${trainer.name} ${trainer.email} ${trainer.phone}  ${trainer.photo} ${trainer.role} ${trainer.surname} ")
+                routines.add(routine)
+            } catch (e: Exception) {
+                // nothing
+            }
         }
 
         return Resource.Success(routines)
@@ -204,7 +191,7 @@ class RoutineRepositoryImpl : RoutineRepository {
         routine.id = resultData.id
         routine.startDate = resultData.getTimestamp("startDate")!!.toDate()
         routine.title = resultData.getString("title")!!
-        if(resultData.getBoolean("current") != null){
+        if (resultData.getBoolean("current") != null) {
             routine.current = resultData.getBoolean("current")!!
         }
         val days = resultData.get("days")
@@ -345,7 +332,7 @@ class RoutineRepositoryImpl : RoutineRepository {
 
         for (document in resultData) {
             val isCurrent = document.get("current")
-            if(isCurrent != null && isCurrent as Boolean){
+            if (isCurrent != null && isCurrent as Boolean) {
                 val timelineActivity = TimelineActivity()
                 val customerRef = document.get("customer")
                 val days = document.get("days")
@@ -531,9 +518,9 @@ class RoutineRepositoryImpl : RoutineRepository {
                 }
                 index++
             }
-            var trainerDB : DocumentReference? = null
-            if(routine.trainer.id != "DEFAULT_ID"){
-                trainerDB  = FirebaseFirestore.getInstance()
+            var trainerDB: DocumentReference? = null
+            if (routine.trainer.id != "DEFAULT_ID") {
+                trainerDB = FirebaseFirestore.getInstance()
                     .collection("users").document(routine.trainer!!.id)
                     .get().await().reference
             }
@@ -548,7 +535,8 @@ class RoutineRepositoryImpl : RoutineRepository {
                 "trainer" to trainerDB,
                 "days" to routine.days
             )
-            FirebaseFirestore.getInstance().collection("routines").document(routine.id).update(data).await()
+            FirebaseFirestore.getInstance().collection("routines").document(routine.id).update(data)
+                .await()
             return Resource.Success(true)
         }
 
