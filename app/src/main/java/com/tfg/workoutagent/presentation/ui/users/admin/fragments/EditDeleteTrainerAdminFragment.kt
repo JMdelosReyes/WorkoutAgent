@@ -23,6 +23,7 @@ import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModel
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.createAlertDialog
 import com.tfg.workoutagent.vo.utils.parseStringToDateBar
 import com.tfg.workoutagent.vo.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_create_trainer_admin.*
@@ -109,21 +110,18 @@ class EditDeleteTrainerAdminFragment : Fragment() {
         }
 
         delete_trainer_button_admin.setOnClickListener {
-            val builder = AlertDialog.Builder(this.context)
-            builder.setTitle(getString(R.string.alert_title_delete_user))
-            builder.setMessage(getString(R.string.alert_message_delete))
-
-            builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                dialog.dismiss()
-                sendNotification(this.context!!, "$trainerName account has been deleted", "You may have to look for a new trainer", "/topics/customers_$trainerId")
-                findNavController().navigate(EditDeleteTrainerAdminFragmentDirections.actionEditDeleteTrainerAdminFragmentToDeleteTrainerSendMailFragment(trainerId))
-            }
-
-            builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.create()
-            builder.show()
+            createAlertDialog(
+                context = this.context!!,
+                title = getString(R.string.alert_title_delete_profile),
+                message = getString(R.string.alert_message_delete),
+                positiveAction = {
+                    sendNotification(this.context!!, "$trainerName account has been deleted", "You may have to look for a new trainer", "/topics/customers_$trainerId")
+                    findNavController().navigate(EditDeleteTrainerAdminFragmentDirections.actionEditDeleteTrainerAdminFragmentToDeleteTrainerSendMailFragment(trainerId))
+                },
+                negativeAction ={},
+                positiveText = getString(R.string.answer_yes),
+                negativeText = getString(R.string.answer_no)
+            )
         }
     }
 

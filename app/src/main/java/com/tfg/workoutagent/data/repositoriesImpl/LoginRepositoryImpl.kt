@@ -21,10 +21,10 @@ class LoginRepositoryImpl : LoginRepository {
             .limit(1)
             .get()
             .await()
-        if (result.documents[0] != null) {
-            return Resource.Success(result.documents[0].getString("role")!!)
-        } else {
-            return Resource.Success("NO_ACCOUNT")
+        return if(result.isEmpty){
+            Resource.Success("NO_ACCOUNT")
+        }else{
+            Resource.Success(result.documents[0].getString("role")!!)
         }
     }
 
@@ -38,12 +38,16 @@ class LoginRepositoryImpl : LoginRepository {
         val resultData = FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
-            .get().await().documents[0]
+            .get().await()
+        if(!resultData.isEmpty){
+            val data: HashMap<String, Any?> = hashMapOf("token" to token)
+            FirebaseFirestore.getInstance().collection("users").document(resultData.documents[0].id).update(data)
+                .await()
+            return Resource.Success(token)
+        }else{
+            return Resource.Failure(Exception("ERROR / NO USER"))
+        }
 
-        val data: HashMap<String, Any?> = hashMapOf("token" to token)
-        FirebaseFirestore.getInstance().collection("users").document(resultData.id).update(data)
-            .await()
-        return Resource.Success(token)
     }
 
     override suspend fun getTrainerByCustomerId(): Resource<Trainer> {

@@ -28,6 +28,7 @@ import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivit
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.EditProfileCustomerViewModel
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.EditProfileCustomerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.fragment_edit_profile_customer.*
 import java.util.*
 
@@ -63,20 +64,16 @@ class EditProfileCustomerFragment : Fragment() {
         observeErrors()
     }
     private fun setupUI(){
-        delete_customer_button.setOnClickListener {  val builder = AlertDialog.Builder(this.context)
-            builder.setTitle(getString(R.string.alert_title_delete_profile))
-            builder.setMessage(getString(R.string.alert_message_delete))
-
-            builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                findNavController().navigate(EditProfileCustomerFragmentDirections.actionEditProfileCustomerFragmentToDeleteProfileSendEmailCustomerFragment(customerId))
-                dialog.dismiss()
-            }
-
-            builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.create()
-            builder.show()
+        delete_customer_button.setOnClickListener {
+            createAlertDialog(
+                context = this.context!!,
+                title = getString(R.string.alert_title_delete_profile),
+                message = getString(R.string.alert_message_delete),
+                positiveAction = { findNavController().navigate(EditProfileCustomerFragmentDirections.actionEditProfileCustomerFragmentToDeleteProfileSendEmailCustomerFragment(customerId)) },
+                negativeAction ={},
+                positiveText = getString(R.string.answer_yes),
+                negativeText = getString(R.string.answer_no)
+            )
         }
     }
 

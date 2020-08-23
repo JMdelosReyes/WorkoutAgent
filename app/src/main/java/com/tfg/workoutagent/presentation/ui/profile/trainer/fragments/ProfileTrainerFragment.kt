@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.PROFILE_TRAINER_FRAGMENT
 import com.tfg.workoutagent.R
@@ -78,7 +79,7 @@ class ProfileTrainerFragment : Fragment() {
         }
 
         settings_image_profile_trainer.setOnClickListener {
-            val dialogBuilder = AlertDialog.Builder(context!!)
+            val dialogBuilder = MaterialAlertDialogBuilder(context!!)
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
             val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)

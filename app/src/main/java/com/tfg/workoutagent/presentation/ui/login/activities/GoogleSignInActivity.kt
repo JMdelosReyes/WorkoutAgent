@@ -101,28 +101,30 @@ class GoogleSignInActivity : BaseActivity() {
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
-                viewModel.fechtRole.observe(this, Observer { result ->
+                this.viewModel.reloadRole()
+                viewModel.fetchRole.observe(this, Observer { result ->
                     when(result){
                         is Resource.Loading -> {
                             //showProgress()
                         }
                         is Resource.Success -> {
                             //hideProgress()
-
-                            viewModel.fetchToken.observe(this, Observer { r ->
-                                when(r){
-                                    is Resource.Loading -> {
-                                        //showProgress()
+                            if(result.data != "NO_ACCOUNT") {
+                                viewModel.fetchToken.observe(this, Observer { r ->
+                                    when (r) {
+                                        is Resource.Loading -> {
+                                            //showProgress()
+                                        }
+                                        is Resource.Success -> {
+                                            //hideProgress()
+                                        }
+                                        is Resource.Failure -> {
+                                            //hideProgress()
+                                            //Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                        }
                                     }
-                                    is Resource.Success -> {
-                                        //hideProgress()
-                                    }
-                                    is Resource.Failure -> {
-                                        //hideProgress()
-                                        Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                            })
+                                })
+                            }
 
                             when(result.data){
                                 "TRAINER" -> {
@@ -134,12 +136,10 @@ class GoogleSignInActivity : BaseActivity() {
                                             is Resource.Success -> {
                                                 val myId = r1.data.id
                                                 FirebaseMessaging.getInstance().subscribeToTopic("/topics/trainer_$myId")
-                                                Log.i("Prueba", "SUCCESS")
                                                 startActivity(TrainerActivity.getLaunchIntent(this))
                                                 finish()
                                             }
                                             is Resource.Failure -> {
-                                                Log.i("Cannot get trainer", "trainer does not exist")
                                                 startActivity(TrainerActivity.getLaunchIntent(this))
                                                 finish()
                                             }
@@ -164,7 +164,6 @@ class GoogleSignInActivity : BaseActivity() {
                                                 }
                                             }
                                             is Resource.Failure -> {
-                                                Log.i("Cannot get trainer", "trainer does not exist")
                                                 startActivity(CustomerActivity.getLaunchIntent(this))
                                                 finish()
                                             }
@@ -176,13 +175,30 @@ class GoogleSignInActivity : BaseActivity() {
                                     startActivity(AdminActivity.getLaunchIntent(this))
                                     finish()
                                 }
-                                "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
+                                "NO_ACCOUNT" -> {
+                                    mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                        .requestIdToken(getString(R.string.default_web_client_id))
+                                        .requestEmail()
+                                        .build()
+                                    mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
+                                    firebaseAuth.signOut()
+                                    mGoogleSignInClient.revokeAccess()
+                                    this.viewModel.setNullRole()
+                                    Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
+                                }
                             }
                         }
                         is Resource.Failure -> {
                             //hideProgress()
-                            Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
-                            finish()
+                            mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                .requestIdToken(getString(R.string.default_web_client_id))
+                                .requestEmail()
+                                .build()
+                            mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
+                            firebaseAuth.signOut()
+                            mGoogleSignInClient.revokeAccess()
+                            this.viewModel.setNullRole()
+                            //Toast.makeText(this, "Cannot find this user in Firebase 2", Toast.LENGTH_LONG).show()
                         }
                     }
                 })
@@ -197,7 +213,7 @@ class GoogleSignInActivity : BaseActivity() {
         try {
             val user = FirebaseAuth.getInstance().currentUser
             if (user != null) {
-                viewModel.fechtRole.observe(this, Observer { result ->
+                viewModel.fetchRole.observe(this, Observer { result ->
                     when(result){
                         is Resource.Loading -> {
                             //showProgress()
@@ -215,7 +231,7 @@ class GoogleSignInActivity : BaseActivity() {
                                     }
                                     is Resource.Failure -> {
                                         //hideProgress()
-                                        Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
+                                        //Toast.makeText(this, "Cannot update this token in Firebase", Toast.LENGTH_LONG).show()
                                     }
                                 }
                             })
@@ -229,12 +245,10 @@ class GoogleSignInActivity : BaseActivity() {
                                             is Resource.Success -> {
                                                 val myId = r1.data.id
                                                 FirebaseMessaging.getInstance().subscribeToTopic("/topics/trainer_$myId")
-                                                Log.i("Prueba", "SUCCESS")
                                                 startActivity(TrainerActivity.getLaunchIntent(this))
                                                 finish()
                                             }
                                             is Resource.Failure -> {
-                                                Log.i("Cannot get trainer", "trainer does not exist")
                                                 startActivity(TrainerActivity.getLaunchIntent(this))
                                                 finish()
                                             }
@@ -250,12 +264,10 @@ class GoogleSignInActivity : BaseActivity() {
                                             is Resource.Success -> {
                                                 val trainerId = r1.data.id
                                                 FirebaseMessaging.getInstance().subscribeToTopic("/topics/customers_$trainerId")
-                                                Log.i("Prueba", "SUCCESS")
                                                 startActivity(CustomerActivity.getLaunchIntent(this))
                                                 finish()
                                             }
                                             is Resource.Failure -> {
-                                                Log.i("Cannot get trainer", "trainer does not exist")
                                                 startActivity(CustomerActivity.getLaunchIntent(this))
                                                 finish()
                                             }
@@ -267,19 +279,36 @@ class GoogleSignInActivity : BaseActivity() {
                                     startActivity(AdminActivity.getLaunchIntent(this))
                                     finish()
                                 }
-                                "NO_ACCOUNT" -> { Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show() }
+                                "NO_ACCOUNT" -> {
+                                    mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                        .requestIdToken(getString(R.string.default_web_client_id))
+                                        .requestEmail()
+                                        .build()
+                                    mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
+                                    firebaseAuth.signOut()
+                                    mGoogleSignInClient.revokeAccess()
+                                    this.viewModel.setNullRole()
+                                    Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
+                                }
                             }
                         }
                         is Resource.Failure -> {
                             //hideProgress()
-                            Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
-                            finish()
+                            mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                .requestIdToken(getString(R.string.default_web_client_id))
+                                .requestEmail()
+                                .build()
+                            mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
+                            firebaseAuth.signOut()
+                            mGoogleSignInClient.revokeAccess()
+                            this.viewModel.setNullRole()
+                            //Toast.makeText(this, "Cannot find this user in Firebase", Toast.LENGTH_LONG).show()
                         }
                     }
                 })
             }
         } catch (e: Exception) {
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "Something went wrong", Toast.LENGTH_LONG).show()
         }
     }
     companion object {

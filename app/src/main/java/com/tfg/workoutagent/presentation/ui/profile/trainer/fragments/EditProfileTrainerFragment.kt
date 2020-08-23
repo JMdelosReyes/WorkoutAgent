@@ -29,6 +29,7 @@ import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivit
 import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.EditProfileTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.profile.trainer.viewModels.EditProfileTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.createAlertDialog
 import com.tfg.workoutagent.vo.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_edit_delete_trainer_admin.*
 import kotlinx.android.synthetic.main.fragment_edit_profile_trainer.*
@@ -98,22 +99,18 @@ class EditProfileTrainerFragment : Fragment() {
 
     private fun setupUI(){
         delete_trainer_button_admin.setOnClickListener {
-            val builder = AlertDialog.Builder(this.context)
-            builder.setTitle(getString(R.string.alert_title_delete_user))
-            builder.setMessage(getString(R.string.alert_message_delete))
-
-            builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                dialog.dismiss()
-                viewModel.onDelete()
-                sendNotification(this.context!!, "Trainer $trainerName has deleted his/her account", "", "/topics/admin")
-                sendNotification(this.context!!, "Trainer $trainerName has deleted his/her account", "", "/topics/trainer_$trainerId")
-            }
-
-            builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.create()
-            builder.show()
+            createAlertDialog(
+                context = this.context!!,
+                title = getString(R.string.alert_title_delete_profile),
+                message = getString(R.string.alert_message_delete),
+                positiveAction = { viewModel.onDelete()
+                    sendNotification(this.context!!, "Trainer $trainerName has deleted his/her account", "", "/topics/admin")
+                    sendNotification(this.context!!, "Trainer $trainerName has deleted his/her account", "", "/topics/trainer_$trainerId")
+                },
+                negativeAction ={},
+                positiveText = getString(R.string.answer_yes),
+                negativeText = getString(R.string.answer_no)
+            )
         }
         upload_cv_trainer_button_admin.setOnClickListener {
             val intent = Intent()

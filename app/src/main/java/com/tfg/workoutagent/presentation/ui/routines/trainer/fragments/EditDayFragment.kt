@@ -68,8 +68,8 @@ class EditDayFragment : Fragment() {
         }, { routineActivity: RoutineActivity ->
             createAlertDialog(
                 requireContext(),
-                "Delete day",
-                "Are you sure you want to delete this day?",
+                "Delete activity",
+                "Are you sure you want to delete this activity?",
                 {
                     viewModel.removeActivity(routineActivity)
                 },

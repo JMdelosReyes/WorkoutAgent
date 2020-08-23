@@ -74,8 +74,8 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
                         is Resource.Success -> {
                             manageExerciseUseCase.createExercise(
                                 Exercise(
-                                    title = title,
-                                    description = description,
+                                    title = title.trim(),
+                                    description = description.trim(),
                                     tags = tags,
                                     photos = photoUris.data
                                 )

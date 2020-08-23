@@ -26,6 +26,7 @@ import com.tfg.workoutagent.domain.exerciseUseCases.ManageExerciseUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.CreateExerciseViewModel
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.CreateExerciseViewModelFactory
 import com.tfg.workoutagent.vo.LoadingDialog
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.fragment_create_exercise.*
 
 
@@ -127,22 +128,17 @@ class CreateExerciseFragment : BaseFragment() {
                     image.maxWidth = 150
                     ll_photos.addView(image)
                     image.setOnClickListener {
-                        val builder = AlertDialog.Builder(this.context)
-                        builder.setTitle("Delete this image")
-                        builder.setMessage(getString(R.string.alert_message_delete))
-
-                        builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                            selectedPhotosUri.remove(photoUri)
-                            viewModel.removePhoto(photoUri)
-                            ll_photos.removeView(it)
-                            dialog.dismiss()
-                        }
-
-                        builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        builder.create()
-                        builder.show()
+                        createAlertDialog(
+                            context = this.context!!,
+                            title = "Delete this image",
+                            message = getString(R.string.alert_message_delete),
+                            positiveAction = {selectedPhotosUri.remove(photoUri)
+                                viewModel.removePhoto(photoUri)
+                                ll_photos.removeView(it)},
+                            negativeAction ={},
+                            positiveText = getString(R.string.answer_yes),
+                            negativeText = getString(R.string.answer_no)
+                        )
                     }
                 }
                 selectedPhotosUri.forEach { uri ->
@@ -159,23 +155,20 @@ class CreateExerciseFragment : BaseFragment() {
                 image.maxWidth = 150
                 ll_photos.addView(image)
                 image.setOnClickListener {
-                    val builder = AlertDialog.Builder(this.context)
-                    builder.setTitle("Delete this image")
-                    builder.setMessage(getString(R.string.alert_message_delete))
-
-                    builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                        viewModel.removePhoto(selectedPhotosUri[0]!!)
-                        selectedPhotosUri.remove(data.data)
-                        viewModel.dataPhoto = null
-                        ll_photos.removeView(it)
-                        dialog.dismiss()
-                    }
-
-                    builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    builder.create()
-                    builder.show()
+                    createAlertDialog(
+                        context = this.context!!,
+                        title = "Delete this image",
+                        message = getString(R.string.alert_message_delete),
+                        positiveAction = {
+                            viewModel.removePhoto(selectedPhotosUri[0]!!)
+                            selectedPhotosUri.remove(data.data)
+                            viewModel.dataPhoto = null
+                            ll_photos.removeView(it)
+                        },
+                        negativeAction ={},
+                        positiveText = getString(R.string.answer_yes),
+                        negativeText = getString(R.string.answer_no)
+                    )
                 }
                 viewModel.addPhoto(selectedPhotosUri[0]!!)
             }

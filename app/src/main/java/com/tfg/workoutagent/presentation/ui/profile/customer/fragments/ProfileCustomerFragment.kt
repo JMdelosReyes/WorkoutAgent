@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.CustomerActivity
 import com.tfg.workoutagent.PROFILE_CUSTOMER_FRAGMENT
@@ -96,7 +97,7 @@ class ProfileCustomerFragment : Fragment() {
         }
 
         settings_image_profile_customer.setOnClickListener {
-            val dialogBuilder = AlertDialog.Builder(context!!)
+            val dialogBuilder = MaterialAlertDialogBuilder(context!!)
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
             val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)
@@ -193,7 +194,7 @@ class ProfileCustomerFragment : Fragment() {
     }
 
     private fun setupWeightDialog() {
-        val builder = AlertDialog.Builder(requireContext(), R.style.WeightDialog)
+        val builder = MaterialAlertDialogBuilder(requireContext(), R.style.WeightDialog)
         val dialogView = this.layoutInflater.inflate(R.layout.weight_dialog, null)
         builder.setView(dialogView)
         this.weightDialog = builder.create()

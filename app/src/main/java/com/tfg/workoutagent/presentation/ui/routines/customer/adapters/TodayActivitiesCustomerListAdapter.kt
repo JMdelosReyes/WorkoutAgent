@@ -217,22 +217,20 @@ class TodayActivitiesCustomerListAdapter(
             Glide.with(context).load(routineActivity.exercise.photos[0])
                 .into(itemView.civ_activity_today)
             itemView.button_finish_activity.setOnClickListener {
-                val builder = AlertDialog.Builder(context)
-                builder.setTitle("Finish this exercise")
-                builder.setMessage("Once you finish this exercise, you cannot modify it. Are you sure?")
-
-                builder.setPositiveButton("Yes") { dialog, _ ->
-                    completedClickListener(adapterPosition)
-                    itemView.card_today.setBackgroundResource(R.drawable.item_border_set_completed)
-                    itemView.ll_invisible_content.visibility = View.GONE
-                    dialog.dismiss()
-                    notifyItemChanged(adapterPosition)
-                }
-                builder.setNeutralButton("No") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                builder.create()
-                builder.show()
+                createAlertDialog(
+                    context = context,
+                    title = "Finish this exercise",
+                    message = "Once you finish this exercise, you cannot modify it. Are you sure?",
+                    positiveAction = {
+                        completedClickListener(adapterPosition)
+                        itemView.card_today.setBackgroundResource(R.drawable.item_border_set_completed)
+                        itemView.ll_invisible_content.visibility = View.GONE
+                        notifyItemChanged(adapterPosition)
+                    },
+                    negativeAction ={},
+                    positiveText = "Yes",
+                    negativeText = "No"
+                )
             }
 
         }

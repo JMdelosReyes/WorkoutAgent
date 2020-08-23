@@ -138,8 +138,8 @@ class EditDeleteExerciseViewModel(
                             manageExerciseUseCase.editExercise(
                                 Exercise(
                                     id = exerciseId,
-                                    title = title.value!!,
-                                    description = description.value!!,
+                                    title = title.value!!.trim(),
+                                    description = description.value!!.trim(),
                                     tags = tags.value!!,
                                     photos = photoUris.data
                                 )
@@ -151,8 +151,8 @@ class EditDeleteExerciseViewModel(
                     manageExerciseUseCase.editExercise(
                         Exercise(
                             id = exerciseId,
-                            title = title.value!!,
-                            description = description.value!!,
+                            title = title.value!!.trim(),
+                            description = description.value!!.trim(),
                             tags = tags.value!!,
                             photos = photosList
                         )
