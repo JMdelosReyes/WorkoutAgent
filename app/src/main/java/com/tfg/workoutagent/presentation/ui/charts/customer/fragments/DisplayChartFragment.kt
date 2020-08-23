@@ -129,7 +129,6 @@ class DisplayChartFragment : BaseFragment() {
         viewModel.getProfileCustomer.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Success -> {
-                    Log.i("Customer Prueba","Funciona")
                     setupUI(it.data)
                 }
                 is Resource.Failure -> {

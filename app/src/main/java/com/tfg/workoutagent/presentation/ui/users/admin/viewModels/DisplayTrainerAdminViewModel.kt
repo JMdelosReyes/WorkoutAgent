@@ -15,7 +15,6 @@ class DisplayTrainerAdminViewModel(private val id: String, private val manageTra
             val trainer = manageTrainerAdminUseCase.getTrainer(id)
             emit(trainer)
         }catch (e : Exception){
-            Log.i("ExDisplayTrainerAdminVM", "${e}")
             emit(Resource.Failure(e))
         }
     }

@@ -143,7 +143,6 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
                 )
                 _dayLoaded.value = true
             } catch (e: Exception) {
-                Log.i("updateDay", e.toString())
                 _dayLoaded.value = false
             }
             _dayLoaded.value = null
@@ -157,7 +156,6 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
                 )
                 _finishedDay.value = true
             } catch (e: Exception) {
-                Log.i("finishDay", e.toString())
                 _finishedDay.value = false
             }
             _finishedDay.value = null

@@ -240,10 +240,6 @@ class RoutineRepositoryImpl : RoutineRepository {
                                                                         exerciseKey[exerciseKeyAttribute] as MutableList<String>
                                                                 }
                                                             }
-                                                            Log.i(
-                                                                "Añadimos ejercicio",
-                                                                "$exerciseAct"
-                                                            )
                                                             routineActivity.exercise = exerciseAct
                                                         }
                                                     }
@@ -297,7 +293,6 @@ class RoutineRepositoryImpl : RoutineRepository {
             customer.email = customerDoc.getString("email")!!
             customer.dni = customerDoc.getString("dni")!!
             routine.customer = customer
-            Log.i("Customer", "$customer")
         }
         if (trainerRef is DocumentReference) {
             val trainerDoc = trainerRef.get().await()
@@ -312,7 +307,6 @@ class RoutineRepositoryImpl : RoutineRepository {
             trainer.dni = trainerDoc.getString("dni")!!
             routine.trainer = trainer
         }
-        Log.i("getRoutine", routine.toString())
         return Resource.Success(routine)
     }
 
@@ -354,7 +348,6 @@ class RoutineRepositoryImpl : RoutineRepository {
                                 }
                             }
                         }
-                        Log.i("Probemos esta wea", "$day")
                         if (day.completed) {
                             dayList.add(day)
                         }

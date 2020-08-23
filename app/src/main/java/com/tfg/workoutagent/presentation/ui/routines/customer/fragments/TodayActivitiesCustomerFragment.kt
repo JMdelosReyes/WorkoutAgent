@@ -84,7 +84,6 @@ class TodayActivitiesCustomerFragment : BaseFragment() {
                 is Resource.Failure -> {
                     sv_today.stopShimmer()
                     sv_today.visibility = View.GONE
-                    Log.i("it", it.toString())
                 }
                 is Resource.Success -> {sv_today.stopShimmer()
                     sv_today.visibility = View.GONE
@@ -125,7 +124,6 @@ class TodayActivitiesCustomerFragment : BaseFragment() {
                     sv_today.visibility = View.GONE
                 }
                 false -> {
-                    Log.i("finishedDay", "Something went wrong")
                 }
             }
         })

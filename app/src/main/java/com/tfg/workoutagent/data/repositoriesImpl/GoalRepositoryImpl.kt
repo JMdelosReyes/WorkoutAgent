@@ -42,7 +42,6 @@ class GoalRepositoryImpl: GoalRepository {
         val customer = customerDoc.toObject(Customer::class.java)!!
         customer.id = customerDoc.id
         customer.goals.asReversed().removeAt(index)
-        Log.i("deleteGoal", "PARA PUNTO DE RUPTURA")
         val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "genre" to customer.genre, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to customer.goals, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to "CUSTOMER", "weightPerWeek" to customer.weightPerWeek, "weights" to customer.weights)
         FirebaseFirestore.getInstance().collection("users").document(customer.id).update(data).await()
         return Resource.Success(true)
@@ -56,7 +55,6 @@ class GoalRepositoryImpl: GoalRepository {
         val customer = customerDoc.toObject(Customer::class.java)!!
         customer.id = customerDoc.id
         customer.goals.asReversed().get(index).isAchieved = true
-        Log.i("finishGoal", "PARA PUNTO DE RUPTURA")
         val data : HashMap<String, Any?> = hashMapOf("birthday" to customer.birthday, "dni" to customer.dni, "genre" to customer.genre, "email" to customer.email, "name" to customer.name, "surname" to customer.surname, "goals" to customer.goals, "photo" to customer.photo, "height" to customer.height, "phone" to customer.phone, "role" to "CUSTOMER", "weightPerWeek" to customer.weightPerWeek, "weights" to customer.weights)
         FirebaseFirestore.getInstance().collection("users").document(customer.id).update(data).await()
         return Resource.Success(true)

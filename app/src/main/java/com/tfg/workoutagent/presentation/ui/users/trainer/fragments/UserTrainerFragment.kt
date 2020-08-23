@@ -81,8 +81,7 @@ class UserTrainerFragment : Fragment() {
                 is Resource.Failure -> {
                     sfl_rv_customer_trainer.visibility = View.GONE
                     sfl_rv_customer_trainer.stopShimmer()
-                    Log.i("ERROR", "${result.exception.message}");
-                    Toast.makeText(this.context!!,"Ocurrió un error ${result.exception.message}",Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this.context!!,"Ocurrió un error ${result.exception.message}",Toast.LENGTH_LONG).show()
                 }
             }
         })

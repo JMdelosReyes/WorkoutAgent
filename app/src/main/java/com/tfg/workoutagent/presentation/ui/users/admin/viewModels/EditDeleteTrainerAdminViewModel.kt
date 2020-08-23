@@ -98,8 +98,6 @@ class EditDeleteTrainerAdminViewModel(private val id: String, private val manage
         _emailError.value =checkEmail(email.value)
         _nameError.value =checkName(name.value)
         _surnameError.value =checkSurname(surname.value)
-        Log.i("checkData", "ENTRA")
-        Log.i("ERRORS", _dniError.value +" " +_birthdayError.value +" " +_emailError.value +" " +_nameError.value +" " + _surnameError.value)
         return _dniError.value=="" && _birthdayError.value=="" && _emailError.value=="" && _nameError.value=="" && _surnameError.value==""
     }
 

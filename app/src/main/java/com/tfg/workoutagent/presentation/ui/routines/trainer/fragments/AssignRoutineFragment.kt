@@ -134,13 +134,11 @@ class AssignRoutineFragment : DialogFragment() {
             it?.let {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.i("ROUTINES", "LOADING")
                     }
                     is Resource.Success -> {
                         this.routineAssignListAdapter.setListData(it.data)
                     }
                     is Resource.Failure -> {
-                        Log.i("ROUTINES", "FAILURE")
                     }
                 }
             }
@@ -150,13 +148,11 @@ class AssignRoutineFragment : DialogFragment() {
             it?.let {
                 when (it) {
                     is Resource.Loading -> {
-                        Log.i("ROUTINES", "LOADING")
                     }
                     is Resource.Success -> {
                         this.customerListAdapter.setListData(it.data)
                     }
                     is Resource.Failure -> {
-                        Log.i("ROUTINES", "FAILURE")
                     }
                 }
             }
