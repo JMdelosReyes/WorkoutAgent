@@ -123,7 +123,6 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
                     _customerCreated.value = true
                 }
             }catch (e: Exception){
-                Log.i("FAIL", "${e}")
             }
         }
     }

@@ -298,23 +298,5 @@ class ListGoalCustomerFragment : Fragment() {
                 }
             }
         })
-        viewModel.goalDeleted.observe(viewLifecycleOwner, Observer {
-            when(it){
-                true -> {
-                }
-                false -> {
-                    Log.i("observeData goalDeleted", "Something went wrong")
-                }
-            }
-        })
-        viewModel.goalFinished.observe(viewLifecycleOwner, Observer {
-            when(it){
-                true -> {
-                }
-                false -> {
-                    Log.i("observeData goalFinishe", "Something went wrong")
-                }
-            }
-        })
     }
 }

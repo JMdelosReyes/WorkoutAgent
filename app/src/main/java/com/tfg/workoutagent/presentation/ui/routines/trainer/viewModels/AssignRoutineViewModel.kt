@@ -134,7 +134,6 @@ class AssignRoutineViewModel(private val assignRoutinesUseCase: AssignRoutinesUs
                 )
                 _closeAssignDialog.value = true
             } catch (e: Exception) {
-                Log.i("FAIL", e.message)
                 _closeAssignDialog.value = false
             }
         }

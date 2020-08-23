@@ -211,6 +211,7 @@ class GoogleSignInActivity : BaseActivity() {
     override fun onStart() {
         super.onStart()
         try {
+            this.viewModel.reloadRole()
             val user = FirebaseAuth.getInstance().currentUser
             if (user != null) {
                 viewModel.fetchRole.observe(this, Observer { result ->

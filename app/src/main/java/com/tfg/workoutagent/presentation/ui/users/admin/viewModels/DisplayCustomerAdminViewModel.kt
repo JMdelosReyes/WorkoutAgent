@@ -15,7 +15,6 @@ class DisplayCustomerAdminViewModel(private val customerId : String, private val
            val customer = manageCustomerAdminUseCase.getCustomer(customerId)
            emit(customer)
        }catch (e : Exception){
-           Log.i("Exc DisplayCusAdminVM", "${e}")
        }
    }
 

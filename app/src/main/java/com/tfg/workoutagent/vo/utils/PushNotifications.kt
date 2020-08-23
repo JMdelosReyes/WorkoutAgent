@@ -29,19 +29,13 @@ fun sendNotification(context: Context, title: String, body: String, topic: Strin
         notifcationBody.put("message", body)
         notification.put("to", topic)
         notification.put("data", notifcationBody)
-        Log.e("TAG", "try")
     } catch (e: JSONException) {
-        Log.e("TAG", "onCreate: " + e.message)
     }
 
-    Log.i("TAG", "sendNotification")
     val jsonObjectRequest = object : JsonObjectRequest(FCM_API, notification,
         Response.Listener<JSONObject> { response ->
-            Log.i("TAG", "onResponse: $response")
         },
         Response.ErrorListener {
-            Toast.makeText(context, "Request error", Toast.LENGTH_LONG).show()
-            Log.i("TAG", "onErrorResponse: Didn't work")
         }) {
 
         override fun getHeaders(): Map<String, String> {

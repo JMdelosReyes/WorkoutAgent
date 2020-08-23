@@ -77,7 +77,6 @@ class EditRoutineViewModel(
                 _routineLoaded.value = true
             }
         } catch (e: Exception) {
-            Log.i("Routine", "Fail")
         }
     }
 

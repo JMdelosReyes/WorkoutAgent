@@ -108,7 +108,6 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
                 }
                 _createdTrainer.value = true
             } catch (e: Exception) {
-                Log.i("createTrainer", e.toString())
                 _createdTrainer.value = false
             }
         }
