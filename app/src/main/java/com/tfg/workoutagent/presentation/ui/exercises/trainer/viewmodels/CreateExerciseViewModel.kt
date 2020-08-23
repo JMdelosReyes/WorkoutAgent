@@ -44,6 +44,14 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
     val exerciseCreated: LiveData<Boolean?>
         get() = _exerciseCreated
 
+    private val _showLoading = MutableLiveData<Boolean?>(null)
+    val showLoading: LiveData<Boolean?>
+        get() = _showLoading
+
+    fun loadingShowed() {
+        _showLoading.value = null
+    }
+
     fun onSubmit() {
         if (checkData()) {
             createExercise()
@@ -58,6 +66,7 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
 
     private fun createExercise() {
         viewModelScope.launch {
+            _showLoading.value = true
             try {
                 if(dataPhoto != null) {
                     val upload = ManageFilesUseCaseImpl(StorageRepositoryImpl())
@@ -65,17 +74,19 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
                         is Resource.Success -> {
                             manageExerciseUseCase.createExercise(
                                 Exercise(
-                                    title = title,
-                                    description = description,
+                                    title = title.trim(),
+                                    description = description.trim(),
                                     tags = tags,
                                     photos = photoUris.data
                                 )
                             )
                             _exerciseCreated.value = true
+                            _showLoading.value = false
                         }
                     }
                 }
             } catch (e: Exception) {
+                _showLoading.value = false
                 _exerciseCreated.value = false
             }
             _exerciseCreated.value = null
@@ -102,8 +113,8 @@ class CreateExerciseViewModel(private val manageExerciseUseCase: ManageExerciseU
 
     private fun checkDescription() {
         description.let {
-            if (it.length < 10 || it.length > 1000) {
-                _descriptionError.value = "The description must be between 10 and 1000 characters"
+            if (it.length < 10 || it.length > 20000) {
+                _descriptionError.value = "The description must be between 10 and 20000 characters"
                 return
             }
             _descriptionError.value = ""

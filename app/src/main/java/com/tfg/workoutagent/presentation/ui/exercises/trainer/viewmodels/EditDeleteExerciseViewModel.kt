@@ -100,8 +100,8 @@ class EditDeleteExerciseViewModel(
 
     private fun checkDescription() {
         description.value?.let {
-            if (it.length < 10 || it.length > 1000) {
-                _descriptionError.value = "The description must be between 10 and 1000 characters"
+            if (it.length < 10 || it.length > 20000) {
+                _descriptionError.value = "The description must be between 10 and 20000 characters"
                 return
             }
             _descriptionError.value = ""
@@ -138,8 +138,8 @@ class EditDeleteExerciseViewModel(
                             manageExerciseUseCase.editExercise(
                                 Exercise(
                                     id = exerciseId,
-                                    title = title.value!!,
-                                    description = description.value!!,
+                                    title = title.value!!.trim(),
+                                    description = description.value!!.trim(),
                                     tags = tags.value!!,
                                     photos = photoUris.data
                                 )
@@ -151,8 +151,8 @@ class EditDeleteExerciseViewModel(
                     manageExerciseUseCase.editExercise(
                         Exercise(
                             id = exerciseId,
-                            title = title.value!!,
-                            description = description.value!!,
+                            title = title.value!!.trim(),
+                            description = description.value!!.trim(),
                             tags = tags.value!!,
                             photos = photosList
                         )

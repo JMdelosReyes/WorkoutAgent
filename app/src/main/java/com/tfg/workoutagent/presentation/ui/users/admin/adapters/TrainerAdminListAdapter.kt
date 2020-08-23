@@ -32,7 +32,7 @@ class TrainerAdminListAdapter (private val context: Context) : RecyclerView.Adap
 
     inner class TrainerAdminListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bindView(trainer : Trainer){
-            if(trainer.photo == "" || trainer.photo == "DEFAULT_IMAGE"){
+            if(trainer.photo == "" || trainer.photo == "DEFAULT_IMAGE" || trainer.photo == "DEFAULT_PHOTO"){
                 Glide.with(context).load(R.drawable.ic_person_black_60dp).into(itemView.circleImageViewCustomer)
             }else{
                 Glide.with(context).load(trainer.photo).into(itemView.circleImageViewCustomer)

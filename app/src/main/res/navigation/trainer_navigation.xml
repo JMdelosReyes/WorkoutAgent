@@ -267,7 +267,11 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_displayCustomer_to_listGoalCustomerTrainerFragment"
-            app:destination="@id/listGoalCustomerTrainerFragment" />
+            app:destination="@id/listGoalCustomerTrainerFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_displayCustomer_to_displayCustomerChartFragment"
             app:destination="@id/displayCustomerChartFragment"
@@ -469,7 +473,11 @@
         tools:layout="@layout/fragment_list_goal_customer_trainer">
         <action
             android:id="@+id/action_listGoalCustomerTrainerFragment_to_displayCustomer"
-            app:destination="@id/displayCustomer" />
+            app:destination="@id/displayCustomer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <argument
             android:name="customerId"
             app:argType="string" />

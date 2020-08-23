@@ -6,6 +6,7 @@ import com.tfg.workoutagent.data.repositories.ExerciseRepository
 import com.tfg.workoutagent.models.Exercise
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.coroutines.tasks.await
+import java.util.*
 
 class ExerciseRepositoryImpl : ExerciseRepository {
 
@@ -13,12 +14,14 @@ class ExerciseRepositoryImpl : ExerciseRepository {
         val resultData = FirebaseFirestore.getInstance()
             .collection("exercises").get().await()
 
-        val exercises = mutableListOf<Exercise>()
+        var exercises = mutableListOf<Exercise>()
         for (document: QueryDocumentSnapshot in resultData) {
             val exercise = document.toObject(Exercise::class.java)
             exercise.id = document.id
             exercises.add(exercise)
         }
+
+        exercises = exercises.sortedBy { it.title.toUpperCase(Locale.ROOT) } as MutableList<Exercise>
         return Resource.Success(exercises)
     }
 
@@ -43,9 +46,10 @@ class ExerciseRepositoryImpl : ExerciseRepository {
 
     override suspend fun editExercise(exercise: Exercise): Resource<Boolean> {
         val exerciseData =
-            FirebaseFirestore.getInstance().collection("exercises").document(exercise.id).get().await()
+            FirebaseFirestore.getInstance().collection("exercises").document(exercise.id).get()
+                .await()
         val exerciseFb = exerciseData.toObject(Exercise::class.java)!!
-        if(exercise.photos.isEmpty()){
+        if (exercise.photos.isEmpty()) {
             exercise.photos = exerciseFb.photos
         }
         val data = hashMapOf(

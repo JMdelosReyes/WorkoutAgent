@@ -126,6 +126,20 @@
                     android:textColor="@color/design_default_color_error"
                     android:visibility="gone" />
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_note_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:hint="@string/add_activity_note_hint">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/activity_note_input_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@={viewModel.note}" />
+                </com.google.android.material.textfield.TextInputLayout>
+
                 <TextView
                     android:id="@+id/edit_exercise_set_error_message"
                     android:layout_width="wrap_content"
@@ -146,20 +160,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="48dp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_note_input"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="@string/add_activity_note_hint">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/activity_note_input_edit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@={viewModel.note}" />
-                </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>
 

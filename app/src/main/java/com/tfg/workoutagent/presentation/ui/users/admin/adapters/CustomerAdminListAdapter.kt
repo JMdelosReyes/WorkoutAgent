@@ -32,7 +32,7 @@ class CustomerAdminListAdapter (private val context: Context) : RecyclerView.Ada
 
     inner class CustomerAdminListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         fun bindView(customer: Customer){
-            if(customer.photo == "" || customer.photo == "DEFAULT_IMAGE"){
+            if(customer.photo == "" || customer.photo == "DEFAULT_IMAGE" || customer.photo == "DEFAULT_PHOTO"){
                 Glide.with(context).load(R.drawable.ic_person_black_60dp).into(itemView.circleImageViewCustomer)
             }else{
                 Glide.with(context).load(customer.photo).into(itemView.circleImageViewCustomer)

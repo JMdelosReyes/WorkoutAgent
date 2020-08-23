@@ -27,6 +27,7 @@ import com.tfg.workoutagent.domain.exerciseUseCases.ManageExerciseUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.EditDeleteExerciseViewModel
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.EditDeleteExerciseViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.fragment_edit_delete_exercise.*
 
 /**
@@ -86,21 +87,18 @@ class EditDeleteExerciseFragment : BaseFragment() {
                     image.maxWidth = 150
                     ll_photos.addView(image)
                     image.setOnClickListener {
-                        val builder = AlertDialog.Builder(this.context)
-                        builder.setTitle("Delete this image")
-                        builder.setMessage(getString(R.string.alert_message_delete))
-
-                        builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                            selectedPhotosUri.remove(photoUri)
-                            ll_photos.removeView(it)
-                            dialog.dismiss()
-                        }
-
-                        builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        builder.create()
-                        builder.show()
+                        createAlertDialog(
+                            context = this.context!!,
+                            title = "Delete this image",
+                            message = getString(R.string.alert_message_delete),
+                            positiveAction = {
+                                selectedPhotosUri.remove(photoUri)
+                                ll_photos.removeView(it)
+                            },
+                            negativeAction ={},
+                            positiveText = getString(R.string.answer_yes),
+                            negativeText = getString(R.string.answer_no)
+                        )
                     }
                 }
             } else if (data.data != null) {
@@ -113,21 +111,18 @@ class EditDeleteExerciseFragment : BaseFragment() {
                 image.maxWidth = 150
                 ll_photos.addView(image)
                 image.setOnClickListener {
-                    val builder = AlertDialog.Builder(this.context)
-                    builder.setTitle("Delete this image")
-                    builder.setMessage(getString(R.string.alert_message_delete))
-
-                    builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                        selectedPhotosUri.remove(data.data)
-                        ll_photos.removeView(it)
-                        dialog.dismiss()
-                    }
-
-                    builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    builder.create()
-                    builder.show()
+                    createAlertDialog(
+                        context = this.context!!,
+                        title = "Delete this image",
+                        message = getString(R.string.alert_message_delete),
+                        positiveAction = {
+                            selectedPhotosUri.remove(data.data)
+                            ll_photos.removeView(it)
+                        },
+                        negativeAction ={},
+                        positiveText = getString(R.string.answer_yes),
+                        negativeText = getString(R.string.answer_no)
+                    )
                 }
             }
         }
@@ -151,20 +146,15 @@ class EditDeleteExerciseFragment : BaseFragment() {
             )
         }
         delete_exercise_button.setOnClickListener {
-            val builder = AlertDialog.Builder(this.context)
-            builder.setTitle(getString(R.string.alert_title_delete_exercise))
-            builder.setMessage(getString(R.string.alert_message_delete))
-
-            builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                dialog.dismiss()
-                viewModel.onDelete()
-            }
-
-            builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.create()
-            builder.show()
+            createAlertDialog(
+                context = this.context!!,
+                title = getString(R.string.alert_title_delete_exercise),
+                message = getString(R.string.alert_message_delete),
+                positiveAction = {viewModel.onDelete()},
+                negativeAction ={},
+                positiveText = getString(R.string.answer_yes),
+                negativeText = getString(R.string.answer_no)
+            )
         }
     }
 
@@ -176,21 +166,18 @@ class EditDeleteExerciseFragment : BaseFragment() {
             image.maxWidth = 150
             ll_photos.addView(image)
             image.setOnClickListener {
-                val builder = AlertDialog.Builder(this.context)
-                builder.setTitle("Delete this image")
-                builder.setMessage(getString(R.string.alert_message_delete))
-                builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                    ll_photos.removeView(it)
-                    viewModel.removePhoto(photo)
-                    dialog.dismiss()
-                }
-
-                builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                    Log.i("photo", photo)
-                    dialog.dismiss()
-                }
-                builder.create()
-                builder.show()
+                createAlertDialog(
+                    context = this.context!!,
+                    title = "Delete this image",
+                    message = getString(R.string.alert_message_delete),
+                    positiveAction = {
+                        ll_photos.removeView(it)
+                        viewModel.removePhoto(photo)
+                    },
+                    negativeAction ={},
+                    positiveText = getString(R.string.answer_yes),
+                    negativeText = getString(R.string.answer_no)
+                )
             }
         }
     }

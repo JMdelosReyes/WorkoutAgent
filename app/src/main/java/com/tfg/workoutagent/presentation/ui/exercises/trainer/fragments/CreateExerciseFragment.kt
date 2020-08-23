@@ -25,6 +25,8 @@ import com.tfg.workoutagent.databinding.FragmentCreateExerciseBinding
 import com.tfg.workoutagent.domain.exerciseUseCases.ManageExerciseUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.CreateExerciseViewModel
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.CreateExerciseViewModelFactory
+import com.tfg.workoutagent.vo.LoadingDialog
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.fragment_create_exercise.*
 
 
@@ -46,7 +48,11 @@ class CreateExerciseFragment : BaseFragment() {
     }
 
     private lateinit var binding: FragmentCreateExerciseBinding
+
     private var selectedPhotosUri: MutableList<Uri?> = mutableListOf()
+
+    private val loadingDialog by lazy { LoadingDialog(this.activity!!) }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -84,7 +90,7 @@ class CreateExerciseFragment : BaseFragment() {
                 PICK_MULTI_IMAGE_CODE
             )
         }
-        if(getDarkMode()){
+        if (getDarkMode()) {
             ll_arms.setBackgroundResource(R.drawable.item_border_dark)
             ll_legs.setBackgroundResource(R.drawable.item_border_dark)
             ll_back.setBackgroundResource(R.drawable.item_border_dark)
@@ -93,7 +99,7 @@ class CreateExerciseFragment : BaseFragment() {
             ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
             ll_abs.setBackgroundResource(R.drawable.item_border_dark)
             ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
-        }else{
+        } else {
             ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
             ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
             ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
@@ -122,25 +128,20 @@ class CreateExerciseFragment : BaseFragment() {
                     image.maxWidth = 150
                     ll_photos.addView(image)
                     image.setOnClickListener {
-                        val builder = AlertDialog.Builder(this.context)
-                        builder.setTitle("Delete this image")
-                        builder.setMessage(getString(R.string.alert_message_delete))
-
-                        builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                            selectedPhotosUri.remove(photoUri)
-                            viewModel.removePhoto(photoUri)
-                            ll_photos.removeView(it)
-                            dialog.dismiss()
-                        }
-
-                        builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                            dialog.dismiss()
-                        }
-                        builder.create()
-                        builder.show()
+                        createAlertDialog(
+                            context = this.context!!,
+                            title = "Delete this image",
+                            message = getString(R.string.alert_message_delete),
+                            positiveAction = {selectedPhotosUri.remove(photoUri)
+                                viewModel.removePhoto(photoUri)
+                                ll_photos.removeView(it)},
+                            negativeAction ={},
+                            positiveText = getString(R.string.answer_yes),
+                            negativeText = getString(R.string.answer_no)
+                        )
                     }
                 }
-                selectedPhotosUri.forEach{ uri ->
+                selectedPhotosUri.forEach { uri ->
                     viewModel.photosUris.add(uri!!)
                 }
             } else if (data.data != null) {
@@ -154,23 +155,20 @@ class CreateExerciseFragment : BaseFragment() {
                 image.maxWidth = 150
                 ll_photos.addView(image)
                 image.setOnClickListener {
-                    val builder = AlertDialog.Builder(this.context)
-                    builder.setTitle("Delete this image")
-                    builder.setMessage(getString(R.string.alert_message_delete))
-
-                    builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                        viewModel.removePhoto(selectedPhotosUri[0]!!)
-                        selectedPhotosUri.remove(data.data)
-                        viewModel.dataPhoto = null
-                        ll_photos.removeView(it)
-                        dialog.dismiss()
-                    }
-
-                    builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                    builder.create()
-                    builder.show()
+                    createAlertDialog(
+                        context = this.context!!,
+                        title = "Delete this image",
+                        message = getString(R.string.alert_message_delete),
+                        positiveAction = {
+                            viewModel.removePhoto(selectedPhotosUri[0]!!)
+                            selectedPhotosUri.remove(data.data)
+                            viewModel.dataPhoto = null
+                            ll_photos.removeView(it)
+                        },
+                        negativeAction ={},
+                        positiveText = getString(R.string.answer_yes),
+                        negativeText = getString(R.string.answer_no)
+                    )
                 }
                 viewModel.addPhoto(selectedPhotosUri[0]!!)
             }
@@ -185,9 +183,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_arms.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_arms.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -199,9 +197,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_legs.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_legs.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -213,9 +211,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_back.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_back.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -227,9 +225,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_chest.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_chest.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_chest.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -241,9 +239,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_shoulder.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_shoulder.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_shoulder.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -255,9 +253,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_gluteus.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_gluteus.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -269,9 +267,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_abs.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_abs.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_abs.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -283,9 +281,9 @@ class CreateExerciseFragment : BaseFragment() {
                 ll_cardio.setBackgroundResource(R.drawable.item_border_green)
             } else {
                 viewModel.removeTag(index)
-                if(getDarkMode()){
+                if (getDarkMode()) {
                     ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
-                }else{
+                } else {
                     ll_cardio.setBackgroundResource(R.drawable.item_white_dark_border)
                 }
             }
@@ -341,6 +339,21 @@ class CreateExerciseFragment : BaseFragment() {
                     }
                     false -> Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT)
                         .show()
+                }
+            }
+        })
+
+        viewModel.showLoading.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                when (it) {
+                    true -> {
+                        this.loadingDialog.loadDialog()
+                        this.viewModel.loadingShowed()
+                    }
+                    false -> {
+                        this.loadingDialog.dismissDialog()
+                        this.viewModel.loadingShowed()
+                    }
                 }
             }
         })

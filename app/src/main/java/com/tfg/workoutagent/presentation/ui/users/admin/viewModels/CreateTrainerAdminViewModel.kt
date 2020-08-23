@@ -1,6 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.users.admin.viewModels
 
 import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.*
 import com.tfg.workoutagent.data.repositoriesImpl.StorageRepositoryImpl
 import com.tfg.workoutagent.domain.storageUseCases.ManageFilesUseCaseImpl
@@ -91,22 +92,23 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
                     when(val photoUri = upl.uploadPhotoUser(dataPhoto!!)){
                         is Resource.Success -> {
                             photo = photoUri.data
-                            val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni.toUpperCase(), email = email, name = name, surname = surname, photo = photo, phone = phone)
+                            val trainer = Trainer(birthday = parseStringToDateBar(birthday.value)!!, dni = dni.toUpperCase(), email = email, name = name, surname = surname, photo = photo, phone = phone)
                             manageTrainerAdminUseCase.createTrainer(trainer)
                         }
                         else -> {
                             photo = "DEFAULT_IMAGE"
-                            val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni.toUpperCase(), email = email, name = name, surname = surname, photo = photo, phone = phone)
+                            val trainer = Trainer(birthday = parseStringToDateBar(birthday.value)!!, dni = dni.toUpperCase(), email = email, name = name, surname = surname, photo = photo, phone = phone)
                             manageTrainerAdminUseCase.createTrainer(trainer)
                         }
                     }
                 }else{
                     photo = "DEFAULT_IMAGE"
-                    val trainer = Trainer(birthday = parseStringToDate(birthday.value)!!, dni = dni.toUpperCase(), email = email, name = name, surname = surname, photo = photo, phone = phone)
+                    val trainer = Trainer(birthday = parseStringToDateBar(birthday.value)!!, dni = dni.toUpperCase(), email = email, name = name, surname = surname, photo = photo, phone = phone)
                     manageTrainerAdminUseCase.createTrainer(trainer)
                 }
                 _createdTrainer.value = true
             } catch (e: Exception) {
+                Log.i("createTrainer", e.toString())
                 _createdTrainer.value = false
             }
         }

@@ -20,6 +20,7 @@ import com.tfg.workoutagent.presentation.ui.routines.customer.adapters.TodayActi
 import com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.TodayActivitiesCustomerViewModel
 import com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.TodayActivitiesCustomerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.fragment_today_activities_customer.*
 
 class TodayActivitiesCustomerFragment : BaseFragment() {
@@ -62,20 +63,15 @@ class TodayActivitiesCustomerFragment : BaseFragment() {
 
     fun setupUI(){
         finish_this_day_button.setOnClickListener {
-            val builder = AlertDialog.Builder(this.context)
-            builder.setTitle("Finish this day")
-            builder.setMessage("If you finish this day, activities and its values cannot be edited. Are you sure?")
-
-            builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                this.viewModel.finishDay()
-                dialog.dismiss()
-            }
-
-            builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.create()
-            builder.show()
+            createAlertDialog(
+                context = this.context!!,
+                title = "Finish this day",
+                message = "If you finish this day, activities and its values cannot be edited. Are you sure?",
+                positiveAction = {this.viewModel.finishDay()},
+                negativeAction ={},
+                positiveText = getString(R.string.answer_yes),
+                negativeText = getString(R.string.answer_no)
+            )
         }
     }
 

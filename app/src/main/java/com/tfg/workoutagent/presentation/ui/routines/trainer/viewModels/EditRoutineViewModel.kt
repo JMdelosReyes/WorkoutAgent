@@ -24,6 +24,10 @@ class EditRoutineViewModel(
     val titleError: LiveData<String>
         get() = _titleError
 
+    val current = MutableLiveData<Boolean?>(null)
+    val _current: LiveData<Boolean?>
+        get() = _current
+
     val startDate = MutableLiveData("")
     private val _startDateError = MutableLiveData("")
     val startDateError: LiveData<String>
@@ -172,6 +176,7 @@ class EditRoutineViewModel(
         val pattern = "dd/MM/yyyy"
         val simpleDateFormat = SimpleDateFormat(pattern)
         val date = simpleDateFormat.format(routine.data.startDate)
+        current.postValue(routine.data.current)
         startDate.postValue(date)
         days.postValue(routine.data.days)
     }
@@ -261,6 +266,7 @@ class EditRoutineViewModel(
                         id = routineId,
                         title = title.value.toString(),
                         days = days.value!!,
+                        current = current.value!!,
                         customer = customerAssigned
                     )
                 )

@@ -118,7 +118,11 @@ class TodayActivitiesCustomerViewModel(private val manageRoutineCustomerUseCase:
         updateDay(_executedDay.value!!)
     }
     fun finishDay(){
-        this._executedDay.value?.activities?.forEach {
+        val activities = this._executedDay.value?.activities!!
+        for (it in activities){
+            if(it.completed){
+                continue
+            }
             it.completed = true
             if(it.repetitionsCustomer.isEmpty()){
                 it.repetitionsCustomer.addAll(it.repetitions)

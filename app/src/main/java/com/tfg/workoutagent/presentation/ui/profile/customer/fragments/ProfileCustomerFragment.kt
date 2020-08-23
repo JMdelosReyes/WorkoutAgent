@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.CustomerActivity
 import com.tfg.workoutagent.PROFILE_CUSTOMER_FRAGMENT
@@ -96,7 +97,7 @@ class ProfileCustomerFragment : Fragment() {
         }
 
         settings_image_profile_customer.setOnClickListener {
-            val dialogBuilder = AlertDialog.Builder(context!!)
+            val dialogBuilder = MaterialAlertDialogBuilder(context!!)
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
             val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)
@@ -120,8 +121,11 @@ class ProfileCustomerFragment : Fragment() {
         viewModel.getProfileCustomer.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Success -> {
-                    Glide.with(this).load(it.data.photo)
-                        .into(circleImageViewCustomer_displayProfile)
+                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE" || it.data.photo == "DEFAULT_PHOTO"){
+                        Glide.with(this).load(R.drawable.ic_person_black_60dp).into(circleImageViewCustomer_displayProfile)
+                    }else{
+                        Glide.with(this).load(it.data.photo).into(circleImageViewCustomer_displayProfile)
+                    }
                     display_customer_button_routines.setOnClickListener { _ ->
                         findNavController().navigate(
                             ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToListHistoricRoutinesCustomerFragment(it.data.id, it.data.name)
@@ -131,8 +135,9 @@ class ProfileCustomerFragment : Fragment() {
                     display_customer_email_displayProfile.text = it.data.email
                     display_customer_phone_displayProfile.text = it.data.phone
                     display_customer_height_displayProfile.text = it.data.height.toString() + " cm"
+
                     display_customer_weight_displayProfile.text =
-                        it.data.weights[0].weight.toString() + " kg"
+                        it.data.weights[it.data.weights.lastIndex].weight.toString() + " kg"
                     display_customer_birthday_displayProfile.text =
                         parseDateToFriendlyDate(it.data.birthday)
                     display_customer_dni_displayProfile.text = it.data.dni
@@ -189,7 +194,7 @@ class ProfileCustomerFragment : Fragment() {
     }
 
     private fun setupWeightDialog() {
-        val builder = AlertDialog.Builder(requireContext(), R.style.WeightDialog)
+        val builder = MaterialAlertDialogBuilder(requireContext(), R.style.WeightDialog)
         val dialogView = this.layoutInflater.inflate(R.layout.weight_dialog, null)
         builder.setView(dialogView)
         this.weightDialog = builder.create()

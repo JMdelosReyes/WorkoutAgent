@@ -11,6 +11,7 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         app:civ_border_width="1dp"
+        app:civ_border_color="#FFB3B2B2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,17 +109,17 @@
 
     <Button
         android:id="@+id/sign_out_button_admin"
-        android:layout_width="match_parent"
+        android:layout_width="313dp"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimaryDark"
         android:drawableLeft="@drawable/ic_logout_white_48dp"
         android:text="@string/sign_out"
         android:textSize="32sp"
-        android:layout_marginHorizontal="52dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/card_view"
-        app:layout_constraintVertical_bias="0.679" />
+        app:layout_constraintTop_toBottomOf="@id/card_view"
+        app:layout_constraintVertical_bias="0.051" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

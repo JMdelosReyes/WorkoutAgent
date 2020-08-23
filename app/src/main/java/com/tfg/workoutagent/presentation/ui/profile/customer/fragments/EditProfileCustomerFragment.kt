@@ -28,6 +28,7 @@ import com.tfg.workoutagent.presentation.ui.login.activities.GoogleSignInActivit
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.EditProfileCustomerViewModel
 import com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.EditProfileCustomerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.createAlertDialog
 import kotlinx.android.synthetic.main.fragment_edit_profile_customer.*
 import java.util.*
 
@@ -63,21 +64,16 @@ class EditProfileCustomerFragment : Fragment() {
         observeErrors()
     }
     private fun setupUI(){
-        edit_profile_customer_button_select_image_customer.visibility = View.GONE
-        delete_customer_button.setOnClickListener {  val builder = AlertDialog.Builder(this.context)
-            builder.setTitle(getString(R.string.alert_title_delete_profile))
-            builder.setMessage(getString(R.string.alert_message_delete))
-
-            builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                findNavController().navigate(EditProfileCustomerFragmentDirections.actionEditProfileCustomerFragmentToDeleteProfileSendEmailCustomerFragment(customerId))
-                dialog.dismiss()
-            }
-
-            builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.create()
-            builder.show()
+        delete_customer_button.setOnClickListener {
+            createAlertDialog(
+                context = this.context!!,
+                title = getString(R.string.alert_title_delete_profile),
+                message = getString(R.string.alert_message_delete),
+                positiveAction = { findNavController().navigate(EditProfileCustomerFragmentDirections.actionEditProfileCustomerFragmentToDeleteProfileSendEmailCustomerFragment(customerId)) },
+                negativeAction ={},
+                positiveText = getString(R.string.answer_yes),
+                negativeText = getString(R.string.answer_no)
+            )
         }
     }
 
@@ -121,11 +117,18 @@ class EditProfileCustomerFragment : Fragment() {
                     //TODO: hideProgress()
                     setupButtons(it.data.birthday)
                     customerId = it.data.id
-                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE"){
+                    if(it.data.photo != "" || it.data.photo != "DEFAULT_IMAGE" || it.data.photo != "DEFAULT_PHOTO"){
                         edit_profile_customer_button_select_image_customer.visibility = View.GONE
                         edit_profile_customer_image_selected.visibility = View.VISIBLE
                         Glide.with(this).load(it.data.photo).into(edit_profile_customer_image_selected)
                         edit_profile_customer_image_selected.setOnClickListener {
+                            val intent = Intent()
+                            intent.type = "image/*"
+                            intent.action = Intent.ACTION_GET_CONTENT
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_CODE)
+                        }
+                    }else{
+                        edit_profile_customer_button_select_image_customer.setOnClickListener {
                             val intent = Intent()
                             intent.type = "image/*"
                             intent.action = Intent.ACTION_GET_CONTENT

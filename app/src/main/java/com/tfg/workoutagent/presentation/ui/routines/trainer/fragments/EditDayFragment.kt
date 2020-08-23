@@ -68,8 +68,8 @@ class EditDayFragment : Fragment() {
         }, { routineActivity: RoutineActivity ->
             createAlertDialog(
                 requireContext(),
-                "Delete day",
-                "Are you sure you want to delete this day?",
+                "Delete activity",
+                "Are you sure you want to delete this activity?",
                 {
                     viewModel.removeActivity(routineActivity)
                 },
@@ -172,15 +172,6 @@ class EditDayFragment : Fragment() {
 
         add_day_activity_button.setOnClickListener {
             findNavController().navigate(EditDayFragmentDirections.actionEditDayFragmentToAddActivityFragment())
-        }
-
-        cancel_create_day_button.setOnClickListener {
-            viewModel.onCancelEditDay()
-            findNavController().navigate(
-                EditDayFragmentDirections.actionEditDayFragmentToCreateRoutine(
-                    clearData = 2
-                )
-            )
         }
     }
 }

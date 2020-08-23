@@ -21,10 +21,10 @@ class LoginRepositoryImpl : LoginRepository {
             .limit(1)
             .get()
             .await()
-        if (result.documents[0] != null) {
-            return Resource.Success(result.documents[0].getString("role")!!)
-        } else {
-            return Resource.Success("NO_ACCOUNT")
+        return if(result.isEmpty){
+            Resource.Success("NO_ACCOUNT")
+        }else{
+            Resource.Success(result.documents[0].getString("role")!!)
         }
     }
 
@@ -38,14 +38,36 @@ class LoginRepositoryImpl : LoginRepository {
         val resultData = FirebaseFirestore.getInstance()
             .collection("users")
             .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
-            .get().await().documents[0]
+            .get().await()
+        if(!resultData.isEmpty){
+            val data: HashMap<String, Any?> = hashMapOf("token" to token)
+            FirebaseFirestore.getInstance().collection("users").document(resultData.documents[0].id).update(data)
+                .await()
+            return Resource.Success(token)
+        }else{
+            return Resource.Failure(Exception("ERROR / NO USER"))
+        }
 
-        val data: HashMap<String, Any?> = hashMapOf("token" to token)
-        FirebaseFirestore.getInstance().collection("users").document(resultData.id).update(data)
-            .await()
-        return Resource.Success(token)
     }
 
+    override suspend fun getTrainerByCustomerId(): Resource<Trainer> {
+        val resultDataCustomer = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("email", FirebaseAuth.getInstance().currentUser!!.email)
+            .get().await().documents[0].reference
+
+        val resultData = FirebaseFirestore.getInstance()
+            .collection("users")
+            .whereEqualTo("role", "TRAINER")
+            .whereArrayContains("customers", resultDataCustomer)
+            .get().await()
+        if(resultData.isEmpty){
+            return Resource.Success(Trainer())
+        }else{
+            return Resource.Success(Trainer(id = resultData.first().id))
+        }
+    }
+    /*
     override suspend fun getTrainerByCustomerId(): Resource<Trainer> {
         val resultData = FirebaseFirestore.getInstance()
             .collection("users")
@@ -89,6 +111,8 @@ class LoginRepositoryImpl : LoginRepository {
             Resource.Failure(Exception("There's no trainer associated to you"))
         }
     }
+
+     */
 
     override suspend fun getLoggedUserTrainer(): Resource<Trainer> {
         val resultData = FirebaseFirestore.getInstance()

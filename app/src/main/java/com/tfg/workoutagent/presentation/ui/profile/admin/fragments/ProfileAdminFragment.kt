@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.tfg.workoutagent.AdminActivity
 import com.tfg.workoutagent.PROFILE_ADMIN_FRAGMENT
@@ -27,6 +28,7 @@ import com.tfg.workoutagent.presentation.ui.login.activities.PREFERENCE_FILE_KEY
 import com.tfg.workoutagent.presentation.ui.profile.admin.viewModels.ProfileAdminViewModel
 import com.tfg.workoutagent.presentation.ui.profile.admin.viewModels.ProfileAdminViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.createAlertDialog
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_admin_profile.*
@@ -67,7 +69,7 @@ class ProfileAdminFragment : Fragment() {
     private fun setupUI() {
         sign_out_button_admin.setOnClickListener { signOut2() }
         settings_image_profile_admin.setOnClickListener {
-            val dialogBuilder = AlertDialog.Builder(context!!)
+            val dialogBuilder = MaterialAlertDialogBuilder(context!!)
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
             val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)

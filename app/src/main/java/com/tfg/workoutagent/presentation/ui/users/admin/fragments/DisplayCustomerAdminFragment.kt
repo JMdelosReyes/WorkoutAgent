@@ -20,6 +20,7 @@ import com.tfg.workoutagent.domain.userUseCases.ManageTrainerAdminUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.DisplayCustomerAdminViewModel
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.DisplayCustomerAdminViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.createAlertDialog
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.fragment_display_customer_admin.*
 import kotlinx.android.synthetic.main.fragment_display_customer_trainer.*
@@ -63,7 +64,7 @@ class DisplayCustomerAdminFragment : Fragment() {
                     }
                     display_customer_height_admin.text = it.data.height.toString() + " cm"
                     display_customer_weight_admin.text = it.data.weights[it.data.weights.lastIndex].weight.toString() + " kg"
-                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE"){
+                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE" || it.data.photo == "DEFAULT_PHOTO"){
                         Glide.with(this).load(R.drawable.ic_person_black_60dp).into(circleImageViewCustomer_admin)
                     }else{
                         Glide.with(this).load(it.data.photo).into(circleImageViewCustomer_admin)
@@ -89,20 +90,15 @@ class DisplayCustomerAdminFragment : Fragment() {
     }
     private fun setupUI(){
         display_customer_button_delete_admin.setOnClickListener {
-            val builder = AlertDialog.Builder(this.context)
-            builder.setTitle(getString(R.string.alert_title_delete_user))
-            builder.setMessage(getString(R.string.alert_message_delete))
-
-            builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                dialog.dismiss()
-                viewModel.onDelete()
-            }
-
-            builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.create()
-            builder.show()
+            createAlertDialog(
+                context = this.context!!,
+                title = getString(R.string.alert_title_delete_profile),
+                message = getString(R.string.alert_message_delete),
+                positiveAction = { viewModel.onDelete() },
+                negativeAction ={},
+                positiveText = getString(R.string.answer_yes),
+                negativeText = getString(R.string.answer_no)
+            )
         }
     }
 }

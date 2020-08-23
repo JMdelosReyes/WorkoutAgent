@@ -104,12 +104,12 @@ class ListGoalCustomerFragment : Fragment() {
 
                     builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
                         viewModel.removeGoal(viewHolder.adapterPosition)
-                        adapterGoals.notifyItemRemoved(viewHolder.layoutPosition)
+                        adapterGoals.removeElement(viewHolder.adapterPosition)
                         dialog.dismiss()
                     }
 
                     builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                        adapterGoals.notifyItemChanged(viewHolder.adapterPosition)
+                        adapterGoals.notifyItemRemoved(viewHolder.adapterPosition)
                         dialog.dismiss()
                     }
                     builder.create()

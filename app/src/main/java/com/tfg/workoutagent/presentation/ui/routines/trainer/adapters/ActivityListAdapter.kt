@@ -69,6 +69,7 @@ class ActivityListAdapter(
                     )
                     this.layoutParams = params
                     this.typeface = Typeface.DEFAULT_BOLD
+                    this.maxLines = 1
                     this.text = valor.toString()
                 }
                 val weightView = TextView(context).apply {
@@ -82,6 +83,7 @@ class ActivityListAdapter(
                     if (weight.split(".")[1] == "0") {
                         weight = weight.split(".")[0]
                     }
+                    this.maxLines = 1
                     this.text = weight
                 }
                 val relativeLayout = RelativeLayout(context).apply {

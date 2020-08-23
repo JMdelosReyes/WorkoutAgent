@@ -262,4 +262,5 @@
     <string name="goals">Goals</string>
     <string name="charts">Charts</string>
     <string name="close">Close</string>
+    <string name="loading_dialog">Loading...</string>
 </resources>

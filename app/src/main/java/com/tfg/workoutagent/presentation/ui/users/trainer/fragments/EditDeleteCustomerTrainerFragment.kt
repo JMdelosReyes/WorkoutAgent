@@ -25,6 +25,7 @@ import com.tfg.workoutagent.domain.userUseCases.ManageCustomerTrainerUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.EditDeleteCustomerTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.EditDeleteCustomerTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
+import com.tfg.workoutagent.vo.createAlertDialog
 import com.tfg.workoutagent.vo.utils.sendNotification
 import kotlinx.android.synthetic.main.fragment_edit_delete_customer_trainer.*
 import kotlinx.android.synthetic.main.fragment_edit_delete_customer_trainer.delete_customer_button
@@ -75,21 +76,18 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
         }
 
         delete_customer_button.setOnClickListener {
-            val builder = AlertDialog.Builder(this.context)
-            builder.setTitle(getString(R.string.alert_title_delete_user))
-            builder.setMessage(getString(R.string.alert_message_delete))
-
-            builder.setPositiveButton(getString(R.string.answer_yes)) { dialog, _ ->
-                dialog.dismiss()
-                sendNotification(this.context!!, "${viewModel.name} account has been deleted", "His/her trainer decided to remove this account", "/topics/admin")
-                viewModel.onDelete()
-            }
-
-            builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                dialog.dismiss()
-            }
-            builder.create()
-            builder.show()
+            createAlertDialog(
+                context = this.context!!,
+                title = getString(R.string.alert_title_delete_profile),
+                message = getString(R.string.alert_message_delete),
+                positiveAction = {
+                    sendNotification(this.context!!, "${viewModel.name} account has been deleted", "His/her trainer decided to remove this account", "/topics/admin")
+                    viewModel.onDelete()
+                },
+                negativeAction ={},
+                positiveText = getString(R.string.answer_yes),
+                negativeText = getString(R.string.answer_no)
+            )
         }
     }
 
@@ -176,7 +174,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
                 is Resource.Success -> {
                     //TODO: hideProgress()
                     setupButtons(it.data.birthday)
-                    if(it.data.photo != "" && it.data.photo != "DEFAULT_IMAGE"){
+                    if(it.data.photo != "" && it.data.photo != "DEFAULT_IMAGE" && it.data.photo != "DEFAULT_PHOTO"){
                         edit_profile_customer_button_select_image_customer.visibility = View.GONE
                         image_selected.visibility = View.VISIBLE
                         Glide.with(this).load(it.data.photo).into(image_selected)

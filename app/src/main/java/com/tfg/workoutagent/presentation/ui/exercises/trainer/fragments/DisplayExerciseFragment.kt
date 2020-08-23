@@ -88,8 +88,8 @@ class DisplayExerciseFragment : Fragment() {
         } else {
             for (photo in items) {
                 val image = ImageView(this.context)
-                image.maxHeight = 1000
-                image.maxWidth = 1000
+                image.maxHeight = 500
+                image.maxHeight = 500
                 image.adjustViewBounds = true
                 Glide.with(this).load(photo).into(image)
                 ll_photos.addView(image)
