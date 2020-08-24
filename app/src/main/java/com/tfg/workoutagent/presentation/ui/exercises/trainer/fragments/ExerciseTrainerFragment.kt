@@ -1,9 +1,7 @@
 package com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -19,6 +17,7 @@ import com.tfg.workoutagent.models.Exercise
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.adapters.ExerciseListAdapter
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.ListExerciseViewModel
 import com.tfg.workoutagent.presentation.ui.exercises.trainer.viewmodels.ListExerciseViewModelFactory
+import com.tfg.workoutagent.vo.CustomDivider
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_trainer_exercise.*
 
@@ -140,6 +139,10 @@ class ExerciseTrainerFragment : Fragment() {
         adapter = ExerciseListAdapter(this.context!!)
         recyclerView.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView.adapter = adapter
+        recyclerView.addItemDecoration(
+            CustomDivider(requireContext(), 160, 0)
+        )
+
         observeData()
         this.viewModel.reloadExercises()
     }

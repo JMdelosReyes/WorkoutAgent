@@ -1,26 +1,22 @@
 package com.tfg.workoutagent.presentation.ui.users.trainer.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.TrainerActivity
 import com.tfg.workoutagent.data.repositoriesImpl.UserRepositoryImpl
 import com.tfg.workoutagent.domain.userUseCases.ListCustomerUseCaseImpl
 import com.tfg.workoutagent.models.Customer
-import com.tfg.workoutagent.models.Exercise
 import com.tfg.workoutagent.presentation.ui.users.trainer.adapters.CustomerListAdapter
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.ListCustomerViewModel
 import com.tfg.workoutagent.presentation.ui.users.trainer.viewModels.ListCustomerViewModelFactory
+import com.tfg.workoutagent.vo.CustomDivider
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_trainer_user.*
 
@@ -30,7 +26,7 @@ class UserTrainerFragment : Fragment() {
     private lateinit var completeCustomerList: MutableList<Customer>
     private val viewModel by lazy {
         ViewModelProvider(
-            this,ListCustomerViewModelFactory(
+            this, ListCustomerViewModelFactory(
                 ListCustomerUseCaseImpl(UserRepositoryImpl())
             )
         ).get(ListCustomerViewModel::class.java)
@@ -52,25 +48,22 @@ class UserTrainerFragment : Fragment() {
         recyclerView_customer_trainer.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_customer_trainer.adapter = adapter
         recyclerView_customer_trainer.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
+            CustomDivider(requireContext(), 210, 0)
         )
 
         observeData()
     }
 
-    private fun observeData(){
+    private fun observeData() {
         viewModel.customerList.observe(viewLifecycleOwner, Observer { result ->
-            when(result){
+            when (result) {
                 is Resource.Loading -> {
                     sfl_rv_customer_trainer.startShimmer()
                 }
                 is Resource.Success -> {
                     sfl_rv_customer_trainer.visibility = View.GONE
                     sfl_rv_customer_trainer.stopShimmer()
-                    if(result.data.size == 0){
+                    if (result.data.size == 0) {
                         //TODO: Mensaje tipo "You don't have any customers yet"
                     }
                     viewModel.filteredCustomerList = result.data
@@ -87,8 +80,8 @@ class UserTrainerFragment : Fragment() {
         })
     }
 
-    private fun setupUI(){
-        fab_add_customer.setOnClickListener{
+    private fun setupUI() {
+        fab_add_customer.setOnClickListener {
             findNavController().navigate(
                 UserTrainerFragmentDirections.actionNavigationUsersTrainerToCreateCustomerTrainerFragment2()
             )
@@ -106,7 +99,8 @@ class UserTrainerFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         menu.clear()
         inflater?.inflate(R.menu.search_menu, menu)
-        val searchView = SearchView((context as TrainerActivity).supportActionBar?.themedContext ?: context)
+        val searchView =
+            SearchView((context as TrainerActivity).supportActionBar?.themedContext ?: context)
         menu.findItem(R.id.search).apply {
             setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW or MenuItem.SHOW_AS_ACTION_IF_ROOM)
             actionView = searchView
@@ -115,14 +109,18 @@ class UserTrainerFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 val lowerText = query.toLowerCase()
-                if(lowerText == ""){
+                if (lowerText == "") {
                     viewModel.filteredCustomerList = completeCustomerList
                     adapter.setListData(viewModel.filteredCustomerList)
                     adapter.notifyDataSetChanged()
-                }else{
+                } else {
                     val list = mutableListOf<Customer>()
-                    for(customer in completeCustomerList){
-                        if(customer.email.toLowerCase().contains(lowerText) || customer.name.toLowerCase().contains(lowerText) || customer.surname.toLowerCase().contains(lowerText)){
+                    for (customer in completeCustomerList) {
+                        if (customer.email.toLowerCase()
+                                .contains(lowerText) || customer.name.toLowerCase()
+                                .contains(lowerText) || customer.surname.toLowerCase()
+                                .contains(lowerText)
+                        ) {
                             list.add(customer)
                         }
                     }
@@ -135,14 +133,18 @@ class UserTrainerFragment : Fragment() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 val lowerText = newText.toLowerCase()
-                if(lowerText == ""){
+                if (lowerText == "") {
                     viewModel.filteredCustomerList = completeCustomerList
                     adapter.setListData(viewModel.filteredCustomerList)
                     adapter.notifyDataSetChanged()
-                }else{
+                } else {
                     val list = mutableListOf<Customer>()
-                    for(customer in completeCustomerList){
-                        if(customer.email.toLowerCase().contains(lowerText) || customer.name.toLowerCase().contains(lowerText) || customer.surname.toLowerCase().contains(lowerText)){
+                    for (customer in completeCustomerList) {
+                        if (customer.email.toLowerCase()
+                                .contains(lowerText) || customer.name.toLowerCase()
+                                .contains(lowerText) || customer.surname.toLowerCase()
+                                .contains(lowerText)
+                        ) {
                             list.add(customer)
                         }
                     }
