@@ -10,6 +10,7 @@
         android:id="@+id/circleImageViewAdmin_displayProfile"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:layout_marginVertical="20dp"
         app:civ_border_width="1dp"
         app:civ_border_color="#FFB3B2B2"
         app:layout_constraintEnd_toEndOf="parent"
