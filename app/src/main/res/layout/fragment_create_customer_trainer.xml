@@ -26,23 +26,27 @@
                 android:layout_marginTop="80dp"
                 android:contentDescription="@string/form_user_content_desc_photo"
                 android:src="@drawable/ic_add_a_photo_white_24dp"
+                app:layout_constraintBottom_toTopOf="@+id/customer_email_input"
                 app:layout_constraintEnd_toStartOf="@+id/linearLayout"
-                app:layout_constraintHorizontal_bias="0.422"
+                app:layout_constraintHorizontal_bias="0.546"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.025" />
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_selected"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="64dp"
-                app:civ_border_width="1dp"
                 app:civ_border_color="#FFB3B2B2"
+                app:civ_border_width="1dp"
                 app:layout_constraintBottom_toTopOf="@+id/customer_email_input"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.069"
+                app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+                app:layout_constraintHorizontal_bias="0.532"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.105" />
+
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="220dp"
