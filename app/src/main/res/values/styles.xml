@@ -1,12 +1,23 @@
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@style/ActivityAnimations</item>
+    </style>
+
+    <style name="Widget.AcmeDroid.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">@color/colorToolbar</item>
+        <item name="android:theme">@style/AppTheme</item>
+        <item name="titleTextColor">@color/colorTextToolbar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.DayNight</item>
+        <item name="titleTextAppearance">@style/TextAppearance.AcmeDroid.Toolbar</item>
+    </style>
+
+    <style name="TextAppearance.AcmeDroid.Toolbar" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="ActivityAnimations" parent="@android:style/Animation.Activity">
@@ -16,7 +27,7 @@
         <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
     </style>
 
-    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="AppTheme.FullScreenDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -30,9 +41,30 @@
         <item name="android:windowExitAnimation">@anim/slide_down</item>
     </style>
 
-    <style name="WeightDialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="WeightDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
         <item name="windowMinWidthMajor">0dp</item>
         <item name="windowMinWidthMinor">0dp</item>
+    </style>
+
+    <style name="WorkoutAgentActionButton" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/colorTextFab</item>
+        <item name="backgroundTint">@color/colorFab</item>
+    </style>
+
+    <style name="WorkoutAgentButton" parent="@style/Widget.MaterialComponents.Button">
+        <item name="tint">@color/colorIconButton</item>
+        <item name="android:textColor">@color/colorTextButton</item>
+        <item name="backgroundTint">@color/colorButton</item>
+    </style>
+
+    <style name="WorkoutAgentButtonDark" parent="@style/Widget.MaterialComponents.Button">
+        <item name="tint">@color/colorIconButtonDark</item>
+        <item name="android:textColor">@color/colorTextButtonDark</item>
+        <item name="backgroundTint">@color/colorButtonDark</item>
+    </style>
+
+    <style name="WorkoutAgentCardProfile" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/colorCardViewProfile</item>
     </style>
 
 </resources>

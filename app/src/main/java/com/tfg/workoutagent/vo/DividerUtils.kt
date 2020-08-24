@@ -43,7 +43,6 @@ class CustomDivider : ItemDecoration {
             divider!!.setBounds(left, top, right, bottom)
             divider!!.draw(c)
         }
-        super.onDraw(c, parent, state)
     }
 
     companion object {
