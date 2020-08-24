@@ -34,6 +34,12 @@
     <color name="colorCardViewProfile">#58a5f0</color>
     <color name="colorTextCardViewProfile">#fff</color>
 
+    <!-- App Background -->
+    <color name="appBackgroundColor">#fff</color>
+
+    <!-- Bottom Navigation -->
+    <color name="bottomNavColor">#fff</color>
+
     <color name="grey_darkMode">#5E5E5E</color>
     <color name="black_darkMode">#3d3d3d</color>
 

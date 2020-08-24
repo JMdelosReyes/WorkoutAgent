@@ -1,6 +1,7 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/appBackgroundColor</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -65,6 +66,10 @@
 
     <style name="WorkoutAgentCardProfile" parent="@style/Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/colorCardViewProfile</item>
+    </style>
+
+    <style name="WorkoutAgentBottomNavigation" parent="@style/Widget.MaterialComponents.BottomNavigationView">
+        <item name="backgroundTint">@color/bottomNavColor</item>
     </style>
 
 </resources>
