@@ -43,11 +43,11 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_view"
+        style="@style/WorkoutAgentCardProfile"
         android:layout_width="314dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="72dp"
-        app:cardBackgroundColor="#FF008577"
         app:cardCornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
