@@ -84,8 +84,18 @@ class EditDeleteCustomerTrainerViewModel(private val id: String, private val man
     }
 
     fun onSave() {
-        if(checkData()){
-            editCustomer()
+        viewModelScope.launch {
+            if(checkData()){
+                try{
+                    if(checkExistingMail(email.value!!)){
+                        _emailError.value = "This mail is already used"
+                    }else{
+                        editCustomer()
+                    }
+                }catch (e: Exception) {
+                    _emailError.value = "Try with other email"
+                }
+            }
         }
     }
 

@@ -78,8 +78,18 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
     val pickerDate = MutableLiveData<Date>(Date())
 
     fun onSubmit() {
-        if(checkData()){
-            uploadImage()
+        viewModelScope.launch {
+            if(checkData()){
+                try{
+                    if(checkExistingMail(email)){
+                        _emailError.value = "This mail is already used"
+                    }else{
+                        uploadImage()
+                    }
+                }catch (e: Exception) {
+                    _emailError.value = "Try with other email"
+                }
+            }
         }
     }
 
@@ -131,17 +141,6 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         _birthdayError.value = com.tfg.workoutagent.vo.utils.checkBirthday(birthday.value)
         _dniError.value = com.tfg.workoutagent.vo.utils.checkDni(dni.toUpperCase())
         checkEmail()
-        if(_emailError.value.equals("")){
-            viewModelScope.launch {
-                try{
-                    if(checkExistingMail(email)){
-                        _emailError.value = "This mail is already used"
-                    }
-                }catch (e: Exception) {
-                    _emailError.value = "Try with other email"
-                }
-            }
-        }
         checkName()
         checkSurname()
         checkGender()
@@ -151,6 +150,7 @@ class CreateCustomerTrainerViewModel(private val manageCustomerTrainerUseCase: M
         checkInitialWeight()
         return _birthdayError.value == "" && _dniError.value == "" && _emailError.value == "" && _nameError.value == "" && _surnameError.value == "" && _photoError.value == "" && _heightError.value == "" && _initialWeightError.value == "" && _phoneError.value == ""
     }
+
 
 
     private fun checkGender(){
