@@ -30,6 +30,11 @@
     <color name="colorIconButtonDark">#fff</color>
     <color name="colorTextButtonDark">#fff</color>
 
+    <!-- Delete button -->
+    <color name="colorDeleteButton">#ec407a</color>
+    <color name="colorIconDeleteButton">#fff</color>
+    <color name="colorTextDeleteButton">#fff</color>
+
     <!-- CardView Profile -->
     <color name="colorCardViewProfile">#58a5f0</color>
     <color name="colorTextCardViewProfile">#fff</color>
@@ -39,6 +44,10 @@
 
     <!-- Bottom Navigation -->
     <color name="bottomNavColor">#fff</color>
+
+    <!-- Tabs -->
+    <color name="colorBackgroundTab">#fff</color>
+    <color name="colorTextSelectedTab">@color/colorPrimary</color>
 
     <color name="grey_darkMode">#5E5E5E</color>
     <color name="black_darkMode">#3d3d3d</color>

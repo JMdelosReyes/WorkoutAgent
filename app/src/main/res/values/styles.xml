@@ -4,6 +4,7 @@
         <item name="android:windowBackground">@color/appBackgroundColor</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorControlNormal">@color/colorTextToolbar</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowAnimationStyle">@style/ActivityAnimations</item>
     </style>
@@ -64,12 +65,24 @@
         <item name="backgroundTint">@color/colorButtonDark</item>
     </style>
 
+    <style name="WorkoutAgentDeleteButton" parent="@style/Widget.MaterialComponents.Button">
+        <item name="tint">@color/colorIconDeleteButton</item>
+        <item name="android:textColor">@color/colorTextDeleteButton</item>
+        <item name="backgroundTint">@color/colorDeleteButton</item>
+    </style>
+
     <style name="WorkoutAgentCardProfile" parent="@style/Widget.MaterialComponents.CardView">
         <item name="cardBackgroundColor">@color/colorCardViewProfile</item>
     </style>
 
     <style name="WorkoutAgentBottomNavigation" parent="@style/Widget.MaterialComponents.BottomNavigationView">
         <item name="backgroundTint">@color/bottomNavColor</item>
+    </style>
+
+    <style name="WorkoutAgentTab" parent="@style/Widget.MaterialComponents.TabLayout">
+        <item name="tabBackground">@color/colorBackgroundTab</item>
+        <item name="tabSelectedTextColor">@color/colorTextSelectedTab</item>
+        <item name="tabIndicatorColor">@color/colorTextSelectedTab</item>
     </style>
 
 </resources>
