@@ -1,17 +1,16 @@
 package com.tfg.workoutagent.presentation.ui.goals.customer.fragments
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import com.google.android.material.datepicker.MaterialDatePicker
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.GoalRepositoryImpl
 import com.tfg.workoutagent.databinding.FragmentCreateGoalCustomerBinding
@@ -103,7 +102,7 @@ class CreateGoalCustomerFragment : Fragment() {
             it?.let {
                 when (it) {
                     true -> {
-                        Toast.makeText(context, "Goal created successfully", Toast.LENGTH_SHORT).show()
+                        // Toast.makeText(context, "Goal created successfully", Toast.LENGTH_SHORT).show()
                         this.viewModel.goalCreated()
                         findNavController().navigate(CreateGoalCustomerFragmentDirections.actionCreateGoalCustomerFragmentToListGoalCustomerFragment())
                     }
