@@ -63,7 +63,9 @@
         tools:layout="@layout/fragment_create_trainer_admin" >
         <action
             android:id="@+id/action_createTrainerAdminFragment_to_navigation_admin_users"
-            app:destination="@id/navigation_admin_users" />
+            app:destination="@id/navigation_admin_users"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/displayCustomerAdminFragment"
@@ -114,7 +116,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_editDeleteTrainerAdminFragment_to_deleteTrainerSendMailFragment"
-            app:destination="@id/deleteTrainerSendMailFragment" />
+            app:destination="@id/deleteTrainerSendMailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/editProfileAdminFragment"
@@ -138,9 +144,8 @@
         <action
             android:id="@+id/action_deleteTrainerSendMailFragment_to_navigation_admin_users"
             app:destination="@id/navigation_admin_users"
-            app:enterAnim="@anim/slide_out_left"
-            app:exitAnim="@anim/slide_in_right"
-            app:popEnterAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
             app:popExitAnim="@anim/slide_in_left" />
     </fragment>
     <fragment
