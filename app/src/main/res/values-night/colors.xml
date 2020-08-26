@@ -17,7 +17,7 @@
     <color name="colorTextToolbar">#fff</color>
 
     <!-- FAB -->
-    <color name="colorFab">#ec407a</color>
+    <color name="colorFab">#2EA5FF</color>
     <color name="colorTextFab">#000</color>
 
     <!-- Button -->
@@ -40,7 +40,8 @@
     <color name="colorTextCardViewProfile">#fff</color>
 
     <!-- App Background -->
-    <color name="appBackgroundColor">#102027</color>
+    <!--<color name="appBackgroundColor">#102027</color>-->
+    <color name="appBackgroundColor">#131D2D</color>
 
     <!-- Bottom Navigation -->
     <color name="bottomNavColor">#1c313a</color>
