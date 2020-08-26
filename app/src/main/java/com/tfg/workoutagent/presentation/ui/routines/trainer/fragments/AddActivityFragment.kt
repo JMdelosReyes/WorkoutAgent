@@ -3,7 +3,6 @@ package com.tfg.workoutagent.presentation.ui.routines.trainer.fragments
 import android.app.Dialog
 import android.content.res.Configuration
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -82,10 +81,10 @@ class AddActivityFragment : DialogFragment() {
             else -> true
         }
         if (darkMode) {
-            nsv_add_activity.setBackgroundResource(R.drawable.item_no_border_dark)
-            rl_add_activity_plus.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
-            activity_note_input.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
-            activity_note_input_edit.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            // nsv_add_activity.setBackgroundResource(R.drawable.item_no_border_dark)
+            // rl_add_activity_plus.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            // activity_note_input.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            // activity_note_input_edit.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
             repetitions_add_activity_input.setTextColor(Color.WHITE)
             weights_add_activity_input.setTextColor(Color.WHITE)
             activity_note_input_edit.setTextColor(Color.WHITE)

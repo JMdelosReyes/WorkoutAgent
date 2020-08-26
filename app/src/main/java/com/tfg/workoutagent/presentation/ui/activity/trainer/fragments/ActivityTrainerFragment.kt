@@ -16,6 +16,7 @@ import com.tfg.workoutagent.domain.routineUseCases.ActivityTimelineRoutinesUseCa
 import com.tfg.workoutagent.presentation.ui.activity.trainer.adapters.ActivityTimelineAdapter
 import com.tfg.workoutagent.presentation.ui.activity.trainer.viewModels.ActivityTimelineTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.activity.trainer.viewModels.ActivityTimelineTrainerViewModelFactory
+import com.tfg.workoutagent.vo.CustomDivider
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_trainer_activity.*
 
@@ -45,6 +46,9 @@ class ActivityTrainerFragment : Fragment() {
         adapter = ActivityTimelineAdapter(this.context!!)
         recyclerView_activity_timeline.layoutManager = LinearLayoutManager(this.context!!)
         recyclerView_activity_timeline.adapter = adapter
+        recyclerView_activity_timeline.addItemDecoration(
+            CustomDivider(requireContext(), 210, 0)
+        )
         observeData()
 
         swipeContainerId.setOnRefreshListener {

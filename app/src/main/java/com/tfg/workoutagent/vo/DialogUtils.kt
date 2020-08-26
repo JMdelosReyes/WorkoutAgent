@@ -71,7 +71,7 @@ class LoadingDialog(val activity: Activity) {
     lateinit var dialog: AlertDialog
 
     fun loadDialog() {
-        val builder = AlertDialog.Builder(activity, R.style.WeightDialog)
+        val builder = AlertDialog.Builder(activity, R.style.TransparentDialog)
         val inflater = activity.layoutInflater
         builder.setView(inflater.inflate(R.layout.loading_dialog, null))
         builder.setCancelable(true)

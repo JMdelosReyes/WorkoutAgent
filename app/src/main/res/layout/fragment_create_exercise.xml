@@ -284,10 +284,11 @@
 
             <Button
                 android:id="@+id/upload_multiple_images_create_exercise"
+                style="@style/WorkoutAgentButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="16dp"
-                android:backgroundTint="#2979FF"
                 android:drawableLeft="@drawable/ic_multiple_photo_48dp"
                 android:text="Select images"
                 android:textSize="26sp" />
@@ -303,11 +304,10 @@
 
             <Button
                 android:id="@+id/create_exercise_button"
+                style="@style/WorkoutAgentButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="4dp"
+                android:layout_marginHorizontal="4dp"
                 android:drawableLeft="@drawable/ic_save_white_48dp"
                 android:onClick="@{() -> viewModel.onSubmit()}"
                 android:text="@string/form_exercise_create_button"
@@ -317,8 +317,9 @@
                 android:id="@+id/ll_photos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical">
 
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -21,7 +21,7 @@
     <color name="colorTextFab">#000</color>
 
     <!-- Button -->
-    <color name="colorButton">#58a5f0</color>
+    <color name="colorButton">@color/colorPrimary</color>
     <color name="colorIconButton">#fff</color>
     <color name="colorTextButton">#fff</color>
 

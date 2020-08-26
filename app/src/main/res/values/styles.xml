@@ -34,7 +34,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="android:windowIsFloating">false</item>
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@color/appBackgroundColor</item>
         <item name="actionMenuTextColor">@color/colorAccent</item>
     </style>
 
@@ -48,7 +48,18 @@
         <item name="windowMinWidthMinor">0dp</item>
     </style>
 
+    <style name="TransparentDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="windowMinWidthMajor">0dp</item>
+        <item name="windowMinWidthMinor">0dp</item>
+    </style>
+
     <style name="WorkoutAgentActionButton" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/colorTextFab</item>
+        <item name="backgroundTint">@color/colorFab</item>
+    </style>
+
+    <style name="WorkoutAgentActionButtonSmall" parent="@style/Widget.MaterialComponents.FloatingActionButton">
         <item name="tint">@color/colorTextFab</item>
         <item name="backgroundTint">@color/colorFab</item>
     </style>

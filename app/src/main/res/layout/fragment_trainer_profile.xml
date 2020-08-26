@@ -14,8 +14,8 @@
             android:id="@+id/circleImageViewTrainer_displayProfile"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            app:civ_border_color="#FFB3B2B2"
             android:layout_marginVertical="20dp"
+            app:civ_border_color="#FFB3B2B2"
             app:civ_border_width="1dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
@@ -157,6 +157,7 @@
                 android:drawableLeft="@drawable/ic_logout_white_48dp"
                 android:text="@string/sign_out"
                 android:textSize="32sp" />
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
