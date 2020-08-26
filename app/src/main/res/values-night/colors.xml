@@ -2,9 +2,9 @@
 <resources>
 
     <!-- General -->
-    <color name="colorPrimary">#0277bd</color>
-    <color name="colorPrimaryDark">#002171</color>
-    <color name="colorAccent">#ffca28</color>
+    <color name="colorPrimary">@color/blue_light</color>
+    <color name="colorPrimaryDark">@color/blue_dark</color>
+    <color name="colorAccent">#FCECC9</color>
     <color name="WhiteColor">#fff</color>
     <color name="placeHolder_bg">#dddddd</color>
     <color name="chartBlue">#17A1EA</color>
@@ -13,15 +13,15 @@
     <color name="chartOrange">#F09946</color>
 
     <!-- Toolbar -->
-    <color name="colorToolbar">#004c8c</color>
+    <color name="colorToolbar">@color/blue_grey</color>
     <color name="colorTextToolbar">#fff</color>
 
     <!-- FAB -->
-    <color name="colorFab">#2EA5FF</color>
+    <color name="colorFab">@color/blue_light</color>
     <color name="colorTextFab">#000</color>
 
     <!-- Button -->
-    <color name="colorButton">@color/colorPrimary</color>
+    <color name="colorButton">#0277bd</color>
     <color name="colorIconButton">#fff</color>
     <color name="colorTextButton">#fff</color>
 
@@ -36,21 +36,24 @@
     <color name="colorTextDeleteButton">#fff</color>
 
     <!-- CardView Profile -->
-    <color name="colorCardViewProfile">#58a5f0</color>
+    <color name="colorCardViewProfile">#0277bd</color>
     <color name="colorTextCardViewProfile">#fff</color>
 
     <!-- App Background -->
-    <!--<color name="appBackgroundColor">#102027</color>-->
-    <color name="appBackgroundColor">#131D2D</color>
+    <color name="appBackgroundColor">#16222E</color>
 
     <!-- Bottom Navigation -->
-    <color name="bottomNavColor">#1c313a</color>
+    <color name="bottomNavColor">@color/blue_grey</color>
 
     <!-- Tabs -->
-    <color name="colorBackgroundTab">@color/colorToolbar</color>
+    <color name="colorBackgroundTab">@color/blue_grey</color>
     <color name="colorTextSelectedTab">#fff</color>
 
     <color name="grey_darkMode">#5E5E5E</color>
     <color name="black_darkMode">#3d3d3d</color>
+
+    <color name="blue_dark">#16222E</color>
+    <color name="blue_grey">#1F3040</color>
+    <color name="blue_light">#2EA5FF</color>
 
 </resources>
