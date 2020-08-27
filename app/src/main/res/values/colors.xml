@@ -14,7 +14,7 @@
 
     <!-- Toolbar -->
     <color name="colorToolbar">#0277bd</color>
-    <color name="colorTextToolbar">#fff</color>
+    <color name="colorTextToolbar">#FFFFFF</color>
 
     <!-- FAB -->
     <color name="colorFab">#ec407a</color>
@@ -22,32 +22,43 @@
 
     <!-- Button -->
     <color name="colorButton">@color/colorPrimary</color>
-    <color name="colorIconButton">#fff</color>
-    <color name="colorTextButton">#fff</color>
+    <color name="colorIconButton">#FFFFFF</color>
+    <color name="colorTextButton">#FFFFFF</color>
 
     <!-- Button Dark -->
     <color name="colorButtonDark">#004c8c</color>
-    <color name="colorIconButtonDark">#fff</color>
-    <color name="colorTextButtonDark">#fff</color>
+    <color name="colorIconButtonDark">#FFFFFF</color>
+    <color name="colorTextButtonDark">#FFFFFF</color>
 
     <!-- Delete button -->
     <color name="colorDeleteButton">#ec407a</color>
-    <color name="colorIconDeleteButton">#fff</color>
-    <color name="colorTextDeleteButton">#fff</color>
+    <color name="colorIconDeleteButton">#FFFFFF</color>
+    <color name="colorTextDeleteButton">#FFFFFF</color>
 
     <!-- CardView Profile -->
     <color name="colorCardViewProfile">#58a5f0</color>
-    <color name="colorTextCardViewProfile">#fff</color>
+    <color name="colorTextCardViewProfile">#FFFFFF</color>
 
     <!-- App Background -->
-    <color name="appBackgroundColor">#fff</color>
+    <color name="appBackgroundColor">#FFFFFF</color>
 
     <!-- Bottom Navigation -->
-    <color name="bottomNavColor">#fff</color>
+    <color name="bottomNavColor">#FFFFFF</color>
 
     <!-- Tabs -->
-    <color name="colorBackgroundTab">#fff</color>
+    <color name="colorBackgroundTab">#FFFFFF</color>
     <color name="colorTextSelectedTab">@color/colorPrimary</color>
+
+    <!-- CardView Routines -->
+    <color name="colorCardViewRoutines">#FFFFFF</color>
+
+    <!-- Small set buttons -->
+    <color name="colorSmallPositiveButton">@color/colorButton</color>
+    <color name="colorSmallNegativeButton">@color/colorDeleteButton</color>
+
+    <!-- Alert Dialog -->
+    <color name="colorTextTitleAlertDialog">#000000</color>
+    <color name="colorTextBodyAlertDialog">#000000</color>
 
     <color name="grey_darkMode">#5E5E5E</color>
     <color name="black_darkMode">#3d3d3d</color>

@@ -1,13 +1,12 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint_activity"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_today"
+        style="@style/WorkoutAgentCardRoutines"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
@@ -28,14 +27,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:layout_gravity="center"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="32dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="24dp">
+                    android:layout_marginBottom="24dp"
+                    android:orientation="vertical">
+
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/civ_activity_historic"
                         android:layout_width="70dp"
@@ -45,33 +46,38 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
                     <LinearLayout
                         android:id="@+id/ll_invisible_content_2_historic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="4dp"
-                        >
+                        android:orientation="horizontal">
+
                         <ImageView
                             android:id="@+id/description_activity_historic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_description_24dp"/>
+                            android:src="@drawable/ic_description_24dp" />
 
                         <ImageView
-                            android:visibility="gone"
                             android:id="@+id/note_activity_historic"
-                            android:layout_marginLeft="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_description_24dp"/>
+                            android:layout_marginLeft="8dp"
+                            android:src="@drawable/ic_description_24dp"
+                            android:visibility="gone" />
+
                     </LinearLayout>
+
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_name_repetitions_weights_estimated_historic"
                         android:layout_width="match_parent"
@@ -85,9 +91,9 @@
                             android:id="@+id/name_activity_estimated_historic"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textStyle="bold"
                             android:ellipsize="end"
                             android:maxLines="1"
+                            android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -117,8 +123,8 @@
                             android:id="@+id/ll_repetitions_weights_estimated_historic"
                             android:layout_width="251dp"
                             android:layout_height="56dp"
-                            android:orientation="horizontal"
                             android:layout_marginStart="12dp"
+                            android:orientation="horizontal"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.184"
@@ -126,8 +132,8 @@
                             app:layout_constraintTop_toBottomOf="@+id/name_activity_estimated_historic"
                             app:layout_constraintVertical_bias="0.9" />
 
-
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/cl_name_repetitions_weights_real_historic"
                         android:layout_width="match_parent"
@@ -140,10 +146,10 @@
 
                         <TextView
                             android:id="@+id/name_activity_real_historic"
-                            android:ellipsize="end"
-                            android:maxLines="1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:textStyle="bold"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -174,17 +180,23 @@
                             android:id="@+id/ll_repetitions_weights_real_historic"
                             android:layout_width="251dp"
                             android:layout_height="56dp"
-                            android:orientation="horizontal"
                             android:layout_marginStart="12dp"
+                            android:orientation="horizontal"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.184"
                             app:layout_constraintStart_toEndOf="@+id/imageView_real_historic"
                             app:layout_constraintTop_toBottomOf="@+id/name_activity_real_historic"
                             app:layout_constraintVertical_bias="0.9" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

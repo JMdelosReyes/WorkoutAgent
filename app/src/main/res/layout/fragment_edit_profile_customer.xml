@@ -2,15 +2,19 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="viewModel"
             type="com.tfg.workoutagent.presentation.ui.profile.customer.viewModels.EditProfileCustomerViewModel" />
     </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".presentation.ui.profile.customer.fragments.EditProfileCustomerFragment">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,6 +73,7 @@
                         android:nextFocusRight="@+id/edit_profile_customer_surname_input_edit"
                         android:singleLine="true"
                         android:text="@={viewModel.name}" />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -104,7 +109,9 @@
                         android:nextFocusRight="@+id/edit_profile_customer_email_input_edit"
                         android:singleLine="true"
                         android:text="@={viewModel.phone}" />
+
                 </com.google.android.material.textfield.TextInputLayout>
+
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -128,6 +135,7 @@
                     android:nextFocusRight="@+id/edit_profile_customer_dni_input_edit"
                     android:singleLine="true"
                     android:text="@={viewModel.email}" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -151,8 +159,8 @@
                     android:nextFocusRight="@+id/edit_profile_customer_birthday_input_edit"
                     android:singleLine="true"
                     android:text="@={viewModel.dni}" />
-            </com.google.android.material.textfield.TextInputLayout>
 
+            </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
@@ -168,22 +176,23 @@
                 app:startIconDrawable="@drawable/ic_person_height_24dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/customer_height_input_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:autofillHints=""
-                android:digits="1234567890"
-                android:hint="@string/customer_height_input"
-                android:inputType="number"
-                android:maxLength="3"
-                android:nextFocusRight="@+id/customer_height_input_edit"
-                android:singleLine="true"
-                android:text="@={`` + viewModel.height}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.949"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_profile_customer_birthday_input" />
+                    android:id="@+id/customer_height_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:autofillHints=""
+                    android:digits="1234567890"
+                    android:hint="@string/customer_height_input"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:nextFocusRight="@+id/customer_height_input_edit"
+                    android:singleLine="true"
+                    android:text="@={`` + viewModel.height}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.949"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/edit_profile_customer_birthday_input" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -208,26 +217,27 @@
                     android:nextFocusRight="@+id/edit_profile_update_customer_button"
                     android:singleLine="true"
                     android:text="@={viewModel.birthday}" />
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/birthday_error_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
                 android:textColor="@color/design_default_color_error"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/edit_profile_update_customer_button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Button
                 android:id="@+id/edit_profile_update_customer_button"
+                style="@style/WorkoutAgentButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:backgroundTint="#2979FF"
                 android:drawableLeft="@drawable/ic_refresh_48dp"
                 android:onClick="@{() -> viewModel.onSave()}"
                 android:text="@string/update"
@@ -238,9 +248,9 @@
 
             <Button
                 android:id="@+id/delete_customer_button"
+                style="@style/WorkoutAgentDeleteButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#F50057"
                 android:drawableLeft="@drawable/ic_delete_white_48dp"
                 android:text="@string/delete"
                 android:textColorLink="#FFFFFF"
@@ -251,7 +261,9 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/edit_profile_update_customer_button"
                 app:layout_constraintVertical_bias="1.0" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
 </layout>

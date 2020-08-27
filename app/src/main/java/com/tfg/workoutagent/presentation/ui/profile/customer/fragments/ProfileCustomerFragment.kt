@@ -222,5 +222,10 @@ class ProfileCustomerFragment : Fragment() {
                 }
             }
         }
+
+        weightDialog.setOnCancelListener {
+            dialogView.add_weight_input_edit.text = null
+            this.weightDialog.dismiss()
+        }
     }
 }

@@ -24,6 +24,7 @@
             android:orientation="vertical"
             android:padding="24dp"
             android:paddingTop="16dp">
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/goal_aim_input"
                 android:layout_width="match_parent"
@@ -56,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:text="@={viewModel.description}" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/goal_startDate_input"
                 android:layout_width="match_parent"
@@ -72,6 +74,7 @@
                     android:inputType="text"
                     android:text="@={viewModel.startDate}" />
             </com.google.android.material.textfield.TextInputLayout>
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/goal_endDate_input"
                 android:layout_width="match_parent"
@@ -94,31 +97,34 @@
                 android:id="@+id/date_error_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
                 android:textColor="@color/design_default_color_error"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/create_goal_button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent" />
+
             <Button
                 android:id="@+id/create_goal_button"
+                style="@style/WorkoutAgentButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="4dp"
-                android:textSize="26sp"
                 android:drawableLeft="@drawable/ic_save_white_48dp"
                 android:onClick="@{() -> viewModel.onSubmit()}"
-                android:text="@string/form_goal_create_button" />
+                android:text="@string/form_goal_create_button"
+                android:textSize="26sp" />
+
             <LinearLayout
                 android:id="@+id/ll_photos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            </LinearLayout>
 
+            </LinearLayout>
 
         </LinearLayout>
 

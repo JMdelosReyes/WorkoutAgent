@@ -31,6 +31,7 @@
 
         <Button
             android:id="@+id/add_weight_cancel"
+            style="@style/WorkoutAgentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -38,6 +39,7 @@
 
         <Button
             android:id="@+id/add_weight_save"
+            style="@style/WorkoutAgentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save" />

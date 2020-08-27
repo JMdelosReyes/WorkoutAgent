@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraint_activity"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-
         android:id="@+id/card_today"
+        style="@style/WorkoutAgentCardRoutines"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="8dp"
@@ -87,8 +86,8 @@
                         android:id="@+id/ll_repetitions_weights"
                         android:layout_width="251dp"
                         android:layout_height="56dp"
-                        android:orientation="horizontal"
                         android:layout_marginStart="12dp"
+                        android:orientation="horizontal"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.184"
@@ -96,30 +95,32 @@
                         app:layout_constraintTop_toBottomOf="@+id/name_activity_today"
                         app:layout_constraintVertical_bias="0.9" />
 
-
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/ll_invisible_content_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginBottom="4dp"
-                >
-                <ImageView
-                    android:id="@+id/description_activity_today"
-                    android:layout_marginStart="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:src="@drawable/ic_description_24dp"/>
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:visibility="gone"
+                    android:id="@+id/description_activity_today"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_description_24dp" />
+
+                <ImageView
                     android:id="@+id/note_activity_today"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_description_24dp"/>
+                    android:src="@drawable/ic_description_24dp"
+                    android:visibility="gone" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -132,15 +133,21 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rcv_sets_today_activity"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
+
                 <Button
                     android:id="@+id/button_finish_activity"
+                    style="@style/WorkoutAgentButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:drawableEnd="@drawable/ic_done_all_black_48dp"
-                    android:text="@string/completed"/>
+                    android:text="@string/completed" />
+
             </LinearLayout>
+
         </LinearLayout>
+
     </com.google.android.material.card.MaterialCardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

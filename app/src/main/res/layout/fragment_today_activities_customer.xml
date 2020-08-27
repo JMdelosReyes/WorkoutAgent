@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,12 +8,14 @@
             name="viewModel"
             type="com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.TodayActivitiesCustomerViewModel" />
     </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/sv_today"
@@ -45,10 +46,13 @@
                     <include layout="@layout/item_row_load" />
 
                     <include layout="@layout/item_row_load" />
+
                 </LinearLayout>
 
             </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.core.widget.NestedScrollView
+                android:layout_marginTop="8dp"
                 android:id="@+id/nsv_today"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,34 +60,42 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_today_activities"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
             </androidx.core.widget.NestedScrollView>
+
             <TextView
                 android:id="@+id/message_no_routine"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
                 android:textSize="18sp"
                 android:textStyle="italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/sv_today" />
-        <Button
-            android:id="@+id/finish_this_day_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_finish_40dp"
-            android:text=" Finish day"
-            android:textSize="26sp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nsv_today" />
+
+            <Button
+                android:id="@+id/finish_this_day_button"
+                style="@style/WorkoutAgentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_finish_40dp"
+                android:text=" Finish day"
+                android:textSize="26sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nsv_today" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </ScrollView>
+
 </layout>

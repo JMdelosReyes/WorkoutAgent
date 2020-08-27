@@ -44,8 +44,24 @@
     </style>
 
     <style name="WeightDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
+        <item name="android:windowBackground">@color/appBackgroundColor</item>
         <item name="windowMinWidthMajor">0dp</item>
         <item name="windowMinWidthMinor">0dp</item>
+    </style>
+
+    <style name="WorkoutAgentMaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorOnSurface">@color/appBackgroundColor</item>
+        <item name="colorSurface">@color/appBackgroundColor</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/WorkoutAgentMaterialDialogTitleTextStyle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/WorkoutAgentMaterialDialogBodyTextStyle</item>
+    </style>
+
+    <style name="WorkoutAgentMaterialDialogBodyTextStyle" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">@color/colorTextBodyAlertDialog</item>
+    </style>
+
+    <style name="WorkoutAgentMaterialDialogTitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/colorTextTitleAlertDialog</item>
     </style>
 
     <style name="TransparentDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
@@ -94,6 +110,20 @@
         <item name="tabBackground">@color/colorBackgroundTab</item>
         <item name="tabSelectedTextColor">@color/colorTextSelectedTab</item>
         <item name="tabIndicatorColor">@color/colorTextSelectedTab</item>
+    </style>
+
+    <style name="WorkoutAgentCardRoutines" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/colorCardViewRoutines</item>
+    </style>
+
+    <style name="WorkoutAgentPositiveFAB" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/colorTextFab</item>
+        <item name="backgroundTint">@color/colorSmallPositiveButton</item>
+    </style>
+
+    <style name="WorkoutAgentNegativeFAB" parent="@style/Widget.MaterialComponents.FloatingActionButton">
+        <item name="tint">@color/colorTextFab</item>
+        <item name="backgroundTint">@color/colorSmallNegativeButton</item>
     </style>
 
 </resources>
