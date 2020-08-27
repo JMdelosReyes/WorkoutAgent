@@ -15,7 +15,7 @@ fun createAlertDialog(
     positiveText: String = "Yes",
     negativeText: String = "No"
 ) {
-    MaterialAlertDialogBuilder(context)
+    MaterialAlertDialogBuilder(context, R.style.WorkoutAgentMaterialAlertDialog)
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton(positiveText) { dialog, _ ->
@@ -38,7 +38,7 @@ fun createAlertDialog(
     positiveText: Int,
     negativeText: Int
 ) {
-    MaterialAlertDialogBuilder(context)
+    MaterialAlertDialogBuilder(context, R.style.WorkoutAgentMaterialAlertDialog)
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton(context.resources.getString(positiveText)) { dialog, _ ->
