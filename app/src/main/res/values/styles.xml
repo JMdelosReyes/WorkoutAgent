@@ -2,6 +2,7 @@
 
     <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/appBackgroundColor</item>
+        <item name="actionMenuTextColor">@color/blue_light</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorControlNormal">@color/colorTextToolbar</item>
@@ -52,8 +53,12 @@
     <style name="WorkoutAgentMaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="colorOnSurface">@color/appBackgroundColor</item>
         <item name="colorSurface">@color/appBackgroundColor</item>
-        <item name="materialAlertDialogTitleTextStyle">@style/WorkoutAgentMaterialDialogTitleTextStyle</item>
-        <item name="materialAlertDialogBodyTextStyle">@style/WorkoutAgentMaterialDialogBodyTextStyle</item>
+        <item name="materialAlertDialogTitleTextStyle">
+            @style/WorkoutAgentMaterialDialogTitleTextStyle
+        </item>
+        <item name="materialAlertDialogBodyTextStyle">
+            @style/WorkoutAgentMaterialDialogBodyTextStyle
+        </item>
     </style>
 
     <style name="WorkoutAgentMaterialDialogBodyTextStyle" parent="MaterialAlertDialog.MaterialComponents.Body.Text">
@@ -124,6 +129,11 @@
     <style name="WorkoutAgentNegativeFAB" parent="@style/Widget.MaterialComponents.FloatingActionButton">
         <item name="tint">@color/colorTextFab</item>
         <item name="backgroundTint">@color/colorSmallNegativeButton</item>
+    </style>
+
+    <style name="WorkoutAgentTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="hintTextColor">@color/colorTextInputHint</item>
+        <item name="boxBackgroundColor">@color/colorTextInputBackground</item>
     </style>
 
 </resources>

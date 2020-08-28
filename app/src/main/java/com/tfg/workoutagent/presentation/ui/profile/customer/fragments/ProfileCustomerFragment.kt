@@ -97,7 +97,10 @@ class ProfileCustomerFragment : Fragment() {
         }
 
         settings_image_profile_customer.setOnClickListener {
-            val dialogBuilder = MaterialAlertDialogBuilder(context!!)
+            val dialogBuilder = MaterialAlertDialogBuilder(
+                requireContext(),
+                R.style.WorkoutAgentMaterialAlertDialog
+            )
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
             val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)

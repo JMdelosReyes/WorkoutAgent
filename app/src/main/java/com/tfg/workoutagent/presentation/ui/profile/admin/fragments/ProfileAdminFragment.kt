@@ -1,6 +1,5 @@
 package com.tfg.workoutagent.presentation.ui.profile.admin.fragments
 
-import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Configuration
 import android.os.Bundle
@@ -28,7 +27,6 @@ import com.tfg.workoutagent.presentation.ui.login.activities.PREFERENCE_FILE_KEY
 import com.tfg.workoutagent.presentation.ui.profile.admin.viewModels.ProfileAdminViewModel
 import com.tfg.workoutagent.presentation.ui.profile.admin.viewModels.ProfileAdminViewModelFactory
 import com.tfg.workoutagent.vo.Resource
-import com.tfg.workoutagent.vo.createAlertDialog
 import com.tfg.workoutagent.vo.utils.parseDateToFriendlyDate
 import kotlinx.android.synthetic.main.dialog_settings_profile.view.*
 import kotlinx.android.synthetic.main.fragment_admin_profile.*
@@ -69,7 +67,10 @@ class ProfileAdminFragment : Fragment() {
     private fun setupUI() {
         sign_out_button_admin.setOnClickListener { signOut2() }
         settings_image_profile_admin.setOnClickListener {
-            val dialogBuilder = MaterialAlertDialogBuilder(context!!)
+            val dialogBuilder = MaterialAlertDialogBuilder(
+                requireContext(),
+                R.style.WorkoutAgentMaterialAlertDialog
+            )
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
             val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)

@@ -82,10 +82,10 @@ class EditActivityFragment : DialogFragment() {
             else -> true
         }
         if (darkMode) {
-            nsv_edit_activity.setBackgroundResource(R.drawable.item_no_border_dark)
-            rl_edit_activity_plus.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
-            activity_note_input.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
-            activity_note_input_edit.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            // nsv_edit_activity.setBackgroundResource(R.drawable.item_no_border_dark)
+            // rl_edit_activity_plus.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            // activity_note_input.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
+            // activity_note_input_edit.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
             repetitions_edit_activity_input.setTextColor(Color.WHITE)
             weights_edit_activity_input.setTextColor(Color.WHITE)
             activity_note_input_edit.setTextColor(Color.WHITE)

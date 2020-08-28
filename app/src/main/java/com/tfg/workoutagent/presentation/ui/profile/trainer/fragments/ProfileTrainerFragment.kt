@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -79,7 +78,10 @@ class ProfileTrainerFragment : Fragment() {
         }
 
         settings_image_profile_trainer.setOnClickListener {
-            val dialogBuilder = MaterialAlertDialogBuilder(context!!)
+            val dialogBuilder = MaterialAlertDialogBuilder(
+                requireContext(),
+                R.style.WorkoutAgentMaterialAlertDialog
+            )
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
             val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)
@@ -121,10 +123,12 @@ class ProfileTrainerFragment : Fragment() {
         viewModel.getProfileTrainer.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Success -> {
-                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE" || it.data.photo == "DEFAULT_PHOTO"){
-                        Glide.with(this.requireContext()).load(R.drawable.ic_person_black_60dp).into(circleImageViewTrainer_displayProfile)
-                    }else{
-                        Glide.with(this.requireContext()).load(it.data.photo).into(circleImageViewTrainer_displayProfile)
+                    if (it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE" || it.data.photo == "DEFAULT_PHOTO") {
+                        Glide.with(this.requireContext()).load(R.drawable.ic_person_black_60dp)
+                            .into(circleImageViewTrainer_displayProfile)
+                    } else {
+                        Glide.with(this.requireContext()).load(it.data.photo)
+                            .into(circleImageViewTrainer_displayProfile)
                     }
                     display_trainer_name_displayProfile.text = it.data.name + " " + it.data.surname
                     display_trainer_email_displayProfile.text = it.data.email
@@ -133,14 +137,21 @@ class ProfileTrainerFragment : Fragment() {
                         parseDateToFriendlyDate(it.data.birthday)
                     display_trainer_dni_displayProfile.text = it.data.dni
 
-                    if(it.data.academicTitle =="" || it.data.academicTitle =="DEFAULT_ACADEMIC_TITLE"){
-                        display_trainer_button_curriculum.setOnClickListener{
-                            Toast.makeText(this.context, "This trainer hasn't uploaded a CV. Try again later", Toast.LENGTH_LONG).show()
+                    if (it.data.academicTitle == "" || it.data.academicTitle == "DEFAULT_ACADEMIC_TITLE") {
+                        display_trainer_button_curriculum.setOnClickListener {
+                            Toast.makeText(
+                                this.context,
+                                "This trainer hasn't uploaded a CV. Try again later",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
-                    }else{
+                    } else {
                         display_trainer_button_curriculum.setOnClickListener { _ ->
                             val intent = Intent(Intent.ACTION_VIEW)
-                            intent.setDataAndType(Uri.parse(it.data.academicTitle), "application/pdf")
+                            intent.setDataAndType(
+                                Uri.parse(it.data.academicTitle),
+                                "application/pdf"
+                            )
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                             val newIntent = Intent.createChooser(intent, "Open File")
                             try {
