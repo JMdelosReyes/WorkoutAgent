@@ -74,7 +74,7 @@
     <color name="colorSelectedSwitch">#F09946</color>
 
     <!-- Customer Activities -->
-    <color name="colorCompletedActivity">#0CC560</color>
+    <color name="colorCompletedActivity">#0b5d1e</color>
     <color name="colorFailedActivity">#EC407A</color>
 
     <!-- Goals -->
