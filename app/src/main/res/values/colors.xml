@@ -2,23 +2,23 @@
 <resources>
 
     <!-- General -->
-    <color name="colorPrimary">#0277bd</color>
-    <color name="colorPrimaryDark">#004c8c</color>
-    <color name="colorAccent">#ffca28</color>
-    <color name="WhiteColor">#fff</color>
-    <color name="placeHolder_bg">#dddddd</color>
+    <color name="colorPrimary">#0277BD</color>
+    <color name="colorPrimaryDark">#004C8C</color>
+    <color name="colorAccent">#FFCA28</color>
+    <color name="WhiteColor">#FFFFFF</color>
+    <color name="placeHolder_bg">#DDDDDD</color>
     <color name="chartBlue">#17A1EA</color>
     <color name="chartGreen">#0CC560</color>
     <color name="chartYellow">#FADB60</color>
     <color name="chartOrange">#F09946</color>
 
     <!-- Toolbar -->
-    <color name="colorToolbar">#0277bd</color>
+    <color name="colorToolbar">#0277BD</color>
     <color name="colorTextToolbar">#FFFFFF</color>
 
     <!-- FAB -->
-    <color name="colorFab">#ec407a</color>
-    <color name="colorTextFab">#000</color>
+    <color name="colorFab">#EC407A</color>
+    <color name="colorTextFab">#000000</color>
 
     <!-- Button -->
     <color name="colorButton">@color/colorPrimary</color>
@@ -26,17 +26,17 @@
     <color name="colorTextButton">#FFFFFF</color>
 
     <!-- Button Dark -->
-    <color name="colorButtonDark">#004c8c</color>
+    <color name="colorButtonDark">#004C8C</color>
     <color name="colorIconButtonDark">#FFFFFF</color>
     <color name="colorTextButtonDark">#FFFFFF</color>
 
     <!-- Delete button -->
-    <color name="colorDeleteButton">#ec407a</color>
+    <color name="colorDeleteButton">#EC407A</color>
     <color name="colorIconDeleteButton">#FFFFFF</color>
     <color name="colorTextDeleteButton">#FFFFFF</color>
 
     <!-- CardView Profile -->
-    <color name="colorCardViewProfile">#58a5f0</color>
+    <color name="colorCardViewProfile">#58A5F0</color>
     <color name="colorTextCardViewProfile">#FFFFFF</color>
 
     <!-- App Background -->
@@ -62,7 +62,23 @@
 
     <!-- Forms -->
     <color name="colorTextInputBackground">@color/mtrl_filled_background_color</color>
-    <color name="colorTextInputHint">#0277bd</color>
+    <color name="colorTextInputHint">#0277BD</color>
+
+    <!-- Select Colors -->
+    <color name="colorSelected">#0277BD</color>
+    <color name="colorUnselected">#FFFFFF</color>
+    <color name="colorTextSelected">#FFFFFF</color>
+    <color name="colorTextUnselected">#000000</color>
+
+    <!-- Switch Color -->
+    <color name="colorSelectedSwitch">#F09946</color>
+
+    <!-- Customer Activities -->
+    <color name="colorCompletedActivity">#0CC560</color>
+    <color name="colorFailedActivity">#EC407A</color>
+
+    <!-- Goals -->
+    <color name="colorCompleteGoal">@color/positiveColor</color>
 
     <color name="grey_darkMode">#5E5E5E</color>
     <color name="black_darkMode">#3d3d3d</color>

@@ -1,8 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.routines.customer.fragments
 
-import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +8,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.base.BaseFragment
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl

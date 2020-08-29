@@ -136,4 +136,8 @@
         <item name="boxBackgroundColor">@color/colorTextInputBackground</item>
     </style>
 
+    <style name="WorkoutAgentSwitch" parent="">
+        <item name="android:colorControlActivated">@color/colorSelectedSwitch</item>
+    </style>
+
 </resources>

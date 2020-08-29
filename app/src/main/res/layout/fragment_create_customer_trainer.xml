@@ -318,6 +318,7 @@
                 style="@style/WorkoutAgentButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
                 android:drawableLeft="@drawable/ic_save_white_48dp"
                 android:onClick="@{() -> viewModel.onSubmit()}"
                 android:text="Save customer"

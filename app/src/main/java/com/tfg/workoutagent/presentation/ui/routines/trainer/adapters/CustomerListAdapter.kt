@@ -2,8 +2,6 @@ package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,7 +70,7 @@ class CustomerListAdapter(
         }
 
         private fun loadImage() {
-            if (this.customer.photo == "DEFAULT_IMAGE" ||  this.customer.photo == "DEFAULT_PHOTO") {
+            if (this.customer.photo == "DEFAULT_IMAGE" || this.customer.photo == "DEFAULT_PHOTO") {
                 Glide.with(context).load(R.drawable.ic_person_black_60dp)
                     .into(itemView.customer_assign_routine_photo)
             } else {
@@ -85,18 +83,43 @@ class CustomerListAdapter(
         private fun loadBackGround() {
             if (selectedCustomer == null) {
                 if (isDarkMode(context)) {
-                    this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
+                    this.itemView.customer_assign_routine_name.setTextColor(
+                        context.resources.getColor(
+                            R.color.colorTextUnselected
+                        )
+                    )
                 } else {
-                    this.itemView.setBackgroundColor(Color.WHITE)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
+                    this.itemView.customer_assign_routine_name.setTextColor(
+                        context.resources.getColor(
+                            R.color.colorTextUnselected
+                        )
+                    )
                 }
             } else {
                 if (selectedCustomer?.id == customer.id) {
-                    this.itemView.setBackgroundResource(R.drawable.item_border_primary_color)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_selected)
+                    this.itemView.customer_assign_routine_name.setTextColor(
+                        context.resources.getColor(
+                            R.color.colorTextSelected
+                        )
+                    )
                 } else {
                     if (isDarkMode(context)) {
-                        this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                        this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
+                        this.itemView.customer_assign_routine_name.setTextColor(
+                            context.resources.getColor(
+                                R.color.colorTextUnselected
+                            )
+                        )
                     } else {
-                        this.itemView.setBackgroundColor(Color.WHITE)
+                        this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
+                        this.itemView.customer_assign_routine_name.setTextColor(
+                            context.resources.getColor(
+                                R.color.colorTextUnselected
+                            )
+                        )
                     }
                 }
             }

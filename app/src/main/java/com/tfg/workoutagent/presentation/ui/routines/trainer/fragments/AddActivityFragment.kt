@@ -263,13 +263,13 @@ class AddActivityFragment : DialogFragment() {
                 if (currentCategories.map { c -> c.name }.contains(categoryName)) {
                     this.viewModel.removeSelectedCategory(categoryName, categoryPosition)
                     if (darkMode) {
-                        view.setBackgroundResource(R.drawable.item_border_dark)
+                        view.setBackgroundResource(R.drawable.item_border_unselected)
                     } else {
-                        view.setBackgroundColor(Color.WHITE)
+                        view.setBackgroundResource(R.drawable.item_border_unselected)
                     }
                 } else {
                     this.viewModel.addSelectedCategory(categoryName, categoryPosition)
-                    view.setBackgroundResource(R.drawable.item_border_primary_color)
+                    view.setBackgroundResource(R.drawable.item_border_selected)
                 }
 
                 val exercises = this.viewModel.updateAvailableExercises()

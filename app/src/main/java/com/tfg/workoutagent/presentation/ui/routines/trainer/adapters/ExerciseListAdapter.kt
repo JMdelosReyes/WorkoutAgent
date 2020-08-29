@@ -73,18 +73,18 @@ class ExerciseListAdapter(
         private fun updateColor() {
             if (selectedExercise == null) {
                 if (isDarkMode(context)) {
-                    this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    this.itemView.setBackgroundColor(Color.WHITE)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             } else {
                 if (selectedExercise?.id == exercise.id) {
-                    this.itemView.setBackgroundResource(R.drawable.item_border_primary_color)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_selected)
                 } else {
                     if (isDarkMode(context)) {
-                        this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                        this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
                     } else {
-                        this.itemView.setBackgroundColor(Color.WHITE)
+                        this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
                     }
                 }
             }
