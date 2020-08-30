@@ -2,8 +2,8 @@
 <resources>
 
     <!-- General -->
-    <color name="colorPrimary">#0277BD</color>
-    <color name="colorPrimaryDark">#004C8C</color>
+    <color name="colorPrimary">#0091f0</color>
+    <color name="colorPrimaryDark">#0277BD</color>
     <color name="colorAccent">#FFCA28</color>
     <color name="WhiteColor">#FFFFFF</color>
     <color name="placeHolder_bg">#DDDDDD</color>
@@ -13,11 +13,11 @@
     <color name="chartOrange">#F09946</color>
 
     <!-- Toolbar -->
-    <color name="colorToolbar">#0277BD</color>
+    <color name="colorToolbar">#0091f0</color>
     <color name="colorTextToolbar">#FFFFFF</color>
 
     <!-- FAB -->
-    <color name="colorFab">#EC407A</color>
+    <color name="colorFab">#E15554</color>
     <color name="colorTextFab">#000000</color>
 
     <!-- Button -->
@@ -26,7 +26,7 @@
     <color name="colorTextButton">#FFFFFF</color>
 
     <!-- Button Dark -->
-    <color name="colorButtonDark">#004C8C</color>
+    <color name="colorButtonDark">#0277BD</color>
     <color name="colorIconButtonDark">#FFFFFF</color>
     <color name="colorTextButtonDark">#FFFFFF</color>
 
@@ -36,7 +36,7 @@
     <color name="colorTextDeleteButton">#FFFFFF</color>
 
     <!-- CardView Profile -->
-    <color name="colorCardViewProfile">#58A5F0</color>
+    <color name="colorCardViewProfile">#0091f0</color>
     <color name="colorTextCardViewProfile">#FFFFFF</color>
 
     <!-- App Background -->
@@ -62,10 +62,10 @@
 
     <!-- Forms -->
     <color name="colorTextInputBackground">@color/mtrl_filled_background_color</color>
-    <color name="colorTextInputHint">#0277BD</color>
+    <color name="colorTextInputHint">#0091f0</color>
 
     <!-- Select Colors -->
-    <color name="colorSelected">#0277BD</color>
+    <color name="colorSelected">#0091f0</color>
     <color name="colorUnselected">#FFFFFF</color>
     <color name="colorTextSelected">#FFFFFF</color>
     <color name="colorTextUnselected">#000000</color>
