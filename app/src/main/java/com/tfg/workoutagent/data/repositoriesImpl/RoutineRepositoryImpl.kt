@@ -553,7 +553,7 @@ class RoutineRepositoryImpl : RoutineRepository {
 
         val data = hashMapOf(
             "title" to routine.title,
-            "startDate" to routine.startDate,
+            "startDate" to startDate,
             "customer" to customerDB.reference,
             "trainer" to trainerDB.documents[0].reference,
             "days" to routine.days,
