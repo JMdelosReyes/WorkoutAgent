@@ -22,12 +22,13 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/add_activity_toolbar"
+                style="@style/Widget.AcmeDroid.Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:paddingStart="6dp"
                 android:paddingEnd="16dp"
                 app:contentInsetStartWithNavigation="0dp"
-                app:navigationIcon="@drawable/ic_close_black_24dp" />
+                app:navigationIcon="@drawable/ic_close_dialog_24dp" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -104,6 +105,7 @@
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/add_set_button"
+                            style="@style/WorkoutAgentPositiveFAB"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"

@@ -2,9 +2,9 @@
 <resources>
 
     <!-- General -->
-    <color name="colorPrimary">#0091f0</color>
-    <color name="colorPrimaryDark">#0277BD</color>
-    <color name="colorAccent">#FFCA28</color>
+    <color name="colorPrimary">@color/blue_light</color>
+    <color name="colorPrimaryDark">@color/blue_dark</color>
+    <color name="colorAccent">#FCECC9</color>
     <color name="WhiteColor">#FFFFFF</color>
     <color name="placeHolder_bg">#DDDDDD</color>
     <color name="chartBlue">#17A1EA</color>
@@ -13,20 +13,20 @@
     <color name="chartOrange">#F09946</color>
 
     <!-- Toolbar -->
-    <color name="colorToolbar">#0091f0</color>
+    <color name="colorToolbar">@color/blue_grey</color>
     <color name="colorTextToolbar">#FFFFFF</color>
 
     <!-- FAB -->
-    <color name="colorFab">#E15554</color>
+    <color name="colorFab">@color/blue_light</color>
     <color name="colorTextFab">#000000</color>
 
     <!-- Button -->
-    <color name="colorButton">@color/colorPrimary</color>
+    <color name="colorButton">#0277BD</color>
     <color name="colorIconButton">#FFFFFF</color>
     <color name="colorTextButton">#FFFFFF</color>
 
     <!-- Button Dark -->
-    <color name="colorButtonDark">#0277BD</color>
+    <color name="colorButtonDark">#004C8C</color>
     <color name="colorIconButtonDark">#FFFFFF</color>
     <color name="colorTextButtonDark">#FFFFFF</color>
 
@@ -36,52 +36,52 @@
     <color name="colorTextDeleteButton">#FFFFFF</color>
 
     <!-- CardView Profile -->
-    <color name="colorCardViewProfile">#0091f0</color>
+    <color name="colorCardViewProfile">#0277bd</color>
     <color name="colorTextCardViewProfile">#FFFFFF</color>
 
     <!-- App Background -->
-    <color name="appBackgroundColor">#FFFFFF</color>
+    <color name="appBackgroundColor">#16222E</color>
 
     <!-- Bottom Navigation -->
-    <color name="bottomNavColor">#FFFFFF</color>
+    <color name="bottomNavColor">@color/blue_grey</color>
 
     <!-- Tabs -->
-    <color name="colorBackgroundTab">#FFFFFF</color>
-    <color name="colorTextSelectedTab">@color/colorPrimary</color>
+    <color name="colorBackgroundTab">@color/blue_grey</color>
+    <color name="colorTextSelectedTab">#FFFFFF</color>
 
     <!-- CardView Routines -->
-    <color name="colorCardViewRoutines">#FFFFFF</color>
+    <color name="colorCardViewRoutines">@color/blue_grey</color>
 
     <!-- Small set buttons -->
     <color name="colorSmallPositiveButton">@color/positiveColor</color>
     <color name="colorSmallNegativeButton">@color/negativeColor</color>
 
     <!-- Alert Dialog -->
-    <color name="colorTextTitleAlertDialog">#000000</color>
-    <color name="colorTextBodyAlertDialog">#000000</color>
+    <color name="colorTextTitleAlertDialog">#FFFFFF</color>
+    <color name="colorTextBodyAlertDialog">#FFFFFF</color>
 
     <!-- Forms -->
-    <color name="colorTextInputBackground">@color/mtrl_filled_background_color</color>
-    <color name="colorTextInputHint">#0091f0</color>
+    <color name="colorTextInputBackground">@color/blue_grey</color>
+    <color name="colorTextInputHint">@color/blue_light</color>
 
     <!-- Select Colors -->
-    <color name="colorSelected">#0091f0</color>
-    <color name="colorUnselected">#FFFFFF</color>
+    <color name="colorSelected">#0277BD</color>
+    <color name="colorUnselected">#3D3D3D</color>
     <color name="colorTextSelected">#FFFFFF</color>
-    <color name="colorTextUnselected">#000000</color>
+    <color name="colorTextUnselected">#FFFFFF</color>
 
     <!-- Switch Color -->
     <color name="colorSelectedSwitch">#F09946</color>
 
     <!-- Customer Activities -->
-    <color name="colorCompletedActivity">#1D9A75</color>
+    <color name="colorCompletedActivity">#0b5d1e</color>
     <color name="colorFailedActivity">#EC407A</color>
 
     <!-- Goals -->
     <color name="colorCompleteGoal">@color/positiveColor</color>
 
     <color name="grey_darkMode">#5E5E5E</color>
-    <color name="black_darkMode">#3d3d3d</color>
+    <color name="black_darkMode">#3D3D3D</color>
 
     <color name="blue_dark">#16222E</color>
     <color name="blue_grey">#1F3040</color>

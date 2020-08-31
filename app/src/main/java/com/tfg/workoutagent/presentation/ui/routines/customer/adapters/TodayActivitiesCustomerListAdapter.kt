@@ -1,6 +1,5 @@
 package com.tfg.workoutagent.presentation.ui.routines.customer.adapters
 
-import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater

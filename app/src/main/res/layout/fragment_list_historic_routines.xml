@@ -47,6 +47,7 @@
         android:paddingBottom="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".presentation.ui.routines.trainer.fragments.ListHistoricRoutinesFragment">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -57,6 +58,7 @@
                 android:layout_height="wrap_content" />
 
         </RelativeLayout>
+
     </ScrollView>
 
 </FrameLayout>

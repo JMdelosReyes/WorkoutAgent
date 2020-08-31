@@ -1,28 +1,23 @@
 package com.tfg.workoutagent.presentation.ui.goals.trainer.fragments
 
 import android.content.res.Configuration
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.GoalRepositoryImpl
 import com.tfg.workoutagent.domain.goalUseCases.ListGoalCustomerTrainerUseCaseImpl
-import com.tfg.workoutagent.domain.goalUseCases.ListGoalCustomerUseCaseImpl
-import com.tfg.workoutagent.presentation.ui.goals.customer.viewmodels.ListGoalCustomerViewModelFactory
 import com.tfg.workoutagent.presentation.ui.goals.trainer.adapters.GoalsCustomerTrainerListAdapter
 import com.tfg.workoutagent.presentation.ui.goals.trainer.viewmodels.ListGoalCustomerTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.goals.trainer.viewmodels.ListGoalCustomerTrainerViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_list_goal_customer_trainer.*
-import kotlinx.android.synthetic.main.fragment_list_goals_customer.*
 
 class ListGoalCustomerTrainerFragment : Fragment() {
 

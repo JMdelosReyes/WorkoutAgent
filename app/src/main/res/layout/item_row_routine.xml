@@ -8,13 +8,11 @@
     android:orientation="horizontal"
     android:padding="8dp">
 
-
-
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_marginStart="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="7dp"
         android:layout_marginBottom="8dp"
         android:orientation="vertical"
@@ -43,5 +41,7 @@
             android:layout_height="wrap_content"
             android:text="@string/nombre_del_cliente"
             android:textSize="18sp" />
+
     </LinearLayout>
+
 </LinearLayout>

@@ -81,7 +81,11 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_navigation_users_trainer_to_createCustomerTrainerFragment2"
-            app:destination="@id/createCustomerTrainerFragment" />
+            app:destination="@id/createCustomerTrainerFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_navigation_users_trainer_to_editDeleteCustomerTrainerFragment"
             app:destination="@id/editDeleteCustomerTrainerFragment"
@@ -202,7 +206,11 @@
         tools:layout="@layout/create_routine_fragment">
         <action
             android:id="@+id/action_createRoutine_to_navigation_routine_trainer2"
-            app:destination="@id/navigation_routine_trainer" />
+            app:destination="@id/navigation_routine_trainer"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_createRoutine_to_addDayFragment"
             app:destination="@id/addDayFragment"
@@ -268,8 +276,8 @@
         <action
             android:id="@+id/action_displayCustomer_to_listGoalCustomerTrainerFragment"
             app:destination="@id/listGoalCustomerTrainerFragment"
-            app:enterAnim="@anim/slide_in_left"
-            app:exitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
         <action

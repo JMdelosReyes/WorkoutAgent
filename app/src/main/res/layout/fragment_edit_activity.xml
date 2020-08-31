@@ -23,12 +23,13 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/add_activity_toolbar"
+                style="@style/Widget.AcmeDroid.Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:paddingStart="6dp"
                 android:paddingEnd="16dp"
                 app:contentInsetStartWithNavigation="0dp"
-                app:navigationIcon="@drawable/ic_close_black_24dp" />
+                app:navigationIcon="@drawable/ic_close_dialog_24dp" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -66,45 +67,60 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <TextView
-                            android:id="@+id/repetitions_edit_activity_icon"
+                        <LinearLayout
+                            android:id="@+id/linear_repetitions"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
                             android:layout_centerVertical="true"
                             android:layout_marginStart="12dp"
-                            android:drawableStart="@drawable/ic_repetitions_black_24dp"
-                            android:textStyle="bold" />
+                            android:orientation="horizontal">
 
-                        <EditText
-                            android:id="@+id/repetitions_edit_activity_input"
-                            android:layout_width="48dp"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/repetitions_edit_activity_icon"
-                            android:inputType="number" />
+                            <TextView
+                                android:id="@+id/repetitions_edit_activity_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_repetitions_black_24dp"
+                                android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/weights_edit_activity_icon"
+                            <EditText
+                                android:id="@+id/repetitions_edit_activity_input"
+                                android:layout_width="48dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:inputType="number" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linear_weights"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:layout_marginStart="24dp"
-                            android:layout_toEndOf="@id/repetitions_edit_activity_input"
-                            android:drawableStart="@drawable/ic_weights_black_24dp"
-                            android:textStyle="bold" />
+                            android:layout_toStartOf="@+id/add_set_button"
+                            android:layout_toEndOf="@id/linear_repetitions"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal">
 
-                        <EditText
-                            android:id="@+id/weights_edit_activity_input"
-                            android:layout_width="48dp"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginStart="16dp"
-                            android:layout_toEndOf="@id/weights_edit_activity_icon"
-                            android:inputType="numberDecimal" />
+                            <TextView
+                                android:id="@+id/weights_edit_activity_icon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableStart="@drawable/ic_weights_black_24dp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/weights_edit_activity_input"
+                                android:layout_width="48dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:inputType="numberDecimal" />
+
+                        </LinearLayout>
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/add_set_button"
+                            style="@style/WorkoutAgentPositiveFAB"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"

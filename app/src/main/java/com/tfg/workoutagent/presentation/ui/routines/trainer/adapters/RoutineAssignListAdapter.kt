@@ -1,7 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.routines.trainer.adapters
 
 import android.content.Context
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,18 +67,18 @@ class RoutineAssignListAdapter(
         private fun loadBackGround() {
             if (selectedRoutine == null) {
                 if (isDarkMode(context)) {
-                    this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    this.itemView.setBackgroundColor(Color.WHITE)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             } else {
                 if (selectedRoutine?.id == routine.id) {
-                    this.itemView.setBackgroundResource(R.drawable.item_border_primary_color)
+                    this.itemView.setBackgroundResource(R.drawable.item_border_selected)
                 } else {
                     if (isDarkMode(context)) {
-                        this.itemView.setBackgroundResource(R.drawable.item_border_dark)
+                        this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
                     } else {
-                        this.itemView.setBackgroundColor(Color.WHITE)
+                        this.itemView.setBackgroundResource(R.drawable.item_border_unselected)
                     }
                 }
             }

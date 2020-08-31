@@ -87,8 +87,18 @@ class EditDeleteTrainerAdminViewModel(private val id: String, private val manage
     }
 
     fun onSave(){
-        if(checkData()){
-            editTrainer()
+        viewModelScope.launch {
+            if(checkData()){
+                try{
+                    if(checkExistingMail(email.value!!)){
+                        _emailError.value = "This mail is already used"
+                    }else{
+                        editTrainer()
+                    }
+                }catch (e: Exception) {
+                    _emailError.value = "Try with other email"
+                }
+            }
         }
     }
 

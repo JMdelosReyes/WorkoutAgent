@@ -6,13 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.tfg.workoutagent.R
-import com.tfg.workoutagent.models.Exercise
 import com.tfg.workoutagent.models.Routine
-import com.tfg.workoutagent.presentation.ui.exercises.trainer.fragments.ExerciseTrainerFragmentDirections
 import com.tfg.workoutagent.presentation.ui.routines.trainer.fragments.RoutineTrainerFragmentDirections
-import kotlinx.android.synthetic.main.item_row.view.*
 import kotlinx.android.synthetic.main.item_row_routine.view.*
 
 class RoutineListAdapter(private val context: Context) :
@@ -43,9 +39,16 @@ class RoutineListAdapter(private val context: Context) :
 
     inner class RoutineListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindView(routine: Routine) {
-
             itemView.row_routine_title.text = routine.title
-            itemView.row_routine_customer_name.text = (routine.customer?.name ?: "") +" "+ (routine.customer?.surname ?: "")
+
+            if (routine.customer != null) {
+                itemView.row_routine_customer_name.text =
+                    (routine.customer?.name ?: "") + " " + (routine.customer?.surname ?: "")
+                itemView.row_routine_customer_name.visibility = View.VISIBLE
+            } else {
+                itemView.row_routine_customer_name.visibility = View.GONE
+            }
+
             itemView.setOnClickListener {
                 itemView.findNavController().navigate(
                     RoutineTrainerFragmentDirections.actionNavigationRoutineTrainerToDisplayRoutineFragment(
@@ -53,7 +56,6 @@ class RoutineListAdapter(private val context: Context) :
                     )
                 )
             }
-
         }
     }
 }

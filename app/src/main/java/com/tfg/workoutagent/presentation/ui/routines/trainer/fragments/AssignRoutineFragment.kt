@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,7 +77,7 @@ class AssignRoutineFragment : DialogFragment() {
             else -> true
         }
         if (darkMode) {
-            rl_assign_routine.setBackgroundResource(R.drawable.item_no_border_dark)
+            // rl_assign_routine.setBackgroundResource(R.drawable.item_no_border_dark)
             assign_routine_startDate_input.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
             assign_routine_startDate_input_edit.setBackgroundColor(context!!.resources.getColor(R.color.black_darkMode))
             assign_routine_startDate_input_edit.setTextColor(Color.WHITE)

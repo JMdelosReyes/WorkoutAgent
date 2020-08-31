@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,92 +24,83 @@
             android:id="@+id/ideal_weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text=""/>
+            android:text=""
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/current_imc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text=""/>
+            android:text=""
+            android:textAlignment="center" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="10dp"
-                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/texto1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18.5"
+                app:layout_constraintEnd_toStartOf="@+id/linea2"
+                app:layout_constraintStart_toEndOf="@+id/linea1"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/texto1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@+id/linea1"
-                    app:layout_constraintEnd_toStartOf="@+id/linea2"
-                    android:text="18.5"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/texto2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="25"
+                app:layout_constraintEnd_toStartOf="@+id/linea3"
+                app:layout_constraintStart_toEndOf="@+id/linea2"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/texto2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@+id/linea2"
-                    app:layout_constraintEnd_toStartOf="@+id/linea3"
-                    android:text="25"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/texto3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintStart_toEndOf="@+id/linea3"
-                    app:layout_constraintEnd_toStartOf="@+id/linea4"
-                    android:text="29.9"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/texto3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="29.9"
+                app:layout_constraintEnd_toStartOf="@+id/linea4"
+                app:layout_constraintStart_toEndOf="@+id/linea3"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-                <TextView
-                    android:id="@+id/linea1"
-                    android:layout_width="90dp"
-                    android:layout_height="5dp"
-                    android:background="@color/chartBlue"
-                    app:layout_constraintTop_toBottomOf="@+id/texto1"
-                    app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/linea1"
+                android:layout_width="90dp"
+                android:layout_height="5dp"
+                android:background="@color/chartBlue"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/texto1" />
 
-                <TextView
-                    android:id="@+id/linea2"
-                    android:layout_width="80dp"
-                    android:layout_height="5dp"
-                    android:background="@color/chartGreen"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/linea1" />
+            <TextView
+                android:id="@+id/linea2"
+                android:layout_width="80dp"
+                android:layout_height="5dp"
+                android:background="@color/chartGreen"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/linea1" />
 
-                <TextView
-                    android:id="@+id/linea3"
-                    android:layout_width="60dp"
-                    android:layout_height="5dp"
-                    android:background="@color/chartYellow"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/linea2" />
-                <TextView
-                    android:id="@+id/linea4"
-                    android:layout_width="80dp"
-                    android:layout_height="5dp"
-                    android:background="@color/chartOrange"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/linea3" />
+            <TextView
+                android:id="@+id/linea3"
+                android:layout_width="60dp"
+                android:layout_height="5dp"
+                android:background="@color/chartYellow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/linea2" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/linea4"
+                android:layout_width="80dp"
+                android:layout_height="5dp"
+                android:background="@color/chartOrange"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/linea3" />
 
-        </RelativeLayout>
-
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
-
 
 </ScrollView>

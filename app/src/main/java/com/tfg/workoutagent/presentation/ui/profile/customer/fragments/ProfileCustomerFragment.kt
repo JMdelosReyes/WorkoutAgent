@@ -97,7 +97,10 @@ class ProfileCustomerFragment : Fragment() {
         }
 
         settings_image_profile_customer.setOnClickListener {
-            val dialogBuilder = MaterialAlertDialogBuilder(context!!)
+            val dialogBuilder = MaterialAlertDialogBuilder(
+                requireContext(),
+                R.style.WorkoutAgentMaterialAlertDialog
+            )
             dialogBuilder.setTitle("Settings")
             val inflater = this.layoutInflater
             val dialogView = inflater.inflate(R.layout.dialog_settings_profile, null)
@@ -121,14 +124,19 @@ class ProfileCustomerFragment : Fragment() {
         viewModel.getProfileCustomer.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Success -> {
-                    if(it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE" || it.data.photo == "DEFAULT_PHOTO"){
-                        Glide.with(this).load(R.drawable.ic_person_black_60dp).into(circleImageViewCustomer_displayProfile)
-                    }else{
-                        Glide.with(this).load(it.data.photo).into(circleImageViewCustomer_displayProfile)
+                    if (it.data.photo == "" || it.data.photo == "DEFAULT_IMAGE" || it.data.photo == "DEFAULT_PHOTO") {
+                        Glide.with(this).load(R.drawable.ic_person_black_60dp)
+                            .into(circleImageViewCustomer_displayProfile)
+                    } else {
+                        Glide.with(this).load(it.data.photo)
+                            .into(circleImageViewCustomer_displayProfile)
                     }
                     display_customer_button_routines.setOnClickListener { _ ->
                         findNavController().navigate(
-                            ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToListHistoricRoutinesCustomerFragment(it.data.id, it.data.name)
+                            ProfileCustomerFragmentDirections.actionNavigationProfileCustomerToListHistoricRoutinesCustomerFragment(
+                                it.data.id,
+                                it.data.name
+                            )
                         )
                     }
                     display_customer_name_displayProfile.text = it.data.name + " " + it.data.surname
@@ -194,7 +202,7 @@ class ProfileCustomerFragment : Fragment() {
     }
 
     private fun setupWeightDialog() {
-        val builder = MaterialAlertDialogBuilder(requireContext(), R.style.WeightDialog)
+        val builder = AlertDialog.Builder(requireContext(), R.style.WeightDialog)
         val dialogView = this.layoutInflater.inflate(R.layout.weight_dialog, null)
         builder.setView(dialogView)
         this.weightDialog = builder.create()
@@ -216,6 +224,11 @@ class ProfileCustomerFragment : Fragment() {
                     this.viewModel.addWeight(it)
                 }
             }
+        }
+
+        weightDialog.setOnCancelListener {
+            dialogView.add_weight_input_edit.text = null
+            this.weightDialog.dismiss()
         }
     }
 }

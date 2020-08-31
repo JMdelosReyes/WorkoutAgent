@@ -91,23 +91,23 @@ class CreateExerciseFragment : BaseFragment() {
             )
         }
         if (getDarkMode()) {
-            ll_arms.setBackgroundResource(R.drawable.item_border_dark)
-            ll_legs.setBackgroundResource(R.drawable.item_border_dark)
-            ll_back.setBackgroundResource(R.drawable.item_border_dark)
-            ll_chest.setBackgroundResource(R.drawable.item_border_dark)
-            ll_shoulder.setBackgroundResource(R.drawable.item_border_dark)
-            ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
-            ll_abs.setBackgroundResource(R.drawable.item_border_dark)
-            ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
+            ll_arms.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_legs.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_back.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_chest.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_shoulder.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_gluteus.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_abs.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_cardio.setBackgroundResource(R.drawable.item_border_unselected)
         } else {
-            ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
-            ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
-            ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
-            ll_chest.setBackgroundResource(R.drawable.item_white_dark_border)
-            ll_shoulder.setBackgroundResource(R.drawable.item_white_dark_border)
-            ll_gluteus.setBackgroundResource(R.drawable.item_white_dark_border)
-            ll_abs.setBackgroundResource(R.drawable.item_white_dark_border)
-            ll_cardio.setBackgroundResource(R.drawable.item_white_dark_border)
+            ll_arms.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_legs.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_back.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_chest.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_shoulder.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_gluteus.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_abs.setBackgroundResource(R.drawable.item_border_unselected)
+            ll_cardio.setBackgroundResource(R.drawable.item_border_unselected)
         }
     }
 
@@ -132,10 +132,12 @@ class CreateExerciseFragment : BaseFragment() {
                             context = this.context!!,
                             title = "Delete this image",
                             message = getString(R.string.alert_message_delete),
-                            positiveAction = {selectedPhotosUri.remove(photoUri)
+                            positiveAction = {
+                                selectedPhotosUri.remove(photoUri)
                                 viewModel.removePhoto(photoUri)
-                                ll_photos.removeView(it)},
-                            negativeAction ={},
+                                ll_photos.removeView(it)
+                            },
+                            negativeAction = {},
                             positiveText = getString(R.string.answer_yes),
                             negativeText = getString(R.string.answer_no)
                         )
@@ -165,7 +167,7 @@ class CreateExerciseFragment : BaseFragment() {
                             viewModel.dataPhoto = null
                             ll_photos.removeView(it)
                         },
-                        negativeAction ={},
+                        negativeAction = {},
                         positiveText = getString(R.string.answer_yes),
                         negativeText = getString(R.string.answer_no)
                     )
@@ -180,13 +182,13 @@ class CreateExerciseFragment : BaseFragment() {
             val index = viewModel.tags.indexOf("Arms")
             if (index == -1) {
                 viewModel.addTag("Arms")
-                ll_arms.setBackgroundResource(R.drawable.item_border_green)
+                ll_arms.setBackgroundResource(R.drawable.item_border_selected)
             } else {
                 viewModel.removeTag(index)
                 if (getDarkMode()) {
-                    ll_arms.setBackgroundResource(R.drawable.item_border_dark)
+                    ll_arms.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    ll_arms.setBackgroundResource(R.drawable.item_white_dark_border)
+                    ll_arms.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             }
         }
@@ -194,13 +196,13 @@ class CreateExerciseFragment : BaseFragment() {
             val index = viewModel.tags.indexOf("Legs")
             if (index == -1) {
                 viewModel.addTag("Legs")
-                ll_legs.setBackgroundResource(R.drawable.item_border_green)
+                ll_legs.setBackgroundResource(R.drawable.item_border_selected)
             } else {
                 viewModel.removeTag(index)
                 if (getDarkMode()) {
-                    ll_legs.setBackgroundResource(R.drawable.item_border_dark)
+                    ll_legs.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    ll_legs.setBackgroundResource(R.drawable.item_white_dark_border)
+                    ll_legs.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             }
         }
@@ -208,13 +210,13 @@ class CreateExerciseFragment : BaseFragment() {
             val index = viewModel.tags.indexOf("Back")
             if (index == -1) {
                 viewModel.addTag("Back")
-                ll_back.setBackgroundResource(R.drawable.item_border_green)
+                ll_back.setBackgroundResource(R.drawable.item_border_selected)
             } else {
                 viewModel.removeTag(index)
                 if (getDarkMode()) {
-                    ll_back.setBackgroundResource(R.drawable.item_border_dark)
+                    ll_back.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    ll_back.setBackgroundResource(R.drawable.item_white_dark_border)
+                    ll_back.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             }
         }
@@ -222,13 +224,13 @@ class CreateExerciseFragment : BaseFragment() {
             val index = viewModel.tags.indexOf("Chest")
             if (index == -1) {
                 viewModel.addTag("Chest")
-                ll_chest.setBackgroundResource(R.drawable.item_border_green)
+                ll_chest.setBackgroundResource(R.drawable.item_border_selected)
             } else {
                 viewModel.removeTag(index)
                 if (getDarkMode()) {
-                    ll_chest.setBackgroundResource(R.drawable.item_border_dark)
+                    ll_chest.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    ll_chest.setBackgroundResource(R.drawable.item_white_dark_border)
+                    ll_chest.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             }
         }
@@ -236,13 +238,13 @@ class CreateExerciseFragment : BaseFragment() {
             val index = viewModel.tags.indexOf("Shoulder")
             if (index == -1) {
                 viewModel.addTag("Shoulder")
-                ll_shoulder.setBackgroundResource(R.drawable.item_border_green)
+                ll_shoulder.setBackgroundResource(R.drawable.item_border_selected)
             } else {
                 viewModel.removeTag(index)
                 if (getDarkMode()) {
-                    ll_shoulder.setBackgroundResource(R.drawable.item_border_dark)
+                    ll_shoulder.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    ll_shoulder.setBackgroundResource(R.drawable.item_white_dark_border)
+                    ll_shoulder.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             }
         }
@@ -250,13 +252,13 @@ class CreateExerciseFragment : BaseFragment() {
             val index = viewModel.tags.indexOf("Gluteus")
             if (index == -1) {
                 viewModel.addTag("Gluteus")
-                ll_gluteus.setBackgroundResource(R.drawable.item_border_green)
+                ll_gluteus.setBackgroundResource(R.drawable.item_border_selected)
             } else {
                 viewModel.removeTag(index)
                 if (getDarkMode()) {
-                    ll_gluteus.setBackgroundResource(R.drawable.item_border_dark)
+                    ll_gluteus.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    ll_gluteus.setBackgroundResource(R.drawable.item_white_dark_border)
+                    ll_gluteus.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             }
         }
@@ -264,13 +266,13 @@ class CreateExerciseFragment : BaseFragment() {
             val index = viewModel.tags.indexOf("Abs")
             if (index == -1) {
                 viewModel.addTag("Abs")
-                ll_abs.setBackgroundResource(R.drawable.item_border_green)
+                ll_abs.setBackgroundResource(R.drawable.item_border_selected)
             } else {
                 viewModel.removeTag(index)
                 if (getDarkMode()) {
-                    ll_abs.setBackgroundResource(R.drawable.item_border_dark)
+                    ll_abs.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    ll_abs.setBackgroundResource(R.drawable.item_white_dark_border)
+                    ll_abs.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             }
         }
@@ -278,13 +280,13 @@ class CreateExerciseFragment : BaseFragment() {
             val index = viewModel.tags.indexOf("Cardio")
             if (index == -1) {
                 viewModel.addTag("Cardio")
-                ll_cardio.setBackgroundResource(R.drawable.item_border_green)
+                ll_cardio.setBackgroundResource(R.drawable.item_border_selected)
             } else {
                 viewModel.removeTag(index)
                 if (getDarkMode()) {
-                    ll_cardio.setBackgroundResource(R.drawable.item_border_dark)
+                    ll_cardio.setBackgroundResource(R.drawable.item_border_unselected)
                 } else {
-                    ll_cardio.setBackgroundResource(R.drawable.item_white_dark_border)
+                    ll_cardio.setBackgroundResource(R.drawable.item_border_unselected)
                 }
             }
         }

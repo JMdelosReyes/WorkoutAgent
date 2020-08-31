@@ -1,7 +1,6 @@
 package com.tfg.workoutagent.presentation.ui.users.admin.fragments
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -24,14 +23,9 @@ import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTra
 import com.tfg.workoutagent.presentation.ui.users.admin.viewModels.EditDeleteTrainerAdminViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import com.tfg.workoutagent.vo.createAlertDialog
-import com.tfg.workoutagent.vo.utils.parseStringToDateBar
 import com.tfg.workoutagent.vo.utils.sendNotification
-import kotlinx.android.synthetic.main.fragment_create_trainer_admin.*
 import kotlinx.android.synthetic.main.fragment_edit_delete_trainer_admin.*
 import java.util.*
-import javax.mail.*
-import javax.mail.internet.InternetAddress
-import javax.mail.internet.MimeMessage
 
 class EditDeleteTrainerAdminFragment : Fragment() {
 

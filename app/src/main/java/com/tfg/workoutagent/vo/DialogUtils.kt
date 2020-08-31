@@ -15,7 +15,7 @@ fun createAlertDialog(
     positiveText: String = "Yes",
     negativeText: String = "No"
 ) {
-    MaterialAlertDialogBuilder(context)
+    MaterialAlertDialogBuilder(context, R.style.WorkoutAgentMaterialAlertDialog)
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton(positiveText) { dialog, _ ->
@@ -38,7 +38,7 @@ fun createAlertDialog(
     positiveText: Int,
     negativeText: Int
 ) {
-    MaterialAlertDialogBuilder(context)
+    MaterialAlertDialogBuilder(context, R.style.WorkoutAgentMaterialAlertDialog)
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton(context.resources.getString(positiveText)) { dialog, _ ->
@@ -57,7 +57,7 @@ fun createAlertDialog(
     title: String,
     message: String
 ) {
-    MaterialAlertDialogBuilder(context)
+    MaterialAlertDialogBuilder(context, R.style.WorkoutAgentMaterialAlertDialog)
         .setTitle(title)
         .setMessage(message)
         .setPositiveButton(context.getString(R.string.close)) { dialog, _ ->
@@ -71,7 +71,7 @@ class LoadingDialog(val activity: Activity) {
     lateinit var dialog: AlertDialog
 
     fun loadDialog() {
-        val builder = AlertDialog.Builder(activity, R.style.WeightDialog)
+        val builder = AlertDialog.Builder(activity, R.style.TransparentDialog)
         val inflater = activity.layoutInflater
         builder.setView(inflater.inflate(R.layout.loading_dialog, null))
         builder.setCancelable(true)

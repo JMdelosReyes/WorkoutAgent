@@ -59,24 +59,25 @@ class CreateTrainerAdminViewModel(private val manageTrainerAdminUseCase: ManageT
     val pickerDate = MutableLiveData<Date>(Date())
 
     fun onSubmit(){
-        if(checkData()) createTrainer()
-    }
-
-    private fun checkData(): Boolean {
-        _birthdayError.value = checkBirthday(birthday.value)
-        _dniError.value = checkDni(dni.toUpperCase())
-        _emailError.value = checkEmail(email.trim())
-        if(_emailError.value.equals("")){
-            viewModelScope.launch {
+        viewModelScope.launch {
+            if(checkData()){
                 try{
                     if(checkExistingMail(email)){
                         _emailError.value = "This mail is already used"
+                    }else{
+                        createTrainer()
                     }
                 }catch (e: Exception) {
                     _emailError.value = "Try with other email"
                 }
             }
         }
+    }
+
+    private fun checkData(): Boolean {
+        _birthdayError.value = checkBirthday(birthday.value)
+        _dniError.value = checkDni(dni.toUpperCase())
+        _emailError.value = checkEmail(email.trim())
         _nameError.value = checkName(name)
         _surnameError.value = checkSurname(surname)
         _photoError.value = checkPhoto(photo)

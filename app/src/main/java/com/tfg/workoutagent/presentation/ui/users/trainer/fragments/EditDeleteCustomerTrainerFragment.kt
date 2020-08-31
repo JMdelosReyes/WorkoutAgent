@@ -81,7 +81,7 @@ class EditDeleteCustomerTrainerFragment : Fragment() {
                 title = getString(R.string.alert_title_delete_profile),
                 message = getString(R.string.alert_message_delete),
                 positiveAction = {
-                    sendNotification(this.context!!, "${viewModel.name} account has been deleted", "His/her trainer decided to remove this account", "/topics/admin")
+                    sendNotification(this.context!!, "${viewModel.name.value} account has been deleted", "His/her trainer decided to remove this account", "/topics/admin")
                     viewModel.onDelete()
                 },
                 negativeAction ={},

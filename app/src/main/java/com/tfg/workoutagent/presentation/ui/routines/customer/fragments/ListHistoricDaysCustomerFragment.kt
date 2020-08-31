@@ -1,25 +1,20 @@
 package com.tfg.workoutagent.presentation.ui.routines.customer.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.tfg.workoutagent.R
 import com.tfg.workoutagent.data.repositoriesImpl.RoutineRepositoryImpl
 import com.tfg.workoutagent.domain.routineUseCases.HistoricRoutinesUseCaseImpl
-import com.tfg.workoutagent.presentation.ui.routines.customer.fragments.ListHistoricDaysCustomerFragmentArgs
 import com.tfg.workoutagent.presentation.ui.routines.customer.adapters.ListHistoricDaysCustomerAdapter
 import com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.ListHistoricDaysCustomerViewModel
 import com.tfg.workoutagent.presentation.ui.routines.customer.viewModels.ListHistoricDaysCustomerViewModelFactory
-import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.ListHistoricDaysAdapter
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListHistoricDaysViewModel
-import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListHistoricDaysViewModelFactory
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_list_historic_days.*
 

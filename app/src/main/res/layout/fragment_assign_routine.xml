@@ -25,12 +25,13 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/assign_routine_toolbar"
+                style="@style/Widget.AcmeDroid.Toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:paddingStart="6dp"
                 android:paddingEnd="16dp"
                 app:contentInsetStartWithNavigation="0dp"
-                app:navigationIcon="@drawable/ic_close_black_24dp" />
+                app:navigationIcon="@drawable/ic_close_dialog_24dp" />
 
         </com.google.android.material.appbar.AppBarLayout>
 

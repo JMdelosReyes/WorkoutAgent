@@ -17,6 +17,7 @@ import com.tfg.workoutagent.domain.routineUseCases.ListRoutinesUseCaseImpl
 import com.tfg.workoutagent.presentation.ui.routines.trainer.adapters.RoutineListAdapter
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListRoutineTrainerViewModel
 import com.tfg.workoutagent.presentation.ui.routines.trainer.viewModels.ListRoutineTrainerViewModelFactory
+import com.tfg.workoutagent.vo.CustomDivider
 import com.tfg.workoutagent.vo.Resource
 import kotlinx.android.synthetic.main.fragment_trainer_routine.*
 
@@ -80,6 +81,7 @@ class RoutineTrainerFragment : Fragment() {
         adapter = RoutineListAdapter(this.requireContext())
         recyclerViewRoutine.layoutManager = LinearLayoutManager(this.requireContext())
         recyclerViewRoutine.adapter = adapter
+        recyclerViewRoutine.addItemDecoration(CustomDivider(this.requireContext(), 100, 100))
         observeData()
     }
 

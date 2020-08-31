@@ -32,6 +32,6 @@ class FaqsFragment : Fragment() {
         this.faqsAdapter = FaqsAdapter(this.requireContext())
         recycler_faqs.layoutManager = LinearLayoutManager(this.requireContext())
         recycler_faqs.adapter = this.faqsAdapter
-        this.faqsAdapter.setListData(getAllFaqs())
+        this.faqsAdapter.setListData(getAllFaqs(this.requireContext()))
     }
 }

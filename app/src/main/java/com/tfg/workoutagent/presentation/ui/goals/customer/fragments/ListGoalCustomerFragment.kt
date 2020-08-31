@@ -99,6 +99,7 @@ class ListGoalCustomerFragment : Fragment() {
                     val swipedPosition = viewHolder.adapterPosition
                     val adapter: GoalsCustomerListAdapter = recyclerView_goals_customer.adapter as GoalsCustomerListAdapter
                     val builder = MaterialAlertDialogBuilder(context!!)
+
                     builder.setTitle("Delete this goal")
                     builder.setMessage(getString(R.string.alert_message_delete))
 
@@ -109,7 +110,7 @@ class ListGoalCustomerFragment : Fragment() {
                     }
 
                     builder.setNeutralButton(getString(R.string.answer_no)) { dialog, _ ->
-                        adapterGoals.notifyItemRemoved(viewHolder.adapterPosition)
+                        adapterGoals.notifyItemChanged(viewHolder.adapterPosition)
                         dialog.dismiss()
                     }
                     builder.create()
